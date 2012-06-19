@@ -1,0 +1,34 @@
+﻿Build started 2012/6/19 23:26:25.
+     1>Project "E:\fux-project\Player\GamePlayer\GamePlayer\GamePlayer.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.CppBuild.targets(344,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+         D:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ApiHook.cpp Entry.cpp GamePlayer.cpp
+         ApiHook.cpp
+     1>ApiHook.cpp(22): warning C4101: 'dwOldFlag' : unreferenced local variable
+     1>ApiHook.cpp(33): warning C4101: 'dwOldFlag' : unreferenced local variable
+     1>ApiHook.cpp(55): warning C4101: 'dwOldFlag' : unreferenced local variable
+         Entry.cpp
+     1>Entry.cpp(67): warning C4018: '<' : signed/unsigned mismatch
+     1>Entry.cpp(66): warning C4101: 'ret' : unreferenced local variable
+     1>Entry.cpp(140): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>Entry.cpp(148): warning C4018: '<' : signed/unsigned mismatch
+     1>Entry.cpp(187): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 D:\Program Files\Microsoft Visual Studio 11.0\VC\include\stdio.h(233) : see declaration of 'freopen'
+     1>Entry.cpp(205): warning C4101: 's' : unreferenced local variable
+     1>Entry.cpp(304): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 D:\Program Files\Microsoft Visual Studio 11.0\VC\include\stdio.h(357) : see declaration of 'sprintf'
+         GamePlayer.cpp
+         D:\Program Files\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\fux-project\Player\GamePlayer\/../../Game\Game.exe" /NOLOGO seiran.lib shlwapi.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:"Entry.def" /MANIFEST /ManifestFile:"Release\Game.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\fux-project\Player\GamePlayer\/../../Game\Game.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\fux-project\Player\GamePlayer\/../../Game\Game.lib" /MACHINE:X86 /SAFESEH Release\ApiHook.obj
+         Release\Entry.obj
+         Release\GamePlayer.obj
+            Creating library E:\fux-project\Player\GamePlayer\/../../Game\Game.lib and object E:\fux-project\Player\GamePlayer\/../../Game\Game.exp
+     1>LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+         Generating code
+     1>e:\fux-project\player\gameplayer\gameplayer\gameplayer.cpp(201): warning C4715: 'GamePlayer::InitRGSS' : not all control paths return a value
+         Finished generating code
+         GamePlayer.vcxproj -> E:\fux-project\Player\GamePlayer\/../../Game\Game.exe
+         C:\Program Files\Windows Kits\8.0\bin\x86\mt.exe /nologo /verbose /outputresource:"E:\fux-project\Player\GamePlayer\/../../Game\Game.exe;#1" /manifest Release\Game.exe.intermediate.manifest
+     1>Done Building Project "E:\fux-project\Player\GamePlayer\GamePlayer\GamePlayer.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.98

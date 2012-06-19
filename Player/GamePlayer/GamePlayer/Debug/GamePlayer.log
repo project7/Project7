@@ -1,0 +1,21 @@
+﻿Build started 2012/6/19 22:09:09.
+     1>Project "E:\fux-project\Player\GamePlayer\GamePlayer\GamePlayer.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.CppBuild.targets(344,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+         D:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt GamePlayer.cpp
+         GamePlayer.cpp
+     1>e:\fux-project\player\gameplayer\gameplayer\gameplayer.cpp(112): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\program files\microsoft visual studio 11.0\vc\include\stdio.h(357) : see declaration of 'sprintf'
+     1>e:\fux-project\player\gameplayer\gameplayer\gameplayer.cpp(208): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         D:\Program Files\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\fux-project\Player\GamePlayer\/../../Game\Game.exe" /INCREMENTAL /NOLOGO seiran.lib shlwapi.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Game.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\fux-project\Player\GamePlayer\/../../Game\Game.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\fux-project\Player\GamePlayer\/../../Game\Game.lib" /MACHINE:X86 Debug\ApiHook.obj
+         Debug\Entry.obj
+         Debug\GamePlayer.obj
+         Debug\Game.exe.embed.manifest.res
+         LINK : symbol '__imp__MessageBoxA@16' is undefined; performing full link
+         LINK : symbol '__imp__sprintf' is undefined; performing full link
+         C:\Program Files\Windows Kits\8.0\bin\x86\mt.exe /nologo /verbose /out:"Debug\Game.exe.embed.manifest" /manifest Debug\Game.exe.intermediate.manifest
+         GamePlayer.vcxproj -> E:\fux-project\Player\GamePlayer\/../../Game\Game.exe
+     1>Done Building Project "E:\fux-project\Player\GamePlayer\GamePlayer\GamePlayer.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.52
