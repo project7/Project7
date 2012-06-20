@@ -1,4 +1,5 @@
 #include "GamePlayer.h"
+#include "resource.h"
 GamePlayer::GamePlayer(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpCmdLine, int _nCmdShow,int width,int height)
 {
 	hInstance=_hInstance;
@@ -74,7 +75,7 @@ HWND GamePlayer::StartWindow()
 	winclass.cbClsExtra  = 0;
 	winclass.cbWndExtra  = 0;
 	winclass.hInstance  = hInstance;
-	winclass.hIcon   = LoadIcon(hInstance, MAKEINTRESOURCE(101));
+	winclass.hIcon   = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
 	winclass.hCursor  = LoadCursor(NULL, IDC_ARROW);
 	winclass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 	winclass.lpszMenuName = NULL; 

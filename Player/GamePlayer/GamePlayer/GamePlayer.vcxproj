@@ -29,6 +29,7 @@
     <PlatformToolset>v110</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -65,6 +66,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -76,16 +78,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ApiHook.cpp" />
+    <ClCompile Include="Base64.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="GamePlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ApiHook.h" />
+    <ClInclude Include="Base64.h" />
     <ClInclude Include="GamePlayer.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="RGSS.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entry.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GamePlayer3.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\logo-small-please_redraw.ico" />
+    <Image Include="..\..\..\logo-small-please_redraw.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

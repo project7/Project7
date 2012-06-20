@@ -13,6 +13,7 @@
 #include <psapi.h>
 #include <map>
 #include <iostream>
+#include "Base64.h"
 using namespace std;
 
 
@@ -39,9 +40,9 @@ struct RGSS3Runtime{
 };
 
 extern "C"{
-	#include <stdint.h>
+#include <stdint.h>
 	int32_t disasm(uint8_t *data, char *output, int outbufsize, int segsize,
-	            int32_t offset, int autosync, uint32_t prefer);
+		int32_t offset, int autosync, uint32_t prefer);
 	int32_t eatbyte(uint8_t *data, char *output, int outbufsize, int segsize);
 
 };
@@ -52,31 +53,31 @@ typedef unsigned long long QWORD;
 QWORD oldbytes;
 
 void getModuleList(int pid, HMODULE *hMod, LPDWORD size){
-        HANDLE hProcess = OpenProcess(2035711, false, pid);
-        if (hProcess)
-                if (EnumProcessModules(hProcess, hMod, *size, size))
-                        return;
-        *size = 0;
+	HANDLE hProcess = OpenProcess(2035711, false, pid);
+	if (hProcess)
+		if (EnumProcessModules(hProcess, hMod, *size, size))
+			return;
+	*size = 0;
 }
 
 HMODULE findModuleByLint(int str){
-        HMODULE hMod[1024]={0};	
-        DWORD size = sizeof(hMod);
-        getModuleList(GetCurrentProcessId(), hMod, &size);
-        char ret[1024];	
-        for(int i=0; i<size; ++i){
-                if (hMod[i]){
-                        static char filename[1024];
-                        filename[0] = 0;
-                        GetModuleFileNameA(hMod[i],  filename, 1024);
-                        PathStripPathA(filename);
-                        for(char *p = filename; *p; ++p) *p = tolower(*p);
-                        if( *(int *)filename == str ){
-                                return hMod[i];
-                        }
-                }
-        }
-        return 0;
+	HMODULE hMod[1024]={0};	
+	DWORD size = sizeof(hMod);
+	getModuleList(GetCurrentProcessId(), hMod, &size);
+	char ret[1024];	
+	for(int i=0; i<size; ++i){
+		if (hMod[i]){
+			static char filename[1024];
+			filename[0] = 0;
+			GetModuleFileNameA(hMod[i],  filename, 1024);
+			PathStripPathA(filename);
+			for(char *p = filename; *p; ++p) *p = tolower(*p);
+			if( *(int *)filename == str ){
+				return hMod[i];
+			}
+		}
+	}
+	return 0;
 }
 
 DWORD findFFImethodCode(RGSS3Runtime &rs3, const string &predef, const string &method){
@@ -128,8 +129,9 @@ void initnode(RGSS3Runtime &rs3){
 	rs3.litr.clear();
 	char output[1024];
 	static const int validstate = PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_READ  | PAGE_READWRITE | PAGE_READONLY;
+
 	while (p < q-0x10){
-		
+
 		int len = disasm(p, output, 64, 32, 0,0,1);
 		if (len == 0) len = 1;
 		rs3.code.push_back((int)p);
@@ -156,16 +158,36 @@ void initnode(RGSS3Runtime &rs3){
 		}
 		p+=len;
 	}
-	/*fprintf(stderr, "........done\n");
-	FILE *f=fopen("litr.dat","wb");
+	/*	FILE *f=fopen("litr.dat","rb");
+	char str[1024];
+	int val;
+	while (!fscanf(f,"%s=%d",&str,&val)==EOF)
+	rs3.litr[string(str)]=val;
+	fclose(f);
+	f=fopen("lit.dat","rb");
+	//char str[1024];
+	//	int val;
+	while (!fscanf(f,"%d=%s",&val,&str)==EOF)
+	rs3.lit[val]=string(str);
+	fclose(f);*/
+
+	fprintf(stderr, "........done\n");
+/*	FILE *f=fopen("litr.dat","wb");
+	string strout;
 	for (map<string, int>::iterator itor = rs3.litr.begin();
-    itor != rs3.litr.end(); ++itor)
-	{fprintf(f,"%s=%d\n",itor->first.c_str(),(HMODULE)itor->second-rs3.module);}
+		itor != rs3.litr.end(); ++itor)
+	{
+		CBase64::Encode((unsigned char *)itor->first.c_str(),itor->first.length(),strout);
+		fprintf(f,"%s>%d\n",strout,(HMODULE)itor->second-rs3.module);
+	}
 	fclose(f);
 	f=fopen("lit.dat","wb");
 	for (map<int, string>::iterator itor = rs3.lit.begin();
-    itor != rs3.lit.end(); ++itor)
-	{fprintf(f,"%d=%s\n",(HMODULE)itor->first-rs3.module,itor->second.c_str());}
+		itor != rs3.lit.end(); ++itor)
+	{
+		CBase64::Encode((unsigned char *)itor->second.c_str(),itor->second.length(),strout);
+		fprintf(f,"%d>%s\n",(HMODULE)itor->first-rs3.module,strout);
+	}
 	fclose(f);*/
 	//rs3.litr["Graphics"]=(int)(11112+rs3.module);
 	//rs3.lit[11112+rs3.module]="Graphics";
@@ -183,16 +205,16 @@ void initmodule(RGSS3Runtime &rs3, HMODULE rgss){
 void preinitconsole(RGSS3Runtime &rs3){
 	rs3.wndConsole = GetConsoleWindow();
 	if (!rs3.wndConsole){
-		//AllocConsole();
+		AllocConsole();
 		freopen("CONOUT$", "w", stderr);
-//		SetConsoleOutputCP(65001);
+		//		SetConsoleOutputCP(65001);
 	}
 }
 
 void postinitconsole(RGSS3Runtime &rs3){
 	if (!rs3.wndConsole){
 		fclose(stderr);
-		//FreeConsole();
+		FreeConsole();
 	}
 }
 
@@ -212,11 +234,11 @@ DWORD rbx_addtest(int argc, int *argv){
 }
 
 RGSS3Runtime* getRuntime(){
-    static RGSS3Runtime rs3;
-    static int init = false;
-    if (init) return &rs3;
-        HINSTANCE rgss = findModuleByLint('ssgr');
-        assert(rgss);	
+	static RGSS3Runtime rs3;
+	static int init = false;
+	if (init) return &rs3;
+	HINSTANCE rgss = findModuleByLint('ssgr');
+	assert(rgss);	
 	preinitconsole(rs3);
 	initmodule(rs3, rgss);
 	initnode(rs3);
@@ -237,7 +259,7 @@ RGSS3Runtime* getRuntime(){
 	else
 		rs3.rofs = 12;
 	postinitconsole(rs3);
-        init = true;
+	init = true;
 	return &rs3;
 }
 
@@ -247,14 +269,14 @@ void run_once(){
 	RGSS3Runtime *rs3 = getRuntime();
 	rs3->rbx = rs3->rb_eval_string_protect("module RBX; self; end;", 0);
 	rs3->rb_define_module_function(rs3->rbx, "add", (DWORD(*)(...))rbx_addtest, -1);
-//	rs3->RGSSEval("eval File.read('run.rb')");
+	//	rs3->RGSSEval("eval File.read('run.rb')");
 	VirtualProtect(rs3->Graphics_update, 8, PAGE_EXECUTE_READWRITE, 0);	
 	QWORD &manipulate = *(QWORD *)rs3->Graphics_update;	
 	manipulate = oldbytes;
 }
 
 extern "C" int   __stdcall defun(int module, char *name, int addr){
-    RGSS3Runtime *rs3 = getRuntime();
+	RGSS3Runtime *rs3 = getRuntime();
 	rs3->rb_define_module_function(module, name, (DWORD(*)(...))addr, -1);
 	return 0;
 }
@@ -288,7 +310,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (cGamePlayer->InitRGSS())
 	{
 		//Extend Module
-		
+
 		apihook.Initialize(L"user32.dll","SetWindowPos",(FARPROC)ResetSetWindowPos);
 		apihook.SetHookOn();
 		//Extend Module End
