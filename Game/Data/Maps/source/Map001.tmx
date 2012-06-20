@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="24" height="24" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" source="World_A2.tsx"/>
+ <tileset firstgid="769" name="World_A1" tilewidth="16" tileheight="16">
+  <properties>
+   <property name="movement" value="3"/>
+   <property name="pass" value="0"/>
+  </properties>
+  <image source="../../../Graphics/Tilesets/World_A1.png" width="512" height="384"/>
+ </tileset>
+ <layer name="块层 11" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJxLYmBgSAbiJBrRTUDcTEOaVu4edf+o+0fdP+r+UfePun/U/cPX/QDdngGw
+  </data>
+ </layer>
+ <layer name="块层 1" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgewBGInYHYiYq0C5L5iUCcDMRJVKRTkMxvBOJmIG6iIo1s/qj7h5b704A4HYmmtvvbgLgdiR51PyadREB+MKefoZ7+R91PXfcvBOLFQLwIB41PDhe9hGHoAwC/rsPt
+  </data>
+ </layer>
+ <layer name="块层 2" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUkAJcgdgNiN2RaA8qmp+KRSyDiua3YhHroKL5Q939S4F4GRAvR6JXUNH8UUA6OMjCwHAIiA8D8REW6pv/EGjmIyB+DMRPaGA+IysDAxMQMwMxCyv1zVcEmqkExMpArEID84crAACXBxCz
+  </data>
+ </layer>
+ <objectgroup name="对象层 1" width="24" height="24">
+  <object name="EV0001" x="256" y="112" width="16" height="16">
+   <properties>
+    <property name="character" value="$chicken_pl.png"/>
+    <property name="events" value="map1-ev1.evs"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="Player" width="24" height="24">
+  <object x="320" y="208" width="16" height="16"/>
+ </objectgroup>
+ <layer name="块层 3" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztzFkNwCAUBVGsFWqExQgUIyxCOyZeQsid5PyOc0qp23vgEfAa/CMSMorBv6LhQzf4D0wsbIO/Uuq8flzRByk=
+  </data>
+ </layer>
+ <layer name="块层 4" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztzLkRwCAUxFBaM7gRjkbANMJRqFUCAT9bzbxUzimlTnvgEfAa/CMSMorBv6LhQzf4D0wsbIO/Ukrd6geB3Acp
+  </data>
+ </layer>
+ <layer name="块层 5" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztzLkRwCAUxFBaM7gRjkbANMJRqFUCAT9bzbxUziml1L0eeAS8Bv+IhIxi8K9o+NAN/gMTC9vgr5Q66wdXxAcp
+  </data>
+ </layer>
+ <layer name="块层 6" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztzEkRwCAQBdGxBsEIi5EEjEAQSpsYTr+r3rXNlFJKBUQ8SA7/jIKK5vB/8aFjOPwnFn5sh79StzsyuQcp
+  </data>
+ </layer>
+ <layer name="块层 7" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztzMkNwCAUxFBaC6QRlkYgNMJSaNzEFwfG0rvaOXVjDzwCXoN/REJGMfhXNHzoBv+BiYVt8FdKKXW2HzsjByk=
+  </data>
+ </layer>
+ <layer name="块层 8" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztzFkNwCAUBVGsFWqExQgUIyxCOyZeQsid5PyOc0opdV4PPAJeg39EQkYx+Fc0fOgG/4GJhW3wV+r2flRmByk=
+  </data>
+ </layer>
+ <layer name="块层 9" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztzLsRgCAABFFaA2wEtBE+jSgWysbkl93OvHRDcM6dRSRkXIJ/QcWNR/Bv6BiYgv+LDwu/4O+cc+o2LasHKQ==
+  </data>
+ </layer>
+ <layer name="块层 10" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztzMcNgDAQBVG3RmiDTBtk2iDTBqE0pgBk4YMvaEd6t92vlPSHAoSIEFvYL1CiQm3w58CFB19zN2DEhNlgP0GKDLnm7sCJC7fBfoMWHXqDv68tWLFht7AvSZIkvfcAeJwQEQ==
+  </data>
+ </layer>
+</map>
