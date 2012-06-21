@@ -1,3 +1,6 @@
+#define _WIN32_WINNT 0x0501
+#define WINVER 0x0501
+#define NTDDI_VERSION NTDDI_WINXPSP2
 #include <Windows.h>
 #include "GamePlayer.h"
 #include "ApiHook.h"
@@ -299,7 +302,7 @@ BOOL ResetSetWindowPos(HWND hWnd , HWND hWndlnsertAfter , int X , int Y , int cx
 		return true;
 	apihook.SetHookOff();
 	BOOL ret = SetWindowPos(hWnd,hWndlnsertAfter,X,Y,cx,cy,uFlags);
-	apihook.SetHookOn();
+//	apihook.SetHookOn();
 	return ret;
 }
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)

@@ -1,5 +1,4 @@
 #include "GamePlayer.h"
-#include "resource.h"
 GamePlayer::GamePlayer(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpCmdLine, int _nCmdShow,int width,int height)
 {
 	hInstance=_hInstance;
@@ -75,7 +74,7 @@ HWND GamePlayer::StartWindow()
 	winclass.cbClsExtra  = 0;
 	winclass.cbWndExtra  = 0;
 	winclass.hInstance  = hInstance;
-	winclass.hIcon   = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
+	winclass.hIcon   = LoadIcon(hInstance, MAKEINTRESOURCE(101));
 	winclass.hCursor  = LoadCursor(NULL, IDC_ARROW);
 	winclass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 	winclass.lpszMenuName = NULL; 
@@ -86,23 +85,26 @@ HWND GamePlayer::StartWindow()
 		ShowErrorMsg(g_hWnd, szTitle, L"×¢²á´°¿ÚÀàÊ§°Ü %s¡£", pWndClassName);
 		return 0;
 	}
+	
 
-	int width = nScreenWidth + GetSystemMetrics(SM_CXFIXEDFRAME) * 2;
-	int height = nScreenHeight + GetSystemMetrics(SM_CYFIXEDFRAME) * 2 + GetSystemMetrics(SM_CYCAPTION);
 
-	RECT rt;
-	{
+	DWORD dwStyle = WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_VISIBLE;
+	HWND th=::CreateWindowEx(WS_EX_WINDOWEDGE,pWndClassName,L"v",dwStyle,0,0,600,400,0,0,hInstance,0);
+	RECT rt1;
+	
+	GetClientRect(th,&rt1);
+	int width = nScreenWidth + (600-rt1.right-rt1.left);//GetSystemMetrics(SM_CXFIXEDFRAME) * 2;
+	int height = nScreenHeight + (400-rt1.bottom-rt1.top);
+	RECT rt;{
 		rt.left  = (GetSystemMetrics(SM_CXSCREEN) - width) / 2;
 		//rt.top = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
 		rt.top  = (GetSystemMetrics(SM_CYMAXIMIZED) - nScreenHeight) / 2 - GetSystemMetrics(SM_CYCAPTION);
 		rt.right = rt.left + width;
 		rt.bottom = rt.top + height;
 	}
-
-	DWORD dwStyle = WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_VISIBLE;
-	
+	DestroyWindow(th);
 	g_hWnd = ::CreateWindowEx(WS_EX_WINDOWEDGE, pWndClassName, szTitle, dwStyle,
-		rt.left, rt.top, rt.right - rt.left, rt.bottom - rt.top, 0, 0, hInstance, 0);
+		rt.left, rt.top, /*rt.right - rt.left*/width, /*rt.bottom - rt.top*/height, 0, 0, hInstance, 0);
 	if (!g_hWnd)
 	{
 		ShowErrorMsg(g_hWnd, szTitle, L"´´½¨´°¿ÚÊ§°Ü %s¡£", szTitle);
