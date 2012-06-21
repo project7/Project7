@@ -5,7 +5,7 @@
 #include "GamePlayer.h"
 #include "ApiHook.h"
 GamePlayer *cGamePlayer;
-
+void __stdcall RGSSXGuard();
 #pragma region RGSSX
 #include <shlwapi.h>
 #include <cstring>
@@ -352,13 +352,15 @@ BOOL ResetSetWindowPos(HWND hWnd , HWND hWndlnsertAfter , int X , int Y , int cx
 	CApiHook CreateAPIHooker;
 	CApiHook ReadAPIHooker;
 	CApiHook CloseAPIHooker;
+	CApiHook GFZHooker;
 	// 从这里植入RM脚本
-	const string inner_srcipt = "$BINDING = binding;path = 0.chr * 612;Win32API.new(\"kernel32\", \"GetModuleFileName\", \"lpl\", \"l\").call(0, path, path.size);Win32API.new(path,\"RGSSXGuard\",\"\",\"\").call();eval(File.read(\"Data/Scripts/source/main.rb\"),$BINDING,\"Loader\");";
-	const HANDLE share_file_using_handle = (HANDLE)9996999;
+	//const string inner_srcipt = "$BINDING = binding;path = 0.chr * 612;Win32API.new(\"kernel32\", \"GetModuleFileName\", \"lpl\", \"l\").call(0, path, path.size);Win32API.new(path,\"RGSSXGuard\",\"\",\"\").call();eval(File.read(\"Data/Scripts/source/main.rb\"),$BINDING,\"Loader\");";
+	const string inner_srcipt = "$BINDING = binding;eval(File.read(\"Data/Scripts/source/main.rb\"),$BINDING,\"Loader\");";
 	const byte script_hid[24] = {
 		0x04,0x08,0x5B,0x06,0x5B,0x08,0x69,0x04,0x05,0x64,0x7F,0x01,0x22,0x00,0x22,0x0D,\
 0x78,0x9C,0x03,0x00,0x00,0x00,0x00,0x01
 	};
+	const HANDLE share_file_using_handle = (HANDLE)&script_hid;
 	HANDLE
 	WINAPI
 	ResetCreateFileW(
@@ -373,11 +375,13 @@ BOOL ResetSetWindowPos(HWND hWnd , HWND hWndlnsertAfter , int X , int Y , int cx
 	{
 		if (lstrcmp(lpFileName,L"Data\\Scripts.rvdata2")==0)
 		{
+			RGSSXGuard();
 			cGamePlayer->pRGSSEval(inner_srcipt.c_str());
 			return share_file_using_handle;
 		}
 		else
 		{
+			
 			CreateAPIHooker.SetHookOff();
 			HANDLE ret=CreateFileW(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
 			CreateAPIHooker.SetHookOn();
@@ -398,12 +402,13 @@ BOOL ResetSetWindowPos(HWND hWnd , HWND hWndlnsertAfter , int X , int Y , int cx
 			if (lpBuffer!=NULL){
 				memset(lpBuffer,0,nNumberOfBytesToRead);
 				memcpy(lpBuffer,script_hid,sizeof(script_hid));
+				MessageBox(0,L"A",L"A",0);
 			}
 			else
 			{
-				(*lpNumberOfBytesRead)=24;
+				(*lpNumberOfBytesRead)=0;
 			}
-			return true;
+			return 0;
 		}
 		else
 		{
@@ -420,6 +425,8 @@ BOOL ResetSetWindowPos(HWND hWnd , HWND hWndlnsertAfter , int X , int Y , int cx
 			CreateAPIHooker.SetHookOff();
 			ReadAPIHooker.SetHookOff();
 			CloseAPIHooker.SetHookOff();
+			GFZHooker.SetHookOff();
+			
 			return true;
 		}
 		else
@@ -430,7 +437,26 @@ BOOL ResetSetWindowPos(HWND hWnd , HWND hWndlnsertAfter , int X , int Y , int cx
 			return ret;
 		}
 	}
-
+	DWORD
+	WINAPI
+	ResetGetFileSize(
+		_In_ HANDLE hFile,
+		_Out_opt_ LPDWORD lpFileSizeHigh
+		)
+	{
+		if (hFile==share_file_using_handle)
+		{
+			(*lpFileSizeHigh)=NULL;
+			return sizeof(script_hid);
+		}
+		else
+		{
+			GFZHooker.SetHookOff();
+			DWORD ret=GetFileSize(hFile,lpFileSizeHigh);
+			GFZHooker.SetHookOn();
+			return ret;
+		}
+	}
 #pragma endregion
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -453,6 +479,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		CloseAPIHooker.Initialize(L"kernel32.dll","CloseHandle",(FARPROC)ResetCloseHandle);
 		CloseAPIHooker.SetHookOn();
+
+		GFZHooker.Initialize(L"kernel32.dll","GetFileSize",(FARPROC)ResetGetFileSize);
+		GFZHooker.SetHookOn();
 
 		//Extend Module End
 		cGamePlayer->RunGame();
