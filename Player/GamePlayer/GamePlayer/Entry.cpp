@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include "GamePlayer.h"
 #include "ApiHook.h"
+GamePlayer *cGamePlayer;
 
 #pragma region RGSSX
 #include <shlwapi.h>
@@ -225,15 +226,33 @@ void postinitconsole(RGSS3Runtime &rs3){
 RGSS3Runtime* getRuntime();
 
 
-DWORD rbx_define_module_function(int argc, int *argv, DWORD obj){
-	RGSS3Runtime *rs3 = getRuntime();
-	char s[1024];
-	rs3->rb_define_module_function( argv[0], *(const char **)(argv[1] + rs3->rofs), (DWORD(*)(...))((argv[2]^1)>>1), (argv[3]^1)>>1);
-	return 2;
-}
 
 DWORD rbx_addtest(int argc, int *argv){
 	return argv[0] + argv[1] - 1;
+}
+
+template <typename Dest, typename Src>
+Dest union_cast(Src s){
+		union { 
+				Src  s;
+				Dest d;
+		} w = {s};
+		return w.d;
+}
+
+
+
+template <typename T>
+void write_runtime(FILE *fp, T &func, RGSS3Runtime &rs3){
+		DWORD d = union_cast<DWORD>(func) - union_cast<DWORD>(rs3.module);
+		fwrite(&d, 1, sizeof(d), fp);
+}
+
+template <typename T>
+void read_runtime(FILE *fp, T &func, RGSS3Runtime &rs3){
+		DWORD d;
+		fread(&d, 1, sizeof(d), fp);
+		func = union_cast<T>(d + union_cast<DWORD>(rs3.module));
 }
 
 RGSS3Runtime* getRuntime(){
@@ -244,34 +263,58 @@ RGSS3Runtime* getRuntime(){
 	assert(rgss);	
 	preinitconsole(rs3);
 	initmodule(rs3, rgss);
-	initnode(rs3);
-	assert(rs3.litr["Graphics"]);
-	(DWORD &)rs3.Graphics_update        = findFFImethod(rs3, "Graphics", "update");
-	(DWORD &)rs3.rb_define_module_function       = find_rb_define_module_function(rs3);
-	int code = findCodeFromAddr(rs3, (int)rs3.RGSSEval);
-	assert(code!=-1);
-	(DWORD &)rs3.rb_eval_string_protect = find_call_value_from(rs3, code);
-	assert(rs3.rb_eval_string_protect);
-	assert(rs3.Graphics_update);
-	assert(rs3.rb_define_module_function);
-	DWORD x = rs3.rb_eval_string_protect("RUBY_VERSION.tr('.', '0').to_i", 0);
-	x = (x^1)>>1;
-	if (x >= 10900)	
 
-		rs3.rofs = 8;
-	else
-		rs3.rofs = 12;
-	postinitconsole(rs3);
+
+    if (FILE *fp = fopen("runtime.bin", "rb")){
+			read_runtime(fp, rs3.Graphics_update, rs3);
+			read_runtime(fp, rs3.rb_define_module_function, rs3);
+			read_runtime(fp, rs3.rb_eval_string_protect, rs3);
+			fclose(fp);
+	}else{
+			initnode(rs3);
+			assert(rs3.litr["Graphics"]);
+			(DWORD &)rs3.Graphics_update        = findFFImethod(rs3, "Graphics", "update");
+			(DWORD &)rs3.rb_define_module_function       = find_rb_define_module_function(rs3);
+			int code = findCodeFromAddr(rs3, (int)rs3.RGSSEval);
+			assert(code!=-1);
+			(DWORD &)rs3.rb_eval_string_protect = find_call_value_from(rs3, code);
+			assert(rs3.rb_eval_string_protect);
+			assert(rs3.Graphics_update);
+			assert(rs3.rb_define_module_function);
+			DWORD x = rs3.rb_eval_string_protect("RUBY_VERSION.tr('.', '0').to_i", 0);
+			x = (x^1)>>1;
+			if (x >= 10900)	
+				rs3.rofs = 8;
+			else
+				rs3.rofs = 12;
+		    if (FILE *fp = fopen("runtime.bin", "wb")){
+					write_runtime(fp, rs3.Graphics_update, rs3);
+					write_runtime(fp, rs3.rb_define_module_function, rs3);
+					write_runtime(fp, rs3.rb_eval_string_protect, rs3);
+					fclose(fp);
+			}else{
+				fprintf(stderr, "Can't save runtime\n");
+			}
+     }
 	init = true;
+   	postinitconsole(rs3);
 	return &rs3;
 }
 
+
+DWORD rbx_define_module_function(int argc, int *argv, DWORD obj){
+	RGSS3Runtime *rs3 = getRuntime();
+	char s[1024];
+	rs3->rb_define_module_function( argv[0], *(const char **)(argv[1] + rs3->rofs), (DWORD(*)(...))((argv[2]^1)>>1), (argv[3]^1)>>1);
+	return 2;
+}
 
 void run_once(){
 	//your things
 	RGSS3Runtime *rs3 = getRuntime();
 	rs3->rbx = rs3->rb_eval_string_protect("module RBX; self; end;", 0);
 	rs3->rb_define_module_function(rs3->rbx, "add", (DWORD(*)(...))rbx_addtest, -1);
+	rs3->rb_define_module_function(rs3->rbx, "defun", (DWORD(*)(...))rbx_define_module_function, -1);
 	//	rs3->RGSSEval("eval File.read('run.rb')");
 	VirtualProtect(rs3->Graphics_update, 8, PAGE_EXECUTE_READWRITE, 0);	
 	QWORD &manipulate = *(QWORD *)rs3->Graphics_update;	
@@ -293,18 +336,102 @@ void __stdcall go(int){
 	manipulate = 0xE9 |  (offset << 8) | (manipulate & 0xFFFFFF0000000000uLL) ;
 }
 #pragma endregion
-
-GamePlayer *cGamePlayer;
-CApiHook apihook;
+#pragma region WindowSizeHooker
+CApiHook Sizerhook;
 BOOL ResetSetWindowPos(HWND hWnd , HWND hWndlnsertAfter , int X , int Y , int cx , int cy , unsigned int uFlags)
 {
 	if (hWnd==cGamePlayer->g_hWnd)
 		return true;
-	apihook.SetHookOff();
+	Sizerhook.SetHookOff();
 	BOOL ret = SetWindowPos(hWnd,hWndlnsertAfter,X,Y,cx,cy,uFlags);
 //	apihook.SetHookOn();
 	return ret;
 }
+#pragma endregion
+#pragma region WindowFileHooker
+	CApiHook CreateAPIHooker;
+	CApiHook ReadAPIHooker;
+	CApiHook CloseAPIHooker;
+	// 从这里植入RM脚本
+	const string inner_srcipt = "$BINDING = binding;path = 0.chr * 612;Win32API.new(\"kernel32\", \"GetModuleFileName\", \"lpl\", \"l\").call(0, path, path.size);Win32API.new(path,\"RGSSXGuard\",\"\",\"\").call();eval(File.read(\"Data/Scripts/source/main.rb\"),$BINDING,\"Loader\");";
+	const HANDLE share_file_using_handle = (HANDLE)9996999;
+	const byte script_hid[24] = {
+		0x04,0x08,0x5B,0x06,0x5B,0x08,0x69,0x04,0x05,0x64,0x7F,0x01,0x22,0x00,0x22,0x0D,\
+0x78,0x9C,0x03,0x00,0x00,0x00,0x00,0x01
+	};
+	HANDLE
+	WINAPI
+	ResetCreateFileW(
+		__in     LPCWSTR lpFileName,
+		__in     DWORD dwDesiredAccess,
+		__in     DWORD dwShareMode,
+		__in_opt LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+		__in     DWORD dwCreationDisposition,
+		__in     DWORD dwFlagsAndAttributes,
+		__in_opt HANDLE hTemplateFile
+		)
+	{
+		if (lstrcmp(lpFileName,L"Data\\Scripts.rvdata2")==0)
+		{
+			cGamePlayer->pRGSSEval(inner_srcipt.c_str());
+			return share_file_using_handle;
+		}
+		else
+		{
+			CreateAPIHooker.SetHookOff();
+			HANDLE ret=CreateFileW(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
+			CreateAPIHooker.SetHookOn();
+			return ret;
+			//注：这里留作以后Hook文件并加密解密的地方……估计用不上了。
+		}
+	}
+	BOOL WINAPI ResetReadFile(
+		HANDLE hFile, 
+		LPVOID lpBuffer,
+		DWORD nNumberOfBytesToRead,
+		LPDWORD lpNumberOfBytesRead,
+		LPOVERLAPPED lpOverlapped
+	)
+	{
+		if (hFile==share_file_using_handle)
+		{
+			if (lpBuffer!=NULL){
+				memset(lpBuffer,0,nNumberOfBytesToRead);
+				memcpy(lpBuffer,script_hid,sizeof(script_hid));
+			}
+			else
+			{
+				(*lpNumberOfBytesRead)=24;
+			}
+			return true;
+		}
+		else
+		{
+			ReadAPIHooker.SetHookOff();
+			BOOL ret=ReadFile(hFile,lpBuffer,nNumberOfBytesToRead,lpNumberOfBytesRead,lpOverlapped);
+			ReadAPIHooker.SetHookOn();
+			return ret;
+		}
+	}
+	BOOL WINAPI ResetCloseHandle(HANDLE h)
+	{
+		if (h==share_file_using_handle)
+		{
+			CreateAPIHooker.SetHookOff();
+			ReadAPIHooker.SetHookOff();
+			CloseAPIHooker.SetHookOff();
+			return true;
+		}
+		else
+		{
+			CloseAPIHooker.SetHookOff();
+			BOOL ret=CloseHandle(h);
+			CloseAPIHooker.SetHookOn();
+			return ret;
+		}
+	}
+
+#pragma endregion
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	cGamePlayer=new GamePlayer(hInstance,hPrevInstance,lpCmdLine,nCmdShow,640,480);
@@ -314,11 +441,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	{
 		//Extend Module
 
-		apihook.Initialize(L"user32.dll","SetWindowPos",(FARPROC)ResetSetWindowPos);
-		apihook.SetHookOn();
+		//API HOOKS
+		Sizerhook.Initialize(L"user32.dll","SetWindowPos",(FARPROC)ResetSetWindowPos);
+		Sizerhook.SetHookOn();
+
+		CreateAPIHooker.Initialize(L"kernel32.dll","CreateFileW",(FARPROC)ResetCreateFileW);
+		CreateAPIHooker.SetHookOn();
+
+		ReadAPIHooker.Initialize(L"kernel32.dll","ReadFile",(FARPROC)ResetReadFile);
+		ReadAPIHooker.SetHookOn();
+
+		CloseAPIHooker.Initialize(L"kernel32.dll","CloseHandle",(FARPROC)ResetCloseHandle);
+		CloseAPIHooker.SetHookOn();
+
 		//Extend Module End
 		cGamePlayer->RunGame();
-
 	}
 }
 

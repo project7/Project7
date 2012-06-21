@@ -49,7 +49,7 @@ GamePlayer::GamePlayer(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lp
 	// iniÎÄ¼þ´æÔÚ
 	if (GetFileAttributesW(szIniPath) != INVALID_FILE_ATTRIBUTES)
 	{
-		GetPrivateProfileStringW(L"Game", L"Library", pDefaultLibrary, szLibrary, MAX_PATH, szIniPath);
+		GetPrivateProfileStringW(L"Game", L"Library2", pDefaultLibrary, szLibrary, MAX_PATH, szIniPath);
 		GetPrivateProfileStringW(L"Game", L"Title",  pDefaultTitle,   szTitle, MAX_PATH, szIniPath);
 		GetPrivateProfileStringW(L"Game", L"Scripts", pDefaultScripts, szScripts, MAX_PATH, szIniPath);
 	}

@@ -1,0 +1,5 @@
+$BINDING = binding
+path = 0.chr * 612
+Win32API.new("kernel32", "GetModuleFileName", "lpl", "l").call(0, path, path.size)
+Win32API.new(path,"RGSSXGuard","","").call()
+eval(File.read("Data/Scripts/source/main.rb"),$BINDING,"Loader")
