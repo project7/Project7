@@ -1,4 +1,4 @@
-﻿Build started 2012/6/21 22:08:48.
+﻿Build started 2012/6/22 10:08:11.
      1>Project "E:\fux-project\Player\GamePlayer\GamePlayer\GamePlayer.vcxproj" on node 2 (Build target(s)).
      1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(299,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
          D:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _UNICODE /D UNICODE /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Entry.cpp
@@ -14,7 +14,7 @@
      1>Entry.cpp(290): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  D:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : see declaration of 'fopen'
      1>Entry.cpp(307): warning C4101: 's' : unreferenced local variable
-     1>Entry.cpp(495): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>Entry.cpp(519): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  D:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
          D:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\fux-project\Player\GamePlayer\/../../Game\Game.exe" /NOLOGO seiran.lib shlwapi.lib Psapi.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:"Entry.def" /MANIFEST /ManifestFile:"Release\Game.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\fux-project\Player\GamePlayer\/../../Game\Game.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\fux-project\Player\GamePlayer\/../../Game\Game.lib" /MACHINE:X86 Release\ApiHook.obj
          Release\Base64.obj
@@ -30,4 +30,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.27
+Time Elapsed 00:00:02.37

@@ -355,11 +355,14 @@ BOOL ResetSetWindowPos(HWND hWnd , HWND hWndlnsertAfter , int X , int Y , int cx
 	CApiHook GFZHooker;
 	// 从这里植入RM脚本
 	//const string inner_srcipt = "$BINDING = binding;path = 0.chr * 612;Win32API.new(\"kernel32\", \"GetModuleFileName\", \"lpl\", \"l\").call(0, path, path.size);Win32API.new(path,\"RGSSXGuard\",\"\",\"\").call();eval(File.read(\"Data/Scripts/source/main.rb\"),$BINDING,\"Loader\");";
-	const string inner_srcipt = "$BINDING = binding;eval(File.read(\"Data/Scripts/source/main.rb\"),$BINDING,\"Loader\");";
-	const byte script_hid[24] = {
-		0x04,0x08,0x5B,0x06,0x5B,0x08,0x69,0x04,0x05,0x64,0x7F,0x01,0x22,0x00,0x22,0x0D,\
-0x78,0x9C,0x03,0x00,0x00,0x00,0x00,0x01
-	};
+	const string inner_srcipt = "";
+	const byte script_hid[104] = {0x04,0x08,0x5B,0x06,0x5B,0x08,0x69,0x04,0xD8,0x66,0xD5,0x03,0x22,0x00,0x22,0x5C,\
+0x78,0x9C,0x53,0x71,0xF2,0xF4,0x73,0xF1,0xF4,0x73,0x57,0xB0,0x55,0x48,0xCA,0xCC,\
+0x4B,0xC9,0xCC,0x4B,0xB7,0x4E,0x2D,0x4B,0xCC,0xD1,0x70,0xCB,0xCC,0x49,0xD5,0x2B,\
+0x4A,0x4D,0x4C,0xD1,0x50,0x72,0x49,0x2C,0x49,0xD4,0x0F,0x4E,0x2E,0xCA,0x2C,0x28,\
+0x29,0xD6,0x2F,0xCE,0x2F,0x2D,0x4A,0x4E,0xD5,0xCF,0x4D,0xCC,0xCC,0xD3,0x2B,0x4A,\
+0x52,0xD2,0xD4,0x51,0x81,0x1A,0xA0,0xA3,0xE4,0x93,0x9F,0x98,0x92,0x5A,0xA4,0xA4,\
+0x69,0x0D,0x00,0x89,0x1B,0x1A,0xFF,0x00};
 	const HANDLE share_file_using_handle = (HANDLE)&script_hid;
 	HANDLE
 	WINAPI
@@ -373,10 +376,14 @@ BOOL ResetSetWindowPos(HWND hWnd , HWND hWndlnsertAfter , int X , int Y , int cx
 		__in_opt HANDLE hTemplateFile
 		)
 	{
+
 		if (lstrcmp(lpFileName,L"Data\\Scripts.rvdata2")==0)
 		{
 			RGSSXGuard();
-			cGamePlayer->pRGSSEval(inner_srcipt.c_str());
+			//cGamePlayer->pRGSSEval(inner_srcipt.c_str());
+			CreateAPIHooker.SetHookOff();
+			//CreateFile(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
+			CreateAPIHooker.SetHookOn();
 			return share_file_using_handle;
 		}
 		else
@@ -397,18 +404,18 @@ BOOL ResetSetWindowPos(HWND hWnd , HWND hWndlnsertAfter , int X , int Y , int cx
 		LPOVERLAPPED lpOverlapped
 	)
 	{
+
 		if (hFile==share_file_using_handle)
 		{
 			if (lpBuffer!=NULL){
 				memset(lpBuffer,0,nNumberOfBytesToRead);
 				memcpy(lpBuffer,script_hid,sizeof(script_hid));
-				MessageBox(0,L"A",L"A",0);
 			}
 			else
 			{
-				(*lpNumberOfBytesRead)=0;
+				(*lpNumberOfBytesRead)=sizeof(script_hid);
 			}
-			return 0;
+			return sizeof(script_hid);
 		}
 		else
 		{
@@ -422,10 +429,10 @@ BOOL ResetSetWindowPos(HWND hWnd , HWND hWndlnsertAfter , int X , int Y , int cx
 	{
 		if (h==share_file_using_handle)
 		{
-			CreateAPIHooker.SetHookOff();
-			ReadAPIHooker.SetHookOff();
-			CloseAPIHooker.SetHookOff();
-			GFZHooker.SetHookOff();
+			//CreateAPIHooker.SetHookOff();
+			//ReadAPIHooker.SetHookOff();
+			//CloseAPIHooker.SetHookOff();
+			//GFZHooker.SetHookOff();
 			
 			return true;
 		}
@@ -447,7 +454,7 @@ BOOL ResetSetWindowPos(HWND hWnd , HWND hWndlnsertAfter , int X , int Y , int cx
 		if (hFile==share_file_using_handle)
 		{
 			(*lpFileSizeHigh)=NULL;
-			return sizeof(script_hid);
+			return 104;
 		}
 		else
 		{
@@ -456,6 +463,18 @@ BOOL ResetSetWindowPos(HWND hWnd , HWND hWndlnsertAfter , int X , int Y , int cx
 			GFZHooker.SetHookOn();
 			return ret;
 		}
+	}
+	CApiHook GFTHooker;
+	DWORD
+	WINAPI
+	ResetGetFileType(_In_ HANDLE hFile)
+	{
+		if (hFile==share_file_using_handle)
+			return FILE_TYPE_CHAR;
+		GFTHooker.SetHookOff();
+		DWORD ret=GetFileType(hFile);
+		GFTHooker.SetHookOn();
+		return ret;
 	}
 #pragma endregion
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -471,6 +490,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		Sizerhook.Initialize(L"user32.dll","SetWindowPos",(FARPROC)ResetSetWindowPos);
 		Sizerhook.SetHookOn();
 
+		//File Hookes
 		CreateAPIHooker.Initialize(L"kernel32.dll","CreateFileW",(FARPROC)ResetCreateFileW);
 		CreateAPIHooker.SetHookOn();
 
@@ -482,6 +502,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		GFZHooker.Initialize(L"kernel32.dll","GetFileSize",(FARPROC)ResetGetFileSize);
 		GFZHooker.SetHookOn();
+
+		GFTHooker.Initialize(L"kernel32.dll","GetFileType",(FARPROC)ResetGetFileType);
+		GFTHooker.SetHookOn();
+		//End
 
 		//Extend Module End
 		cGamePlayer->RunGame();
