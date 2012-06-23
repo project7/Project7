@@ -49,9 +49,11 @@ GamePlayer::GamePlayer(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lp
 	// iniÎÄ¼þ´æÔÚ
 	if (GetFileAttributesW(szIniPath) != INVALID_FILE_ATTRIBUTES)
 	{
-		GetPrivateProfileStringW(L"Game", L"Library2", pDefaultLibrary, szLibrary, MAX_PATH, szIniPath);
+		//GetPrivateProfileStringW(L"Game", L"Library2", pDefaultLibrary, szLibrary, MAX_PATH, szIniPath);
+		wcscpy_s(szLibrary, pDefaultLibrary);
 		GetPrivateProfileStringW(L"Game", L"Title",  pDefaultTitle,   szTitle, MAX_PATH, szIniPath);
-		GetPrivateProfileStringW(L"Game", L"Scripts", pDefaultScripts, szScripts, MAX_PATH, szIniPath);
+		//GetPrivateProfileStringW(L"Game", L"Scripts", pDefaultScripts, szScripts, MAX_PATH, szIniPath);
+		wcscpy_s(szScripts, pDefaultScripts);
 	}
 	else
 	{
@@ -89,7 +91,7 @@ HWND GamePlayer::StartWindow()
 
 
 	DWORD dwStyle = WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_VISIBLE;
-	HWND th=::CreateWindowEx(WS_EX_WINDOWEDGE,pWndClassName,L"v",dwStyle,0,0,600,400,0,0,hInstance,0);
+	HWND th=::CreateWindowEx(WS_EX_WINDOWEDGE,pWndClassName,L"v",WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,0,0,600,400,0,0,hInstance,0);
 	RECT rt1;
 	
 	GetClientRect(th,&rt1);

@@ -209,7 +209,7 @@ void initmodule(RGSS3Runtime &rs3, HMODULE rgss){
 void preinitconsole(RGSS3Runtime &rs3){
 	rs3.wndConsole = GetConsoleWindow();
 	if (!rs3.wndConsole){
-		AllocConsole();
+		//AllocConsole();
 		freopen("CONOUT$", "w", stderr);
 		//		SetConsoleOutputCP(65001);
 	}
@@ -218,7 +218,7 @@ void preinitconsole(RGSS3Runtime &rs3){
 void postinitconsole(RGSS3Runtime &rs3){
 	if (!rs3.wndConsole){
 		fclose(stderr);
-		FreeConsole();
+		//FreeConsole();
 	}
 }
 
@@ -451,18 +451,11 @@ BOOL ResetSetWindowPos(HWND hWnd , HWND hWndlnsertAfter , int X , int Y , int cx
 		_Out_opt_ LPDWORD lpFileSizeHigh
 		)
 	{
-		if (hFile==share_file_using_handle)
-		{
-			(*lpFileSizeHigh)=NULL;
-			return 104;
-		}
-		else
-		{
-			GFZHooker.SetHookOff();
-			DWORD ret=GetFileSize(hFile,lpFileSizeHigh);
-			GFZHooker.SetHookOn();
-			return ret;
-		}
+		// 读取脚本没有用到
+		GFZHooker.SetHookOff();
+		DWORD ret=GetFileSize(hFile,lpFileSizeHigh);
+		GFZHooker.SetHookOn();
+		return ret;
 	}
 	CApiHook GFTHooker;
 	DWORD
