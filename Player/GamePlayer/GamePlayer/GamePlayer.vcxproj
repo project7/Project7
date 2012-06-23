@@ -20,7 +20,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v100</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -57,7 +57,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>seiran.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>seiran.lib;psapi.lib;kernel32.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>Entry.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
@@ -82,12 +82,19 @@
     <ClCompile Include="Base64.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="GamePlayer.cpp" />
+    <ClCompile Include="AbstractRGSSExtension.cpp" />
+    <ClCompile Include="RGSS3Runtime.h" />
+    <ClCompile Include="RGSSMouse.cpp" />
+    <ClCompile Include="RGSSUtilty.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ApiHook.h" />
     <ClInclude Include="Base64.h" />
     <ClInclude Include="GamePlayer.h" />
     <ClInclude Include="RGSS.h" />
+    <ClInclude Include="AbstractRGSSExtension.h" />
+    <ClInclude Include="RGSSMouse.h" />
+    <ClInclude Include="RGSSUtilty.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entry.def" />

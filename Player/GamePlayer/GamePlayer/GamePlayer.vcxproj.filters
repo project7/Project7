@@ -23,6 +23,18 @@
     <ClCompile Include="Base64.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RGSSMouse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractRGSSExtension.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RGSSUtilty.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RGSS3Runtime.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GamePlayer.h">
@@ -35,6 +47,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Base64.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RGSSMouse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractRGSSExtension.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RGSSUtilty.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

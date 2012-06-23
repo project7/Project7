@@ -1,9 +1,11 @@
+#pragma once
 #define _WIN32_WINNT 0x0501
 #define WINVER 0x0501
 #define NTDDI_VERSION NTDDI_WINXPSP2
 #include <Windows.h>
 #include "GamePlayer.h"
 #include "ApiHook.h"
+#include "RGSS3Runtime.h"
 GamePlayer *cGamePlayer;
 void __stdcall RGSSXGuard();
 #pragma region RGSSX
@@ -18,29 +20,16 @@ void __stdcall RGSSXGuard();
 #include <map>
 #include <iostream>
 #include "Base64.h"
+
+#include "AbstractRGSSExtension.h"
+#include "RGSSUtilty.h"
+#include "RGSSMouse.h"
 using namespace std;
 
 
 struct RGSS3AEntry{
 	int unk1, unk2, unk3;
 	char name[256];
-};
-
-struct RGSS3Runtime{
-	HANDLE process;
-	HMODULE module;
-	MODULEINFO mi;
-	HWND wndConsole;
-	DWORD rbx;
-	DWORD (*RGSSEval)(const char *);
-	DWORD rubyversion;
-	void (__stdcall *Graphics_update)();
-	void (*rb_define_module_function)(DWORD, const char *, DWORD (*)(...), int);
-	DWORD (*rb_eval_string_protect) (const char *, int *);
-	vector <int> code;       //  code point
-	map <int, string> lit;
-	map <string, int> litr;  // string is the literal
-	int rofs;
 };
 
 extern "C"{
@@ -225,12 +214,6 @@ void postinitconsole(RGSS3Runtime &rs3){
 
 RGSS3Runtime* getRuntime();
 
-
-
-DWORD rbx_addtest(int argc, int *argv){
-	return argv[0] + argv[1] - 1;
-}
-
 template <typename Dest, typename Src>
 Dest union_cast(Src s){
 		union { 
@@ -302,19 +285,17 @@ RGSS3Runtime* getRuntime(){
 }
 
 
-DWORD rbx_define_module_function(int argc, int *argv, DWORD obj){
-	RGSS3Runtime *rs3 = getRuntime();
-	char s[1024];
-	rs3->rb_define_module_function( argv[0], *(const char **)(argv[1] + rs3->rofs), (DWORD(*)(...))((argv[2]^1)>>1), (argv[3]^1)>>1);
-	return 2;
-}
-
 void run_once(){
 	//your things
 	RGSS3Runtime *rs3 = getRuntime();
-	rs3->rbx = rs3->rb_eval_string_protect("module RBX; self; end;", 0);
-	rs3->rb_define_module_function(rs3->rbx, "add", (DWORD(*)(...))rbx_addtest, -1);
-	rs3->rb_define_module_function(rs3->rbx, "defun", (DWORD(*)(...))rbx_define_module_function, -1);
+	rs3->rbx = rs3->rb_eval_string_protect("module RGSSX; self; end;", 0);
+
+	RGSSUtilty *rgssUtilty = new RGSSUtilty();
+	rgssUtilty->Install(*rs3);
+
+	RGSSMouse *rgssMouse = new RGSSMouse();
+	rgssMouse->Install(*rs3);
+
 	//	rs3->RGSSEval("eval File.read('run.rb')");
 	VirtualProtect(rs3->Graphics_update, 8, PAGE_EXECUTE_READWRITE, 0);	
 	QWORD &manipulate = *(QWORD *)rs3->Graphics_update;	
@@ -335,6 +316,7 @@ void __stdcall go(int){
 	QWORD offset = (DWORD)run_once - (DWORD)&manipulate - 5;
 	manipulate = 0xE9 |  (offset << 8) | (manipulate & 0xFFFFFF0000000000uLL) ;
 }
+
 #pragma endregion
 #pragma region WindowSizeHooker
 CApiHook Sizerhook;

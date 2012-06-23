@@ -1,34 +1,44 @@
-﻿Build started 2012/6/23 8:01:43.
-     1>Project "E:\fux-project\Player\GamePlayer\GamePlayer\GamePlayer.vcxproj" on node 2 (Build target(s)).
-     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(299,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-         D:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _UNICODE /D UNICODE /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Entry.cpp GamePlayer.cpp
-         Entry.cpp
-     1>Entry.cpp(72): warning C4018: '<' : signed/unsigned mismatch
-     1>Entry.cpp(71): warning C4101: 'ret' : unreferenced local variable
-     1>Entry.cpp(146): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
-     1>Entry.cpp(154): warning C4018: '<' : signed/unsigned mismatch
-     1>Entry.cpp(213): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 D:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(249) : see declaration of 'freopen'
-     1>Entry.cpp(268): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 D:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : see declaration of 'fopen'
-     1>Entry.cpp(290): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 D:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : see declaration of 'fopen'
-     1>Entry.cpp(307): warning C4101: 's' : unreferenced local variable
-     1>Entry.cpp(512): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 D:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
-         GamePlayer.cpp
-         D:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\fux-project\Player\GamePlayer\/../../Game\Game.exe" /NOLOGO seiran.lib shlwapi.lib Psapi.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:"Entry.def" /MANIFEST /ManifestFile:"Release\Game.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\fux-project\Player\GamePlayer\/../../Game\Game.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\fux-project\Player\GamePlayer\/../../Game\Game.lib" /MACHINE:X86 Release\ApiHook.obj
-         Release\Base64.obj
-         Release\Entry.obj
-         Release\GamePlayer.obj
-            Creating library E:\fux-project\Player\GamePlayer\/../../Game\Game.lib and object E:\fux-project\Player\GamePlayer\/../../Game\Game.exp
-         Generating code
-     1>e:\fux-project\player\gameplayer\gameplayer\gameplayer.cpp(206): warning C4715: 'GamePlayer::InitRGSS' : not all control paths return a value
-         Finished generating code
-         GamePlayer.vcxproj -> E:\fux-project\Player\GamePlayer\/../../Game\Game.exe
-         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"E:\fux-project\Player\GamePlayer\/../../Game\Game.exe;#1" /manifest Release\Game.exe.intermediate.manifest
-     1>Done Building Project "E:\fux-project\Player\GamePlayer\GamePlayer\GamePlayer.vcxproj" (Build target(s)).
+﻿生成启动时间为 2012-6-23 23:48:00。
+项目“F:\Documents\RPGVXAce\Project7\Player\GamePlayer\GamePlayer\GamePlayer.vcxproj”在节点 2 上(build 个目标)。
+C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(299,5): warning MSB8004: Output 目录未以斜杠结尾。此生成实例将添加斜杠，因为必须有这个斜杠才能正确计算 Output 目录。
+InitializeBuildStatus:
+  正在创建“Release\GamePlayer.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+ClCompile:
+  C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _UNICODE /D UNICODE /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Entry.cpp
+  Entry.cpp
+Entry.cpp(61): warning C4018: “<”: 有符号/无符号不匹配
+Entry.cpp(60): warning C4101: “ret”: 未引用的局部变量
+Entry.cpp(135): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+Entry.cpp(143): warning C4018: “<”: 有符号/无符号不匹配
+Entry.cpp(202): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(249) : 参见“freopen”的声明
+Entry.cpp(251): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : 参见“fopen”的声明
+Entry.cpp(273): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : 参见“fopen”的声明
+Entry.cpp(493): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : 参见“sprintf”的声明
+Link:
+  C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\Documents\RPGVXAce\Project7\Player\GamePlayer\/../../Game\Game.exe" /NOLOGO seiran.lib shlwapi.lib Psapi.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:"Entry.def" /MANIFEST /ManifestFile:"Release\Game.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"F:\Documents\RPGVXAce\Project7\Game\Game.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:\Documents\RPGVXAce\Project7\Player\GamePlayer\/../../Game\Game.lib" /MACHINE:X86 Release\ApiHook.obj
+  Release\Base64.obj
+  Release\Entry.obj
+  Release\GamePlayer.obj
+  Release\AbstractRGSSExtension.obj
+  Release\RGSS3Runtime.obj
+  Release\RGSSMouse.obj
+  Release\RGSSUtilty.obj
+     正在创建库 F:\Documents\RPGVXAce\Project7\Player\GamePlayer\/../../Game\Game.lib 和对象 F:\Documents\RPGVXAce\Project7\Player\GamePlayer\/../../Game\Game.exp
+  正在生成代码
+f:\documents\rpgvxace\project7\player\gameplayer\gameplayer\gameplayer.cpp(206): warning C4715: “GamePlayer::InitRGSS”: 不是所有的控件路径都返回值
+  已完成代码的生成
+  GamePlayer.vcxproj -> F:\Documents\RPGVXAce\Project7\Player\GamePlayer\/../../Game\Game.exe
+Manifest:
+  C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"F:\Documents\RPGVXAce\Project7\Player\GamePlayer\/../../Game\Game.exe;#1" /manifest Release\Game.exe.intermediate.manifest
+FinalizeBuildStatus:
+  正在删除文件“Release\GamePlayer.unsuccessfulbuild”。
+  正在对“Release\GamePlayer.lastbuildstate”执行 Touch 任务。
+已完成生成项目“F:\Documents\RPGVXAce\Project7\Player\GamePlayer\GamePlayer\GamePlayer.vcxproj”(build 个目标)的操作。
 
-Build succeeded.
+生成成功。
 
-Time Elapsed 00:00:09.11
+已用时间 00:00:21.35
