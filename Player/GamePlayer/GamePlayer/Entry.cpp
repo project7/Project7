@@ -294,9 +294,9 @@ void run_once(){
 
 	RGSSMouse *rgssMouse = new RGSSMouse();
 	rgssMouse->Install(rs3);
-	VirtualProtect(rs3->Graphics_update, 8, PAGE_EXECUTE_READWRITE, 0);	
+	/*VirtualProtect(rs3->Graphics_update, 8, PAGE_EXECUTE_READWRITE, 0);	
 	QWORD &manipulate = *(QWORD *)rs3->Graphics_update;	
-	manipulate = oldbytes;
+	manipulate = oldbytes;*/
 }
 
 extern "C" int   __stdcall defun(int module, char *name, int addr){
@@ -306,12 +306,13 @@ extern "C" int   __stdcall defun(int module, char *name, int addr){
 }
 
 void __stdcall go(int){
-	RGSS3Runtime *rs3 = getRuntime();
+	/*RGSS3Runtime *rs3 = getRuntime();
 	VirtualProtect(rs3->Graphics_update, 8, PAGE_EXECUTE_READWRITE, 0);
 	QWORD &manipulate = *(QWORD *)rs3->Graphics_update;
 	oldbytes = manipulate;
 	QWORD offset = (DWORD)run_once - (DWORD)&manipulate - 5;
-	manipulate = 0xE9 |  (offset << 8) | (manipulate & 0xFFFFFF0000000000uLL) ;
+	manipulate = 0xE9 |  (offset << 8) | (manipulate & 0xFFFFFF0000000000uLL) ;*/
+	run_once();
 }
 
 #pragma endregion
