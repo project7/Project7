@@ -1,0 +1,29 @@
+#EVENT ENTRY BEGIN
+*PAGE:1           #这段内容由Event读取
+*CHARACTER:$door
+*CONDITONS[true]
+*TOUCH:ENTER
+###########下面的内容将由int收取###################
+-0 IF $player.faceto(self.event)
++1 self.event.turnface(1)
++1 self.sleep 2
++1 self.event.turnface(2)
++1 self.sleep 2
++1 self.event.turnface(3)
++1 self.sleep 2
++1 $player.go(true) #force
++1 $helper.teleport("home.json",3,4)
+#==================================================
+#1 EVAL $map.lock # 禁止地图动画               
+#1 EVAL $player.lock # 禁止角色动画
+#1 EVAL $scene.lock # 锁定地图
+#1 EVAL $map.evmanager.lock(self) #结束所有地图事件
+#1 EVAL $map.change("home.json")
+#1 EVAL $player.set_pos(3,4)
+#1 EVAL $map.unlock #刷新地图描绘
+#1 EVAL $player.unlock #角色地图描绘
+#1 EVAL $scene.unlock(30) # 锁定地图
+#1 EVAL $map.evmanager.play #开始解析新地图的事件
+#===================================================
+-0 END
+#EVENT ENTRY END

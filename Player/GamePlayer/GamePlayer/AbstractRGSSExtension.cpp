@@ -10,6 +10,6 @@ AbstractRGSSExtension::~AbstractRGSSExtension(void)
 {
 }
 
-static void Install(RGSS3Runtime runtime)
+static void Install(RGSS3Runtime *runtime)
 {
 }

@@ -131,9 +131,9 @@ void initnode(RGSS3Runtime &rs3){
 		if ((int)p - (int)r >= 0x7fff){
 			//rs3.RGSSEval("Graphics.update");
 			double value = double(p-s) * 100 / rs3.mi.SizeOfImage;
-			fprintf(stderr, "%02.2f%%", double(p-s) * 100 / rs3.mi.SizeOfImage);
-			for(int i=value/5; i; --i){fprintf(stderr, ".");}
-			fprintf(stderr, "\r");
+			//fprintf(stderr, "%02.2f%%", double(p-s) * 100 / rs3.mi.SizeOfImage);
+			//for(int i=value/5; i; --i){fprintf(stderr, ".");}
+			//fprintf(stderr, "\r");
 			r = p;
 		}
 		if ( *p == 0x68 ){
@@ -164,7 +164,7 @@ void initnode(RGSS3Runtime &rs3){
 	rs3.lit[val]=string(str);
 	fclose(f);*/
 
-	fprintf(stderr, "........done\n");
+	//fprintf(stderr, "........done\n");
 /*	FILE *f=fopen("litr.dat","wb");
 	string strout;
 	for (map<string, int>::iterator itor = rs3.litr.begin();
@@ -199,14 +199,14 @@ void preinitconsole(RGSS3Runtime &rs3){
 	rs3.wndConsole = GetConsoleWindow();
 	if (!rs3.wndConsole){
 		//AllocConsole();
-		freopen("CONOUT$", "w", stderr);
+		//freopen("CONOUT$", "w", stderr);
 		//		SetConsoleOutputCP(65001);
 	}
 }
 
 void postinitconsole(RGSS3Runtime &rs3){
 	if (!rs3.wndConsole){
-		fclose(stderr);
+		//fclose(stderr);
 		//FreeConsole();
 	}
 }
@@ -276,7 +276,7 @@ RGSS3Runtime* getRuntime(){
 					write_runtime(fp, rs3.rb_eval_string_protect, rs3);
 					fclose(fp);
 			}else{
-				fprintf(stderr, "Can't save runtime\n");
+				//fprintf(stderr, "Can't save runtime\n");
 			}
      }
 	init = true;
@@ -289,14 +289,11 @@ void run_once(){
 	//your things
 	RGSS3Runtime *rs3 = getRuntime();
 	rs3->rbx = rs3->rb_eval_string_protect("module RGSSX; self; end;", 0);
-
 	RGSSUtilty *rgssUtilty = new RGSSUtilty();
-	rgssUtilty->Install(*rs3);
+	rgssUtilty->Install(rs3);
 
 	RGSSMouse *rgssMouse = new RGSSMouse();
-	rgssMouse->Install(*rs3);
-
-	//	rs3->RGSSEval("eval File.read('run.rb')");
+	rgssMouse->Install(rs3);
 	VirtualProtect(rs3->Graphics_update, 8, PAGE_EXECUTE_READWRITE, 0);	
 	QWORD &manipulate = *(QWORD *)rs3->Graphics_update;	
 	manipulate = oldbytes;

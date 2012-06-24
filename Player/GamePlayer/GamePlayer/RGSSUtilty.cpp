@@ -24,9 +24,9 @@ DWORD RGSSUtilty::rbx_define_module_function(int argc, int *argv, DWORD obj){
 
 RGSS3Runtime* RGSSUtilty::runtime = 0;
 
-void RGSSUtilty::Install(RGSS3Runtime r)
+void RGSSUtilty::Install(RGSS3Runtime *r)
 {
-	runtime = &r;
+	runtime = r;
 	runtime->rb_define_module_function(runtime->rbx, "add", (DWORD(*)(...))rbx_addtest, -1);
 	runtime->rb_define_module_function(runtime->rbx, "defun", (DWORD(*)(...))rbx_define_module_function, -1);
 }

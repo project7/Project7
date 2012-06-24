@@ -9,6 +9,6 @@ public:
 	RGSSMouse(void);
 	~RGSSMouse(void);
 
-	static void Install(RGSS3Runtime runtime);
+	static void Install(RGSS3Runtime *runtime);
 };
 

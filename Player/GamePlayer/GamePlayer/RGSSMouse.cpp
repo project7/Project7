@@ -10,7 +10,7 @@ RGSSMouse::~RGSSMouse(void)
 {
 }
 
-void RGSSMouse::Install(RGSS3Runtime runtime)
+void RGSSMouse::Install(RGSS3Runtime *runtime)
 {
 	//runtime->
 }
