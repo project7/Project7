@@ -450,6 +450,48 @@ BOOL ResetSetWindowPos(HWND hWnd , HWND hWndlnsertAfter , int X , int Y , int cx
 		return ret;
 	}
 #pragma endregion
+#pragma region HWNDGetterHook
+CApiHook FindWindowWHooker;
+
+HWND
+WINAPI
+ResetFindWindowExW(
+    _In_opt_ HWND hWndParent,
+    _In_opt_ HWND hWndChildAfter,
+    _In_opt_ LPCWSTR lpszClass,
+    _In_opt_ LPCWSTR lpszWindow)
+{
+
+	if (lstrcmp(lpszClass,L"RGSS Player")==0)
+		return cGamePlayer->g_hWnd;
+	FindWindowWHooker.SetHookOff();
+	HWND ret=FindWindowExW(hWndParent,hWndChildAfter,lpszClass,lpszWindow);
+	FindWindowWHooker.SetHookOn();
+}
+CApiHook GetClassNameHooker;
+const char *rewritestr = "RGSS Player";
+int
+WINAPI
+ResetGetClassNameA(
+    _In_ HWND hWnd,
+    _Out_ LPSTR lpClassName,
+    _In_ int nMaxCount
+    )
+{
+	if (hWnd==cGamePlayer->g_hWnd)
+	{
+		memset(lpClassName,0,sizeof(lpClassName));
+		memcpy(lpClassName,rewritestr,12);
+		return sizeof(rewritestr);
+	}
+	else
+	{
+		GetClassNameHooker.SetHookOff();
+		GetClassNameA(hWnd,lpClassName,nMaxCount);
+		GetClassNameHooker.SetHookOn();
+	}
+}
+#pragma endregion
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	cGamePlayer=new GamePlayer(hInstance,hPrevInstance,lpCmdLine,nCmdShow,640,480);
@@ -478,8 +520,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		GFTHooker.Initialize(L"kernel32.dll","GetFileType",(FARPROC)ResetGetFileType);
 		GFTHooker.SetHookOn();
-		//End
 
+		//FindWindow Hooker
+		FindWindowWHooker.Initialize(L"user32.dll","FindWindowExW",(FARPROC)ResetFindWindowExW);
+		FindWindowWHooker.SetHookOn();
+		
+		// GetClassName Hooker
+		GetClassNameHooker.Initialize(L"user32.dll","GetClassNameA",(FARPROC)ResetGetClassNameA);
+		GetClassNameHooker.SetHookOn();
+		//End
 		//Extend Module End
 		cGamePlayer->RunGame();
 	}
