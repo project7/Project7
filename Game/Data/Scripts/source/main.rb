@@ -1,5 +1,5 @@
-﻿Graphics.update
-print RGSSX.add(1,1)
+﻿print RGSSX.add(1,1)
+print RGSSX.str
 File.open("Data/Scripts/source/rakefile.info","rb"){|f|
 	fns=f.readlines
 	fns.each{|fn|fn=fn.delete("\n").delete("\r")

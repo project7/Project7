@@ -1,9 +1,26 @@
-﻿Build started 2012/6/25 18:43:28.
+﻿Build started 2012/6/27 15:17:49.
      1>Project "E:\fux-project\Player\GamePlayer\GamePlayer\GamePlayer.vcxproj" on node 2 (Build target(s)).
      1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(299,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+         D:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\fux-project\Player\GamePlayer\/../../Game\Game.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:"Entry.def" /MANIFEST /ManifestFile:"Release\Game.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\fux-project\Player\GamePlayer\/../../Game\Game.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\fux-project\Player\GamePlayer\/../../Game\Game.lib" /MACHINE:X86 Release\ApiHook.obj
+         Release\Base64.obj
+         Release\Entry.obj
+         Release\GamePlayer.obj
+         Release\AbstractRGSSExtension.obj
+         Release\RGSS3Runtime.obj
+         Release\RGSS3Runtime.obj
+         Release\RGSSMouse.obj
+         Release\RGSSUtilty.obj
+     1>Release\RGSS3Runtime.obj : warning LNK4042: object specified more than once; extras ignored
+            Creating library E:\fux-project\Player\GamePlayer\/../../Game\Game.lib and object E:\fux-project\Player\GamePlayer\/../../Game\Game.exp
+         Generating code
+     1>e:\fux-project\player\gameplayer\gameplayer\gameplayer.cpp(206): warning C4715: 'GamePlayer::InitRGSS' : not all control paths return a value
+     1>e:\fux-project\player\gameplayer\gameplayer\entry.cpp(452): warning C4715: 'ResetGetClassNameA' : not all control paths return a value
+     1>e:\fux-project\player\gameplayer\gameplayer\entry.cpp(429): warning C4715: 'ResetFindWindowExW' : not all control paths return a value
+         Finished generating code
          GamePlayer.vcxproj -> E:\fux-project\Player\GamePlayer\/../../Game\Game.exe
+         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"E:\fux-project\Player\GamePlayer\/../../Game\Game.exe;#1" /manifest Release\Game.exe.intermediate.manifest
      1>Done Building Project "E:\fux-project\Player\GamePlayer\GamePlayer\GamePlayer.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.06
+Time Elapsed 00:00:00.64

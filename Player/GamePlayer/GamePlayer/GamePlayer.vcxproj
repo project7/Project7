@@ -73,7 +73,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>seiran.lib;shlwapi.lib;Psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>Entry.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
@@ -83,6 +83,7 @@
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="GamePlayer.cpp" />
     <ClCompile Include="AbstractRGSSExtension.cpp" />
+    <ClCompile Include="RGSS3Runtime.cpp" />
     <ClCompile Include="RGSS3Runtime.h" />
     <ClCompile Include="RGSSMouse.cpp" />
     <ClCompile Include="RGSSUtilty.cpp" />

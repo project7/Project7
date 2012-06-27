@@ -1,0 +1,17 @@
+Module:268435456
+rb_funcall2:268634880
+rb_define_class:268821936
+rb_const_defined:268861136
+rb_const_get:268863504
+rb_intern:268730832
+rb_define_module:268822528
+rb_define_module_function:268824656
+rb_define_global_const:268861680
+rb_define_global_function:268861680
+rb_eval_string_protect:268632608
+rb_id2name:269088496
+rb_scan_args:268825072
+rb_class_new_instance:268647472
+rb_define_method:268824032
+rb_str_new:268657056
+rb_define_const:268861552

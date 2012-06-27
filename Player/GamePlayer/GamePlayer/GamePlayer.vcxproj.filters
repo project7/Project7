@@ -35,6 +35,9 @@
     <ClCompile Include="RGSS3Runtime.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="RGSS3Runtime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GamePlayer.h">
