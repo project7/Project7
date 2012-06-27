@@ -94,7 +94,7 @@ module Mouse
   # ## 更新光标
   #--------------------------------------------------------------------------
   def update_cursor
-    @pos = get_pos
+    @pos = [CMouse.x,CMouse.y]#get_pos
     return if TrueMouse
     if @pos.nil?
       $mousec.visible = false

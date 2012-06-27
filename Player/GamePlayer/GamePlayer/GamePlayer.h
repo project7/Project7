@@ -2,7 +2,7 @@
 #include <windows.h>
 #include "RGSS.h"
 #include <stdio.h>
-class GamePlayer
+static class GamePlayer
 {
 public:
 	GamePlayer(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpCmdLine, int _nCmdShow,int width=800,int height=600);
@@ -13,6 +13,7 @@ public:
 	bool InitRGSS();
 	void RunGame();
 	void ___exit();
+	WNDPROC HookWndProc(WNDPROC newProc);
 public:
 	wchar_t* pWndClassName;
 	wchar_t* pDefaultLibrary;

@@ -244,3 +244,8 @@ void GamePlayer::___exit()
 
 	UnregisterClassW(pWndClassName, hInstance);
 }
+
+WNDPROC GamePlayer::HookWndProc(WNDPROC newProc)
+{
+	return (WNDPROC)SetWindowLong(g_hWnd,GWL_WNDPROC,(LONG)newProc);
+}

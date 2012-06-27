@@ -6,7 +6,12 @@
 #include "GamePlayer.h"
 #include "ApiHook.h"
 #include "RGSS3Runtime.h"
+
+//Extend Module
+#include "AbstractRGSSExtension.h"
+#include "RGSSMouse.h"
 GamePlayer *cGamePlayer;
+
 void __stdcall RGSSXGuard();
 #pragma region RGSSX
 /*
@@ -500,6 +505,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		RGSS3Runtime::VALUE mod = sruntime->rb_define_module("RGSSX");
 		sruntime->rb_define_module_function(mod,"add",(RGSS3Runtime::RubyFunc)functest,-1);
 		sruntime->rb_define_module_function(mod,"str",(RGSS3Runtime::RubyFunc)functest1,-1);
+
+		cRGSSMouse = new RGSSMouse(sruntime,cGamePlayer);
+
 		//sruntime->rb_str_new("aaa",strlen("aaa"));
 		//sruntime->rb_define_const(mod,"TT",sruntime->rb_str_new("aa",3));
 		//Extend Module End
