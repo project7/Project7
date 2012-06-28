@@ -1,0 +1,12 @@
+E:\fux-project\ScriptsEditor\Game\ScriptsEditor.exe
+E:\fux-project\ScriptsEditor\Game\ScriptsEditor.pdb
+E:\fux-project\Game\ScriptsEditor.exe
+E:\fux-project\Game\ScriptsEditor.pdb
+E:\fux-project\ScriptsEditor\ScriptsEditor\ScriptsEditor\obj\Release\ScriptsEditor.csprojResolveAssemblyReference.cache
+E:\fux-project\ScriptsEditor\ScriptsEditor\ScriptsEditor\obj\Release\TextEditor.FindAndReplaceForm.resources
+E:\fux-project\ScriptsEditor\ScriptsEditor\ScriptsEditor\obj\Release\ScriptsEditor.frmEditor.resources
+E:\fux-project\ScriptsEditor\ScriptsEditor\ScriptsEditor\obj\Release\ScriptsEditor.frmMain.resources
+E:\fux-project\ScriptsEditor\ScriptsEditor\ScriptsEditor\obj\Release\ScriptsEditor.Properties.Resources.resources
+E:\fux-project\ScriptsEditor\ScriptsEditor\ScriptsEditor\obj\Release\ScriptsEditor.csproj.GenerateResource.Cache
+E:\fux-project\ScriptsEditor\ScriptsEditor\ScriptsEditor\obj\Release\ScriptsEditor.exe
+E:\fux-project\ScriptsEditor\ScriptsEditor\ScriptsEditor\obj\Release\ScriptsEditor.pdb

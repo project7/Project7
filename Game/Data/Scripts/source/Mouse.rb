@@ -58,6 +58,11 @@ module FSL
     MKEY = 4
   end
 end
+class JuhuaLan
+	def bili
+	
+	end
+end
 #==============================================================================
 # ■ Mouse
 #==============================================================================
@@ -94,7 +99,7 @@ module Mouse
   # ## 更新光标
   #--------------------------------------------------------------------------
   def update_cursor
-    @pos = [CMouse.x,CMouse.y]#get_pos
+    @pos = get_pos
     return if TrueMouse
     if @pos.nil?
       $mousec.visible = false
@@ -107,6 +112,7 @@ module Mouse
   # ## 获取坐标
   #--------------------------------------------------------------------------
   def get_pos
+    return [CMouse.x,CMouse.y]
     begin
       if MouseInClient.call.zero?
         return nil

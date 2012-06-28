@@ -5,7 +5,7 @@
     buff += "@#{words[i]}=val;"
   end
   class_eval %{
-    def #{words[0]}=(val);#{buff}end
+    def #{words[0]}=(val);#{buff};end
   }
 end
 $alias_acount = 0

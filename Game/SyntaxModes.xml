@@ -1,0 +1,5 @@
+<SyntaxModes version="1.0">
+	<Mode file       = "Ruby.xshd"
+	      name       = "RUBY"
+	      extensions = ".rd"/>
+</SyntaxModes>
