@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{604AF41B-F737-4226-BF9C-C055EC11DAC6}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LynnEditor</RootNamespace>
+    <AssemblyName>LynnEditor</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\AbstractFile.cs" />
+    <Compile Include="Core\AbstractEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScriptEditor\ScriptListEditorInsertDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScriptEditor\ScriptListEditorInsertDialog.Designer.cs">
+      <DependentUpon>ScriptListEditorInsertDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\LogEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\LogFile.cs" />
+    <Compile Include="ScriptEditor\ScriptListFile.cs" />
+    <Compile Include="ScriptEditor\ScriptListEditorRenameDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScriptEditor\ScriptListEditorRenameDialog.Designer.cs">
+      <DependentUpon>ScriptListEditorRenameDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIControls\LynnListbox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ScriptEditor\ScriptEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScriptEditor\ScriptFile.cs" />
+    <Compile Include="ScriptEditor\ScriptListEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Workbench.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Workbench.Designer.cs">
+      <DependentUpon>Workbench.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="ScriptEditor\ScriptListEditorInsertDialog.resx">
+      <DependentUpon>ScriptListEditorInsertDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScriptEditor\ScriptListEditorRenameDialog.resx">
+      <DependentUpon>ScriptListEditorRenameDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Workbench.resx">
+      <DependentUpon>Workbench.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DockPanel_Src\WinFormsUI\WinFormsUI.csproj">
+      <Project>{D3C782BA-178E-4235-A3BA-8C11DEBB6BEE}</Project>
+      <Name>WinFormsUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScintillaNET\ScintillaNET.csproj">
+      <Project>{F9B6DABD-BBC1-4638-8CE6-A5C9506BFDCB}</Project>
+      <Name>ScintillaNET</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

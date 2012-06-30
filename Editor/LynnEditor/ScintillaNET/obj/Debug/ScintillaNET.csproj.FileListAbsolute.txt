@@ -1,0 +1,16 @@
+f:\Documents\RPGVXAce\Project7\Editor\bin\SciLexer.dll
+f:\Documents\RPGVXAce\Project7\Editor\bin\ScintillaNet.dll
+f:\Documents\RPGVXAce\Project7\Editor\bin\ScintillaNet.pdb
+f:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\ResolveAssemblyReference.cache
+f:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\ScintillaNet.FindReplaceDialog.resources
+f:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\ScintillaNet.IncrementalSearcher.resources
+f:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\ScintillaNet.GoToDialog.resources
+f:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\ScintillaNet.Properties.Resources.resources
+f:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\ScintillaNet.SnippetChooser.resources
+f:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\GenerateResource.read.1.tlog
+f:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\GenerateResource.write.1.tlog
+f:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\ScintillaNet.dll
+f:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\ScintillaNet.pdb
+F:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\GenerateResource-ResGen.read.1.tlog
+F:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\GenerateResource-ResGen.read.4.tlog
+F:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\GenerateResource-ResGen.write.1.tlog
