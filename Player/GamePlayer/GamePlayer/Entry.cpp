@@ -456,9 +456,11 @@ int
 	}
 }
 #pragma endregion
-int RUBYCALL functest(int argc, int *argv)
+int gameFPS;
+RGSS3Runtime::VALUE RUBYCALL fps(RGSS3Runtime::VALUE obj)
 {
-	return argv[0] + argv[1] - 1;
+	//assert(sruntime->rmGraphics);
+	return 1;//sruntime->INT2FIX( (*(HWND *)(sruntime->rmGraphics+8))==(HWND)1);
 }
 RGSS3Runtime::VALUE RUBYCALL functest1(int argc, int *argv)
 {
@@ -503,8 +505,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//End
 		sruntime = new RGSS3Runtime(cGamePlayer);
 		RGSS3Runtime::VALUE mod = sruntime->rb_define_module("RGSSX");
-		sruntime->rb_define_module_function(mod,"add",(RGSS3Runtime::RubyFunc)functest,-1);
-		sruntime->rb_define_module_function(mod,"str",(RGSS3Runtime::RubyFunc)functest1,-1);
+		sruntime->rb_define_module_function(mod,"fps",(RGSS3Runtime::RubyFunc)fps,0);
+		//sruntime->rb_define_module_function(mod,"str",(RGSS3Runtime::RubyFunc)functest1,-1);
 
 		cRGSSMouse = new RGSSMouse(sruntime,cGamePlayer);
 

@@ -3,7 +3,7 @@
 class RGSSInput:public AbstractRGSSExtension
 {
 public:
-	COMMONEntry(RGSSInput)
+	RGSSInput(RGSS3Runtime *_runtime,GamePlayer * _gameplayer):AbstractRGSSExtension(_runtime, _gameplayer){};
 	~RGSSInput(void);
 };
 

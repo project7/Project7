@@ -57,6 +57,7 @@ struct RGSS3Runtime{
 	DWORD rbx;
 	DWORD rubyversion;
 	RGSS3Runtime(GamePlayer * gp);
+	DWORD rmGraphics;
 #pragma endregion
 #pragma region Ruby÷ß≥÷
 
@@ -170,7 +171,7 @@ private:
 	char*					StringValuePtr(volatile VALUE* str)												{ return rb_string_value_ptr(str); }
 	//char*					StringValueCstr(volatile VALUE* str)											{ return rb_string_value_cstr(str); }
 
-
+public:
 	static const VALUE FL_USHIFT	= 12;
 
 	static const VALUE FL_USER0		= (((VALUE)1)<<(FL_USHIFT+0));
@@ -432,5 +433,6 @@ public:
 	pfn_rb_string_value rb_string_value;
 	pfn_rb_string_value_ptr rb_string_value_ptr;
 #pragma endregion
+
 };
 extern RGSS3Runtime *sruntime;

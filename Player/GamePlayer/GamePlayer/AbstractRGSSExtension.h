@@ -1,7 +1,7 @@
 #pragma once
 #include "RGSS3Runtime.h"
 #include "GamePlayer.h"
-#define COMMONEntry(x) x(RGSS3Runtime *_runtime,GamePlayer * _gameplayer):AbstractRGSSExtension(RGSS3Runtime *_runtime,GamePlayer * _gameplayer){};
+#define COMMONEntry(x) x(RGSS3Runtime *_runtime,GamePlayer * _gameplayer):AbstractRGSSExtension(_runtime, _gameplayer){};
 class AbstractRGSSExtension
 {
 public:

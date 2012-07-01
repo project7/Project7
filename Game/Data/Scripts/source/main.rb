@@ -1,5 +1,4 @@
-﻿print RGSSX.add(1,1)
-print RGSSX.str
+﻿print "编码没问题才是神作……"
 File.open("Data/Scripts/source/rakefile.info","rb"){|f|
 	fns=f.readlines
 	fns.each{|fn|fn=fn.delete("\n").delete("\r")

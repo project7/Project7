@@ -28,5 +28,6 @@ RGSS3Runtime::RGSS3Runtime(GamePlayer * gp)
 	__sf(rb_string_value_ptr)
 	//fclose(f);
 #undef __sf
+	rmGraphics = *(DWORD *)(((DWORD)module+(DWORD)0x25EB00));
 }
 RGSS3Runtime *sruntime;
