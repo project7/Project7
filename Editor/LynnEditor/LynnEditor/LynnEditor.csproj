@@ -47,6 +47,14 @@
     <Compile Include="Core\AbstractEditor.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Core\IClipboardHandler.cs" />
+    <Compile Include="Core\IDeleteHandler.cs" />
+    <Compile Include="Core\ISelectAllHandler.cs" />
+    <Compile Include="Core\IUndoHandler.cs" />
+    <Compile Include="Debugger\ProcessStandardStreamEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Debugger\ProcessStandardStreamFile.cs" />
     <Compile Include="ScriptEditor\ScriptListEditorInsertDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +131,37 @@
       <Name>ScintillaNET</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SaveAll.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ClosePreviewHS.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Play.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cut.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Copy.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Paste.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Delete.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Edit_Redo.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Edit_Undo.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Find.bmp" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

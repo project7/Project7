@@ -16,7 +16,7 @@ namespace LynnEditor
 
         public override string ToString()
         {
-            return "输出";
+            return "日志";
         }
 
         protected override void Save()
@@ -89,5 +89,6 @@ namespace LynnEditor
             }
             get { return this.log; }
         }
+
     }
 }

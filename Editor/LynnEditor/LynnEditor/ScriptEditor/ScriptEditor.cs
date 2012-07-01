@@ -8,7 +8,7 @@ using WeifenLuo.WinFormsUI;
 
 namespace LynnEditor
 {
-    public class ScriptEditor : AbstractEditor
+    public class ScriptEditor : AbstractEditor, IClipboardHandler, IUndoHandler, IDeleteHandler, ISelectAllHandler
     {
         Scintilla editor;
 
@@ -163,7 +163,77 @@ namespace LynnEditor
             this.File.MakeDirty();
         }
 
-        
+
+
+        public bool CanCut
+        {
+            get { return this.editor.Selection.Length != 0 && !this.editor.IsReadOnly; }
+        }
+
+        public bool CanCopy
+        {
+            get { return this.editor.Selection.Length != 0; }
+        }
+
+        public bool CanPaste
+        {
+            get { return this.editor.Clipboard.CanPaste; }
+        }
+
+        public void Cut()
+        {
+            this.editor.Clipboard.Cut();
+        }
+
+        public void Copy()
+        {
+            this.editor.Clipboard.Copy();
+        }
+
+        public void Paste()
+        {
+            this.editor.Clipboard.Paste();
+        }
+
+        public bool CanUndo
+        {
+            get { return this.editor.UndoRedo.CanUndo; }
+        }
+
+        public bool CanRedo
+        {
+            get { return this.editor.UndoRedo.CanRedo; }
+        }
+
+        public void Undo()
+        {
+            this.editor.UndoRedo.Undo();
+        }
+
+        public void Redo()
+        {
+            this.editor.UndoRedo.Redo();
+        }
+
+        public bool CanDelete
+        {
+            get { return this.editor.Selection.Length != 0 && !this.editor.IsReadOnly; }
+        }
+
+        public void Delete()
+        {
+            this.editor.Selection.Clear();
+        }
+
+        public bool CanSelectAll
+        {
+            get { return this.editor.TextLength > 0; }
+        }
+
+        public void SelectAll()
+        {
+            this.editor.Selection.SelectAll();
+        }
     }
 
     public enum SCE_RB
