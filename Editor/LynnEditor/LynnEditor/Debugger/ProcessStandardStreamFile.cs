@@ -14,6 +14,7 @@ namespace LynnEditor.Debugger
             : base(String.Format(@"\\.\Process\{0}", Process.Id))
         {
             this.Process = Process;
+
             Process.ErrorDataReceived += delegate(object sender, DataReceivedEventArgs e) { Write(e.Data); };
             Process.OutputDataReceived += delegate(object sender, DataReceivedEventArgs e) { Write(e.Data); };
             Process.BeginErrorReadLine();

@@ -128,7 +128,7 @@ namespace LynnEditor
 
         public void RunDebug()
         {
-            System.Diagnostics.ProcessStartInfo info = new System.Diagnostics.ProcessStartInfo(System.IO.Path.Combine(Program.ProjectPath, "Game.exe"), "console");
+            System.Diagnostics.ProcessStartInfo info = new System.Diagnostics.ProcessStartInfo(System.IO.Path.Combine(Program.ProjectPath, "Game.exe"));
             info.UseShellExecute = false;
             info.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
             info.RedirectStandardError = true;

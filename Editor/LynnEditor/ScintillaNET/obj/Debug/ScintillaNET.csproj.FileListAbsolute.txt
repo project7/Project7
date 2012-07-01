@@ -14,3 +14,15 @@ f:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\Scintill
 F:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\GenerateResource-ResGen.read.1.tlog
 F:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\GenerateResource-ResGen.read.4.tlog
 F:\Documents\RPGVXAce\Project7\Editor\LynnEditor\ScintillaNET\obj\Debug\GenerateResource-ResGen.write.1.tlog
+E:\fux-project\Editor\bin\SciLexer.dll
+E:\fux-project\Editor\bin\ScintillaNet.dll
+E:\fux-project\Editor\bin\ScintillaNet.pdb
+E:\fux-project\Editor\LynnEditor\ScintillaNET\obj\Debug\ScintillaNET.csprojResolveAssemblyReference.cache
+E:\fux-project\Editor\LynnEditor\ScintillaNET\obj\Debug\ScintillaNet.FindReplaceDialog.resources
+E:\fux-project\Editor\LynnEditor\ScintillaNET\obj\Debug\ScintillaNet.IncrementalSearcher.resources
+E:\fux-project\Editor\LynnEditor\ScintillaNET\obj\Debug\ScintillaNet.GoToDialog.resources
+E:\fux-project\Editor\LynnEditor\ScintillaNET\obj\Debug\ScintillaNet.Properties.Resources.resources
+E:\fux-project\Editor\LynnEditor\ScintillaNET\obj\Debug\ScintillaNet.SnippetChooser.resources
+E:\fux-project\Editor\LynnEditor\ScintillaNET\obj\Debug\ScintillaNET.csproj.GenerateResource.Cache
+E:\fux-project\Editor\LynnEditor\ScintillaNET\obj\Debug\ScintillaNet.dll
+E:\fux-project\Editor\LynnEditor\ScintillaNET\obj\Debug\ScintillaNet.pdb
