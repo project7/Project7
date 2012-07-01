@@ -17,3 +17,4 @@ F:\Documents\RPGVXAce\Project7\Editor\LynnEditor\LynnEditor\obj\x86\Debug\Genera
 F:\Documents\RPGVXAce\Project7\Editor\LynnEditor\LynnEditor\obj\x86\Debug\GenerateResource-ResGen.write.1.tlog
 F:\Documents\RPGVXAce\Project7\Editor\LynnEditor\LynnEditor\obj\x86\Debug\LynnEditor.ScriptListEditorInsertDialog.resources
 F:\Documents\RPGVXAce\Project7\Editor\LynnEditor\LynnEditor\obj\x86\Debug\LynnEditor.ScriptListEditorRenameDialog.resources
+F:\Documents\RPGVXAce\Project7\Editor\LynnEditor\LynnEditor\obj\x86\Debug\GenerateResource-ResGen.read.6.tlog

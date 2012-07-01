@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace LynnEditor
 {
-    public class ScriptListEditor : AbstractEditor
+    public class ScriptListEditor : AbstractEditor, IDeleteHandler  
     {
         public LynnListbox list = new LynnListbox();
         private ScriptListFile scriptList;
@@ -44,6 +44,11 @@ namespace LynnEditor
             {
                 ActionRenameScript();
             }) as ToolStripMenuItem).ShortcutKeyDisplayString = "F2";
+
+            menu.Opening += delegate(object sender, System.ComponentModel.CancelEventArgs args)
+            {
+                args.Cancel = (this.list.SelectedItem == null);
+            };
 
             this.list.ContextMenuStrip = menu;
 
@@ -142,6 +147,18 @@ namespace LynnEditor
 
             this.list.SelectedItem = file;
             file.ShowEditor();
+        }
+
+
+
+        public bool CanDelete
+        {
+            get { return (this.list.SelectedItem != null); }
+        }
+
+        public void Delete()
+        {
+            ActionDeleteScript();
         }
     }
 }

@@ -123,18 +123,20 @@ namespace LynnEditor
         public void RunNormal()
         {
             System.Diagnostics.ProcessStartInfo info = new System.Diagnostics.ProcessStartInfo(System.IO.Path.Combine(Program.ProjectPath, "Game.exe"));
-            Run(info);
+            System.Diagnostics.Process.Start(info);
         }
 
         public void RunDebug()
         {
             System.Diagnostics.ProcessStartInfo info = new System.Diagnostics.ProcessStartInfo(System.IO.Path.Combine(Program.ProjectPath, "Game.exe"), "console");
-            Run(info);
-        }
+            info.UseShellExecute = false;
+            info.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
+            info.RedirectStandardError = true;
+            info.RedirectStandardInput = true;
+            info.RedirectStandardOutput = true;
+            System.Diagnostics.Process proc = System.Diagnostics.Process.Start(info);
 
-        public void Run(System.Diagnostics.ProcessStartInfo info)
-        {
-            System.Diagnostics.Process.Start(info);
+            (new Debugger.ProcessStandardStreamFile(proc)).ShowEditor();
         }
 
         private void menuDebugGame_Click(object sender, EventArgs e)
@@ -145,6 +147,108 @@ namespace LynnEditor
         private void menuRunGame_Click(object sender, EventArgs e)
         {
             RunNormal();
+        }
+
+        private void menuViewScriptList_Click(object sender, EventArgs e)
+        {
+            ScriptList.ShowEditor();
+        }
+
+        private void menuViewLog_Click(object sender, EventArgs e)
+        {
+            Program.Logger.ShowEditor();
+        }
+
+        private void menuEdit_DropDownOpening(object sender, EventArgs e)
+        {
+            IUndoHandler hUndo = this.DockPanel.ActiveContent as IUndoHandler;
+            IClipboardHandler hClip = this.DockPanel.ActiveContent as IClipboardHandler;
+            IDeleteHandler hDelete = this.DockPanel.ActiveContent as IDeleteHandler;
+            ISelectAllHandler hSelectAll = this.DockPanel.ActiveContent as ISelectAllHandler;
+
+            if (hUndo != null)
+            {
+                this.menuEditUndo.Enabled = hUndo.CanUndo;
+                this.menuEditRedo.Enabled = hUndo.CanRedo;
+            }
+            else
+            {
+                this.menuEditUndo.Enabled = false;
+                this.menuEditRedo.Enabled = false;
+            }
+
+            if (hClip != null)
+            {
+                this.menuEditCut.Enabled = hClip.CanCut;
+                this.menuEditCopy.Enabled = hClip.CanCopy;
+                this.menuEditPaste.Enabled = hClip.CanPaste;
+            }
+            else
+            {
+                this.menuEditCut.Enabled = false;
+                this.menuEditCopy.Enabled = false;
+                this.menuEditPaste.Enabled = false;
+            }
+
+            if (hDelete != null)
+            {
+                this.menuEditDelete.Enabled = hDelete.CanDelete;
+            }
+            else
+            {
+                this.menuEditDelete.Enabled = false;
+            }
+
+            if (hSelectAll != null)
+            {
+                this.menuEditSelectAll.Enabled = hSelectAll.CanSelectAll;
+            }
+            else
+            {
+                this.menuEditSelectAll.Enabled = false;
+            }
+        }
+
+        private void menuEditUndo_Click(object sender, EventArgs e)
+        {
+            IUndoHandler h = this.DockPanel.ActiveContent as IUndoHandler;
+            if (h != null && h.CanUndo) h.Undo();
+        }
+
+        private void menuEditRedo_Click(object sender, EventArgs e)
+        {
+            IUndoHandler h = this.DockPanel.ActiveContent as IUndoHandler;
+            if (h != null && h.CanRedo) h.Redo();
+        }
+
+        private void menuEditCut_Click(object sender, EventArgs e)
+        {
+            IClipboardHandler h = this.DockPanel.ActiveContent as IClipboardHandler;
+            if (h != null && h.CanCut) h.Cut();
+        }
+
+        private void menuEditCopy_Click(object sender, EventArgs e)
+        {
+            IClipboardHandler h = this.DockPanel.ActiveContent as IClipboardHandler;
+            if (h != null && h.CanCopy) h.Copy();
+        }
+
+        private void menuEditPaste_Click(object sender, EventArgs e)
+        {
+            IClipboardHandler h = this.DockPanel.ActiveContent as IClipboardHandler;
+            if (h != null && h.CanPaste) h.Paste();
+        }
+
+        private void menuEditDelete_Click(object sender, EventArgs e)
+        {
+            IDeleteHandler h = this.DockPanel.ActiveContent as IDeleteHandler;
+            if (h != null && h.CanDelete) h.Delete();
+        }
+
+        private void menuEditSelectAll_Click(object sender, EventArgs e)
+        {
+            ISelectAllHandler h = this.DockPanel.ActiveContent as ISelectAllHandler;
+            if (h != null && h.CanSelectAll) h.SelectAll();
         }
     }
 }

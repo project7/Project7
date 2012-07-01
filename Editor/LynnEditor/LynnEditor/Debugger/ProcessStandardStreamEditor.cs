@@ -1,17 +1,19 @@
 ﻿using System;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Text;
 using ScintillaNet;
+using System.Drawing;
 using WeifenLuo.WinFormsUI;
-namespace LynnEditor
+using System.Windows.Forms;
+
+namespace LynnEditor.Debugger
 {
-    public class LogEditor : AbstractEditor, IClipboardHandler, IUndoHandler, IDeleteHandler, ISelectAllHandler
+    public class ProcessStandardStreamEditor: AbstractEditor , IClipboardHandler, ISelectAllHandler
     {
         public Scintilla Editor;
 
-        public LogEditor(LogFile log) : base(log)
+        public ProcessStandardStreamEditor(ProcessStandardStreamFile file)
+            : base(file)
         {
             this.DockableAreas |= DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.Float;
 
@@ -20,8 +22,8 @@ namespace LynnEditor
             Editor.Font = new Font("雅黑宋体", 12);
             this.Controls.Add(Editor);
 
-            Editor.Text = log.LogText;
-            Editor.IsReadOnly = true;
+            Editor.UndoRedo.IsUndoEnabled = false;
+            Editor.Text = file.Buffer;
 
             // http://ondineyuga.com/svn/RGE2/Tools/RGESEditor/RGESEditor_lang/EditorScintilla/Scintilla.cs
             // line number
@@ -91,13 +93,6 @@ namespace LynnEditor
             Editor.Scrolling.HorizontalWidth = 1;
         }
 
-        public void Append(string str)
-        {
-            Editor.IsReadOnly = false;
-            this.Editor.Text += str;
-            Editor.IsReadOnly = true;
-            this.Editor.Caret.Goto(this.Editor.TextLength);
-        }
         public bool CanCut
         {
             get { return this.Editor.Selection.Length != 0 && !this.Editor.IsReadOnly; }
@@ -128,36 +123,6 @@ namespace LynnEditor
             this.Editor.Clipboard.Paste();
         }
 
-        public bool CanUndo
-        {
-            get { return this.Editor.UndoRedo.CanUndo; }
-        }
-
-        public bool CanRedo
-        {
-            get { return this.Editor.UndoRedo.CanRedo; }
-        }
-
-        public void Undo()
-        {
-            this.Editor.UndoRedo.Undo();
-        }
-
-        public void Redo()
-        {
-            this.Editor.UndoRedo.Redo();
-        }
-
-        public bool CanDelete
-        {
-            get { return this.Editor.Selection.Length != 0 && !this.Editor.IsReadOnly; }
-        }
-
-        public void Delete()
-        {
-            this.Editor.Selection.Clear();
-        }
-
         public bool CanSelectAll
         {
             get { return this.Editor.TextLength > 0; }
@@ -167,5 +132,19 @@ namespace LynnEditor
         {
             this.Editor.Selection.SelectAll();
         }
+
+        delegate void AppendCallback(string msg);
+        public void Append(string msg)
+        {
+			if (this.Editor.InvokeRequired)
+			{	
+				AppendCallback d = new AppendCallback(Append);
+				this.Invoke(d, new object[] { msg });
+			}
+			else
+			{
+                this.Editor.Text += msg;
+			}
+		}
     }
 }
