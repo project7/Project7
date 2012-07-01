@@ -1,7 +1,7 @@
 #pragma once
 #include "RGSS3Runtime.h"
 #include "GamePlayer.h"
-
+#define COMMONEntry(x) x(RGSS3Runtime *_runtime,GamePlayer * _gameplayer):AbstractRGSSExtension(RGSS3Runtime *_runtime,GamePlayer * _gameplayer){};
 class AbstractRGSSExtension
 {
 public:
@@ -12,6 +12,6 @@ public:
 	void SetupWndHook(WNDPROC proc);
 	WNDPROC oldProc;
 	LRESULT CallNext(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM IParam);
-
+	
 };
 
