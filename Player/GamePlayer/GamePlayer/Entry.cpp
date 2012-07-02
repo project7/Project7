@@ -10,6 +10,7 @@
 //Extend Module
 #include "AbstractRGSSExtension.h"
 #include "RGSSMouse.h"
+#include "RGSSInput.h"
 GamePlayer *cGamePlayer;
 
 void __stdcall RGSSXGuard();
@@ -504,11 +505,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		GetClassNameHooker.SetHookOn();
 		//End
 		sruntime = new RGSS3Runtime(cGamePlayer);
+		AbstractRGSSExtension::InitRuby(sruntime,cGamePlayer);
+
 		RGSS3Runtime::VALUE mod = sruntime->rb_define_module("RGSSX");
 		sruntime->rb_define_module_function(mod,"fps",(RGSS3Runtime::RubyFunc)fps,0);
-		//sruntime->rb_define_module_function(mod,"str",(RGSS3Runtime::RubyFunc)functest1,-1);
-
-		cRGSSMouse = new RGSSMouse(sruntime,cGamePlayer);
+		RGSSMouse::InitRuby();
+		RGSSInput::InitRuby();
+		//cRGSSMouse = new RGSSMouse(sruntime,cGamePlayer);
 
 		//sruntime->rb_str_new("aaa",strlen("aaa"));
 		//sruntime->rb_define_const(mod,"TT",sruntime->rb_str_new("aa",3));
@@ -519,6 +522,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 void __stdcall RGSSXGuard()
 {
+	AbstractRGSSExtension::Install();
+	RGSSMouse::Install();
+	RGSSInput::Install();
 	char c[500];
 	sprintf(c,"Graphics.resize_screen(%d , %d)",cGamePlayer->nScreenWidth,cGamePlayer->nScreenHeight);
 	cGamePlayer->pRGSSEval(c);

@@ -26,6 +26,11 @@ RGSS3Runtime::RGSS3Runtime(GamePlayer * gp)
 	__sf(rb_define_const)
 	__sf(rb_string_value)
 	__sf(rb_string_value_ptr)
+	__sf(rb_raise)
+	__sf(rb_obj_is_kind_of)
+	__sf(rb_obj_classname)
+	__sf(rb_ary_new)
+	__sf(rb_ary_push)
 	//fclose(f);
 #undef __sf
 	rmGraphics = *(DWORD *)(((DWORD)module+(DWORD)0x25EB00));

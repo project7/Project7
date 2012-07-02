@@ -29,9 +29,6 @@
     <ClCompile Include="AbstractRGSSExtension.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RGSSUtilty.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RGSS3Runtime.h">
       <Filter>Header Files</Filter>
     </ClCompile>
@@ -59,9 +56,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AbstractRGSSExtension.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RGSSUtilty.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RGSSInput.h">

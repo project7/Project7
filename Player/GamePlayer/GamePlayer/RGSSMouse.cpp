@@ -1,19 +1,23 @@
 #include "RGSSMouse.h"
-int mouse_x;
-int mouse_y;
-bool mouse_ltd;
-bool mouse_ldown;
-bool mouse_rtd;
-bool mouse_rdown;
-int mouse_press;
-int mouse_toggled;
-int mouse_count=0;
-const int MOUSELKEY=1;
-const int MOUSERKEY=2;
-const int MOUSEMKEY=4;
-double DBLCTIME;
-LRESULT WINAPI MouseWndProcHook(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM IParam)
+int RGSSMouse::mouse_x = 0;
+int RGSSMouse::mouse_y = 0;
+bool RGSSMouse::mouse_ltd;
+bool RGSSMouse::mouse_ldown;
+bool RGSSMouse::mouse_rtd;
+bool RGSSMouse::mouse_rdown;
+int RGSSMouse::mouse_press;
+int RGSSMouse::mouse_toggled;
+int RGSSMouse::mouse_count=0;
+double RGSSMouse::DBLCTIME;
+int RGSSMouse::pos;
+#ifdef HookerTest
+extern FILE *LOG;
+#endif
+LRESULT WINAPI RGSSMouse::MouseWndProcHook(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM IParam)
 {
+#ifdef HookerTest
+	fprintf(LOG,"MouseWndProcHook:%d\n\r",pos);fflush(LOG);
+#endif	
 	if (Msg==WM_LBUTTONDOWN)
 	{
 		mouse_ltd=true;
@@ -47,9 +51,9 @@ LRESULT WINAPI MouseWndProcHook(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM IParam)
 	if (Msg==WM_MOUSEMOVE)
 	{
 		mouse_x = IParam&0xffff;
-		mouse_x = IParam>>16;
+		mouse_y = IParam>>16;
 	}
-	return cRGSSMouse->CallNext(hWnd,Msg,wParam,IParam);
+	return CallNext(hWnd,Msg,wParam,IParam,pos);
 }
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::MouseUpdate(RGSS3Runtime::VALUE obj)
 {
@@ -57,11 +61,11 @@ RGSS3Runtime::VALUE RUBYCALL RGSSMouse::MouseUpdate(RGSS3Runtime::VALUE obj)
 }
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_get_x(RGSS3Runtime::VALUE obj)
 {
-	return mouse_x;
+	return runtime->INT2FIX(mouse_x); //???»áµ¼ÖÂAPPCRASH£¿
 }
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_get_y(RGSS3Runtime::VALUE obj)
 {
-	return mouse_y;
+	return runtime->INT2FIX(mouse_y);
 }
 /*
 #     Mouse.up?(key)
@@ -159,10 +163,9 @@ RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_clip(int argc, RGSS3Runtime::VALUE *a
 	}
 	return RGSS3Runtime::Qnil;
 }
-RGSSMouse::RGSSMouse(RGSS3Runtime *_runtime,GamePlayer * _gameplayer):AbstractRGSSExtension(_runtime,_gameplayer)
+void RGSSMouse::InitRuby()
 {
 	DBLCTIME =   GetDoubleClickTime()*60.0/1000.0;
-	SetupWndHook((WNDPROC)MouseWndProcHook);
 	RGSS3Runtime::VALUE rbcMouse = runtime->rb_define_module("CMouse");
 	runtime->rb_define_module_function(rbcMouse,"update",(RGSS3Runtime::RubyFunc)MouseUpdate,0);
 	runtime->rb_define_module_function(rbcMouse,"x",(RGSS3Runtime::RubyFunc)dm_get_x,0);
@@ -180,9 +183,16 @@ RGSSMouse::RGSSMouse(RGSS3Runtime *_runtime,GamePlayer * _gameplayer):AbstractRG
 	runtime->rb_define_module_function(rbcMouse,"sys_cursor",(RGSS3Runtime::RubyFunc)dm_sys_cursor,0);
 	runtime->rb_define_module_function(rbcMouse,"clip",(RGSS3Runtime::RubyFunc)dm_clip,-1);
 }
+bool RGSSMouse::Install()
+{
+	pos = SetupWndHook((WNDPROC)MouseWndProcHook);
+	return true;
+}
 
 
+RGSSMouse::RGSSMouse(void)
+{
+}
 RGSSMouse::~RGSSMouse(void)
 {
 }
-RGSSMouse *cRGSSMouse;

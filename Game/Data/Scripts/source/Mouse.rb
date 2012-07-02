@@ -119,7 +119,7 @@ module Mouse
       else
         pt = [0,0].pack("ll")
         MousePos.call(pt)
-        return pt.unpack("ll")
+	return pt.unpack("ll")
       end
     rescue
       return nil
