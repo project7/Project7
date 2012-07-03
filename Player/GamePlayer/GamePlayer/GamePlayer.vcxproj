@@ -87,7 +87,6 @@
     <ClCompile Include="RGSS3Runtime.h" />
     <ClCompile Include="RGSSInput.cpp" />
     <ClCompile Include="RGSSMouse.cpp" />
-    <ClCompile Include="RGSSUtilty.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ApiHook.h" />
@@ -97,7 +96,6 @@
     <ClInclude Include="AbstractRGSSExtension.h" />
     <ClInclude Include="RGSSInput.h" />
     <ClInclude Include="RGSSMouse.h" />
-    <ClInclude Include="RGSSUtilty.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entry.def" />

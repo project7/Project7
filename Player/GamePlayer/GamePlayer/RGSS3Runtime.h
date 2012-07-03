@@ -163,6 +163,8 @@ private:
 	typedef long					(*pfn_rb_array_len)(VALUE ary);
 	typedef void*					(*pfn_rb_userdata_ptr)(VALUE d);
 
+	typedef VALUE					(*pfn_rb_ary_aref)(int argc, VALUE *argv, VALUE ary);
+	typedef VALUE					(*pfn_rb_ary_aset)(int argc, VALUE *argv, VALUE ary);
 
 	typedef	int						(*pfn_rb_const_defined)(VALUE klass, ID id);
 	typedef VALUE					(*pfn_rb_class_new_instance)(int argc, VALUE *argv, VALUE klass);
@@ -172,6 +174,25 @@ private:
 	//char*					StringValueCstr(volatile VALUE* str)											{ return rb_string_value_cstr(str); }
 
 public:
+	inline void SafeFixnumValue(VALUE x)
+	{
+		if (!FIXNUM_P(x)) 
+		{
+			//rb_raise(
+		}
+	}
+	inline void SafeIntegerValue(VALUE x)
+	{
+		// ´ýÌí¼Ó
+	}
+	inline void SafeNumericValue(VALUE x)
+	{
+		// ´ýÌí¼Ó
+	}
+	inline void SafeStringValue(VALUE x)
+	{
+		// ´ýÌí¼Ó
+	}
 	static const VALUE FL_USHIFT	= 12;
 
 	static const VALUE FL_USER0		= (((VALUE)1)<<(FL_USHIFT+0));
@@ -412,6 +433,13 @@ public:
 	static  const int addr_rb_str_new2 = 0x36340;
 	static  const int addr_rb_string_value = 0x37A40;
 	static  const int addr_rb_string_value_ptr = 0x37A70;
+	static  const int addr_rb_obj_is_kind_of = 0x332D0;
+	static  const int addr_rb_raise = 0x26210;
+	static  const int addr_rb_obj_classname = 0x68420;
+	static  const int addr_rb_ary_push = 0x8D2A0;
+	static  const int addr_rb_ary_aref = 0x89C40;
+	static  const int addr_rb_ary_aset = 0x8D870;
+	static  const int addr_rb_ary_new  = 0x88DC0;
 public:
 	pfn_rb_funcall2 rb_funcall2;
 	pfn_rb_define_class rb_define_class;
@@ -432,6 +460,13 @@ public:
 	pfn_rb_define_const rb_define_const;
 	pfn_rb_string_value rb_string_value;
 	pfn_rb_string_value_ptr rb_string_value_ptr;
+	pfn_rb_obj_is_kind_of rb_obj_is_kind_of;
+	pfn_rb_raise rb_raise;
+	pfn_rb_obj_classname rb_obj_classname;
+	pfn_rb_ary_aref rb_ary_aref;
+	pfn_rb_ary_aset rb_ary_aset; 
+	pfn_rb_ary_new rb_ary_new;
+	pfn_rb_ary_push rb_ary_push;
 #pragma endregion
 
 };

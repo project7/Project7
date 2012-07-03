@@ -6,7 +6,8 @@ class RGSSMouse :
 	public AbstractRGSSExtension
 {
 public:
-	RGSSMouse(RGSS3Runtime *_runtime,GamePlayer * _gameplayer);
+	RGSSMouse();//(RGSS3Runtime *_runtime,GamePlayer * _gameplayer);
+	static bool Install();
 	~RGSSMouse(void);
 	static RGSS3Runtime::VALUE RUBYCALL MouseUpdate(RGSS3Runtime::VALUE obj);
 	static RGSS3Runtime::VALUE RUBYCALL dm_get_x(RGSS3Runtime::VALUE obj);
@@ -23,6 +24,22 @@ public:
 	static RGSS3Runtime::VALUE RUBYCALL dm_set_cursor(RGSS3Runtime::VALUE obj,RGSS3Runtime::VALUE mouse);
 	static RGSS3Runtime::VALUE RUBYCALL dm_sys_cursor(RGSS3Runtime::VALUE obj);
 	static RGSS3Runtime::VALUE RUBYCALL dm_clip(int argc, RGSS3Runtime::VALUE *argv,RGSS3Runtime::VALUE obj);
+	static LRESULT WINAPI MouseWndProcHook(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM IParam);
+	static int mouse_x;
+	static int mouse_y;
+	static bool mouse_ltd;
+	static bool mouse_ldown;
+	static bool mouse_rtd;
+	static bool mouse_rdown;
+	static int mouse_press;
+	static int mouse_toggled;
+	static int mouse_count;
+	static const int MOUSELKEY=1;
+	static const int MOUSERKEY=2;
+	static const int MOUSEMKEY=4;
+	static double DBLCTIME;
+	static int pos;
+	static void InitRuby();
 };
 
 /*
@@ -58,4 +75,3 @@ public:
 #       把鼠标锁死在指定区域范围内
 #       省略参数时,解除鼠标锁定
 */
-extern RGSSMouse *cRGSSMouse;
