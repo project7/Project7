@@ -117,6 +117,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(200, 180);
             this.Name = "ScriptListEditorInsertDialog";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "插入新页";
             this.ResumeLayout(false);

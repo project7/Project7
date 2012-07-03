@@ -129,14 +129,23 @@ namespace LynnEditor
         public void RunDebug()
         {
             System.Diagnostics.ProcessStartInfo info = new System.Diagnostics.ProcessStartInfo(System.IO.Path.Combine(Program.ProjectPath, "Game.exe"));
+            //System.Diagnostics.ProcessStartInfo info = new System.Diagnostics.ProcessStartInfo("cmd.exe");
             info.UseShellExecute = false;
             info.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
+            info.StandardOutputEncoding = Encoding.UTF8;
+            info.StandardErrorEncoding = Encoding.UTF8;
             info.RedirectStandardError = true;
             info.RedirectStandardInput = true;
             info.RedirectStandardOutput = true;
             System.Diagnostics.Process proc = System.Diagnostics.Process.Start(info);
 
-            (new Debugger.ProcessStandardStreamFile(proc)).ShowEditor();
+            AbstractFile file = (new Debugger.ProcessStandardStreamFile(proc));
+            file.ShowEditor();
+            try
+            {
+                file.Editor.Show(Program.Logger.Editor.Pane, Program.Logger.Editor);
+            }
+            catch { }
         }
 
         private void menuDebugGame_Click(object sender, EventArgs e)
@@ -165,6 +174,7 @@ namespace LynnEditor
             IClipboardHandler hClip = this.DockPanel.ActiveContent as IClipboardHandler;
             IDeleteHandler hDelete = this.DockPanel.ActiveContent as IDeleteHandler;
             ISelectAllHandler hSelectAll = this.DockPanel.ActiveContent as ISelectAllHandler;
+            IFindReplaceHandler hFind = this.DockPanel.ActiveContent as IFindReplaceHandler;
 
             if (hUndo != null)
             {
@@ -206,6 +216,17 @@ namespace LynnEditor
             else
             {
                 this.menuEditSelectAll.Enabled = false;
+            }
+
+            if (hFind != null)
+            {
+                this.menuEditFind.Enabled = hFind.CanShowFindDialog;
+                this.menuEditReplace.Enabled = hFind.CanShowReplaceDialog;
+            }
+            else
+            {
+                this.menuEditFind.Enabled = false;
+                this.menuEditReplace.Enabled = false;
             }
         }
 
@@ -249,6 +270,18 @@ namespace LynnEditor
         {
             ISelectAllHandler h = this.DockPanel.ActiveContent as ISelectAllHandler;
             if (h != null && h.CanSelectAll) h.SelectAll();
+        }
+
+        private void menuEditFind_Click(object sender, EventArgs e)
+        {
+            IFindReplaceHandler h = this.DockPanel.ActiveContent as IFindReplaceHandler;
+            if (h != null && h.CanShowFindDialog) h.ShowFindDialog();
+        }
+
+        private void menuEditReplace_Click(object sender, EventArgs e)
+        {
+            IFindReplaceHandler h = this.DockPanel.ActiveContent as IFindReplaceHandler;
+            if (h != null && h.CanShowReplaceDialog) h.ShowReplaceDialog();
         }
     }
 }

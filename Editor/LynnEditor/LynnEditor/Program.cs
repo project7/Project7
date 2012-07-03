@@ -16,6 +16,9 @@ namespace LynnEditor
         [STAThread]
         static void Main()
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
             try
             {
                 ProjectPath = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
@@ -38,8 +41,8 @@ namespace LynnEditor
 
             Logger.Log("工程路径: {0}", ProjectPath);
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            ToolStripManager.Renderer = new Office2007Renderer();
+
             Application.Run(Workbench.Instance);
         }
 

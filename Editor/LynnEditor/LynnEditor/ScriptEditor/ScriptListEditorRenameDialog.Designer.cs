@@ -140,6 +140,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(200, 200);
             this.Name = "ScriptListEditorRenameDialog";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "页面重命名";
             this.ResumeLayout(false);
