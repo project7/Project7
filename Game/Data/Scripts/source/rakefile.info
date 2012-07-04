@@ -108,6 +108,7 @@ Scene_Debug
 Scene_Battle
 Scene_Gameover
 Ruby.ex 1.0
+CMouse
 Mouse
 Mouse Comp
 Comp_TitleCommand
