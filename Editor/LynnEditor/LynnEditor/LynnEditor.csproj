@@ -14,6 +14,21 @@
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -47,10 +62,11 @@
     <Compile Include="Core\AbstractEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Core\IClipboardHandler.cs" />
-    <Compile Include="Core\IDeleteHandler.cs" />
-    <Compile Include="Core\ISelectAllHandler.cs" />
-    <Compile Include="Core\IUndoHandler.cs" />
+    <Compile Include="Core\IBehaviorHandler\IClipboardHandler.cs" />
+    <Compile Include="Core\IBehaviorHandler\IDeleteHandler.cs" />
+    <Compile Include="Core\IBehaviorHandler\ISelectAllHandler.cs" />
+    <Compile Include="Core\IBehaviorHandler\IUndoHandler.cs" />
+    <Compile Include="Core\IBehaviorHandler\IFindReplaceHandler.cs" />
     <Compile Include="Debugger\ProcessStandardStreamEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,7 +88,10 @@
     <Compile Include="ScriptEditor\ScriptListEditorRenameDialog.Designer.cs">
       <DependentUpon>ScriptListEditorRenameDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="UIControls\LynnListbox.cs">
+    <Compile Include="UI\EditContextMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\LynnControls\LynnListbox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ScriptEditor\ScriptEditor.cs">
@@ -82,6 +101,9 @@
     <Compile Include="ScriptEditor\ScriptListEditor.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\ToolStripRender\Office2007ColorTable.cs" />
+    <Compile Include="UI\ToolStripRender\Office2007Helpers.cs" />
+    <Compile Include="UI\ToolStripRender\Office2007Renderer.cs" />
     <Compile Include="Workbench.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -161,7 +183,23 @@
   <ItemGroup>
     <None Include="Resources\Find.bmp" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

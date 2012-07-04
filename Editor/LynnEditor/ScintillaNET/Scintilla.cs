@@ -3057,7 +3057,7 @@ namespace ScintillaNet
 		public Range AppendText(string text)
 		{
 			int oldLength = TextLength;
-            NativeInterface.AppendText(text.Length, text);
+            NativeInterface.AppendText(Encoding.UTF8.GetByteCount(text), text);
 			return GetRange(oldLength, TextLength);
 		}
 

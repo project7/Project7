@@ -34,39 +34,43 @@ namespace LynnEditor
 
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
-            Brush backalt = new SolidBrush(backColorAlt);
-            Brush back = new SolidBrush(backColor);
-            if (e.Index >= 0 && this.Items.Count > 0)
+            try
             {
-                string s = this.Items[e.Index].ToString() + "　";
-                Brush fore;
-                if ((e.State & DrawItemState.Selected) != DrawItemState.None)
+                Brush backalt = new SolidBrush(backColorAlt);
+                Brush back = new SolidBrush(backColor);
+                if (e.Index >= 0 && this.Items.Count > 0)
                 {
-                    fore = new SolidBrush(selectedForeColor);
+                    string s = this.Items[e.Index].ToString() + "　";
+                    Brush fore;
+                    if ((e.State & DrawItemState.Selected) != DrawItemState.None)
+                    {
+                        fore = new SolidBrush(selectedForeColor);
 
-                    Rectangle bound = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height - 1);
-                    Rectangle bound2 = new Rectangle(e.Bounds.X, e.Bounds.Y + e.Bounds.Height - 1, e.Bounds.Width, 1);
-                    e.Graphics.FillRectangle(new System.Drawing.Drawing2D.LinearGradientBrush(bound, this.selectedColor1, this.selectedColor2, 90), bound);
-                    e.Graphics.FillRectangle(new SolidBrush(selectedColor1), bound2);
+                        Rectangle bound = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height - 1);
+                        Rectangle bound2 = new Rectangle(e.Bounds.X, e.Bounds.Y + e.Bounds.Height - 1, e.Bounds.Width, 1);
+                        e.Graphics.FillRectangle(new System.Drawing.Drawing2D.LinearGradientBrush(bound, this.selectedColor1, this.selectedColor2, 90), bound);
+                        e.Graphics.FillRectangle(new SolidBrush(selectedColor1), bound2);
+                    }
+                    else
+                    {
+
+                        fore = new SolidBrush(foreColor);
+
+                        e.Graphics.FillRectangle(e.Index % 2 == 0 ? back : backalt, e.Bounds);
+                    }
+
+                    e.Graphics.DrawString(s, this.Font, fore, e.Bounds, stringFormat);
                 }
-                else
+                if (e.Index == this.Items.Count - 1)
                 {
-
-                    fore = new SolidBrush(foreColor);
-
-                    e.Graphics.FillRectangle(e.Index % 2 == 0 ? back : backalt, e.Bounds);
+                    int count = Math.Max(this.ClientSize.Height / this.ItemHeight - this.Items.Count, 0) + 1;
+                    for (int i = this.Items.Count; i < this.Items.Count + count; i++)
+                    {
+                        e.Graphics.FillRectangle(i % 2 == 0 ? back : backalt, new Rectangle(e.Bounds.Left, e.Bounds.Top + (i - this.Items.Count + 1) * this.ItemHeight, e.Bounds.Width, this.ItemHeight));
+                    }
                 }
-
-                e.Graphics.DrawString(s, this.Font, fore, e.Bounds, stringFormat);
             }
-            if (e.Index == this.Items.Count - 1)
-            {
-                int count = Math.Max(this.ClientSize.Height / this.ItemHeight - this.Items.Count, 0) + 1;
-                for (int i = this.Items.Count; i < this.Items.Count + count; i++)
-                {
-                    e.Graphics.FillRectangle(i % 2 == 0 ? back : backalt, new Rectangle(e.Bounds.Left, e.Bounds.Top + (i - this.Items.Count + 1) * this.ItemHeight, e.Bounds.Width, this.ItemHeight));
-                }
-            }
+            catch { }
         }
 
         [EditorBrowsable(EditorBrowsableState.Never), Browsable(false)]

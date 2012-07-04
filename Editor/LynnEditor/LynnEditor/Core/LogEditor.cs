@@ -89,12 +89,14 @@ namespace LynnEditor
             Editor.Caret.HighlightCurrentLine = true;
             Editor.Caret.CurrentLineBackgroundColor = Color.FromArgb(240, 240, 240);
             Editor.Scrolling.HorizontalWidth = 1;
+
+            Editor.ContextMenuStrip = new EditContextMenuStrip(this);
         }
 
         public void Append(string str)
         {
             Editor.IsReadOnly = false;
-            this.Editor.Text += str;
+            this.Editor.AppendText(str);
             Editor.IsReadOnly = true;
             this.Editor.Caret.Goto(this.Editor.TextLength);
         }

@@ -29,15 +29,6 @@
         private void InitializeComponent()
         {
             this.toolStripPanelTop = new System.Windows.Forms.ToolStripPanel();
-            this.toolStripMain = new System.Windows.Forms.ToolStrip();
-            this.toolStripPanelBottom = new System.Windows.Forms.ToolStripPanel();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.statusPendingChanges = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripPanelLeft = new System.Windows.Forms.ToolStripPanel();
-            this.toolStripPanelRight = new System.Windows.Forms.ToolStripPanel();
-            this.toolSaveAll = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolRun = new System.Windows.Forms.ToolStripButton();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSave = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,10 +53,19 @@
             this.menuDebug = new System.Windows.Forms.ToolStripMenuItem();
             this.menuDebugGame = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRunGame = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMain = new System.Windows.Forms.ToolStrip();
+            this.toolSaveAll = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolRun = new System.Windows.Forms.ToolStripButton();
+            this.toolStripPanelBottom = new System.Windows.Forms.ToolStripPanel();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.statusPendingChanges = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripPanelLeft = new System.Windows.Forms.ToolStripPanel();
+            this.toolStripPanelRight = new System.Windows.Forms.ToolStripPanel();
             this.toolStripPanelTop.SuspendLayout();
+            this.menuStrip.SuspendLayout();
             this.toolStripMain.SuspendLayout();
             this.statusStrip.SuspendLayout();
-            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripPanelTop
@@ -78,89 +78,6 @@
             this.toolStripPanelTop.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.toolStripPanelTop.RowMargin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.toolStripPanelTop.Size = new System.Drawing.Size(803, 25);
-            // 
-            // toolStripMain
-            // 
-            this.toolStripMain.Dock = System.Windows.Forms.DockStyle.None;
-            this.toolStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolSaveAll,
-            this.toolStripSeparator5,
-            this.toolRun});
-            this.toolStripMain.Location = new System.Drawing.Point(341, 0);
-            this.toolStripMain.Name = "toolStripMain";
-            this.toolStripMain.Size = new System.Drawing.Size(62, 25);
-            this.toolStripMain.TabIndex = 7;
-            this.toolStripMain.Text = "toolStrip1";
-            // 
-            // toolStripPanelBottom
-            // 
-            this.toolStripPanelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.toolStripPanelBottom.Location = new System.Drawing.Point(0, 465);
-            this.toolStripPanelBottom.Name = "toolStripPanelBottom";
-            this.toolStripPanelBottom.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.toolStripPanelBottom.RowMargin = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.toolStripPanelBottom.Size = new System.Drawing.Size(803, 0);
-            // 
-            // statusStrip
-            // 
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusPendingChanges});
-            this.statusStrip.Location = new System.Drawing.Point(0, 443);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(803, 22);
-            this.statusStrip.TabIndex = 5;
-            this.statusStrip.Text = "statusStrip1";
-            // 
-            // statusPendingChanges
-            // 
-            this.statusPendingChanges.IsLink = true;
-            this.statusPendingChanges.Name = "statusPendingChanges";
-            this.statusPendingChanges.Size = new System.Drawing.Size(89, 17);
-            this.statusPendingChanges.Text = "尚未保存的更改";
-            this.statusPendingChanges.Click += new System.EventHandler(this.statusPendingChanges_Click);
-            // 
-            // toolStripPanelLeft
-            // 
-            this.toolStripPanelLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.toolStripPanelLeft.Location = new System.Drawing.Point(0, 25);
-            this.toolStripPanelLeft.Name = "toolStripPanelLeft";
-            this.toolStripPanelLeft.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.toolStripPanelLeft.RowMargin = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.toolStripPanelLeft.Size = new System.Drawing.Size(0, 418);
-            // 
-            // toolStripPanelRight
-            // 
-            this.toolStripPanelRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.toolStripPanelRight.Location = new System.Drawing.Point(803, 25);
-            this.toolStripPanelRight.Name = "toolStripPanelRight";
-            this.toolStripPanelRight.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.toolStripPanelRight.RowMargin = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.toolStripPanelRight.Size = new System.Drawing.Size(0, 418);
-            // 
-            // toolSaveAll
-            // 
-            this.toolSaveAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolSaveAll.Image = global::LynnEditor.Properties.Resources.SaveAll;
-            this.toolSaveAll.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolSaveAll.Name = "toolSaveAll";
-            this.toolSaveAll.Size = new System.Drawing.Size(23, 22);
-            this.toolSaveAll.Text = "保存工程(Ctrl+S)";
-            this.toolSaveAll.Click += new System.EventHandler(this.menuSave_Click);
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolRun
-            // 
-            this.toolRun.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolRun.Image = global::LynnEditor.Properties.Resources.Play;
-            this.toolRun.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolRun.Name = "toolRun";
-            this.toolRun.Size = new System.Drawing.Size(23, 22);
-            this.toolRun.Text = "启动调试(F5)";
-            this.toolRun.Click += new System.EventHandler(this.menuDebugGame_Click);
             // 
             // menuStrip
             // 
@@ -321,14 +238,19 @@
             this.menuEditFind.Image = global::LynnEditor.Properties.Resources.Find;
             this.menuEditFind.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.menuEditFind.Name = "menuEditFind";
+            this.menuEditFind.ShortcutKeyDisplayString = "";
+            this.menuEditFind.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
             this.menuEditFind.Size = new System.Drawing.Size(153, 22);
-            this.menuEditFind.Text = "快速查找(&F)";
+            this.menuEditFind.Text = "查找(&F)";
+            this.menuEditFind.Click += new System.EventHandler(this.menuEditFind_Click);
             // 
             // menuEditReplace
             // 
             this.menuEditReplace.Name = "menuEditReplace";
+            this.menuEditReplace.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
             this.menuEditReplace.Size = new System.Drawing.Size(153, 22);
-            this.menuEditReplace.Text = "快速替换(&R)";
+            this.menuEditReplace.Text = "替换(&R)";
+            this.menuEditReplace.Click += new System.EventHandler(this.menuEditReplace_Click);
             // 
             // menuView
             // 
@@ -343,7 +265,7 @@
             // 
             this.menuViewScriptList.Name = "menuViewScriptList";
             this.menuViewScriptList.ShortcutKeyDisplayString = "";
-            this.menuViewScriptList.Size = new System.Drawing.Size(152, 22);
+            this.menuViewScriptList.Size = new System.Drawing.Size(136, 22);
             this.menuViewScriptList.Text = "脚本列表(&S)";
             this.menuViewScriptList.Click += new System.EventHandler(this.menuViewScriptList_Click);
             // 
@@ -351,7 +273,7 @@
             // 
             this.menuViewLog.Name = "menuViewLog";
             this.menuViewLog.ShortcutKeyDisplayString = "";
-            this.menuViewLog.Size = new System.Drawing.Size(152, 22);
+            this.menuViewLog.Size = new System.Drawing.Size(136, 22);
             this.menuViewLog.Text = "日志(&L)";
             this.menuViewLog.Click += new System.EventHandler(this.menuViewLog_Click);
             // 
@@ -382,6 +304,89 @@
             this.menuRunGame.Text = "开始执行(不调试)(&H)";
             this.menuRunGame.Click += new System.EventHandler(this.menuRunGame_Click);
             // 
+            // toolStripMain
+            // 
+            this.toolStripMain.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolSaveAll,
+            this.toolStripSeparator5,
+            this.toolRun});
+            this.toolStripMain.Location = new System.Drawing.Point(433, 0);
+            this.toolStripMain.Name = "toolStripMain";
+            this.toolStripMain.Size = new System.Drawing.Size(62, 25);
+            this.toolStripMain.TabIndex = 7;
+            this.toolStripMain.Text = "toolStrip1";
+            // 
+            // toolSaveAll
+            // 
+            this.toolSaveAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolSaveAll.Image = global::LynnEditor.Properties.Resources.SaveAll;
+            this.toolSaveAll.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolSaveAll.Name = "toolSaveAll";
+            this.toolSaveAll.Size = new System.Drawing.Size(23, 22);
+            this.toolSaveAll.Text = "保存工程(Ctrl+S)";
+            this.toolSaveAll.Click += new System.EventHandler(this.menuSave_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolRun
+            // 
+            this.toolRun.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolRun.Image = global::LynnEditor.Properties.Resources.Play;
+            this.toolRun.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolRun.Name = "toolRun";
+            this.toolRun.Size = new System.Drawing.Size(23, 22);
+            this.toolRun.Text = "启动调试(F5)";
+            this.toolRun.Click += new System.EventHandler(this.menuDebugGame_Click);
+            // 
+            // toolStripPanelBottom
+            // 
+            this.toolStripPanelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.toolStripPanelBottom.Location = new System.Drawing.Point(0, 465);
+            this.toolStripPanelBottom.Name = "toolStripPanelBottom";
+            this.toolStripPanelBottom.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.toolStripPanelBottom.RowMargin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.toolStripPanelBottom.Size = new System.Drawing.Size(803, 0);
+            // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusPendingChanges});
+            this.statusStrip.Location = new System.Drawing.Point(0, 443);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(803, 22);
+            this.statusStrip.TabIndex = 5;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // statusPendingChanges
+            // 
+            this.statusPendingChanges.IsLink = true;
+            this.statusPendingChanges.Name = "statusPendingChanges";
+            this.statusPendingChanges.Size = new System.Drawing.Size(89, 17);
+            this.statusPendingChanges.Text = "尚未保存的更改";
+            this.statusPendingChanges.Click += new System.EventHandler(this.statusPendingChanges_Click);
+            // 
+            // toolStripPanelLeft
+            // 
+            this.toolStripPanelLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.toolStripPanelLeft.Location = new System.Drawing.Point(0, 25);
+            this.toolStripPanelLeft.Name = "toolStripPanelLeft";
+            this.toolStripPanelLeft.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.toolStripPanelLeft.RowMargin = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.toolStripPanelLeft.Size = new System.Drawing.Size(0, 418);
+            // 
+            // toolStripPanelRight
+            // 
+            this.toolStripPanelRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.toolStripPanelRight.Location = new System.Drawing.Point(803, 25);
+            this.toolStripPanelRight.Name = "toolStripPanelRight";
+            this.toolStripPanelRight.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.toolStripPanelRight.RowMargin = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.toolStripPanelRight.Size = new System.Drawing.Size(0, 418);
+            // 
             // Workbench
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -398,12 +403,12 @@
             this.Text = "LynnEditor";
             this.toolStripPanelTop.ResumeLayout(false);
             this.toolStripPanelTop.PerformLayout();
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.toolStripMain.ResumeLayout(false);
             this.toolStripMain.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            this.menuStrip.ResumeLayout(false);
-            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

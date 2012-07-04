@@ -511,7 +511,7 @@ namespace ScintillaNet
 				}
 				catch (ArgumentException ex)
 				{
-					lblStatus.Text = "Error in Regular Expression: " + ex.Message;
+					lblStatus.Text = "正则表达式错误：" + ex.Message;
 					return;
 				}
 
@@ -546,7 +546,7 @@ namespace ScintillaNet
 				}
 			}
 
-			lblStatus.Text = "Total found: " + foundRanges.Count.ToString();
+			lblStatus.Text = "总共找到：" + foundRanges.Count.ToString();
 
 			btnClear_Click(null, null);
 
@@ -578,23 +578,23 @@ namespace ScintillaNet
 			}
 			catch (ArgumentException ex)
 			{
-				lblStatus.Text = "Error in Regular Expression: " + ex.Message;
+				lblStatus.Text = "正则表达式错误：" + ex.Message;
 				return;
 			}
 
 
 			if (nextRange == null)
 			{
-				lblStatus.Text = "Match could not be found";
+				lblStatus.Text = "未找到指定文本";
 			}
 			else
 			{
 				if (nextRange.Start > Scintilla.Caret.Anchor)
 				{
 					if (chkSearchSelectionR.Checked)
-						lblStatus.Text = "Search match wrapped to the begining of the selection";
+						lblStatus.Text = "搜索已跳至选中文本开头";
 					else
-						lblStatus.Text = "Search match wrapped to the begining of the document";
+                        lblStatus.Text = "搜索已跳至文档开头";
 				}
 
 				nextRange.Select();
@@ -660,22 +660,22 @@ namespace ScintillaNet
 			}
 			catch (ArgumentException ex)
 			{
-				lblStatus.Text = "Error in Regular Expression: " + ex.Message;
+                lblStatus.Text = "正则表达式错误：" + ex.Message;
 				return;
 			}
 
 			if (nextRange == null)
 			{
-				lblStatus.Text = "Match could not be found";
+                lblStatus.Text = "未找到指定文本";
 			}
 			else
 			{
 				if (nextRange.Start < Scintilla.Caret.Anchor)
 				{
 					if (chkSearchSelectionR.Checked)
-						lblStatus.Text = "Search match wrapped to the begining of the selection";
+                        lblStatus.Text = "搜索已跳至选中文本开头";
 					else
-						lblStatus.Text = "Search match wrapped to the begining of the document";
+                        lblStatus.Text = "搜索已跳至文档开头";
 				}
 
 				nextRange.Select();
@@ -701,7 +701,7 @@ namespace ScintillaNet
 				}
 				catch (ArgumentException ex)
 				{
-					lblStatus.Text = "Error in Regular Expression: " + ex.Message;
+                    lblStatus.Text = "正则表达式错误：" + ex.Message;
 					return;
 				}
 
@@ -736,7 +736,7 @@ namespace ScintillaNet
 				}
 			}
 
-			lblStatus.Text = "Total Replaced: " + foundRanges.Count.ToString();
+			lblStatus.Text = "已替换：" + foundRanges.Count.ToString();
 		}
 
 		private void btnFindNext_Click(object sender, EventArgs e)
@@ -760,22 +760,22 @@ namespace ScintillaNet
 			}
 			catch (ArgumentException ex)
 			{
-				lblStatus.Text = "Error in Regular Expression: " + ex.Message;
+                lblStatus.Text = "正则表达式错误：" + ex.Message;
 				return;
 			}
 
 			if (foundRange == null)
 			{
-				lblStatus.Text = "Match could not be found";
+                lblStatus.Text = "未找到指定文本";
 			}
 			else
 			{
 				if (foundRange.Start < Scintilla.Caret.Anchor)
 				{
 					if (chkSearchSelectionF.Checked)
-						lblStatus.Text = "Search match wrapped to the begining of the selection";
+                        lblStatus.Text = "搜索已跳至选中文本开头";
 					else
-						lblStatus.Text = "Search match wrapped to the begining of the document";
+                        lblStatus.Text = "搜索已跳至文档开头";
 				}
 
 				foundRange.Select();
@@ -802,22 +802,22 @@ namespace ScintillaNet
 			}
 			catch (ArgumentException ex)
 			{
-				lblStatus.Text = "Error in Regular Expression: " + ex.Message;
+                lblStatus.Text = "正则表达式错误：" + ex.Message;
 				return;
 			}
 
 			if (foundRange == null)
 			{
-				lblStatus.Text = "Match could not be found";
+                lblStatus.Text = "未找到指定文本";
 			}
 			else
 			{
 				if (foundRange.Start > Scintilla.Caret.Position)
 				{
 					if (chkSearchSelectionF.Checked)
-						lblStatus.Text = "Search match wrapped to the end of the selection";
+                        lblStatus.Text = "搜索已跳至选中文本开头";
 					else
-						lblStatus.Text = "Search match wrapped to the end of the document";
+                        lblStatus.Text = "搜索已跳至文档开头";
 				}
 
 				foundRange.Select();

@@ -8,7 +8,7 @@ using WeifenLuo.WinFormsUI;
 
 namespace LynnEditor
 {
-    public class ScriptEditor : AbstractEditor, IClipboardHandler, IUndoHandler, IDeleteHandler, ISelectAllHandler
+    public class ScriptEditor : AbstractEditor, IClipboardHandler, IUndoHandler, IDeleteHandler, ISelectAllHandler, IFindReplaceHandler
     {
         Scintilla editor;
 
@@ -96,6 +96,8 @@ namespace LynnEditor
             editor.CharAdded += new EventHandler<CharAddedEventArgs>(editor_CharAdded);
 
             this.FormClosing += new FormClosingEventHandler(ScriptEditor_FormClosing);
+
+            editor.ContextMenuStrip = new EditContextMenuStrip(this);
         }
 
         public override void Commit()
@@ -233,6 +235,26 @@ namespace LynnEditor
         public void SelectAll()
         {
             this.editor.Selection.SelectAll();
+        }
+
+        public bool CanShowFindDialog
+        {
+            get { return true; }
+        }
+
+        public bool CanShowReplaceDialog
+        {
+            get { return true; }
+        }
+
+        public void ShowFindDialog()
+        {
+            this.editor.FindReplace.ShowFind();
+        }
+
+        public void ShowReplaceDialog()
+        {
+            this.editor.FindReplace.ShowReplace();
         }
     }
 
