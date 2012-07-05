@@ -282,12 +282,5 @@ module Mouse
   end
 end
 
-class Debug
-  def self.test(a, b, off = 0)
-    if !a.equal?(b)
-      raise "fail! Expect #{a}, but got #{b}"
-    end
-  end
-end
 Mouse.init
 Scene_Base.amend(:update_basic){ Mouse.run }

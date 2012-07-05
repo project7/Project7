@@ -3,7 +3,6 @@
 #==============================================================================
 module CMouse
   set_cursor("Graphics/System/Cursor.cur")
-  puts clip(0, 0, 640, 480)
   
   LKEY = 1
   RKEY = 2
