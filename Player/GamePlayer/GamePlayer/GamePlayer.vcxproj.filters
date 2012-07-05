@@ -38,6 +38,9 @@
     <ClCompile Include="RGSSInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RGSSIME.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GamePlayer.h">
@@ -59,6 +62,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RGSSInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RGSSIME.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

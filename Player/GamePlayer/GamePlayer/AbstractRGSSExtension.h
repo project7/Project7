@@ -1,6 +1,10 @@
 #pragma once
 #include "RGSS3Runtime.h"
 #include "GamePlayer.h"
+#define RR RGSS3Runtime
+#define RV RGSS3Runtime::VALUE
+#define RF RGSS3Runtime::RubyFunc
+#define RDM runtime->rb_define_module_function
 #define HookerTest 
 class AbstractRGSSExtension
 {

@@ -1,4 +1,5 @@
 #include "AbstractRGSSExtension.h"
+
 WNDPROC AbstractRGSSExtension::oldProc;
 GamePlayer * AbstractRGSSExtension::gameplayer;
 RGSS3Runtime * AbstractRGSSExtension::runtime;
