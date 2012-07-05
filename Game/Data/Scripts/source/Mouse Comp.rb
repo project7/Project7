@@ -252,7 +252,6 @@ module Mouse
   
   # -------------------------------------------------------------------- #
   def self.run
-    update
     # -------------------------------------------------------- #
     # 如果設置坐標成功 => (pos != []) && (point != pos) 則搜索 #
     # 這段代碼的效率非常的糟糕，但是我想不到更好的辦法         #
@@ -278,15 +277,10 @@ module Mouse
       @@current_comp.onClick(key)
     end
     # -------------------------------------------------------- #
+    # @禾西，下面一行是我刻意搬过来的，因为 CMouse update 之后会清空结果。
+    update
   end
 end
 
-class Debug
-  def self.test(a, b, off = 0)
-    if !a.equal?(b)
-      raise "fail! Expect #{a}, but got #{b}"
-    end
-  end
-end
 Mouse.init
 Scene_Base.amend(:update_basic){ Mouse.run }
