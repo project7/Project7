@@ -461,8 +461,7 @@ int gameFPS;
 RV gamehwnd;
 RGSS3Runtime::VALUE RUBYCALL fps(RGSS3Runtime::VALUE obj)
 {
-	//assert(sruntime->rmGraphics);
-	return sruntime->INT2FIX( (*(DWORD *)(sruntime->rmGraphics+560)));
+	return sruntime->INT2FIX( (*sruntime->GetGraphicsPtr(560)));
 }
 RGSS3Runtime::VALUE RUBYCALL dm_get_hwnd(RGSS3Runtime::VALUE obj)
 {

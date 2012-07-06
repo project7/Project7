@@ -47,7 +47,7 @@ LRESULT WINAPI RGSSIME::IMMWndProcHook(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM I
 	{
 		if (Msg==WM_INPUTLANGCHANGE)
 		{
-			return ;//Handle this message
+			return 0;//Handle this message
 		}
 		if (Msg==WM_IME_STARTCOMPOSITION)
 		{

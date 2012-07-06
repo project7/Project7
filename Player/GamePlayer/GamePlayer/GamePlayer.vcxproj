@@ -85,7 +85,6 @@
     <ClCompile Include="AbstractRGSSExtension.cpp" />
     <ClCompile Include="RGSS3Runtime.cpp" />
     <ClCompile Include="RGSS3Runtime.h" />
-    <ClCompile Include="RGSSIME.cpp" />
     <ClCompile Include="RGSSInput.cpp" />
     <ClCompile Include="RGSSMouse.cpp" />
   </ItemGroup>
@@ -95,7 +94,6 @@
     <ClInclude Include="GamePlayer.h" />
     <ClInclude Include="RGSS.h" />
     <ClInclude Include="AbstractRGSSExtension.h" />
-    <ClInclude Include="RGSSIME.h" />
     <ClInclude Include="RGSSInput.h" />
     <ClInclude Include="RGSSMouse.h" />
   </ItemGroup>

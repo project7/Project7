@@ -1,6 +1,7 @@
 #include "RGSS3Runtime.h"
 RGSS3Runtime::RGSS3Runtime(GamePlayer * gp)
 {
+	gamePlayer=gp;
 	//FILE *f=fopen("test.log","w");
 	module=gp->hRgssCore;
 	//fprintf(f,"Module:%d\n",module);
@@ -32,7 +33,22 @@ RGSS3Runtime::RGSS3Runtime(GamePlayer * gp)
 	__sf(rb_ary_new)
 	__sf(rb_ary_push)
 	//fclose(f);
+	rb_cObject = rb_eval_string_protect("Object", 0);
+	assert(rb_cObject);
+	srmGraphics=0;
 #undef __sf
-	rmGraphics = *(DWORD *)(((DWORD)module+(DWORD)0x25EB00));
+	//rmGraphics = *(DWORD *)(((DWORD)module+(DWORD)0x25EB00));
+}
+DWORD RGSS3Runtime::rmGraphics(void)
+{
+	if (srmGraphics) return srmGraphics;
+	srmGraphics=*(DWORD *)(((DWORD)module+(DWORD)0x25EB00));
+	assert(srmGraphics);
+	return srmGraphics;
+}
+DWORD *RGSS3Runtime::GetGraphicsPtr(DWORD REV)
+{
+	assert(rmGraphics());
+	return (DWORD *)(rmGraphics()+REV);
 }
 RGSS3Runtime *sruntime;

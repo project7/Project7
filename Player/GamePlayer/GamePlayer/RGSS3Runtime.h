@@ -57,7 +57,11 @@ struct RGSS3Runtime{
 	DWORD rbx;
 	DWORD rubyversion;
 	RGSS3Runtime(GamePlayer * gp);
-	DWORD rmGraphics;
+	//DWORD rmGraphics;
+	DWORD rmGraphics(void);
+	DWORD srmGraphics;
+	DWORD *GetGraphicsPtr(DWORD REV);
+	GamePlayer *gamePlayer;
 #pragma endregion
 #pragma region Ruby÷ß≥÷
 
@@ -168,12 +172,12 @@ private:
 
 	typedef	int						(*pfn_rb_const_defined)(VALUE klass, ID id);
 	typedef VALUE					(*pfn_rb_class_new_instance)(int argc, VALUE *argv, VALUE klass);
-
+public:
 	VALUE					StringValue(volatile VALUE* str)												{ return rb_string_value(str); }
 	char*					StringValuePtr(volatile VALUE* str)												{ return rb_string_value_ptr(str); }
 	//char*					StringValueCstr(volatile VALUE* str)											{ return rb_string_value_cstr(str); }
 
-public:
+
 	inline void SafeFixnumValue(VALUE x)
 	{
 		if (!FIXNUM_P(x)) 
@@ -440,6 +444,9 @@ public:
 	static  const int addr_rb_ary_aref = 0x89C40;
 	static  const int addr_rb_ary_aset = 0x8D870;
 	static  const int addr_rb_ary_new  = 0x88DC0;
+
+	//Consts
+
 public:
 	pfn_rb_funcall2 rb_funcall2;
 	pfn_rb_define_class rb_define_class;
@@ -467,6 +474,9 @@ public:
 	pfn_rb_ary_aset rb_ary_aset; 
 	pfn_rb_ary_new rb_ary_new;
 	pfn_rb_ary_push rb_ary_push;
+	
+	VALUE rb_cObject;
+
 #pragma endregion
 
 };
