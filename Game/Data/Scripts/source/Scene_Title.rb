@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Scene_Title
 #------------------------------------------------------------------------------
@@ -106,6 +106,7 @@ class Scene_Title < Scene_Base
   # ● 指令“开始游戏”
   #--------------------------------------------------------------------------
   def command_new_game
+    $fdebug.write("=====================ASS YOU KNOW=====================\n")
     DataManager.setup_new_game
     close_command_window
     fadeout_all
@@ -123,6 +124,7 @@ class Scene_Title < Scene_Base
   # ● 指令“退出游戏”
   #--------------------------------------------------------------------------
   def command_shutdown
+    $fdebug.write("=====================ASS YOU KNOW=====================\n")
     close_command_window
     fadeout_all
     SceneManager.exit

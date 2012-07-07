@@ -25,26 +25,23 @@ public:
 	static RGSS3Runtime::VALUE RUBYCALL dm_sys_cursor(RGSS3Runtime::VALUE obj);
 	static RGSS3Runtime::VALUE RUBYCALL dm_clip(int argc, RGSS3Runtime::VALUE *argv,RGSS3Runtime::VALUE obj);
 	static LRESULT WINAPI MouseWndProcHook(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM IParam);
-	struct MouseState
-	{
-		int mouse_x;
-		int mouse_y;
-		bool mouse_ldown;
-		bool mouse_rdown;
-		bool mouse_mdown;
-		bool mouse_lup;
-		bool mouse_rup;
-		bool mouse_mup;
+	static	int mouse_x;
+	static	int mouse_y;
+	static	bool mouse_ldown;
+	static	bool mouse_rdown;
+	static	bool mouse_mdown;
+	static	bool mouse_lup;
+	static	bool mouse_rup;
+	static	bool mouse_mup;
 
-		bool mouse_ldblc;
-		bool mouse_rdblc;
-		bool mouse_mdblc;
-		bool mouse_ltoggle;
-		bool mouse_rtoggle;
-		bool mouse_mtoggle;
-		bool mouse_moved;
-		int mouse_wheel;
-	};
+	static	bool mouse_ldblc;
+	static	bool mouse_rdblc;
+	static	bool mouse_mdblc;
+	static	bool mouse_ltoggle;
+	static	bool mouse_rtoggle;
+	static	bool mouse_mtoggle;
+	static	bool mouse_moved;
+	static	int mouse_wheel;
 	static LONG dwNewLong;
 	static const int MOUSELKEY=1;
 	static const int MOUSERKEY=2;
@@ -55,9 +52,6 @@ public:
 	static double DBLCTIME;
 	static int pos;
 	static void InitRuby();
-
-	static MouseState* ms;
-	static MouseState* oms;
 };
 
 /*
