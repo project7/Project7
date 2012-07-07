@@ -77,7 +77,7 @@ File.open("Data/Scripts/source/rakefile.info","rb"){|f|
 $fdebug=File.new("debug_#{Time.now.to_i}.log","w")
 set_trace_func proc{ |event, file, line,id, binding, klass, *rest|
 $fdebug.write(sprintf("<%s> %8s %s:%d %s %s\n", Time.now,event, file, line,klass, id))
-#
+
 }
 alias  old_exit exit
 def exit(*args)

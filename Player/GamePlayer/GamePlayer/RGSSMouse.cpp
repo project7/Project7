@@ -104,11 +104,14 @@ RGSS3Runtime::VALUE RUBYCALL RGSSMouse::MouseUpdate(RGSS3Runtime::VALUE obj)
 	mouse_ldblc = mouse_rdblc = mouse_mdblc = false;
 	mouse_moved = false;
 	mouse_wheel = 0;
+#ifdef HookerTest
+	fprintf(LOG,"LeftUp:%d\n\r",mouse_lup);fflush(LOG);
+#endif	
 	return RGSS3Runtime::Qnil;
 }
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_get_x(RGSS3Runtime::VALUE obj)
 {
-	return runtime->INT2FIX(mouse_x); //???会导致APPCRASH？
+	return runtime->INT2FIX(mouse_x); 
 }
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_get_y(RGSS3Runtime::VALUE obj)
 {
@@ -123,6 +126,7 @@ RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_get_y(RGSS3Runtime::VALUE obj)
 #define RBOOL(val) (val)?runtime->Qtrue:runtime->Qfalse;
 
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_up(int argc, RGSS3Runtime::VALUE *argv,RGSS3Runtime::VALUE obj){
+	//return (!(GetKeyState(runtime->FIX2INT(argv[0]))&0x8000));
 	return RBOOL(((mouse_lup | ((mouse_rup) << 1) | ((mouse_mup) << 2)) & (argc == 0 ? 7 : runtime->FIX2INT(argv[0]))) != 0);
 }
 /*
@@ -130,6 +134,7 @@ RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_up(int argc, RGSS3Runtime::VALUE *arg
 #       鼠标按键是否处在"按下"的瞬间
 */
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_down(int argc, RGSS3Runtime::VALUE *argv, RGSS3Runtime::VALUE obj){
+	//return (GetKeyState(runtime->FIX2INT(argv[0]))&0x8000);
 	return RBOOL(((mouse_ldown | (mouse_rdown << 1) | (mouse_mdown << 2)) & (argc == 0 ? 7 : runtime->FIX2INT(argv[0]))) != 0);
 }
 /*
@@ -137,6 +142,7 @@ RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_down(int argc, RGSS3Runtime::VALUE *a
 #       鼠标按键单击,脚本简化,仅判断down?
 */
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_click(int argc, RGSS3Runtime::VALUE *argv, RGSS3Runtime::VALUE obj){
+	//return (GetKeyState(runtime->FIX2INT(argv[0]))&0x8000);
 	return RBOOL(((mouse_ldown | (mouse_rdown << 1) | (mouse_mdown << 2)) & (argc == 0 ? 7 : runtime->FIX2INT(argv[0]))) != 0);
 }
 /*

@@ -252,13 +252,14 @@ module Mouse
   
   # -------------------------------------------------------------------- #
   def self.run
+    
     # -------------------------------------------------------- #
     # 如果設置坐標成功 => (pos != []) && (point != pos) 則搜索 #
     # 這段代碼的效率非常的糟糕，但是我想不到更好的辦法         #
     # -------------------------------------------------------- #
     if @@point.set(Mouse.pos)
-      @@thread.kill if @@thread.alive?
-      @@thread = Thread.new {
+       @@thread.kill if @@thread.alive?
+       @@thread = Thread.new {
         t1 = Time.now
         current_comp = UICore.check(@@point)
         if current_comp != @@current_comp
