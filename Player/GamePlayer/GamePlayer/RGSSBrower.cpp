@@ -7,6 +7,10 @@ int RGSSBrower::pos;
 map<HWND,CWebbrowser*> RGSSBrower::hwnd2Web;
 map<RV,RGSSBrower::RTL> RGSSBrower::OBJ2RTL;
 WNDCLASSEX	RGSSBrower::wc;
+/*RGSSBrower::EmbedBrowserObjectPtr		*RGSSBrower::lpEmbedBrowserObject;
+RGSSBrower::UnEmbedBrowserObjectPtr		*RGSSBrower::lpUnEmbedBrowserObject;
+RGSSBrower::DisplayHTMLPagePtr			*RGSSBrower::lpDisplayHTMLPage;
+RGSSBrower::DisplayHTMLStrPtr			*RGSSBrower::lpDisplayHTMLStr;*/
 void RGSSBrower::InitRuby()
 {
 	rbcBrower = runtime->rb_define_class("CBrower",runtime->rb_cObject); 
@@ -26,6 +30,23 @@ void RGSSBrower::InitRuby()
 	wc.lpfnWndProc = (WNDPROC)WebProc;
 	wc.lpszClassName = L"Web Player";
 	RegisterClassEx(&wc);
+	/*hHtmlLite = LoadLibrary(L"cwebpage.dll");
+	assert(hHtmlLite);
+	// Get pointers to the EmbedBrowserObject, DisplayHTMLPage, DisplayHTMLStr, and UnEmbedBrowserObject
+	// functions, and store them in some globals.
+
+	// Get the address of the EmbedBrowserObject() function. NOTE: Only Reginald has this one
+	lpEmbedBrowserObject = (EmbedBrowserObjectPtr *)GetProcAddress((HINSTANCE)hHtmlLite, "EmbedBrowserObject");
+	assert(lpEmbedBrowserObject);
+	// Get the address of the UnEmbedBrowserObject() function. NOTE: Only Reginald has this one
+	lpUnEmbedBrowserObject = (UnEmbedBrowserObjectPtr *)GetProcAddress((HINSTANCE)hHtmlLite, "UnEmbedBrowserObject");
+	assert(lpUnEmbedBrowserObject);
+	// Get the address of the DisplayHTMLPagePtr() function
+	lpDisplayHTMLPage = (DisplayHTMLPagePtr *)GetProcAddress((HINSTANCE)hHtmlLite, "DisplayHTMLPage");
+	assert(lpDisplayHTMLPage);
+	// Get the address of the DisplayHTMLStr() function
+	lpDisplayHTMLStr = (DisplayHTMLStrPtr *)GetProcAddress((HINSTANCE)hHtmlLite, "DisplayHTMLStr");
+	assert(lpDisplayHTMLStr);*/
 	//runtime->rb_eval_string_protect("class Brower;def initialize(x,y,w,h,cb) ;@@hwnds<<CBrower.newwin(x,y,w,h,cb);end;end",x);
 	//	hHtmlLite = LoadLibrary(L"htmllite.dll");
 	//	assert(hHtmlLite);
@@ -60,6 +81,12 @@ LRESULT RGSSBrower::WebProc(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam)
 	}
 	}*/
 	//return CallNext(hWnd,Msg,wParam,lParam,pos);
+	if (Msg==WM_CREATE)
+	{
+
+		//	lpEmbedBrowserObject(hWnd);
+
+	}
 	return DefWindowProc(hWnd,Msg,wParam,lParam);
 }
 extern FILE* LOG;
@@ -77,15 +104,16 @@ RV RGSSBrower::dm_initialize(RV obj,RV url,RV _x,RV _y,RV _w,RV _h,RV callback)
 	hwnd2Func.insert(make_pair(rtl.g_hwnd,callback));
 	browers.insert(rtl.g_hwnd);	
 	OBJ2RTL.insert(make_pair(obj,rtl));
+	//lpDisplayHTMLPage(rtl.g_hwnd,L"http://www.baidu.com");
 	CWebbrowser *cWeb = new CWebbrowser(rtl.g_hwnd);
-	
+
 	cWeb->OpenWebBrowser();
-	
+
 	VARIANT myurl;
 	VariantInit(&myurl);
 	myurl.vt = VT_BSTR;
 	myurl.bstrVal = SysAllocString(L"http://www.baidu.com");
-	
+
 	cWeb->OpenURL(&myurl);
 	/*VariantClear(&myurl);*/
 	//CWebbrowser *cWeb = new CWebbrowser(rtl.g_hwnd);
@@ -95,7 +123,7 @@ RV RGSSBrower::dm_initialize(RV obj,RV url,RV _x,RV _y,RV _w,RV _h,RV callback)
 	//IStorage * _pStorage;
 	//StgCreateDocfile(0,STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_DIRECT | STGM_CREATE,0,&_pStorage);
 	//OleCreate( CLSID_WebBrowser,IID_IOleObject,OLERENDER_DRAW, 0 , this, _pStorage, (void**)&_pOleObj );
-	UpdateWindow(rtl.g_hwnd);
+	//	UpdateWindow(rtl.g_hwnd);
 	return runtime->INT2FIX((int)rtl.g_hwnd);
 }
 
