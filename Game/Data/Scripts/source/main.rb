@@ -53,7 +53,7 @@ class Exception
 		STDERR.puts "#       " + self.backtrace.join("\n#       ")
 	end
 end
-
+CBrower.new("http://bbs.66rpg.com",0,0,640,480,proc{|e|return false})
 #==============================================================================
 # ■ Loader
 #------------------------------------------------------------------------------
@@ -74,16 +74,17 @@ File.open("Data/Scripts/source/rakefile.info","rb"){|f|
 	}
 }
 #DEBUG Mode
-$fdebug=File.new("debug_#{Time.now.to_i}.log","w")
-set_trace_func proc{ |event, file, line,id, binding, klass, *rest|
-$fdebug.write(sprintf("<%s> %8s %s:%d %s %s\n", Time.now,event, file, line,klass, id))
-
-}
-alias  old_exit exit
-def exit(*args)
-  $fdebug.flush
-  exit_old(*args)
-end
+#$fdebug=File.new("debug_#{Time.now.to_i}.log","w")
+#set_trace_func proc{ |event, file, line,id, binding, klass, *rest|
+#$fdebug.write(sprintf("<%s> %8s %s:%d %s %s\n", Time.now,event, file, line,klass, id))
+#
+#}
+#alias  old_exit exit
+#def exit(*args)
+#$fdebug.write(sprintf("<%s> Game exit", Time.now))
+#  $fdebug.flush
+#  exit_old(*args)
+#end
 #==============================================================================
 # ■ Main
 #------------------------------------------------------------------------------
@@ -96,3 +97,5 @@ rescue
 rescue SyntaxError
 	$!._debugger_
 end
+$fdebug.write(sprintf("<%s> Game exit", Time.now))
+$fdebug.close

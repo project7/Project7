@@ -81,7 +81,7 @@ private:
 
 	typedef void					(*pfn_rb_gc_mark)(VALUE);
 
-	typedef void					(*pfn_rb_define_method)( VALUE classmod, char *name, VALUE(*func)(), int argc );
+	typedef void					(*pfn_rb_define_method)( VALUE classmod, char *name, VALUE(*)(), int argc );
 	typedef VALUE					(*pfn_rb_define_class)(const char*, VALUE);
 	typedef VALUE					(*pfn_rb_define_module)(const char*);
 	typedef VALUE					(*pfn_rb_define_class_under)(VALUE, const char*, VALUE);

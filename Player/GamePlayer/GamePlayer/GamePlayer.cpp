@@ -90,7 +90,7 @@ HWND GamePlayer::StartWindow()
 	
 
 
-	DWORD dwStyle = WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_VISIBLE|WS_CLIPCHILDREN;
+	DWORD dwStyle = WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_VISIBLE| WS_CLIPCHILDREN;
 	HWND th=::CreateWindowEx(WS_EX_WINDOWEDGE,pWndClassName,L"v",WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,0,0,600,400,0,0,hInstance,0);
 	RECT rt1;
 	
@@ -181,6 +181,7 @@ bool GamePlayer::InitRGSS()
 		}
 	}
 	pRGSSSetupFonts();
+	pRgssad=L"";
 	// 3、设置运行时变量
 #ifdef _DEBUG
 	if (strcmp(lpCmdLine, "btest") == 0)
@@ -206,7 +207,7 @@ bool GamePlayer::InitRGSS()
 }
 void GamePlayer::RunGame()
 {
-	pRGSSGameMain(g_hWnd, szScripts, (pRgssad ? (wchar_t**)pRgssad : &pRgssad));
+	pRGSSGameMain(g_hWnd, szScripts,  (wchar_t **) L"");
 	___exit();
 }
 HWND GamePlayer::__rgssx_get_hwnd()

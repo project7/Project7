@@ -11,6 +11,8 @@
 #include "AbstractRGSSExtension.h"
 #include "RGSSMouse.h"
 #include "RGSSInput.h"
+#include "RGSSBrower.h"
+
 GamePlayer *cGamePlayer;
 
 void __stdcall RGSSXGuard();
@@ -349,7 +351,7 @@ BOOL WINAPI ResetReadFile(
 	LPOVERLAPPED lpOverlapped
 	)
 {
-
+	
 	if (hFile==share_file_using_handle)
 	{
 		if (lpBuffer!=NULL){
@@ -515,9 +517,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		sruntime->rb_define_module_function(mod,"fps",(RGSS3Runtime::RubyFunc)fps,0);
 		gamehwnd = sruntime->INT2FIX((int)(cGamePlayer->g_hWnd));
 		sruntime->rb_define_module_function(mod,"hwnd",(RF)dm_get_hwnd,0);
-
+		
 		RGSSMouse::InitRuby();
 		RGSSInput::InitRuby();
+		RGSSBrower::InitRuby();
 		//cRGSSMouse = new RGSSMouse(sruntime,cGamePlayer);
 
 		//sruntime->rb_str_new("aaa",strlen("aaa"));
@@ -532,6 +535,7 @@ void __stdcall RGSSXGuard()
 	AbstractRGSSExtension::Install();
 	RGSSMouse::Install();
 	RGSSInput::Install();
+	RGSSBrower::Install();
 	char c[500];
 	sprintf(c,"Graphics.resize_screen(%d , %d)",cGamePlayer->nScreenWidth,cGamePlayer->nScreenHeight);
 	cGamePlayer->pRGSSEval(c);

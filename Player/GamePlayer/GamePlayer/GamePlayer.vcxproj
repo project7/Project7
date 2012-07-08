@@ -75,16 +75,21 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>Entry.def</ModuleDefinitionFile>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>LIBC.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ApiHook.cpp" />
     <ClCompile Include="Base64.cpp" />
+    <ClCompile Include="CWebBrower.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="GamePlayer.cpp" />
     <ClCompile Include="AbstractRGSSExtension.cpp" />
     <ClCompile Include="RGSS3Runtime.cpp" />
     <ClCompile Include="RGSS3Runtime.h" />
+    <ClCompile Include="RGSSBrower.cpp" />
     <ClCompile Include="RGSSInput.cpp" />
     <ClCompile Include="RGSSMouse.cpp" />
   </ItemGroup>
@@ -94,8 +99,10 @@
     <ClInclude Include="GamePlayer.h" />
     <ClInclude Include="RGSS.h" />
     <ClInclude Include="AbstractRGSSExtension.h" />
+    <ClInclude Include="RGSSBrower.h" />
     <ClInclude Include="RGSSInput.h" />
     <ClInclude Include="RGSSMouse.h" />
+    <ClInclude Include="WebBrowser.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entry.def" />
