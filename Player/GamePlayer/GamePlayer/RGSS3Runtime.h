@@ -10,7 +10,7 @@
 #include <iostream>
 #include <stddef.h>
 #include <stdarg.h>
-#include <stdint.h>
+//#include <stdint.h>
 #include <limits.h>
 #include "GamePlayer.h"
 using namespace std;

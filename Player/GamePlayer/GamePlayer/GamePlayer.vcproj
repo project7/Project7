@@ -60,7 +60,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="psapi.lib kernel32.lib shlwapi.lib"
+				AdditionalDependencies="psapi.lib kernel32.lib shlwapi.lib CWebBrowser.lib"
 				OutputFile="$(OutDir)\Game.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -135,7 +135,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="psapi.lib kernel32.lib shlwapi.lib"
+				AdditionalDependencies="psapi.lib kernel32.lib shlwapi.lib CWebBrowser.lib"
 				OutputFile="$(OutDir)\Game.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
@@ -188,6 +188,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CWebBrower.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Entry.cpp"
 				>
 			</File>
@@ -197,6 +201,10 @@
 			</File>
 			<File
 				RelativePath=".\RGSS3Runtime.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RGSSBrower.cpp"
 				>
 			</File>
 			<File
@@ -238,11 +246,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\RGSSBrower.h"
+				>
+			</File>
+			<File
 				RelativePath=".\RGSSInput.h"
 				>
 			</File>
 			<File
 				RelativePath=".\RGSSMouse.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WebBrowser.h"
 				>
 			</File>
 		</Filter>
