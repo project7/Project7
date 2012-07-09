@@ -23,6 +23,7 @@ public:
 		int x,y,w,h;
 		HWND g_hwnd;
 	};
+	static RV dm_test(RV obj);
 	static map<RV,RTL> OBJ2RTL;
 	static RV dm_initialize(RV obj,RV url,RV x,RV y,RV w,RV h,RV callback);
 	static RV dm_dispose(RV obj);
@@ -31,25 +32,6 @@ public:
     static RV dm_get_y(RV obj){RTL rtl = OBJ2RTL.find(obj)->second;return runtime->INT2FIX(rtl.y);};static RV dm_set_y(RV obj,RV v){RTL rtl = OBJ2RTL.find(obj)->second;rtl.y=runtime->FIX2INT(v);movewindow(obj);return runtime->Qnil;};
     static RV dm_get_w(RV obj){RTL rtl = OBJ2RTL.find(obj)->second;return runtime->INT2FIX(rtl.w);};static RV dm_set_w(RV obj,RV v){RTL rtl = OBJ2RTL.find(obj)->second;rtl.w=runtime->FIX2INT(v);movewindow(obj);return runtime->Qnil;};
     static RV dm_get_h(RV obj){RTL rtl = OBJ2RTL.find(obj)->second;return runtime->INT2FIX(rtl.h);};static RV dm_set_h(RV obj,RV v){RTL rtl = OBJ2RTL.find(obj)->second;rtl.h=runtime->FIX2INT(v);movewindow(obj);return runtime->Qnil;};
-	/*long WINAPI EmbedBrowserObject(HWND);
-	#define EMBEDBROWSEROBJECT EmbedBrowserObject
-	typedef long WINAPI EmbedBrowserObjectPtr(HWND);
-
-	void WINAPI UnEmbedBrowserObject(HWND);
-	#define UNEMBEDBROWSEROBJECT UnEmbedBrowserObject
-	typedef long WINAPI UnEmbedBrowserObjectPtr(HWND);
-
-	long WINAPI DisplayHTMLPage(HWND, LPCTSTR);
-	#define DISPLAYHTMLPAGE DisplayHTMLPage
-	typedef long WINAPI DisplayHTMLPagePtr(HWND, LPCTSTR);
-
-	long WINAPI DisplayHTMLStr(HWND, LPCTSTR);
-	#define DISPLAYHTMLSTR DisplayHTMLStr
-	typedef long WINAPI DisplayHTMLStrPtr(HWND, LPCTSTR);
-	static EmbedBrowserObjectPtr		*lpEmbedBrowserObject;
-	static UnEmbedBrowserObjectPtr		*lpUnEmbedBrowserObject;
-	static DisplayHTMLPagePtr			*lpDisplayHTMLPage;
-	static DisplayHTMLStrPtr			*lpDisplayHTMLStr;*/
 
 	
 typedef struct NMHTMLLITE {

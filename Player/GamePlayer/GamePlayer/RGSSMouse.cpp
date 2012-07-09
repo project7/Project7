@@ -1,5 +1,4 @@
 #include "RGSSMouse.h"
-
 int RGSSMouse::mouse_x = 0;
 int RGSSMouse::mouse_y = 0;
 bool RGSSMouse::mouse_ldown;
@@ -196,7 +195,7 @@ RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_set_pos(RGSS3Runtime::VALUE obj,RGSS3
 */
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_set_cursor(RGSS3Runtime::VALUE obj,RGSS3Runtime::VALUE mouse){
 
-	return RBOOL(SetClassLongA(gameplayer->g_hWnd, -12, (LONG)LoadCursorFromFileA(runtime->rb_string_value_ptr(&mouse))));
+	return RBOOL(SetClassLongA(gameplayer->g_hWnd, -12, (LONG)LoadCursorFromFileA( runtime->rb_string_value_ptr(&mouse))));
 }
 /*
 #     Mouse.sys_cursor

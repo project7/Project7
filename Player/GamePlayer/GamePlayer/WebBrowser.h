@@ -10,6 +10,9 @@
 #include <ExDisp.h>
 #include <mshtml.h>
 #include <mshtmhst.h>
+#include "RGSS3Runtime.h"
+#include <ExDispID.h>
+#include <comdef.h>
 //////////////////////////////////////////////////////////////////////////
 // 使用前调用OleInitialize初始化OLE
 
@@ -17,6 +20,7 @@ class Webbrowser:
 	public IDispatch,
 	public IOleClientSite,
 	public IOleInPlaceSite,
+	public DWebBrowserEvents2, //DWebBrowserEvents2
 	public IOleInPlaceFrame/*,
 						   public IDocHostUIHandler*/
 {
@@ -119,8 +123,10 @@ class CWebbrowser :
 	public Webbrowser
 {
 public:
-	CWebbrowser(HWND _hwnd){hWnd=_hwnd;};
+	CWebbrowser(HWND _hwnd,RGSS3Runtime::VALUE _func){hWnd=_hwnd;func=_func;};
 	HWND						hWnd;
+	RGSS3Runtime::VALUE			func;
 	virtual  HWND GetHWND(){return hWnd;}
+	HRESULT _stdcall Invoke(DISPID dispIdMember,REFIID riid,LCID lcid,WORD wFlags,DISPPARAMS FAR* pDispParams,VARIANT FAR* pVarResult,EXCEPINFO FAR* pExcepInfo,unsigned int FAR* puArgErr);
 };
 #endif

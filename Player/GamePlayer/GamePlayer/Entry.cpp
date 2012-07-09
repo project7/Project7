@@ -284,16 +284,19 @@ return 0;
 */
 #pragma endregion
 #pragma region WindowSizeHooker
-CApiHook Sizerhook;
+/*CApiHook Sizerhook;
 BOOL ResetSetWindowPos(HWND hWnd , HWND hWndlnsertAfter , int X , int Y , int cx , int cy , unsigned int uFlags)
 {
 	if (hWnd==cGamePlayer->g_hWnd)
+	{
+		Sizerhook.SetHookOff();
 		return true;
+	}
 	Sizerhook.SetHookOff();
 	BOOL ret = SetWindowPos(hWnd,hWndlnsertAfter,X,Y,cx,cy,uFlags);
-	//	apihook.SetHookOn();
+	Sizerhook.SetHookOn();
 	return ret;
-}
+}*/
 #pragma endregion
 #pragma region WindowFileHooker
 CApiHook CreateAPIHooker;
@@ -351,7 +354,7 @@ BOOL WINAPI ResetReadFile(
 	LPOVERLAPPED lpOverlapped
 	)
 {
-	
+
 	if (hFile==share_file_using_handle)
 	{
 		if (lpBuffer!=NULL){
@@ -474,6 +477,30 @@ RGSS3Runtime::VALUE RUBYCALL functest1(int argc, int *argv)
 {
 	return sruntime->rb_str_new("aaa",strlen("aaa"));
 }
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	if (uMsg == WM_CREATE)
+	{
+
+		// Success
+		return(0);
+	}
+
+	if (uMsg == WM_DESTROY){
+
+		// If all the windows are now closed, quit this app
+		PostQuitMessage(0);
+
+		return(TRUE);
+	}
+	// NOTE: If you want to resize the area that the browser object occupies when you
+	// resize the window, then handle WM_SIZE and use the IWebBrowser2's put_Width()
+	// and put_Height() to give it the new dimensions.
+
+	return(DefWindowProc(hwnd, uMsg, wParam, lParam));
+}
+
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	cGamePlayer=new GamePlayer(hInstance,hPrevInstance,lpCmdLine,nCmdShow,640,480);
@@ -484,9 +511,29 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//Extend Module
 
 		//API HOOKS
-		Sizerhook.Initialize(L"user32.dll","SetWindowPos",(FARPROC)ResetSetWindowPos);
-		Sizerhook.SetHookOn();
-
+		//Sizerhook.Initialize(L"user32.dll","SetWindowPos",(FARPROC)ResetSetWindowPos);
+		//Sizerhook.SetHookOn();
+	/*		MSG				msg;
+	WNDCLASSEX		wc;
+	ZeroMemory(&wc, sizeof(WNDCLASSEX));
+	wc.cbSize = sizeof(WNDCLASSEX);
+	wc.hInstance = hInstance;
+	wc.lpfnWndProc = WindowProc;
+	wc.lpszClassName = L"Web Player";
+	RegisterClassEx(&wc);
+	msg.hwnd =  CreateWindowEx(WS_EX_WINDOWEDGE,L"Web Player",L"Web", WS_VISIBLE | WS_BORDER|WS_CAPTION,0,0,640,480,0,0,cGamePlayer->hInstance,0);
+	CWebbrowser * cWeb = new CWebbrowser(msg.hwnd);
+	cWeb->OpenWebBrowser();
+	VARIANT myurl;
+	VariantInit(&myurl);
+	myurl.vt = VT_BSTR;
+	myurl.bstrVal = SysAllocString(L"http://bbs.66rpg.com/");
+	cWeb->OpenURL(&myurl);
+	while (GetMessage(&msg, 0, 0, 0))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}*/
 		//File Hookes
 		CreateAPIHooker.Initialize(L"kernel32.dll","CreateFileW",(FARPROC)ResetCreateFileW);
 		CreateAPIHooker.SetHookOn();
@@ -511,13 +558,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		GetClassNameHooker.Initialize(L"user32.dll","GetClassNameA",(FARPROC)ResetGetClassNameA);
 		GetClassNameHooker.SetHookOn();
 		//End
+
 		sruntime = new RGSS3Runtime(cGamePlayer);
 		AbstractRGSSExtension::InitRuby(sruntime,cGamePlayer);
 		RGSS3Runtime::VALUE mod = sruntime->rb_define_module("RGSSX");
 		sruntime->rb_define_module_function(mod,"fps",(RGSS3Runtime::RubyFunc)fps,0);
 		gamehwnd = sruntime->INT2FIX((int)(cGamePlayer->g_hWnd));
 		sruntime->rb_define_module_function(mod,"hwnd",(RF)dm_get_hwnd,0);
-		
+
 		RGSSMouse::InitRuby();
 		RGSSInput::InitRuby();
 		RGSSBrower::InitRuby();
@@ -526,6 +574,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//sruntime->rb_str_new("aaa",strlen("aaa"));
 		//sruntime->rb_define_const(mod,"TT",sruntime->rb_str_new("aa",3));
 		//Extend Module End
+
+
 		cGamePlayer->RunGame();
 	}
 }

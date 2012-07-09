@@ -1,4 +1,5 @@
 ﻿#encoding:utf-8
+$fdebug=File.new("debug_#{Time.now.to_i}.log","w")
 #==============================================================================
 # ■ Auto Flush for STDOUT & STDERR
 #------------------------------------------------------------------------------
@@ -53,7 +54,30 @@ class Exception
 		STDERR.puts "#       " + self.backtrace.join("\n#       ")
 	end
 end
-CBrower.new("http://bbs.66rpg.com",0,0,640,480,proc{|e|return false})
+#BBB.test
+class Jiecao
+  def set(id)
+    @id=id
+  end
+  def call(e)
+    args=e.split(/\\/)
+    if (args[args.size-1]=="exit")
+      $fdebug.write("Try to dispose "+e+"\n");
+      @id.dispose
+      return false
+    end
+    if (args[args.size-1]=="new")
+      @p=Jiecao.new
+      @p.set CBrower.new(Dir.pwd+"\\a.html",240+50+5,360+50+5,240,360,@p)
+      return false
+    end
+    $fdebug.write("Try to "+e+"\n");$fdebug.flush;return true # 如果是false就禁止！！
+  end
+end
+@p=Jiecao.new
+@p.set CBrower.new(Dir.pwd+"\\a.html",25,25,540,420,@p)
+#@pp=Jiecao.new
+#@pp.set CBrower.new(Dir.pwd+"\\a.html",50,50+360,240,360,@pp)
 #==============================================================================
 # ■ Loader
 #------------------------------------------------------------------------------
@@ -74,7 +98,7 @@ File.open("Data/Scripts/source/rakefile.info","rb"){|f|
 	}
 }
 #DEBUG Mode
-#$fdebug=File.new("debug_#{Time.now.to_i}.log","w")
+#
 #set_trace_func proc{ |event, file, line,id, binding, klass, *rest|
 #$fdebug.write(sprintf("<%s> %8s %s:%d %s %s\n", Time.now,event, file, line,klass, id))
 #

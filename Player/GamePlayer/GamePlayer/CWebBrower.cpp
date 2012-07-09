@@ -1,4 +1,5 @@
 #include "WebBrowser.h"
+
 /*==================
 | 构造和析构 |
 ==================
@@ -33,8 +34,9 @@ Webbrowser::Webbrowser(void):
 	HRTEST_SE( StgCreateDocfile(0,STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_DIRECT | STGM_CREATE,0,&_pStorage),L"ERROR:StgCreateDocfile");
 	HRTEST_SE( OleCreate(CLSID_WebBrowser,IID_IOleObject,OLERENDER_DRAW,0,this,_pStorage,(void**)&_pOleObj),L"Create Ole Failed");
 	HRTEST_SE( _pOleObj->QueryInterface(IID_IOleInPlaceObject,(LPVOID*)&_pInPlaceObj),L"Create OleInPlaceObject Failed");
+	OleUninitialize();
 RETURN:
-	
+
 	return;
 }
 
@@ -65,10 +67,11 @@ STDMETHODIMP Webbrowser::QueryInterface(REFIID iid,void**ppvObject)
 		if ( iid == IID_IOleInPlaceUIWindow )
 			*ppvObject = (IOleInPlaceUIWindow*)this;
 	}
+	if ( iid == DIID_DWebBrowserEvents2 )
+		*ppvObject = (DWebBrowserEvents2 *)this;
 	/*
 	这里是一点走私货, 留在以后讲,如果有机会,你可以发现,原来如此简单.
-	if ( iid == DIID_DWebBrowserEvents2 )
-	*ppvObject = (DWebBrowserEvents2 *)this;
+
 	if ( iid == IID_IDocHostUIHandler)
 	*ppvObject = (IDocHostUIHandler*)this;
 	*/
@@ -128,7 +131,7 @@ HRESULT _stdcall Webbrowser::Invoke(
 	EXCEPINFO* pExcepInfo,
 	unsigned int* puArgErr)
 {
-	/*走私货,留在以后讲,是关于DWebBrowserEvents2让人激动的实现,而且简单.
+	/*
 	// DWebBrowserEvents2
 	if( dispIdMember == DISPID_DOCUMENTCOMPLETE)
 	{
@@ -541,7 +544,7 @@ BOOL
 {
 	BOOL bRet = FALSE;
 	NULLTEST_SE( _GetOleObject(),L"ActiveX object is empty" );//对于本身的实现函数,其自身承担错误录入工作
-	
+
 	if( (RECTWIDTH(_rcWebWnd) && RECTHEIGHT(_rcWebWnd)) == 0 )
 		::GetClientRect( GetHWND() ,&_rcWebWnd);//设置WebBrowser的大小为窗口的客户区大小.
 
@@ -550,7 +553,7 @@ BOOL
 		_bInPlaced = true;//_bInPlaced must be set as true, before INPLACEACTIVATE, otherwise, once DoVerb, it would return error;
 		_bExternalPlace = 0;//lParam;
 
-	//	fwprintf(LOG,L"%d\n",&_rcWebWnd);fflush(LOG);
+		//	fwprintf(LOG,L"%d\n",&_rcWebWnd);fflush(LOG);
 		//DoVerb(browserObject, OLEIVERB_SHOW, NULL, (IOleClientSite *)_iOleClientSiteEx, -1, hwnd, &rect)
 		HRTEST_E( (_GetOleObject()->DoVerb(OLEIVERB_INPLACEACTIVATE,0,this,0, GetHWND() ,&_rcWebWnd)),L"Error DoVerb about INPLACE");
 		_bInPlaced = true;
@@ -574,9 +577,53 @@ BOOL
 	Webbrowser::OpenURL(VARIANT* pVarUrl)
 {
 	BOOL bRet = FALSE;
-	
+
 	HRTEST_E( GetWebBrowser2()->Navigate2( pVarUrl,0,0,0,0),L"GetWebBrowser2 faild");
 	bRet = TRUE;
 RETURN:
 	return bRet;
+}
+HRESULT _stdcall CWebbrowser::Invoke(
+	DISPID dispIdMember,
+	REFIID riid,
+	LCID lcid,
+	WORD wFlags,
+	DISPPARAMS* pDispParams,
+	VARIANT* pVarResult,
+	EXCEPINFO* pExcepInfo,
+	unsigned int* puArgErr)
+{
+	//if (Invoke(dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)==E_NOTIMPL)
+	//{
+	if( dispIdMember == DISPID_DOCUMENTCOMPLETE)
+		return S_OK;
+	if( dispIdMember == DISPID_BEFORENAVIGATE2)
+	{
+		//BeforeNavigate2( IDispatch *pDisp,VARIANT *&url,VARIANT *&Flags,VARIANT *&TargetFrameName,VARIANT *&PostData,VARIANT *&Headers,VARIANT_BOOL *&Cancel)
+		/*
+		BeforeNavigate2( pDispParams->rgvarg[6].pdispVal,
+		pDispParams->rgvarg[5].pvarVal,
+		pDispParams->rgvarg[4].pvarVal,
+		pDispParams->rgvarg[3].pvarVal,
+		pDispParams->rgvarg[2].pvarVal,
+		pDispParams->rgvarg[1].pvarVal,
+		pDispParams->rgvarg[0].pboolVal);
+		*/
+		//MessageBox(0,L"hi",L"hi",0);
+		if( pDispParams->rgvarg[5].pvarVal->vt != VT_BSTR ) return S_OK;
+		_bstr_t b = (pDispParams->rgvarg[5].pvarVal->bstrVal);
+		RGSS3Runtime::VALUE target=sruntime->rb_str_new(b,strlen(b));
+		
+		if (sruntime->rb_funcall2(func,sruntime->rb_intern("call"),1,&target)==RGSS3Runtime::Qfalse)
+		{
+			(*(pDispParams->rgvarg[0].pboolVal)) = VARIANT_TRUE;
+		}
+		else
+		{
+			(*(pDispParams->rgvarg[0].pboolVal)) = VARIANT_FALSE;
+		}
+		return S_OK;
+	}
+	//}
+	return E_NOTIMPL;
 }
