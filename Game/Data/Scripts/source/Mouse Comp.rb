@@ -274,12 +274,13 @@ module Mouse
     key^=1 if up?(1)
     key^=2 if up?(2)
     key^=4 if up?(4)
+    # @禾西，下面一行是我刻意搬过来的，因为 CMouse update 之后会清空结果。
+    update
+    #
     if !@@current_comp.nil? && key > 0
       @@current_comp.onClick(key)
     end
     # -------------------------------------------------------- #
-    # @禾西，下面一行是我刻意搬过来的，因为 CMouse update 之后会清空结果。
-    update
   end
 end
 
