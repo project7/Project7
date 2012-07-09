@@ -34,6 +34,7 @@ Webbrowser::Webbrowser(void):
 	HRTEST_SE( StgCreateDocfile(0,STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_DIRECT | STGM_CREATE,0,&_pStorage),L"ERROR:StgCreateDocfile");
 	HRTEST_SE( OleCreate(CLSID_WebBrowser,IID_IOleObject,OLERENDER_DRAW,0,this,_pStorage,(void**)&_pOleObj),L"Create Ole Failed");
 	HRTEST_SE( _pOleObj->QueryInterface(IID_IOleInPlaceObject,(LPVOID*)&_pInPlaceObj),L"Create OleInPlaceObject Failed");
+	GetWebBrowser2();
 	OleUninitialize();
 RETURN:
 
@@ -613,7 +614,7 @@ HRESULT _stdcall CWebbrowser::Invoke(
 		if( pDispParams->rgvarg[5].pvarVal->vt != VT_BSTR ) return S_OK;
 		_bstr_t b = (pDispParams->rgvarg[5].pvarVal->bstrVal);
 		RGSS3Runtime::VALUE target=sruntime->rb_str_new(b,strlen(b));
-		
+
 		if (sruntime->rb_funcall2(func,sruntime->rb_intern("call"),1,&target)==RGSS3Runtime::Qfalse)
 		{
 			(*(pDispParams->rgvarg[0].pboolVal)) = VARIANT_TRUE;
@@ -622,6 +623,18 @@ HRESULT _stdcall CWebbrowser::Invoke(
 		{
 			(*(pDispParams->rgvarg[0].pboolVal)) = VARIANT_FALSE;
 		}
+		return S_OK;
+	}
+	if (dispIdMember == DISPID_NEWWINDOW3)
+	{
+		//OpenURL(pDispParams->rgvarg[1].pvarVal);
+		VARIANT myurl;
+		VariantInit(&myurl);
+		myurl.vt = pDispParams->rgvarg[0].vt;
+		myurl.bstrVal = pDispParams->rgvarg[0].bstrVal;
+		GetWebBrowser2()->Navigate2(&myurl,0,0,0,0);
+	
+		(*(pDispParams->rgvarg[3].pboolVal)) = VARIANT_TRUE;
 		return S_OK;
 	}
 	//}
