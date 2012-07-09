@@ -303,6 +303,7 @@ CApiHook CreateAPIHooker;
 CApiHook ReadAPIHooker;
 CApiHook CloseAPIHooker;
 CApiHook GFZHooker;
+
 // 从这里植入RM脚本
 //const string inner_srcipt = "$BINDING = binding;path = 0.chr * 612;Win32API.new(\"kernel32\", \"GetModuleFileName\", \"lpl\", \"l\").call(0, path, path.size);Win32API.new(path,\"RGSSXGuard\",\"\",\"\").call();eval(File.read(\"Data/Scripts/source/main.rb\"),$BINDING,\"Loader\");";
 const string inner_srcipt = "";
@@ -462,6 +463,7 @@ int
 	}
 }
 #pragma endregion
+
 int gameFPS;
 RV gamehwnd;
 RGSS3Runtime::VALUE RUBYCALL fps(RGSS3Runtime::VALUE obj)
@@ -557,8 +559,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		// GetClassName Hooker
 		GetClassNameHooker.Initialize(L"user32.dll","GetClassNameA",(FARPROC)ResetGetClassNameA);
 		GetClassNameHooker.SetHookOn();
-		//End
 
+
+		//End
+		
 		sruntime = new RGSS3Runtime(cGamePlayer);
 		AbstractRGSSExtension::InitRuby(sruntime,cGamePlayer);
 		RGSS3Runtime::VALUE mod = sruntime->rb_define_module("RGSSX");
