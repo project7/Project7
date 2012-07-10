@@ -283,5 +283,24 @@ namespace LynnEditor
             IFindReplaceHandler h = this.DockPanel.ActiveContent as IFindReplaceHandler;
             if (h != null && h.CanShowReplaceDialog) h.ShowReplaceDialog();
         }
+
+        private void menuEditFindAll_Click(object sender, EventArgs e)
+        {
+            var dialog = new FindAllDialog();
+            dialog.ShowDialog();
+
+            if (dialog.DialogResult == DialogResult.OK)
+            {
+                var keyword = dialog.Keyword;
+                var result = FileManager.FindAll(keyword);
+                var file = new FindAllResultFile(keyword, result);
+                file.ShowEditor();
+                try
+                {
+                    file.Editor.Show(Program.Logger.Editor.Pane, Program.Logger.Editor);
+                }
+                catch { }
+            }
+        }
     }
 }

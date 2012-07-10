@@ -20,7 +20,7 @@ namespace LynnEditor.Debugger
         public bool Active = false;
 
         public ProcessStandardStreamFile(Process Process)
-            : base(String.Format(@"\\.\Process\{0}", Process.Id))
+            : base(String.Format(@"\\.\LynnEditor\Process\{0}\StandardStream", Process.Id))
         {
             this.Process = Process;
             this.Active = true;

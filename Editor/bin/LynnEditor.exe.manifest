@@ -41,14 +41,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LynnEditor.exe" size="88064">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LynnEditor.exe" size="89088">
       <assemblyIdentity name="LynnEditor" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>z1gU6wZ32j8LLPF9MKLb7rR9CD0=</dsig:DigestValue>
+        <dsig:DigestValue>sKbFiGl8ER4xgWFphZ2iQX8qJOQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -65,14 +65,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WeifenLuo.WinFormsUI.Docking.dll" size="434176">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WeifenLuo.WinFormsUI.Docking.dll" size="438272">
       <assemblyIdentity name="WeifenLuo.WinFormsUI.Docking" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>JsB/ZBNMhxz79xhlUn8PM3/NcX0=</dsig:DigestValue>
+        <dsig:DigestValue>5qiEWsBL72TBe2XhNYE16SbXx9g=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
