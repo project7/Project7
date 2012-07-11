@@ -7,19 +7,27 @@ namespace LynnEditor
     public class NavPoint
     {
         public string FileIdentify;
-        public NavPoint(string FileIdentify)
+
+        private string friendlyName;
+        public NavPoint(AbstractFile file)
         {
-            this.FileIdentify = FileIdentify;
+            this.FileIdentify = file.filename;
+            this.friendlyName = file.ToString();
         }
 
         public void Goto()
         {
             FileManager.Find(this.FileIdentify).Goto(this);
+            try
+            {
+                FileManager.Find(this.FileIdentify).Editor.Focus();
+            }
+            catch { }
         }
 
         public override string ToString()
         {
-            return this.FileIdentify;
+            return this.friendlyName;
         }
     }
 }

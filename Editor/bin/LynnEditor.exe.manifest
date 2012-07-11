@@ -41,38 +41,38 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LynnEditor.exe" size="89088">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LynnEditor.exe" size="90112">
       <assemblyIdentity name="LynnEditor" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>sKbFiGl8ER4xgWFphZ2iQX8qJOQ=</dsig:DigestValue>
+        <dsig:DigestValue>8bITkr+5UCfV8NhdKvFBjVxgXQ8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ScintillaNet.dll" size="601088">
-      <assemblyIdentity name="ScintillaNet" version="2.2.4573.40483" publicKeyToken="948D6C9751444115" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ScintillaNet.dll" size="569344">
+      <assemblyIdentity name="ScintillaNet" version="2.2.4575.38980" publicKeyToken="948D6C9751444115" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>iqop9KBkF7Twgek4cGhNriP7YOA=</dsig:DigestValue>
+        <dsig:DigestValue>tggRubR8Ccs/LZNDemKjx7TSBZo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WeifenLuo.WinFormsUI.Docking.dll" size="438272">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WeifenLuo.WinFormsUI.Docking.dll" size="409600">
       <assemblyIdentity name="WeifenLuo.WinFormsUI.Docking" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>5qiEWsBL72TBe2XhNYE16SbXx9g=</dsig:DigestValue>
+        <dsig:DigestValue>PFhnR4kQWpWspshfafcNgPwmsho=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

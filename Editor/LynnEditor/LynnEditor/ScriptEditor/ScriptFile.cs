@@ -41,7 +41,7 @@ namespace LynnEditor
             for (int i = 0; i < lines.Length; i++)
             {
                 if (lines[i].IndexOf(Keyword, 0) >= 0)
-                    result.Add(new ScriptFileNavPoint(this.filename) { LineNo = i, LineText = lines[i]});
+                    result.Add(new ScriptFileNavPoint(this) { LineNo = i, LineText = lines[i], Keyword = Keyword});
             }
 
             return result.ToArray();
@@ -55,7 +55,10 @@ namespace LynnEditor
                 this.ShowEditor();
                 try
                 {
-                    (this.editor as ScriptEditor).editor.Lines[s.LineNo].Goto();
+                    (this.editor as ScriptEditor).editor.Lines[s.LineNo].Select();
+                    if (s.Keyword != null)
+                        (this.editor as ScriptEditor).editor.FindReplace.HighlightAll((this.editor as ScriptEditor).editor.FindReplace.FindAll(s.Keyword));
+                    (this.editor as ScriptEditor).editor.Focus();
                 }
                 catch { }
                 return;
@@ -68,12 +71,13 @@ namespace LynnEditor
     {
         public int LineNo;
         public string LineText;
+        public string Keyword;
 
-        public ScriptFileNavPoint(string id) : base(id) { }
+        public ScriptFileNavPoint(AbstractFile file) : base(file) { }
 
         public override string ToString()
         {
-            return String.Format("{0}:{1}: {2}", this.FileIdentify, this.LineNo, this.LineText);
+            return String.Format("{0}({1}): {2}", base.ToString(), this.LineNo + 1, this.LineText);
         }
     }
 }

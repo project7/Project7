@@ -19,6 +19,7 @@ namespace LynnEditor
             this.Controls.Add(this.view);
 
             Array.ForEach<NavPoint>(file.Result, this.view.AddItem);
+            this.view.SetKeyword(file.Keyword);
         }
     }
 }
