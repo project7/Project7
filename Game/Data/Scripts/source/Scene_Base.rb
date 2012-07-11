@@ -47,6 +47,7 @@ class Scene_Base
   def update_basic
     Graphics.update
     Input.update
+    Mouse.update
     update_all_windows
   end
   #--------------------------------------------------------------------------

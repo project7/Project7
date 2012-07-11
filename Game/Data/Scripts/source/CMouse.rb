@@ -35,5 +35,3 @@ module CMouse
     return true
   end
 end
-
-Mouse = CMouse
