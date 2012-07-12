@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Game_Player
 #------------------------------------------------------------------------------
@@ -144,7 +144,7 @@ class Game_Player < Game_Character
   # ● 判定是否调试时穿透状态
   #--------------------------------------------------------------------------
   def debug_through?
-    $TEST && Input.press?(:CTRL)
+    Input.press?(:CTRL)
   end
   #--------------------------------------------------------------------------
   # ● 判定是否碰撞（包含跟随角色）
@@ -277,8 +277,27 @@ class Game_Player < Game_Character
   # ● 由方向键移动
   #--------------------------------------------------------------------------
   def move_by_input
-    return if !movable? || $game_map.interpreter.running?
-    move_straight(Input.dir4) if Input.dir4 > 0
+    return if $game_map.interpreter.running?
+    if movable?
+      if Input.dir4 > 0
+        move_straight(Input.dir4)
+        $game_player.auto_move_path=[]
+      end
+    end
+    if Mouse.click?(1)                                #鼠标点击寻路
+      x_dis = $game_player.x-Fuc.getpos_by_screenpos(Mouse.pos)[0]
+      y_dis = $game_player.y-Fuc.getpos_by_screenpos(Mouse.pos)[1]
+      if x_dis.abs+y_dis.abs == 1 && movable?
+        dir = Fuc::DIR_LIST[x_dis][y_dis]
+        if $game_player.direction == dir
+          check_action_event
+        else
+          move_straight(dir)
+        end
+      elsif x_dis.abs+y_dis.abs > 1
+        Fuc.sm(*Fuc.getpos_by_screenpos(Mouse.pos))
+      end
+    end
   end
   #--------------------------------------------------------------------------
   # ● 判定是否可以移动
@@ -375,7 +394,7 @@ class Game_Player < Game_Character
   # ● 更新遇敌
   #--------------------------------------------------------------------------
   def update_encounter
-    return if $TEST && Input.press?(:CTRL)
+    return if Input.press?(:CTRL)
     return if $game_party.encounter_none?
     return if in_airship?
     return if @move_route_forcing

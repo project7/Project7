@@ -1,37 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{604AF41B-F737-4226-BF9C-C055EC11DAC6}</ProjectGuid>
+    <ProjectGuid>{36CE77D0-D0E1-412B-AAD4-5AA95A9DABD0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LynnEditor</RootNamespace>
     <AssemblyName>LynnEditor</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetZone>LocalIntranet</TargetZone>
+    <GenerateManifests>true</GenerateManifests>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -40,8 +25,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\</OutputPath>
@@ -58,41 +42,72 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\AbstractFile.cs" />
     <Compile Include="Core\AbstractEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Core\IBehaviorHandler\IClipboardHandler.cs" />
-    <Compile Include="Core\IBehaviorHandler\IDeleteHandler.cs" />
-    <Compile Include="Core\IBehaviorHandler\ISelectAllHandler.cs" />
-    <Compile Include="Core\IBehaviorHandler\IUndoHandler.cs" />
-    <Compile Include="Core\IBehaviorHandler\IFindReplaceHandler.cs" />
-    <Compile Include="Debugger\ProcessStandardStreamEditor.cs">
+    <Compile Include="Core\AbstractFile.cs" />
+    <Compile Include="Core\FindAllDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Debugger\ProcessStandardStreamFile.cs" />
-    <Compile Include="ScriptEditor\ScriptListEditorInsertDialog.cs">
+    <Compile Include="Core\FindAllDialog.Designer.cs">
+      <DependentUpon>FindAllDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\FindAllResultEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ScriptEditor\ScriptListEditorInsertDialog.Designer.cs">
-      <DependentUpon>ScriptListEditorInsertDialog.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Core\FindAllResultFile.cs" />
+    <Compile Include="Core\NavPoint.cs" />
+    <Compile Include="Core\FileManager.cs" />
+    <Compile Include="Core\IBehavior\IClipboardHandler.cs" />
+    <Compile Include="Core\IBehavior\IDeleteHandler.cs" />
+    <Compile Include="Core\IBehavior\IFindReplaceHandler.cs" />
+    <Compile Include="Core\IBehavior\ISelectAllHandler.cs" />
+    <Compile Include="Core\IBehavior\IUndoHandler.cs" />
+    <Compile Include="Core\IBehavior\IFindAllProvider.cs" />
     <Compile Include="Core\LogEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Core\LogFile.cs" />
-    <Compile Include="ScriptEditor\ScriptListFile.cs" />
-    <Compile Include="ScriptEditor\ScriptListEditorRenameDialog.cs">
+    <Compile Include="Debugger\ProcessStandardStreamEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ScriptEditor\ScriptListEditorRenameDialog.Designer.cs">
+    <Compile Include="Debugger\ProcessStandardStreamFile.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Core\FindAllDialog.resx">
+      <DependentUpon>FindAllDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScriptEditor\ScriptListEditorInsertDialog.resx">
+      <DependentUpon>ScriptListEditorInsertDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScriptEditor\ScriptListEditorRenameDialog.resx">
       <DependentUpon>ScriptListEditorRenameDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Workbench.resx">
+      <DependentUpon>Workbench.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UI\EditContextMenuStrip.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\LynnControls\LynnListbox.cs">
-      <SubType>Component</SubType>
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ScriptEditor\ScriptEditor.cs">
       <SubType>Form</SubType>
@@ -100,6 +115,34 @@
     <Compile Include="ScriptEditor\ScriptFile.cs" />
     <Compile Include="ScriptEditor\ScriptListEditor.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScriptEditor\ScriptListEditorInsertDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScriptEditor\ScriptListEditorInsertDialog.Designer.cs">
+      <DependentUpon>ScriptListEditorInsertDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptEditor\ScriptListEditorRenameDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScriptEditor\ScriptListEditorRenameDialog.Designer.cs">
+      <DependentUpon>ScriptListEditorRenameDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptEditor\ScriptListFile.cs" />
+    <Compile Include="UI\Scintilla\Scintilla.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\EditContextMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\LynnControls\LynnListbox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Scintilla\NavPointListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Scintilla\RubyScintilla.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\ToolStripRender\Office2007ColorTable.cs" />
     <Compile Include="UI\ToolStripRender\Office2007Helpers.cs" />
@@ -109,38 +152,6 @@
     </Compile>
     <Compile Include="Workbench.Designer.cs">
       <DependentUpon>Workbench.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <EmbeddedResource Include="ScriptEditor\ScriptListEditorInsertDialog.resx">
-      <DependentUpon>ScriptListEditorInsertDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ScriptEditor\ScriptListEditorRenameDialog.resx">
-      <DependentUpon>ScriptListEditorRenameDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Workbench.resx">
-      <DependentUpon>Workbench.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -154,51 +165,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SaveAll.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ClosePreviewHS.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Play.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Cut.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Copy.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Paste.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Delete.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Edit_Redo.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Edit_Undo.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Find.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
+    <Content Include="Resources\ClosePreviewHS.bmp" />
+    <Content Include="Resources\Copy.bmp" />
+    <Content Include="Resources\Cut.bmp" />
+    <Content Include="Resources\Delete.bmp" />
+    <Content Include="Resources\Edit_Redo.bmp" />
+    <Content Include="Resources\Edit_Undo.bmp" />
+    <Content Include="Resources\Find.bmp" />
+    <Content Include="Resources\Paste.bmp" />
+    <Content Include="Resources\Play.bmp" />
+    <Content Include="Resources\SaveAll.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

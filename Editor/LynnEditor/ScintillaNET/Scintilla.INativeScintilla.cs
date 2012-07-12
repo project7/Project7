@@ -3157,8 +3157,9 @@ namespace ScintillaNet
 
 		internal void FireHotSpotDoubleclick(NativeScintillaEventArgs ea)
 		{
-			if(Events[_hotSpotDoubleClickEventKey] != null)
-				((EventHandler<NativeScintillaEventArgs>)Events[_hotSpotDoubleClickEventKey])(this, ea);
+			//if(Events[_hotSpotDoubleClickEventKey] != null)
+				//((EventHandler<NativeScintillaEventArgs>)Events[_hotSpotDoubleClickEventKey])(this, ea);
+            //deleted by orzfly due to an unknown bug
 
 			Point p = PointToClient(new Point(MousePosition.X, MousePosition.Y));
 			OnHotspotDoubleClick(new ScintillaMouseEventArgs(p.X, p.Y, ea.SCNotification.position));

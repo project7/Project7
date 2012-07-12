@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Game_CharacterBase
 #------------------------------------------------------------------------------
@@ -32,6 +32,7 @@ class Game_CharacterBase
   attr_accessor :animation_id             # 动画 ID
   attr_accessor :balloon_id               # 心情图标 ID
   attr_accessor :transparent              # 透明状态
+  attr_accessor :auto_move_path     # 非强制移动路径
   #--------------------------------------------------------------------------
   # ● 初始化对象
   #--------------------------------------------------------------------------
@@ -53,6 +54,7 @@ class Game_CharacterBase
     @character_index = 0
     @move_speed = 4
     @move_frequency = 6
+    @auto_move_path = []
     @walk_anime = true
     @step_anime = false
     @direction_fix = false
@@ -274,9 +276,25 @@ class Game_CharacterBase
   #--------------------------------------------------------------------------
   def update
     update_animation
+    update_auto_path
     return update_jump if jumping?
     return update_move if moving?
     return update_stop
+  end
+  #--------------------------------------------------------------------------
+  # ● 非强制自动行走
+  #--------------------------------------------------------------------------
+  def update_auto_path
+    if @auto_move_path && @auto_move_path != []
+      unless moving?
+        if passable?(@x,@y,@auto_move_path[0]) && movable? && !$game_map.interpreter.running?
+          move_straight(@auto_move_path[0])
+          @auto_move_path.delete_at(0)
+        else
+          @auto_move_path = []
+        end
+      end
+    end
   end
   #--------------------------------------------------------------------------
   # ● 更新跳跃

@@ -9,7 +9,7 @@ namespace LynnEditor
         private string log;
 
         public LogFile()
-            : base("")
+            : base(@"\\.\LynnEditor\Log")
         {
             this.log = "";
         }

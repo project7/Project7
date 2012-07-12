@@ -15,6 +15,7 @@ namespace LynnEditor
         public AbstractFile(string filename)
         {
             this.filename = filename;
+            FileManager.Open(this);
         }
 
         protected abstract void Save();
@@ -37,6 +38,8 @@ namespace LynnEditor
 
         public void PendingDelete()
         {
+            FileManager.Close(this);
+
             this.pendingDelete = true;
 
             if (this.editor != null)
@@ -103,6 +106,11 @@ namespace LynnEditor
         public void MakeDirty()
         {
             this.IsDirty = true;
+        }
+
+        public virtual void Goto(NavPoint pt)
+        {
+            this.ShowEditor();
         }
     }
 }

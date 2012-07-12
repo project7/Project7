@@ -66,24 +66,25 @@ class AStar
   # 開始尋路
   # ============================================================== #
   # 主邏輯
-  def do_search(print_rst = true)
+  def do_search(print_rst = false)
     x = @ox;y = @oy
     @g_data[x, y] = 2;@f_data[x, y] = 1
     @openList << [x, y]
     t0 = Time.now
     t = 0
-    while (!@search_done)
+    begin
       t += 1
       point = @openList.shift
       return [] if point == nil
       check_4dir(point[0], point[1]) # ->檢查 4 方向
+    end until @search_done
+    if @g_data[@tx,@ty] == 1
+      @tx = point[0];@ty = point[1];
     end
     t1 = Time.now
     make_path # ->生成路徑
-    if print_rst
-      print "#{t1 - t0}, #{t}\n"
-      print_data # ->打印數據
-    end
+    #  print "#{t1 - t0}, #{t}\n"
+    #  print_data # ->打印數據
     return @path
   end
  
@@ -113,7 +114,7 @@ class AStar
       point = @openList[0]
       if point.nil?
         @openList.push [x, y] 
-      elsif (f <= @f_data[point[1], point[0]])
+      elsif (f <= @f_data[point[0], point[1]])
         @openList.unshift [x, y] 
       else
         @openList.push [x, y] 
@@ -152,7 +153,7 @@ class AStar
   # ============================================================== #
   # 生成單步
   def make_step(x, y, dir)
-    if @g_data[x, y].nil?
+    if @g_data[x, y].nil? || @p_data[x, y] == 1
       return nil
     end
     if (@g - @g_data[x, y]) == 1 || @g == 1
