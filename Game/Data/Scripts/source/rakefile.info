@@ -116,5 +116,10 @@ Window_Command_2
 Window_ItemList_2
 Furnace
 Wayfinding
+Effect_Area
 UI
+Actor
+Actor_date
+Map_Battle
 Fuc
+Var_init

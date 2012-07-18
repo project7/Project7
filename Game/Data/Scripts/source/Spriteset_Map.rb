@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Spriteset_Map
 #------------------------------------------------------------------------------
@@ -6,6 +6,8 @@
 #==============================================================================
 
 class Spriteset_Map
+
+  attr_accessor :fillup
   #--------------------------------------------------------------------------
   # ● 初始化对象
   #--------------------------------------------------------------------------
@@ -13,6 +15,7 @@ class Spriteset_Map
     create_viewports
     create_tilemap
     create_parallax
+    create_ui_view
     create_characters
     create_shadow
     create_weather
@@ -56,6 +59,14 @@ class Spriteset_Map
     @parallax.z = -100
   end
   #--------------------------------------------------------------------------
+  # ● 生成战旗UI
+  #--------------------------------------------------------------------------
+  def create_ui_view
+    @fillup = [Sprite.new(@viewport1),Sprite.new(@viewport1),Sprite.new(@viewport1),Sprite.new(@viewport1)]
+    @fillup.each_with_index{|i,j| i.opacity = Fuc::SP_OPA[j]}
+    @fillup[0].bitmap = Fuc.mouse_icon
+  end
+  #--------------------------------------------------------------------------
   # ● 生成人物精灵
   #--------------------------------------------------------------------------
   def create_characters
@@ -72,6 +83,7 @@ class Spriteset_Map
     @character_sprites.push(Sprite_Character.new(@viewport1, $game_player))
     @map_id = $game_map.map_id
   end
+
   #--------------------------------------------------------------------------
   # ● 生成飞艇影子
   #--------------------------------------------------------------------------
@@ -179,6 +191,7 @@ class Spriteset_Map
     update_tilemap
     update_parallax
     update_characters
+    update_ui_view
     update_shadow
     update_weather
     update_pictures
@@ -222,6 +235,25 @@ class Spriteset_Map
   def update_characters
     refresh_characters if @map_id != $game_map.map_id
     @character_sprites.each {|sprite| sprite.update }
+  end
+  #--------------------------------------------------------------------------
+  # ● 更新战旗地板
+  #--------------------------------------------------------------------------
+  def update_ui_view
+    [*0..3].each do |i|
+      case i
+      when 0
+        tpos = Fuc.getpos_by_screenpos(Mouse.pos)
+        @fillup[0].x = $game_map.adjust_x(tpos[0]) * 32
+        @fillup[0].y = $game_map.adjust_y(tpos[1]) * 32
+      when 1
+        return unless $map_battle
+        if $map_battle.movearea
+          @fillup[1].x = $map_battle.movearea.screen_x
+          @fillup[1].y = $map_battle.movearea.screen_y
+        end
+      end
+    end
   end
   #--------------------------------------------------------------------------
   # ● 更新飞艇影子

@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Game_BattlerBase
 #------------------------------------------------------------------------------
@@ -50,12 +50,13 @@ class Game_BattlerBase
   #--------------------------------------------------------------------------
   attr_reader   :hp                       # HP
   attr_reader   :mp                       # MP
-  attr_reader   :tp                       # TP
+  attr_reader   :ap                       # AP
   #--------------------------------------------------------------------------
   # ● 各种能力值的简易访问方法
   #--------------------------------------------------------------------------
   def mhp;  param(0);   end    # 最大HP          Maximum Hit Point
   def mmp;  param(1);   end    # 最大MP          Maximum Magic Point
+  def map;  xparam(9);  end    # AP最大值      Maximum Action Point
   def atk;  param(2);   end    # 物理攻击        ATtacK power
   def def;  param(3);   end    # 物理防御        DEFense power
   def mat;  param(4);   end    # 魔法攻击        Magic ATtack power
@@ -71,7 +72,6 @@ class Game_BattlerBase
   def cnt;  xparam(6);  end    # 反击几率        CouNTer attack rate
   def hrg;  xparam(7);  end    # HP再生速度      Hp ReGeneration rate
   def mrg;  xparam(8);  end    # MP再生速度      Mp ReGeneration rate
-  def trg;  xparam(9);  end    # TP再生速度      Tp ReGeneration rate
   def tgr;  sparam(0);  end    # 受到攻击的几率        TarGet Rate
   def grd;  sparam(1);  end    # 防御效果比率    GuaRD effect rate
   def rec;  sparam(2);  end    # 恢复效果比率    RECovery effect rate
@@ -86,7 +86,7 @@ class Game_BattlerBase
   # ● 初始化对象
   #--------------------------------------------------------------------------
   def initialize
-    @hp = @mp = @tp = 0
+    @hp = @mp = @ap = 0
     @hidden = false
     clear_param_plus
     clear_states

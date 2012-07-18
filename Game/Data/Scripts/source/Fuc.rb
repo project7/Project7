@@ -1,6 +1,7 @@
 ﻿module Fuc
 
   DIR_LIST = [[0,8,2],[4],[6]]# 方向表，方便计算
+  SP_OPA = [255,100,255,255] #颜色表，方便计算
 
 # 寻路
   def self.sm(x,y)
@@ -20,6 +21,14 @@
     game_pos[0] = (pos[0]+$game_map.display_x*32).to_i/32
     game_pos[1] = (pos[1]+$game_map.display_y*32).to_i/32
     return game_pos
+  end
+  
+  # 鼠标指向地板的选框
+  def self.mouse_icon
+    a = Bitmap.new(32,32)
+    a.gradient_fill_rect(0, 0, 32, 32, Color.new(255,0,0,200), Color.new(180,120,0,200),true)
+    a.gradient_fill_rect(0, 0, 32, 32, Color.new(180,120,0,150),Color.new(255,0,0,150),true)
+    return a
   end
 
 end

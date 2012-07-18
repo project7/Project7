@@ -74,8 +74,8 @@ class Jiecao
     $fdebug.write("Try to "+e+"\n");$fdebug.flush;return true # 如果是false就禁止！！
   end
 end
-@p=Jiecao.new
-@p.set CBrower.new(Dir.pwd+"\\a.html",25,25,540,420,@p)
+#@p=Jiecao.new
+#@p.set CBrower.new(Dir.pwd+"\\a.html",25,25,540,420,@p)
 #@pp=Jiecao.new
 #@pp.set CBrower.new(Dir.pwd+"\\a.html",50,50+360,240,360,@pp)
 #==============================================================================

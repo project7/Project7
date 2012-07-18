@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Scene_Map
 #------------------------------------------------------------------------------
@@ -6,6 +6,8 @@
 #==============================================================================
 
 class Scene_Map < Scene_Base
+
+  attr_accessor :spriteset
   #--------------------------------------------------------------------------
   # ● 开始处理
   #--------------------------------------------------------------------------
@@ -79,6 +81,58 @@ class Scene_Map < Scene_Base
     update_encounter unless scene_changing?
     update_call_menu unless scene_changing?
     update_call_debug unless scene_changing?
+    update_battle_event unless scene_changing?
+  end
+  #--------------------------------------------------------------------------
+  # ● 更新战斗时鼠标点击事件
+  #--------------------------------------------------------------------------
+  def update_battle_event
+    if $game_switches[1]
+      if Mouse.down?(1)
+        mousexy = Fuc.getpos_by_screenpos(Mouse.pos)
+        $friends.each do |i|
+          body = i.event_id == 0 ? $game_player : $game_map.events[i.event_id]
+          if body.x == mousexy[0] && body.y == mousexy[1]
+            $sel_body = [body,0]
+            return
+          end
+        end
+        $enemies.each do |i|
+          body = i.event_id == 0 ? $game_player : $game_map.events[i.event_id]
+          if body.x == mousexy[0] && body.y == mousexy[1]
+            $sel_body = [body,1]
+            return
+          end
+        end
+        $sel_body = nil
+        return
+      end
+      if Mouse.press?(2)
+        Mouse.set_cursor(Mouse::EmptyCursor)
+        @click_pos ||= Mouse.pos
+        dis_x = (Mouse.pos[0]-@click_pos[0]).to_f/32
+        dis_y = (Mouse.pos[1]-@click_pos[1]).to_f/32
+        $game_map.set_display_pos($game_map.parallax_x+dis_x,$game_map.parallax_y+dis_y)
+        Mouse.set_pos(*@click_pos)
+      elsif Mouse.up?(2)
+        Mouse.set_cursor(Mouse::CursorFile)
+        Mouse.set_pos(*@click_pos)
+        @target_pos = [$map_battle.cur_actor.x-9.5,$map_battle.cur_actor.y-7]
+        @last_sc_pos = [$game_map.parallax_x+1,$game_map.parallax_y+1]
+        @click_pos = nil
+      elsif @target_pos
+        now_pos = [$game_map.parallax_x,$game_map.parallax_y]
+        if (@last_sc_pos[0]-now_pos[0]).abs <= 0.03125 && (@last_sc_pos[1]-now_pos[1]).abs <= 0.03125
+          $game_map.set_display_pos(*@target_pos)
+          @target_pos = nil
+        else
+          sx = (@target_pos[0].to_f - now_pos[0])/5
+          sy = (@target_pos[1].to_f - now_pos[1])/5
+          $game_map.set_display_pos(now_pos[0]+sx,now_pos[1]+sy)
+          @last_sc_pos = now_pos
+        end
+      end
+    end
   end
   #--------------------------------------------------------------------------
   # ● 更新画面（消退用）

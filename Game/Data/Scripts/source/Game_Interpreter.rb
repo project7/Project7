@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Game_Interpreter
 #------------------------------------------------------------------------------
@@ -1410,4 +1410,18 @@ class Game_Interpreter
     end
     eval(script)
   end
+  
+  def Duel!(end_req = "false")
+    $game_switches[1]=true
+    $map_battle = Map_Battle.new(end_req)
+  end
+  
+  def my_target(arr)
+    $enemies = arr
+  end
+  
+  def my_partner(arr)
+    $friends = arr
+  end
+  
 end

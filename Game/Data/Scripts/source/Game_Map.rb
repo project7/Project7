@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Game_Map
 #------------------------------------------------------------------------------
@@ -16,6 +16,8 @@ class Game_Map
   attr_reader   :display_x                # 显示 X 坐标
   attr_reader   :display_y                # 显示 Y 坐标
   attr_reader   :parallax_name            # 远景图文件名
+  attr_reader   :parallax_x            # 远景图X坐标
+  attr_reader   :parallax_y            # 远景图Y坐标
   attr_reader   :vehicles                 # 载具
   attr_reader   :battleback1_name         # 战斗背景（地面）文件名
   attr_reader   :battleback2_name         # 战斗背景（墙壁）文件名
