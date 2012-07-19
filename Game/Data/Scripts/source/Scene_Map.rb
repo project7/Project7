@@ -109,6 +109,7 @@ class Scene_Map < Scene_Base
       end
       if Mouse.press?(2)
         Mouse.set_cursor(Mouse::EmptyCursor)
+        SceneManager.scene.spriteset.fillup[0].visible = false
         @click_pos ||= Mouse.pos
         dis_x = (Mouse.pos[0]-@click_pos[0]).to_f/32
         dis_y = (Mouse.pos[1]-@click_pos[1]).to_f/32
@@ -116,6 +117,7 @@ class Scene_Map < Scene_Base
         Mouse.set_pos(*@click_pos)
       elsif Mouse.up?(2)
         Mouse.set_cursor(Mouse::CursorFile)
+        SceneManager.scene.spriteset.fillup[0].visible = true
         Mouse.set_pos(*@click_pos)
         @target_pos = [$map_battle.cur_actor.x-9.5,$map_battle.cur_actor.y-7]
         @last_sc_pos = [$game_map.parallax_x+1,$game_map.parallax_y+1]

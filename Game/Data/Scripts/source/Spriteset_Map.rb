@@ -65,6 +65,8 @@ class Spriteset_Map
     @fillup = [Sprite.new(@viewport1),Sprite.new(@viewport1),Sprite.new(@viewport1),Sprite.new(@viewport1)]
     @fillup.each_with_index{|i,j| i.opacity = Fuc::SP_OPA[j]}
     @fillup[0].bitmap = Fuc.mouse_icon
+    @fillup[0].z = 1
+    @fillup[1].z = 1
   end
   #--------------------------------------------------------------------------
   # ● 生成人物精灵
