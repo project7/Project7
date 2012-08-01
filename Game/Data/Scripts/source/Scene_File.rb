@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Scene_File
 #------------------------------------------------------------------------------
@@ -131,8 +131,8 @@ class Scene_File < Scene_MenuBase
   # ● 更新存档文件选择
   #--------------------------------------------------------------------------
   def update_savefile_selection
-    return on_savefile_ok     if Input.trigger?(:C)
-    return on_savefile_cancel if Input.trigger?(:B)
+    return on_savefile_ok     if $downkeys.included?($vkey[:Check])
+    return on_savefile_cancel if $downkeys.included?($vkey[:X])
     update_cursor
   end
   #--------------------------------------------------------------------------
@@ -152,10 +152,10 @@ class Scene_File < Scene_MenuBase
   #--------------------------------------------------------------------------
   def update_cursor
     last_index = @index
-    cursor_down (Input.trigger?(:DOWN))  if Input.repeat?(:DOWN)
-    cursor_up   (Input.trigger?(:UP))    if Input.repeat?(:UP)
-    cursor_pagedown   if Input.trigger?(:R)
-    cursor_pageup     if Input.trigger?(:L)
+    cursor_down ($downkeys.included?($vkey[:Down]))  if $upkeys.included?($vkey[:Down])
+    cursor_up   ($downkeys.included?($vkey[:Up]))    if $upkeys.included?($vkey[:Up])
+    cursor_pagedown   if $downkeys.included?($vkey[:R])
+    cursor_pageup     if $downkeys.included?($vkey[:L])
     if @index != last_index
       Sound.play_cursor
       @savefile_windows[last_index].selected = false

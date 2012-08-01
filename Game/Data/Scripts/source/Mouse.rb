@@ -53,6 +53,7 @@ module FSL
     TrueMouse = true               # 使用系统真实鼠标(否则用RM精灵代替)
     CursorFile = "Cursor.cur"       # 光标文件名(最好包含后缀)
     EmptyCursor = "Empty.cur"        #空光标
+    AttackCursor = "Attack.cur"        # 攻击光标
     CursorPath = "Graphics/System/" # 光标存放路径
     LKEY = 1
     RKEY = 2

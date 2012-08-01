@@ -138,13 +138,13 @@ class Game_Player < Game_Character
     return false if @move_route_forcing
     return false if $game_map.disable_dash?
     return false if vehicle
-    return Input.press?(:A)
+    return $presskeys.included?($vkey[:Run])
   end
   #--------------------------------------------------------------------------
   # ● 判定是否调试时穿透状态
   #--------------------------------------------------------------------------
   def debug_through?
-    Input.press?(:CTRL)
+    $presskeys.included?($vkey[:Test])
   end
   #--------------------------------------------------------------------------
   # ● 判定是否碰撞（包含跟随角色）
@@ -274,32 +274,6 @@ class Game_Player < Game_Character
     start_map_event(x, y, [1,2], true)
   end
   #--------------------------------------------------------------------------
-  # ● 由方向键移动
-  #--------------------------------------------------------------------------
-  def move_by_input
-    return if $game_map.interpreter.running?
-    if movable?
-      if Input.dir4 > 0
-        move_straight(Input.dir4)
-        $game_player.auto_move_path=[]
-      end
-    end
-    if Mouse.click?(1)                                #鼠标点击寻路
-      x_dis = $game_player.x-Fuc.getpos_by_screenpos(Mouse.pos)[0]
-      y_dis = $game_player.y-Fuc.getpos_by_screenpos(Mouse.pos)[1]
-      if x_dis.abs+y_dis.abs == 1 && movable?
-        dir = Fuc::DIR_LIST[x_dis][y_dis]
-        if $game_player.direction == dir
-          check_action_event
-        else
-          move_straight(dir)
-        end
-      elsif x_dis.abs+y_dis.abs > 1
-        Fuc.sm(*Fuc.getpos_by_screenpos(Mouse.pos))
-      end
-    end
-  end
-  #--------------------------------------------------------------------------
   # ● 判定是否可以移动
   #--------------------------------------------------------------------------
   def movable?
@@ -308,6 +282,7 @@ class Game_Player < Game_Character
     return false if @vehicle_getting_on || @vehicle_getting_off
     return false if $game_message.busy? || $game_message.visible
     return false if vehicle && !vehicle.movable?
+    return false if @cantmove
     return true
   end
   #--------------------------------------------------------------------------
@@ -317,7 +292,6 @@ class Game_Player < Game_Character
     last_real_x = @real_x
     last_real_y = @real_y
     last_moving = moving?
-    move_by_input
     super
     update_scroll(last_real_x, last_real_y)
     update_vehicle
@@ -384,7 +358,7 @@ class Game_Player < Game_Character
       $game_party.on_player_walk
       return if check_touch_event
     end
-    if movable? && Input.trigger?(:C)
+    if movable? && $downkeys.included?($vkey[:Check])
       return if get_on_off_vehicle
       return if check_action_event
     end
@@ -394,7 +368,7 @@ class Game_Player < Game_Character
   # ● 更新遇敌
   #--------------------------------------------------------------------------
   def update_encounter
-    return if Input.press?(:CTRL)
+    return if $presskeys.included?($vkey[:Test])
     return if $game_party.encounter_none?
     return if in_airship?
     return if @move_route_forcing

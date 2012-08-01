@@ -27,7 +27,7 @@ class Scene_Base
   #--------------------------------------------------------------------------
   def post_start
     perform_transition
-    Input.update
+    CInput.update
   end
   #--------------------------------------------------------------------------
   # ● 判定是否更改场景中
@@ -46,7 +46,7 @@ class Scene_Base
   #--------------------------------------------------------------------------
   def update_basic
     Graphics.update
-    Input.update
+    CInput.update
     Mouse.update
     update_all_windows
   end

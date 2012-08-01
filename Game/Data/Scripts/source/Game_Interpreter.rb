@@ -446,7 +446,7 @@ class Game_Interpreter
     when 10  # 护甲
       result = $game_party.has_item?($data_armors[@params[1]], @params[2])
     when 11  # 按下按钮
-      result = Input.press?(@params[1])
+      result = $presskeys.included?($vkey[@params[1]])
     when 12  # 脚本
       result = eval(@params[1])
     when 13  # 载具

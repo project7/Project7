@@ -33,6 +33,7 @@ class Game_CharacterBase
   attr_accessor :balloon_id               # 心情图标 ID
   attr_accessor :transparent              # 透明状态
   attr_accessor :auto_move_path     # 非强制移动路径
+  attr_accessor :cantmove                # 不能移动
   #--------------------------------------------------------------------------
   # ● 初始化对象
   #--------------------------------------------------------------------------
@@ -68,6 +69,7 @@ class Game_CharacterBase
     @animation_id = 0
     @balloon_id = 0
     @transparent = false
+    @cantmove = false
   end
   #--------------------------------------------------------------------------
   # ● 初始化私有成员变量
@@ -288,7 +290,11 @@ class Game_CharacterBase
     if @auto_move_path && @auto_move_path != []
       unless moving?
         if passable?(@x,@y,@auto_move_path[0]) && movable? && !$game_map.interpreter.running?
-          move_straight(@auto_move_path[0])
+          if $game_switches[1]
+            $map_battle.action(0,@auto_move_path[0])
+          else
+            move_straight(@auto_move_path[0])
+          end
           @auto_move_path.delete_at(0)
         else
           @auto_move_path = []

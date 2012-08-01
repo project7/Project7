@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Window_Selectable
 #------------------------------------------------------------------------------
@@ -282,12 +282,12 @@ class Window_Selectable < Window_Base
   def process_cursor_move
     return unless cursor_movable?
     last_index = @index
-    cursor_down (Input.trigger?(:DOWN))  if Input.repeat?(:DOWN)
-    cursor_up   (Input.trigger?(:UP))    if Input.repeat?(:UP)
-    cursor_right(Input.trigger?(:RIGHT)) if Input.repeat?(:RIGHT)
-    cursor_left (Input.trigger?(:LEFT))  if Input.repeat?(:LEFT)
-    cursor_pagedown   if !handle?(:pagedown) && Input.trigger?(:R)
-    cursor_pageup     if !handle?(:pageup)   && Input.trigger?(:L)
+    cursor_down ($downkeys.included?($vkey[:Down]))  if $upkeys.included?($vkey[:Down])
+    cursor_up   ($downkeys.included?($vkey[:Up]))    if $upkeys.included?($vkey[:Up])
+    cursor_right($downkeys.included?($vkey[:Right])) if $upkeys.included?($vkey[:Right])
+    cursor_left ($downkeys.included?($vkey[:Left]))  if $upkeys.included?($vkey[:Left])
+    cursor_pagedown   if !handle?(:pagedown) && $downkeys.included?($vkey[:R])
+    cursor_pageup     if !handle?(:pageup)   && $downkeys.included?($vkey[:L])
     Sound.play_cursor if @index != last_index
   end
   #--------------------------------------------------------------------------
@@ -295,10 +295,10 @@ class Window_Selectable < Window_Base
   #--------------------------------------------------------------------------
   def process_handling
     return unless open? && active
-    return process_ok       if ok_enabled?        && Input.trigger?(:C)
-    return process_cancel   if cancel_enabled?    && Input.trigger?(:B)
-    return process_pagedown if handle?(:pagedown) && Input.trigger?(:R)
-    return process_pageup   if handle?(:pageup)   && Input.trigger?(:L)
+    return process_ok       if ok_enabled?        && $downkeys.included?($vkey[:Check])
+    return process_cancel   if cancel_enabled?    && $downkeys.included?($vkey[:X])
+    return process_pagedown if handle?(:pagedown) && $downkeys.included?($vkey[:R])
+    return process_pageup   if handle?(:pageup)   && $downkeys.included?($vkey[:L])
   end
   #--------------------------------------------------------------------------
   # ● 获取确定处理的有效状态
@@ -318,7 +318,7 @@ class Window_Selectable < Window_Base
   def process_ok
     if current_item_enabled?
       Sound.play_ok
-      Input.update
+      CInput.update
       deactivate
       call_ok_handler
     else
@@ -336,7 +336,7 @@ class Window_Selectable < Window_Base
   #--------------------------------------------------------------------------
   def process_cancel
     Sound.play_cancel
-    Input.update
+    CInput.update
     deactivate
     call_cancel_handler
   end
@@ -351,7 +351,7 @@ class Window_Selectable < Window_Base
   #--------------------------------------------------------------------------
   def process_pageup
     Sound.play_cursor
-    Input.update
+    CInput.update
     deactivate
     call_handler(:pageup)
   end
@@ -360,7 +360,7 @@ class Window_Selectable < Window_Base
   #--------------------------------------------------------------------------
   def process_pagedown
     Sound.play_cursor
-    Input.update
+    CInput.update
     deactivate
     call_handler(:pagedown)
   end

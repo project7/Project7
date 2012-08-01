@@ -65,8 +65,9 @@ class Spriteset_Map
     @fillup = [Sprite.new(@viewport1),Sprite.new(@viewport1),Sprite.new(@viewport1),Sprite.new(@viewport1)]
     @fillup.each_with_index{|i,j| i.opacity = Fuc::SP_OPA[j]}
     @fillup[0].bitmap = Fuc.mouse_icon
-    @fillup[0].z = 1
+    @fillup[0].z = 3
     @fillup[1].z = 1
+    @fillup[2].z = 2
   end
   #--------------------------------------------------------------------------
   # ● 生成人物精灵
@@ -253,6 +254,12 @@ class Spriteset_Map
         if $map_battle.movearea
           @fillup[1].x = $map_battle.movearea.screen_x
           @fillup[1].y = $map_battle.movearea.screen_y
+        end
+      when 2
+        return unless $map_battle
+        if $map_battle.wayarea
+          @fillup[2].x = $map_battle.wayarea.screen_x
+          @fillup[2].y = $map_battle.wayarea.screen_y
         end
       end
     end

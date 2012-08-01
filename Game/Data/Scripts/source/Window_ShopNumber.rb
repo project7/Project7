@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Window_ShopNumber
 #------------------------------------------------------------------------------
@@ -117,10 +117,10 @@ class Window_ShopNumber < Window_Selectable
   # ● 更新数量
   #--------------------------------------------------------------------------
   def update_number
-    change_number(1)   if Input.repeat?(:RIGHT)
-    change_number(-1)  if Input.repeat?(:LEFT)
-    change_number(10)  if Input.repeat?(:UP)
-    change_number(-10) if Input.repeat?(:DOWN)
+    change_number(1)   if $upkeys.included?($vkey[:Right])
+    change_number(-1)  if $upkeys.included?($vkey[:Left])
+    change_number(10)  if $upkeys.included?($vkey[:Up])
+    change_number(-10) if $upkeys.included?($vkey[:Down])
   end
   #--------------------------------------------------------------------------
   # ● 更改数量

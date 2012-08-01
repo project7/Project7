@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Window_ShopStatus
 #------------------------------------------------------------------------------
@@ -115,7 +115,7 @@ class Window_ShopStatus < Window_Base
   # ● 更新翻页
   #--------------------------------------------------------------------------
   def update_page
-    if visible && Input.trigger?(:A) && page_max > 1
+    if visible && $downkeys.included?($vkey[:Run]) && page_max > 1
       @page_index = (@page_index + 1) % page_max
       refresh
     end

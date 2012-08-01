@@ -32,7 +32,8 @@ class AStar
   # ============================================================== #
   # 初始化數據
   # ============================================================== #
-  def initialize(map)
+  def initialize(map,actor)
+    @body = actor
     @map_width  = map.width
     @map_height = map.height
     @g_data = Table.new(@map_width, @map_height)
@@ -175,7 +176,7 @@ class AStar
     when 4 then x += 1;
     when 6 then x -= 1;
     end
-    return $game_player.passable?(x, y, dir)
+    return @body.passable?(x, y, dir)
   end
   # ============================================================== #
   # 檢查地圖是否超界

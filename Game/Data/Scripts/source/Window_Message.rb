@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Window_Message
 #------------------------------------------------------------------------------
@@ -270,7 +270,7 @@ class Window_Message < Window_Base
   # ● 监听“确定”键的按下，更新快进的标志
   #--------------------------------------------------------------------------
   def update_show_fast
-    @show_fast = true if Input.trigger?(:C)
+    @show_fast = true if $downkeys.included?($vkey[:Check])
   end
   #--------------------------------------------------------------------------
   # ● 输出一个字符后的等待
@@ -369,8 +369,8 @@ class Window_Message < Window_Base
   def input_pause
     self.pause = true
     wait(10)
-    Fiber.yield until Input.trigger?(:B) || Input.trigger?(:C)
-    Input.update
+    Fiber.yield until $downkeys.included?($vkey[:X]) || $downkeys.included?($vkey[:Check])
+    CInput.update
     self.pause = false
   end
   #--------------------------------------------------------------------------

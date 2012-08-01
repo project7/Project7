@@ -120,6 +120,10 @@ Effect_Area
 UI
 Actor
 Actor_date
+Buff
+Buff_data
+Skill
 Map_Battle
 Fuc
+Inputset
 Var_init

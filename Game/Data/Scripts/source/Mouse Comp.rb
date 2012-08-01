@@ -223,22 +223,22 @@ module Mouse
       rect.x = (w - rect.width)/2
       rect.y = (h - rect.height)/2
       getContents.draw_text(rect,str)
-      p "init #{self}"
+      #p "init #{self}"
     end
     # ------------------------------------------------------------------ #
     def onLeave
       msg = str == "" ? self : str
-      p "leave #{msg}"
+      #p "leave #{msg}"
     end
     # ------------------------------------------------------------------ #
     def onEnter
       msg = str == "" ? self : str
-      p "enter #{msg}"
+      #p "enter #{msg}"
     end
     # ------------------------------------------------------------------ #
     def onClick(key)
       msg = str == "" ? self : str
-      p "click #{msg}"
+      #p "click #{msg}"
     end
   end
   

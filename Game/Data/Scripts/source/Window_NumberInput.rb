@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Window_NumberInput
 #------------------------------------------------------------------------------
@@ -79,8 +79,8 @@ class Window_NumberInput < Window_Base
   def process_cursor_move
     return unless active
     last_index = @index
-    cursor_right(Input.trigger?(:RIGHT)) if Input.repeat?(:RIGHT)
-    cursor_left (Input.trigger?(:LEFT))  if Input.repeat?(:LEFT)
+    cursor_right($downkeys.included?($vkey[:Right])) if $upkeys.included?($vkey[:Right])
+    cursor_left ($downkeys.included?($vkey[:Left]))  if $upkeys.included?($vkey[:Left])
     Sound.play_cursor if @index != last_index
   end
   #--------------------------------------------------------------------------
@@ -88,13 +88,13 @@ class Window_NumberInput < Window_Base
   #--------------------------------------------------------------------------
   def process_digit_change
     return unless active
-    if Input.repeat?(:UP) || Input.repeat?(:DOWN)
+    if $upkeys.included?($vkey[:Up]) || $upkeys.included?($vkey[:Down])
       Sound.play_cursor
       place = 10 ** (@digits_max - 1 - @index)
       n = @number / place % 10
       @number -= n * place
-      n = (n + 1) % 10 if Input.repeat?(:UP)
-      n = (n + 9) % 10 if Input.repeat?(:DOWN)
+      n = (n + 1) % 10 if $upkeys.included?($vkey[:Up])
+      n = (n + 9) % 10 if $upkeys.included?($vkey[:Down])
       @number += n * place
       refresh
     end
@@ -104,8 +104,8 @@ class Window_NumberInput < Window_Base
   #--------------------------------------------------------------------------
   def process_handling
     return unless active
-    return process_ok     if Input.trigger?(:C)
-    return process_cancel if Input.trigger?(:B)
+    return process_ok     if $downkeys.included?($vkey[:Check])
+    return process_cancel if $downkeys.included?($vkey[:X])
   end
   #--------------------------------------------------------------------------
   # ● 按下确定键时的处理

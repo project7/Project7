@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Window_ScrollText
 #------------------------------------------------------------------------------
@@ -79,7 +79,7 @@ class Window_ScrollText < Window_Base
   # ● 快进判定
   #--------------------------------------------------------------------------
   def show_fast?
-    !$game_message.scroll_no_fast && (Input.press?(:A) || Input.press?(:C))
+    !$game_message.scroll_no_fast && ($presskeys.included?($vkey[:A]) || $presskeys.included?($vkey[:Check]))
   end
   #--------------------------------------------------------------------------
   # ● 结束信息的显示

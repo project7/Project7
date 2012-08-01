@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Game_Event
 #------------------------------------------------------------------------------
@@ -24,6 +24,65 @@ class Game_Event < Game_Character
     @id = @event.id
     moveto(@event.x, @event.y)
     refresh
+  end
+  #--------------------------------------------------------------------------
+  # ● 判定是否跑步状态
+  #--------------------------------------------------------------------------
+  def dash?
+    return false if @move_route_forcing
+    return false if $game_map.disable_dash?
+    return $presskeys.included?($vkey[:Run])
+  end
+  #--------------------------------------------------------------------------
+  # ● 判定是否可以移动
+  #--------------------------------------------------------------------------
+  def movable?
+    return false if moving?
+    return false if @move_route_forcing
+    return false if @vehicle_getting_on || @vehicle_getting_off
+    return false if $game_message.busy? || $game_message.visible
+    return false if @cantmove
+    return true
+  end
+  #--------------------------------------------------------------------------
+  # ● 启动地图事件
+  #     triggers : 启动方式的数组
+  #     normal   : 优先级“与人物一样”还是其他
+  #--------------------------------------------------------------------------
+  def start_map_event(x, y, triggers, normal)
+    $game_map.events_xy(x, y).each do |event|
+      if event.trigger_in?(triggers) && event.normal_priority? == normal
+        event.start
+      end
+    end
+  end
+  #--------------------------------------------------------------------------
+  # ● 判定事件是否由确认键启动
+  #--------------------------------------------------------------------------
+  def check_action_event
+    check_event_trigger_here([0])
+    return true if $game_map.setup_starting_event
+    check_event_trigger_there([0,1,2])
+    $game_map.setup_starting_event
+  end
+  #--------------------------------------------------------------------------
+  # ● 判定同位置事件是否被启动
+  #--------------------------------------------------------------------------
+  def check_event_trigger_here(triggers)
+    start_map_event(@x, @y, triggers, false)
+  end
+  #--------------------------------------------------------------------------
+  # ● 判定前方事件是否被启动
+  #--------------------------------------------------------------------------
+  def check_event_trigger_there(triggers)
+    x2 = $game_map.round_x_with_direction(@x, @direction)
+    y2 = $game_map.round_y_with_direction(@y, @direction)
+    start_map_event(x2, y2, triggers, true)
+    return if $game_map.any_event_starting?
+    return unless $game_map.counter?(x2, y2)
+    x3 = $game_map.round_x_with_direction(x2, @direction)
+    y3 = $game_map.round_y_with_direction(y2, @direction)
+    start_map_event(x3, y3, triggers, true)
   end
   #--------------------------------------------------------------------------
   # ● 初始化公有成员变量

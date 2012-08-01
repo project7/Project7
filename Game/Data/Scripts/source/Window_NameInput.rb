@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Window_NameInput
 #------------------------------------------------------------------------------
@@ -194,9 +194,9 @@ class Window_NameInput < Window_Selectable
   #--------------------------------------------------------------------------
   def process_handling
     return unless open? && active
-    process_jump if Input.trigger?(:A)
-    process_back if Input.repeat?(:B)
-    process_ok   if Input.trigger?(:C)
+    process_jump if $downkeys.included?($vkey[:Run])
+    process_back if $upkeys.included?($vkey[:X])
+    process_ok   if $downkeys.included?($vkey[:Check])
   end
   #--------------------------------------------------------------------------
   # ● 跳转“确定”

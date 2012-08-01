@@ -81,58 +81,41 @@ class Scene_Map < Scene_Base
     update_encounter unless scene_changing?
     update_call_menu unless scene_changing?
     update_call_debug unless scene_changing?
-    update_battle_event unless scene_changing?
+    if $game_switches[1]
+      $map_battle.update unless scene_changing?
+    else
+      move_by_input
+      update_mouse_event unless scene_changing?
+    end
   end
   #--------------------------------------------------------------------------
-  # ● 更新战斗时鼠标点击事件
+  # ● 由方向键移动
   #--------------------------------------------------------------------------
-  def update_battle_event
-    if $game_switches[1]
-      if Mouse.down?(1)
-        mousexy = Fuc.getpos_by_screenpos(Mouse.pos)
-        $friends.each do |i|
-          body = i.event_id == 0 ? $game_player : $game_map.events[i.event_id]
-          if body.x == mousexy[0] && body.y == mousexy[1]
-            $sel_body = [body,0]
-            return
-          end
-        end
-        $enemies.each do |i|
-          body = i.event_id == 0 ? $game_player : $game_map.events[i.event_id]
-          if body.x == mousexy[0] && body.y == mousexy[1]
-            $sel_body = [body,1]
-            return
-          end
-        end
-        $sel_body = nil
-        return
+  def move_by_input
+    return if $game_map.interpreter.running?
+    if $game_player.movable?
+      if CInput.dir4 > 0
+        $game_player.move_straight(CInput.dir4)
+        $game_player.auto_move_path=[]
       end
-      if Mouse.press?(2)
-        Mouse.set_cursor(Mouse::EmptyCursor)
-        SceneManager.scene.spriteset.fillup[0].visible = false
-        @click_pos ||= Mouse.pos
-        dis_x = (Mouse.pos[0]-@click_pos[0]).to_f/32
-        dis_y = (Mouse.pos[1]-@click_pos[1]).to_f/32
-        $game_map.set_display_pos($game_map.parallax_x+dis_x,$game_map.parallax_y+dis_y)
-        Mouse.set_pos(*@click_pos)
-      elsif Mouse.up?(2)
-        Mouse.set_cursor(Mouse::CursorFile)
-        SceneManager.scene.spriteset.fillup[0].visible = true
-        Mouse.set_pos(*@click_pos)
-        @target_pos = [$map_battle.cur_actor.x-9.5,$map_battle.cur_actor.y-7]
-        @last_sc_pos = [$game_map.parallax_x+1,$game_map.parallax_y+1]
-        @click_pos = nil
-      elsif @target_pos
-        now_pos = [$game_map.parallax_x,$game_map.parallax_y]
-        if (@last_sc_pos[0]-now_pos[0]).abs <= 0.03125 && (@last_sc_pos[1]-now_pos[1]).abs <= 0.03125
-          $game_map.set_display_pos(*@target_pos)
-          @target_pos = nil
+    end
+  end
+  #--------------------------------------------------------------------------
+  # ● 更新非战斗时鼠标点击事件
+  #--------------------------------------------------------------------------
+  def update_mouse_event
+    if Mouse.click?(1)                                #鼠标点击寻路
+      x_dis = $game_player.x-Fuc.getpos_by_screenpos(Mouse.pos)[0]
+      y_dis = $game_player.y-Fuc.getpos_by_screenpos(Mouse.pos)[1]
+      if x_dis.abs+y_dis.abs == 1 && $game_player.movable?
+        dir = Fuc::DIR_LIST[x_dis][y_dis]
+        if $game_player.direction == dir && !$game_player.passable?($game_player.x, $game_player.y, dir)
+          $game_player.check_action_event
         else
-          sx = (@target_pos[0].to_f - now_pos[0])/5
-          sy = (@target_pos[1].to_f - now_pos[1])/5
-          $game_map.set_display_pos(now_pos[0]+sx,now_pos[1]+sy)
-          @last_sc_pos = now_pos
+          $game_player.move_straight(dir)
         end
+      elsif x_dis.abs+y_dis.abs > 1
+        Fuc.sm(*Fuc.getpos_by_screenpos(Mouse.pos))
       end
     end
   end
@@ -234,7 +217,7 @@ class Scene_Map < Scene_Base
     if $game_system.menu_disabled || $game_map.interpreter.running?
       @menu_calling = false
     else
-      @menu_calling ||= Input.trigger?(:B)
+      @menu_calling ||= $downkeys.included?($vkey[:X])
       call_menu if @menu_calling && !$game_player.moving?
     end
   end
@@ -250,7 +233,7 @@ class Scene_Map < Scene_Base
   # ● 监听 F9 的按下。如果是游戏测试的情况下，则打开调试界面
   #--------------------------------------------------------------------------
   def update_call_debug
-    SceneManager.call(Scene_Debug) if $TEST && Input.press?(:F9)
+    SceneManager.call(Scene_Debug) if $TEST && $presskeys.included?($vkey[:Test])
   end
   #--------------------------------------------------------------------------
   # ● 处理场所移动
