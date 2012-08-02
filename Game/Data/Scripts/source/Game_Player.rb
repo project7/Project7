@@ -138,13 +138,13 @@ class Game_Player < Game_Character
     return false if @move_route_forcing
     return false if $game_map.disable_dash?
     return false if vehicle
-    return $presskeys.included?($vkey[:Run])
+    return CInput.press?($vkey[:Run])
   end
   #--------------------------------------------------------------------------
   # ● 判定是否调试时穿透状态
   #--------------------------------------------------------------------------
   def debug_through?
-    $presskeys.included?($vkey[:Test])
+    CInput.press?($vkey[:Test])
   end
   #--------------------------------------------------------------------------
   # ● 判定是否碰撞（包含跟随角色）
@@ -358,7 +358,7 @@ class Game_Player < Game_Character
       $game_party.on_player_walk
       return if check_touch_event
     end
-    if movable? && $downkeys.included?($vkey[:Check])
+    if movable? && CInput.trigger?($vkey[:Check])
       return if get_on_off_vehicle
       return if check_action_event
     end
@@ -368,7 +368,7 @@ class Game_Player < Game_Character
   # ● 更新遇敌
   #--------------------------------------------------------------------------
   def update_encounter
-    return if $presskeys.included?($vkey[:Test])
+    return if CInput.press?($vkey[:Test])
     return if $game_party.encounter_none?
     return if in_airship?
     return if @move_route_forcing

@@ -27,7 +27,7 @@ class Scene_Gameover < Scene_Base
   #--------------------------------------------------------------------------
   def update
     super
-    goto_title if $downkeys.included?($vkey[:Check])
+    goto_title if CInput.trigger?($vkey[:Check])
   end
   #--------------------------------------------------------------------------
   # ● 执行渐变

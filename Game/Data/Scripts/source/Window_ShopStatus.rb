@@ -115,7 +115,7 @@ class Window_ShopStatus < Window_Base
   # ● 更新翻页
   #--------------------------------------------------------------------------
   def update_page
-    if visible && $downkeys.included?($vkey[:Run]) && page_max > 1
+    if visible && CInput.trigger?($vkey[:Run]) && page_max > 1
       @page_index = (@page_index + 1) % page_max
       refresh
     end

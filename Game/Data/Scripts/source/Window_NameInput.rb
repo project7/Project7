@@ -194,9 +194,9 @@ class Window_NameInput < Window_Selectable
   #--------------------------------------------------------------------------
   def process_handling
     return unless open? && active
-    process_jump if $downkeys.included?($vkey[:Run])
-    process_back if $upkeys.included?($vkey[:X])
-    process_ok   if $downkeys.included?($vkey[:Check])
+    process_jump if CInput.trigger?($vkey[:Run])
+    process_back if CInput.repeat?($vkey[:X])
+    process_ok   if CInput.trigger?($vkey[:Check])
   end
   #--------------------------------------------------------------------------
   # ● 跳转“确定”

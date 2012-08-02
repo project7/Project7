@@ -77,7 +77,7 @@ class Scene_Battle < Scene_Base
   # ● 快进判定
   #--------------------------------------------------------------------------
   def show_fast?
-    $presskeys.included?($vkey[:A]) || $presskeys.included?($vkey[:Check])
+    CInput.press?($vkey[:A]) || CInput.press?($vkey[:Check])
   end
   #--------------------------------------------------------------------------
   # ● 等待（快进无效）

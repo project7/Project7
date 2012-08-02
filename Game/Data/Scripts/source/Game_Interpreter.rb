@@ -446,7 +446,7 @@ class Game_Interpreter
     when 10  # 护甲
       result = $game_party.has_item?($data_armors[@params[1]], @params[2])
     when 11  # 按下按钮
-      result = $presskeys.included?($vkey[@params[1]])
+      result = CInput.press?($vkey[@params[1]])
     when 12  # 脚本
       result = eval(@params[1])
     when 13  # 载具
@@ -1411,17 +1411,13 @@ class Game_Interpreter
     eval(script)
   end
   
-  def Duel!(end_req = "false")
+  def Duel!(end_req = "$team_set.size<=1")
     $game_switches[1]=true
     $map_battle = Map_Battle.new(end_req)
   end
   
-  def my_target(arr)
-    $enemies = arr
-  end
-  
-  def my_partner(arr)
-    $friends = arr
+  def set_team(arr)
+    $team_set = arr
   end
   
 end

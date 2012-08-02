@@ -95,7 +95,7 @@ class Window_DebugRight < Window_Selectable
   # ● 更新开关模式
   #--------------------------------------------------------------------------
   def update_switch_mode
-    if $downkeys.included?($vkey[:Check])
+    if CInput.trigger?($vkey[:Check])
       Sound.play_ok
       $game_switches[current_id] = !$game_switches[current_id]
       redraw_current_item
@@ -107,10 +107,10 @@ class Window_DebugRight < Window_Selectable
   def update_variable_mode
     return unless $game_variables[current_id].is_a?(Numeric)
     value = $game_variables[current_id]
-    value += 1 if $upkeys.included?($vkey[:Right])
-    value -= 1 if $upkeys.included?($vkey[:Left])
-    value += 10 if $upkeys.included?($vkey[:R])
-    value -= 10 if $upkeys.included?($vkey[:L])
+    value += 1 if CInput.trigger?($vkey[:Right])
+    value -= 1 if CInput.trigger?($vkey[:Left])
+    value += 10 if CInput.trigger?($vkey[:R])
+    value -= 10 if CInput.trigger?($vkey[:L])
     if $game_variables[current_id] != value
       $game_variables[current_id] = value
       Sound.play_cursor

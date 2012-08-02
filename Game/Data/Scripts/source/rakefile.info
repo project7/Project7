@@ -110,10 +110,6 @@ Scene_Gameover
 Ruby.ex 1.0
 CMouse
 Mouse
-Mouse Comp
-Comp_TitleCommand
-Window_Command_2
-Window_ItemList_2
 Furnace
 Wayfinding
 Effect_Area
@@ -125,5 +121,6 @@ Buff_data
 Skill
 Map_Battle
 Fuc
+AllInputable
 Inputset
 Var_init

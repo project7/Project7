@@ -1,4 +1,5 @@
 ﻿Graphics.resize_screen(640,480)
+=begin
 UpperLeft = Mouse::Component.new(11,13,239,114,100)
 UpperLeft.setContents Bitmap.new("Graphics/System/player")
 UpperRight = [
@@ -22,3 +23,4 @@ Mouse::Component.new(579,410,36,36,100)
 Icon[0].setContents Bitmap.new("Graphics/System/cs")
 Icon[1].setContents Bitmap.new("Graphics/System/cs")
 Icon[2].setContents Bitmap.new("Graphics/System/cs")
+=end

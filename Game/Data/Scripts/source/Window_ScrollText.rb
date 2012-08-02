@@ -79,7 +79,7 @@ class Window_ScrollText < Window_Base
   # ● 快进判定
   #--------------------------------------------------------------------------
   def show_fast?
-    !$game_message.scroll_no_fast && ($presskeys.included?($vkey[:A]) || $presskeys.included?($vkey[:Check]))
+    !$game_message.scroll_no_fast && (CInput.press?($vkey[:A]) || CInput.press?($vkey[:Check]))
   end
   #--------------------------------------------------------------------------
   # ● 结束信息的显示

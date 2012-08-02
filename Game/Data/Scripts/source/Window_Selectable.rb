@@ -282,12 +282,12 @@ class Window_Selectable < Window_Base
   def process_cursor_move
     return unless cursor_movable?
     last_index = @index
-    cursor_down ($downkeys.included?($vkey[:Down]))  if $upkeys.included?($vkey[:Down])
-    cursor_up   ($downkeys.included?($vkey[:Up]))    if $upkeys.included?($vkey[:Up])
-    cursor_right($downkeys.included?($vkey[:Right])) if $upkeys.included?($vkey[:Right])
-    cursor_left ($downkeys.included?($vkey[:Left]))  if $upkeys.included?($vkey[:Left])
-    cursor_pagedown   if !handle?(:pagedown) && $downkeys.included?($vkey[:R])
-    cursor_pageup     if !handle?(:pageup)   && $downkeys.included?($vkey[:L])
+    cursor_down (CInput.trigger?($vkey[:Down]))  if CInput.repeat?($vkey[:Down])
+    cursor_up   (CInput.trigger?($vkey[:Up]))    if CInput.repeat?($vkey[:Up])
+    cursor_right(CInput.trigger?($vkey[:Right])) if CInput.repeat?($vkey[:Right])
+    cursor_left (CInput.trigger?($vkey[:Left]))  if CInput.repeat?($vkey[:Left])
+    cursor_pagedown   if !handle?(:pagedown) && CInput.trigger?($vkey[:R])
+    cursor_pageup     if !handle?(:pageup)   && CInput.trigger?($vkey[:L])
     Sound.play_cursor if @index != last_index
   end
   #--------------------------------------------------------------------------
@@ -295,10 +295,10 @@ class Window_Selectable < Window_Base
   #--------------------------------------------------------------------------
   def process_handling
     return unless open? && active
-    return process_ok       if ok_enabled?        && $downkeys.included?($vkey[:Check])
-    return process_cancel   if cancel_enabled?    && $downkeys.included?($vkey[:X])
-    return process_pagedown if handle?(:pagedown) && $downkeys.included?($vkey[:R])
-    return process_pageup   if handle?(:pageup)   && $downkeys.included?($vkey[:L])
+    return process_ok       if ok_enabled?        && CInput.trigger?($vkey[:Check])
+    return process_cancel   if cancel_enabled?    && CInput.trigger?($vkey[:X])
+    return process_pagedown if handle?(:pagedown) && CInput.trigger?($vkey[:R])
+    return process_pageup   if handle?(:pageup)   && CInput.trigger?($vkey[:L])
   end
   #--------------------------------------------------------------------------
   # ● 获取确定处理的有效状态

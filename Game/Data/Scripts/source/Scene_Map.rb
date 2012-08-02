@@ -217,7 +217,7 @@ class Scene_Map < Scene_Base
     if $game_system.menu_disabled || $game_map.interpreter.running?
       @menu_calling = false
     else
-      @menu_calling ||= $downkeys.included?($vkey[:X])
+      @menu_calling ||= CInput.trigger?($vkey[:X])
       call_menu if @menu_calling && !$game_player.moving?
     end
   end
@@ -233,7 +233,7 @@ class Scene_Map < Scene_Base
   # ● 监听 F9 的按下。如果是游戏测试的情况下，则打开调试界面
   #--------------------------------------------------------------------------
   def update_call_debug
-    SceneManager.call(Scene_Debug) if $TEST && $presskeys.included?($vkey[:Test])
+    SceneManager.call(Scene_Debug) if $TEST && CInput.press?($vkey[:Test])
   end
   #--------------------------------------------------------------------------
   # ● 处理场所移动

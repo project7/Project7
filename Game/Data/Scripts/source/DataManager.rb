@@ -92,7 +92,7 @@ module DataManager
     $game_troop         = Game_Troop.new
     $game_map           = Game_Map.new
     $game_player        = Game_Player.new
-    $pl_actor = Fucker.new
+    $pl_actor           = Fucker.new(0,[0])
   end
   #--------------------------------------------------------------------------
   # ● 设置新游戏

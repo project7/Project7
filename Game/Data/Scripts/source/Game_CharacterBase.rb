@@ -32,8 +32,10 @@ class Game_CharacterBase
   attr_accessor :animation_id             # 动画 ID
   attr_accessor :balloon_id               # 心情图标 ID
   attr_accessor :transparent              # 透明状态
-  attr_accessor :auto_move_path     # 非强制移动路径
-  attr_accessor :cantmove                # 不能移动
+  attr_accessor :auto_move_path           # 非强制移动路径
+  attr_accessor :cantmove                 # 不能移动
+  attr_accessor :gra_width                # 图像宽度
+  attr_accessor :gra_height               # 图像高度
   #--------------------------------------------------------------------------
   # ● 初始化对象
   #--------------------------------------------------------------------------
@@ -70,6 +72,8 @@ class Game_CharacterBase
     @balloon_id = 0
     @transparent = false
     @cantmove = false
+    @gra_width = 0
+    @gra_height = 0
   end
   #--------------------------------------------------------------------------
   # ● 初始化私有成员变量

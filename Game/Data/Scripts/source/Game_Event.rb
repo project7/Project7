@@ -31,7 +31,7 @@ class Game_Event < Game_Character
   def dash?
     return false if @move_route_forcing
     return false if $game_map.disable_dash?
-    return $presskeys.included?($vkey[:Run])
+    return CInput.press?($vkey[:Run])
   end
   #--------------------------------------------------------------------------
   # ● 判定是否可以移动

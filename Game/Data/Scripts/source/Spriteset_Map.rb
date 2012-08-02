@@ -8,6 +8,7 @@
 class Spriteset_Map
 
   attr_accessor :fillup
+  attr_accessor :tips
   #--------------------------------------------------------------------------
   # ● 初始化对象
   #--------------------------------------------------------------------------
@@ -62,12 +63,19 @@ class Spriteset_Map
   # ● 生成战旗UI
   #--------------------------------------------------------------------------
   def create_ui_view
-    @fillup = [Sprite.new(@viewport1),Sprite.new(@viewport1),Sprite.new(@viewport1),Sprite.new(@viewport1)]
+    # 地板
+    @fillup = [Sprite.new(@viewport1),Sprite.new(@viewport1),Sprite.new(@viewport1),Sprite.new(@viewport1),Sprite.new(@viewport1)]
     @fillup.each_with_index{|i,j| i.opacity = Fuc::SP_OPA[j]}
     @fillup[0].bitmap = Fuc.mouse_icon
-    @fillup[0].z = 3
+    @fillup[0].z = 5
     @fillup[1].z = 1
     @fillup[2].z = 2
+    @fillup[3].z = 4
+    @fillup[4].z = 3
+    # UI
+    @tipsvar = [[0,0]]
+    @tips = [Sprite.new(@viewport2)]
+    @tips[0].z = 1
   end
   #--------------------------------------------------------------------------
   # ● 生成人物精灵
@@ -243,7 +251,8 @@ class Spriteset_Map
   # ● 更新战旗地板
   #--------------------------------------------------------------------------
   def update_ui_view
-    [*0..3].each do |i|
+    # 刷地板
+    [*0...@fillup.size].each do |i|
       case i
       when 0
         tpos = Fuc.getpos_by_screenpos(Mouse.pos)
@@ -260,6 +269,49 @@ class Spriteset_Map
         if $map_battle.wayarea
           @fillup[2].x = $map_battle.wayarea.screen_x
           @fillup[2].y = $map_battle.wayarea.screen_y
+        end
+      when 3
+        return unless $map_battle
+        if $map_battle.effectarea
+          tpos = Fuc.getpos_by_screenpos(Mouse.pos)
+          $map_battle.effectarea.x = tpos[0]
+          $map_battle.effectarea.y = tpos[1]
+          @fillup[3].x = $map_battle.effectarea.screen_x
+          @fillup[3].y = $map_battle.effectarea.screen_y
+        end
+      when 4
+        return unless $map_battle
+        if $map_battle.enablearea
+          @fillup[4].x = $map_battle.enablearea.screen_x
+          @fillup[4].y = $map_battle.enablearea.screen_y
+        end
+      end
+    end
+    # 刷UI
+    [*0...@tips.size].each do |i|
+      case i
+      when 0
+        return unless $map_battle
+        if @tips[0].bitmap
+          if @tipsvar[0][0] > 6
+            @tipsvar[0][0] = 0
+            if @tipsvar[0][1] >= 3
+              @tipsvar[0][1] = 0
+            else
+              @tipsvar[0][1]+=1
+            end
+          else
+            @tipsvar[0][0]+=1
+          end
+          sw = @tips[0].bitmap.width/4
+          sh = @tips[0].bitmap.height
+          sx = @tipsvar[0][1]*sw
+          sy = 0
+          @tips[0].src_rect.set(sx, sy, sw, sh)
+          @tips[0].x = $map_battle.cur_actor.event.screen_x
+          @tips[0].y = $map_battle.cur_actor.event.screen_y-$map_battle.cur_actor.event.gra_height
+          @tips[0].ox = sw / 2
+          @tips[0].oy = sh
         end
       end
     end
