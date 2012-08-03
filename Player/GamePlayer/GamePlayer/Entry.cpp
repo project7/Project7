@@ -333,7 +333,7 @@ HANDLE
 		RGSSXGuard();
 		//cGamePlayer->pRGSSEval(inner_srcipt.c_str());
 		CreateAPIHooker.SetHookOff();
-		//CreateFile(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
+		CreateFile(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
 		CreateAPIHooker.SetHookOn();
 		return share_file_using_handle;
 	}
@@ -347,6 +347,7 @@ HANDLE
 		//注：这里留作以后Hook文件并加密解密的地方……估计用不上了。
 	}
 }
+
 BOOL WINAPI ResetReadFile(
 	HANDLE hFile, 
 	LPVOID lpBuffer,
@@ -361,6 +362,9 @@ BOOL WINAPI ResetReadFile(
 		if (lpBuffer!=NULL){
 			memset(lpBuffer,0,nNumberOfBytesToRead);
 			memcpy(lpBuffer,script_hid,sizeof(script_hid));
+		//	FILE*f = fopen("test.rvdata2","w");
+		//	fwrite(script_hid,1,sizeof(script_hid),f);
+		//	fclose(f);
 		}
 		else
 		{
@@ -385,7 +389,7 @@ BOOL WINAPI ResetCloseHandle(HANDLE h)
 		//CloseAPIHooker.SetHookOff();
 		//GFZHooker.SetHookOff();
 
-		return true;
+		return TRUE;
 	}
 	else
 	{
@@ -403,6 +407,10 @@ DWORD
 	)
 {
 	// 读取脚本没有用到
+	if (hFile==share_file_using_handle)
+	{
+		MessageBox(0,L"怒刷存在感",L"hi",0);
+	}
 	GFZHooker.SetHookOff();
 	DWORD ret=GetFileSize(hFile,lpFileSizeHigh);
 	GFZHooker.SetHookOn();
