@@ -36,6 +36,7 @@ class Game_CharacterBase
   attr_accessor :cantmove                 # 不能移动
   attr_accessor :gra_width                # 图像宽度
   attr_accessor :gra_height               # 图像高度
+  attr_accessor :state_id                 # 人物状态,用于行走图
   #--------------------------------------------------------------------------
   # ● 初始化对象
   #--------------------------------------------------------------------------
@@ -74,6 +75,7 @@ class Game_CharacterBase
     @cantmove = false
     @gra_width = 0
     @gra_height = 0
+    @state_id = 0
   end
   #--------------------------------------------------------------------------
   # ● 初始化私有成员变量

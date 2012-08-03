@@ -270,7 +270,7 @@ class Window_Message < Window_Base
   # ● 监听“确定”键的按下，更新快进的标志
   #--------------------------------------------------------------------------
   def update_show_fast
-    @show_fast = true if CInput.trigger?($vkey[:Check])
+    @show_fast = true if CInput.trigger?($vkey[:Check]) || Mouse.down?(1)
   end
   #--------------------------------------------------------------------------
   # ● 输出一个字符后的等待
@@ -369,7 +369,7 @@ class Window_Message < Window_Base
   def input_pause
     self.pause = true
     wait(10)
-    Fiber.yield until CInput.trigger?($vkey[:X]) || CInput.trigger?($vkey[:Check])
+    Fiber.yield until CInput.trigger?($vkey[:X]) || CInput.trigger?($vkey[:Check]) || Mouse.down?(1) || Mouse.down?(2)
     CInput.update
     self.pause = false
   end

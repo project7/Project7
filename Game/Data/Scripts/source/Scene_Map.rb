@@ -214,10 +214,10 @@ class Scene_Map < Scene_Base
   # ● 监听取消键的按下。如果菜单可用且地图上没有事件在运行，则打开菜单界面。
   #--------------------------------------------------------------------------
   def update_call_menu
-    if $game_system.menu_disabled || $game_map.interpreter.running?
+    if $game_system.menu_disabled || $game_map.interpreter.running? || $map_battle
       @menu_calling = false
     else
-      @menu_calling ||= CInput.trigger?($vkey[:X])
+      @menu_calling ||= CInput.trigger?($vkey[:X]) || Mouse.down?(2)
       call_menu if @menu_calling && !$game_player.moving?
     end
   end

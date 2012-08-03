@@ -255,9 +255,14 @@ class Spriteset_Map
     [*0...@fillup.size].each do |i|
       case i
       when 0
-        tpos = Fuc.getpos_by_screenpos(Mouse.pos)
-        @fillup[0].x = $game_map.adjust_x(tpos[0]) * 32
-        @fillup[0].y = $game_map.adjust_y(tpos[1]) * 32
+        if !$game_message.busy? && !$game_message.visible
+          tpos = Fuc.getpos_by_screenpos(Mouse.pos)
+          @fillup[0].x = $game_map.adjust_x(tpos[0]) * 32
+          @fillup[0].y = $game_map.adjust_y(tpos[1]) * 32
+          @fillup[0].visible = true
+        else
+          @fillup[0].visible = false
+        end
       when 1
         return unless $map_battle
         if $map_battle.movearea
