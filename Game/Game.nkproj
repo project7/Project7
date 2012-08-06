@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NekoKunProject Version="1.0">
+	<Component Name="NekoKun.FSBasedScriptListFile" ID="Scripts">
+		<Property Name="FileName">Data\Scripts\source\rakefile.info</Property>
+	</Component>
+</NekoKunProject>

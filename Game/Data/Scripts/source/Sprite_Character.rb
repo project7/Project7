@@ -84,30 +84,36 @@ class Sprite_Character < Sprite_Base
   # ● 设置角色的位图
   #--------------------------------------------------------------------------
   def set_character_bitmap
-    self.bitmap = Cache.character(@character_name)
-    sign = @character_name[/^[\!\$]./]
-    if sign && sign.include?('$')
-      @cw = bitmap.width / 3
-      @ch = bitmap.height / 4
-    else
-      @cw = bitmap.width / 12
-      @ch = bitmap.height / 8
+    case @character.state_id
+    when 0
+      self.bitmap = Cache.character(@character_name)
+      sign = @character_name[/^[\!\$]./]
+      if sign && sign.include?('$')
+        @cw = bitmap.width / 3
+        @ch = bitmap.height / 4
+      else
+        @cw = bitmap.width / 12
+        @ch = bitmap.height / 8
+      end
+      self.ox = @cw / 2
+      self.oy = @ch
+      @character.gra_width = @cw
+      @character.gra_height = @ch
     end
-    self.ox = @cw / 2
-    self.oy = @ch
-    @character.gra_width = @cw
-    @character.gra_height = @ch
   end
   #--------------------------------------------------------------------------
   # ● 更新源矩形
   #--------------------------------------------------------------------------
   def update_src_rect
-    if @tile_id == 0
-      index = @character.character_index
-      pattern = @character.pattern < 3 ? @character.pattern : 1
-      sx = (index % 4 * 3 + pattern) * @cw
-      sy = (index / 4 * 4 + (@character.direction - 2) / 2) * @ch
-      self.src_rect.set(sx, sy, @cw, @ch)
+    case @character.state_id
+    when 0
+      if @tile_id == 0
+        index = @character.character_index
+        pattern = @character.pattern < 3 ? @character.pattern : 1
+        sx = (index % 4 * 3 + pattern) * @cw
+        sy = (index / 4 * 4 + (@character.direction - 2) / 2) * @ch
+        self.src_rect.set(sx, sy, @cw, @ch)
+      end
     end
   end
   #--------------------------------------------------------------------------

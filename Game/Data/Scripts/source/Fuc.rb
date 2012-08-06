@@ -6,8 +6,24 @@
   WAY_AREA_C =    [Color.new(0,180,100,255),Color.new(100,200,50,255)]
   EFFECT_AREA_C = [Color.new(255,255,50,255),Color.new(200,200,0,200)]
   ENABLE_AREA_C = [Color.new(200,20,20,255),Color.new(255,50,0,255)]
-  OPA_COLOR = Color.new(0,0,0,0)
+  OPA_COLOR =     Color.new(0,0,0,0)
+  WHITE_COLOR =   Color.new(255,255,255,255)
+  HP_COST_COLOR = Color.new(255,0,0,255)
+  HP_ADD_COLOR =  Color.new(0,255,0,255)
+  SP_COST_COLOR = Color.new(255,255,255,255)
+  SP_ADD_COLOR =  Color.new(255,255,255,255)
   TIPS_POINT = Bitmap.new("Graphics/System/cur_actor.png")
+  FAILD_ATTACK_TEXT = 
+  [ "伤害被闪避",
+    "伤害被无效化",
+    "目标对物理伤害免疫",
+    "目标是魔免的",
+    "目标是无敌的",
+    "攻击范围内没有任何目标",
+    "不能攻击友方单位",
+    "目标点超出攻击范围",
+    "你不能攻击尸体",
+  ]
 
   # 寻路
   def self.sm(x,y)
@@ -38,12 +54,64 @@
     return game_pos
   end
   
+  # 通过游戏坐标获取屏幕坐标
+  def self.getpos_by_gamepos(pos)
+    screen_pos = [0,0]
+    screen_pos[0] = pos[0]*32-$game_map.display_x*32+16
+    screen_pos[1] = pos[1]*32-$game_map.display_y*32+16
+    return screen_pos
+  end
+  
   # 鼠标指向地板的选框
   def self.mouse_icon
     a = Bitmap.new(32,32)
     a.gradient_fill_rect(0, 0, 32, 32, Color.new(255,0,0,200), Color.new(180,120,0,200),true)
     a.gradient_fill_rect(1, 1, 30, 30, Color.new(180,120,0,150),Color.new(255,0,0,150),true)
     return a
+  end
+  
+  # 物品栏背景图
+  def self.ui_item
+    return Bitmap.new("Graphics/System/UI_Item_Frame.png")
+  end
+  
+  # 物品选框图
+  def self.ui_item_rect
+    a = Bitmap.new(36,36)
+    a.gradient_fill_rect(0, 0, 36, 36, Color.new(255,255,0,255),Color.new(255,180,0,255))
+    a.gradient_fill_rect(1, 1, 34, 34, Color.new(200,200,200,160), Color.new(120,120,120,150),true)
+    return a
+  end
+  
+  # 头像区资料
+  def self.ui_detail
+    return Bitmap.new("Graphics/System/UI_Detail_Frame.png")
+  end
+  
+  # 头像
+  def self.ui_head
+    if $sel_body
+      begin
+        a = Bitmap.new("Graphics/Heads/"+$sel_body.name+".png")
+        return a
+      rescue
+        return nil
+      end
+    end
+    return nil
+  end
+  
+  # 当前角色资料
+  def self.ui_head_detail
+    if $sel_body
+      a = Bitmap.new(193,105)
+      a.font.color = Color.new(255,255,255,255)
+      a.font.name = "方正隶变简体"
+      a.draw_text(104,25,60,30,$sel_body.ap.to_s,1)
+      a.draw_text(96,70,100,30,$sel_body.name,1)
+      return a
+    end
+    return nil
   end
 
 end

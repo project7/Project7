@@ -6,9 +6,10 @@
 #==============================================================================
 
 class Spriteset_Map
-
+  
   attr_accessor :fillup
   attr_accessor :tips
+  attr_accessor :tipsvar
   #--------------------------------------------------------------------------
   # ● 初始化对象
   #--------------------------------------------------------------------------
@@ -64,7 +65,13 @@ class Spriteset_Map
   #--------------------------------------------------------------------------
   def create_ui_view
     # 地板
-    @fillup = [Sprite.new(@viewport1),Sprite.new(@viewport1),Sprite.new(@viewport1),Sprite.new(@viewport1),Sprite.new(@viewport1)]
+    @fillup = 
+    [ Sprite.new(@viewport1),
+      Sprite.new(@viewport1),
+      Sprite.new(@viewport1),
+      Sprite.new(@viewport1),
+      Sprite.new(@viewport1)
+    ]
     @fillup.each_with_index{|i,j| i.opacity = Fuc::SP_OPA[j]}
     @fillup[0].bitmap = Fuc.mouse_icon
     @fillup[0].z = 5
@@ -73,9 +80,41 @@ class Spriteset_Map
     @fillup[3].z = 4
     @fillup[4].z = 3
     # UI
-    @tipsvar = [[0,0]]
-    @tips = [Sprite.new(@viewport2)]
+    @tipsvar = [[0,0],[true,10],[false,0],nil]
+    @tips = 
+    [ Sprite.new(@viewport2),
+      Sprite.new(@viewport3),
+      Sprite.new(@viewport3),
+      Sprite.new(@viewport3),
+      Sprite.new(@viewport3),
+      Sprite.new(@viewport3)
+    ]
     @tips[0].z = 1
+    @tips[1].bitmap = Fuc.ui_item
+    @tips[1].x = -175
+    @tips[1].y = Graphics.height*77/100
+    @tips[1].z = 100
+    @tips[2].bitmap = Fuc.ui_item_rect
+    @tips[2].y = @tips[1].y+12
+    @tips[2].z = 101
+    @tips[3].bitmap = Fuc.ui_detail
+    @tips[3].y = 6
+    @tips[3].x = 6
+    @tips[3].z = 100
+    @tips[4].y = 6
+    @tips[4].x = 6
+    @tips[4].z = 101
+    @tips[5].y = 6
+    @tips[5].x = 6
+    @tips[5].z = 102
+    # 数据显示
+    @richtext = []
+  end
+  #--------------------------------------------------------------------------
+  # ● 增加数据显示
+  #--------------------------------------------------------------------------
+  def show_text(text,xy,color=Fuc::WHITE_COLOR,size=20)
+    @richtext << Sprite_RichText.new(text,xy,color,size,@viewport3)
   end
   #--------------------------------------------------------------------------
   # ● 生成人物精灵
@@ -94,7 +133,7 @@ class Spriteset_Map
     @character_sprites.push(Sprite_Character.new(@viewport1, $game_player))
     @map_id = $game_map.map_id
   end
-
+  
   #--------------------------------------------------------------------------
   # ● 生成飞艇影子
   #--------------------------------------------------------------------------
@@ -132,6 +171,7 @@ class Spriteset_Map
     dispose_characters
     dispose_shadow
     dispose_weather
+    dispose_ui_view
     dispose_pictures
     dispose_timer
     dispose_viewports
@@ -186,6 +226,13 @@ class Spriteset_Map
     @viewport1.dispose
     @viewport2.dispose
     @viewport3.dispose
+  end
+  #--------------------------------------------------------------------------
+  # ● 释放战旗界面
+  #--------------------------------------------------------------------------
+  def dispose_ui_view
+    @fillup.each{|i| i.bitmap.dispose if i.bitmap;i.dispose}
+    @tips.each{|i| i.bitmap.dispose if i.bitmap;i.dispose}
   end
   #--------------------------------------------------------------------------
   # ● 更新人物
@@ -248,7 +295,7 @@ class Spriteset_Map
     @character_sprites.each {|sprite| sprite.update }
   end
   #--------------------------------------------------------------------------
-  # ● 更新战旗地板
+  # ● 更新战旗界面
   #--------------------------------------------------------------------------
   def update_ui_view
     # 刷地板
@@ -264,28 +311,28 @@ class Spriteset_Map
           @fillup[0].visible = false
         end
       when 1
-        return unless $map_battle
+        next unless $map_battle
         if $map_battle.movearea
           @fillup[1].x = $map_battle.movearea.screen_x
           @fillup[1].y = $map_battle.movearea.screen_y
         end
       when 2
-        return unless $map_battle
+        next unless $map_battle
         if $map_battle.wayarea
           @fillup[2].x = $map_battle.wayarea.screen_x
           @fillup[2].y = $map_battle.wayarea.screen_y
         end
       when 3
-        return unless $map_battle
+        next unless $map_battle
         if $map_battle.effectarea
           tpos = Fuc.getpos_by_screenpos(Mouse.pos)
-          $map_battle.effectarea.x = tpos[0]
-          $map_battle.effectarea.y = tpos[1]
+          $map_battle.effectarea.x = tpos[0] unless $map_battle.cur_actor.ai
+          $map_battle.effectarea.y = tpos[1] unless $map_battle.cur_actor.ai
           @fillup[3].x = $map_battle.effectarea.screen_x
           @fillup[3].y = $map_battle.effectarea.screen_y
         end
       when 4
-        return unless $map_battle
+        next unless $map_battle
         if $map_battle.enablearea
           @fillup[4].x = $map_battle.enablearea.screen_x
           @fillup[4].y = $map_battle.enablearea.screen_y
@@ -296,7 +343,7 @@ class Spriteset_Map
     [*0...@tips.size].each do |i|
       case i
       when 0
-        return unless $map_battle
+        next unless $map_battle
         if @tips[0].bitmap
           if @tipsvar[0][0] > 6
             @tipsvar[0][0] = 0
@@ -318,8 +365,61 @@ class Spriteset_Map
           @tips[0].ox = sw / 2
           @tips[0].oy = sh
         end
+      when 1
+        if @tipsvar[1][0]
+          if @tips[1].x-@tipsvar[1][1] <= -175
+            @tips[1].x = -175
+          else
+            @tips[1].x -= @tipsvar[1][1]
+          end
+        else
+          if @tips[1].x+@tipsvar[1][1] >= 0
+            @tips[1].x = 0
+          else
+            @tips[1].x += @tipsvar[1][1]
+          end
+        end
+      when 2
+        @tips[2].visible = @tipsvar[2][0]
+        @tips[2].x = @tips[1].x+5+@tipsvar[2][1]*41 if @tipsvar[2][0]
+      when 4
+        unless $map_battle
+          $sel_body = $pl_actor
+        end
+        if $sel_body != @last_sel_body1
+          @tips[4].bitmap.dispose if @tips[4].bitmap
+          @tips[4].bitmap = Fuc.ui_head
+          @tips[4].y = @tips[3].y+@tips[3].bitmap.height-@tips[4].bitmap.height-4 if @tips[4].bitmap
+          @last_sel_body1 = $sel_body
+        end
+      when 5
+        unless $sel_body
+          @tips[5].bitmap.dispose if @tips[5].bitmap
+          next
+        end
+        if $sel_body.ap != @last_value1 || $sel_body.name != @last_value2 || $sel_body != @last_sel_body2
+          @tips[5].bitmap.dispose if @tips[5].bitmap
+          @tips[5].bitmap = Fuc.ui_head_detail
+          @last_value1 = $sel_body.ap
+          @last_value2 = $sel_body.name
+          @last_sel_body2 = $sel_body
+        end
       end
     end
+    # 刷数据
+    @richtext.each_with_index do |i,j|
+      unless i.bitmap
+        @richtext[j] = nil
+        next
+      end
+      if i.dead
+        i.dispose
+        @richtext[j] = nil
+      else
+        i.update
+      end
+    end
+    @richtext.compact!
   end
   #--------------------------------------------------------------------------
   # ● 更新飞艇影子

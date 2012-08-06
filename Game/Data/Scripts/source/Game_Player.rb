@@ -278,11 +278,12 @@ class Game_Player < Game_Character
   #--------------------------------------------------------------------------
   def movable?
     return false if moving?
+    return false if @cantmove
+    return false if @state_id != 0
     return false if @move_route_forcing || @followers.gathering?
     return false if @vehicle_getting_on || @vehicle_getting_off
     return false if $game_message.busy? || $game_message.visible
     return false if vehicle && !vehicle.movable?
-    return false if @cantmove
     return true
   end
   #--------------------------------------------------------------------------

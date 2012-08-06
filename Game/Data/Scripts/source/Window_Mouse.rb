@@ -41,6 +41,7 @@ class Window_Selectable < Window_Base
     item_max.times do |i|
       if mouse_in_rect?(i)
         select(i)
+        break
       end
     end
     Sound.play_cursor if @index != last_index
@@ -66,6 +67,7 @@ class Window_NumberInput < Window_Base
     @digits_max.times do |i|
       if mouse_in_rect?(i)
         @index = i % @digits_max
+        break
       end
     end
     Sound.play_cursor if @index != last_index
@@ -91,4 +93,46 @@ class Window_NumberInput < Window_Base
     return process_cancel if CInput.trigger?($vkey[:X]) || Mouse.down?(2)
   end
 
+end
+
+class Scene_File < Scene_MenuBase
+
+  def cursor_down(wrap)
+    self.top_index = self.top_index+1
+    @index = (@index + 1) % item_max if @index < item_max - 1 || wrap
+    ensure_cursor_visible
+  end
+
+  def cursor_up(wrap)
+    self.top_index = self.top_index-1
+    @index = (@index - 1 + item_max) % item_max if @index > 0 || wrap
+    ensure_cursor_visible
+  end
+  
+  def update_savefile_selection
+    return on_savefile_ok     if CInput.trigger?($vkey[:Check]) || Mouse.down?(1)
+    return on_savefile_cancel if CInput.trigger?($vkey[:X]) || Mouse.down?(2)
+    update_cursor
+  end
+
+  def update_cursor
+    last_index = @index
+    cursor_down (CInput.trigger?($vkey[:Down]))  if CInput.repeat?($vkey[:Down])
+    cursor_up   (CInput.trigger?($vkey[:Up]))    if CInput.repeat?($vkey[:Up])
+    cursor_pagedown   if CInput.trigger?($vkey[:R]) || Mouse.scroll<0
+    cursor_pageup     if CInput.trigger?($vkey[:L]) || Mouse.scroll>0
+    my = Mouse.pos[1]
+    item_max.times do |i|
+      if my>=@savefile_windows[i].y+@savefile_viewport.rect.y&&my<=@savefile_windows[i].y+@savefile_viewport.rect.y+@savefile_windows[i].height
+        @index = top_index+i
+        break
+      end
+    end
+    if @index != last_index
+      Sound.play_cursor
+      @savefile_windows[last_index].selected = false
+      @savefile_windows[@index].selected = true
+    end
+  end
+  
 end

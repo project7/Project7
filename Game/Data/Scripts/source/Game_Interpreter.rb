@@ -1411,7 +1411,7 @@ class Game_Interpreter
     eval(script)
   end
   
-  def Duel!(end_req = "$team_set.size<=1")
+  def Duel!(end_req="@fighter_num<=1")
     $game_switches[1]=true
     $map_battle = Map_Battle.new(end_req)
   end

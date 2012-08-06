@@ -1,5 +1,7 @@
 ﻿class Skill
 
+  attr_accessor :id                                 #ID
+  attr_accessor :name                               #技能名称
   attr_accessor :init_skill                         #是否主动技能
   attr_accessor :icon                               #技能小图标
   attr_accessor :user_animation                     #使用者动画
@@ -51,11 +53,13 @@
   end
   
   def ele
+    @id = 0
+    @name = ""
     @init_skill = true
     @use_req = "actor.sp > skill.sp_cost*actor.cost_reduce_rate/100+actor.cost_reduce"
     @use_dis_min = 0
     @use_dis_max = 0
-    @hotkey = 0x51
+    @hotkey = nil
     @hurt_enemy = true
     @hurt_partner = false
     @hurt_p_dead = false
@@ -68,8 +72,8 @@
     @hp_damage = 1
     @sp_damage = 0
     @ap_damage = 0
-    @buff = [[Buff.new,100]]
-    @debuff = [[Buff.new,100]]
+    @buff = [[0,100]]
+    @debuff = [[0,100]]
     @descr = ""
   end
   

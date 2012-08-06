@@ -108,7 +108,6 @@ Scene_Name
 Scene_Debug
 Scene_Battle
 Scene_Gameover
-Fuc
 Ruby.ex 1.0
 CMouse
 Mouse
@@ -126,9 +125,8 @@ Equip
 Equip_data
 Item
 Item_data
-Battler_AI
-AI_Data
 Map_Battle
+Fuc
 AllInputable
 Inputset
 Window_Mouse

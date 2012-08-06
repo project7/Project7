@@ -64,7 +64,46 @@ class Scene_Map < Scene_Base
     $game_player.update
     $game_timer.update
     @spriteset.update
+    update_ui
     update_scene if scene_change_ok?
+  end
+  #--------------------------------------------------------------------------
+  # ● 更新画面
+  #--------------------------------------------------------------------------
+  def update_ui
+    if mouse_in_itemrect?
+      @spriteset.tipsvar[1][0] = false
+      tempa = item_mouse_index
+      if tempa
+        @spriteset.tipsvar[2][0] = true
+        @spriteset.tipsvar[2][1] = tempa
+      else
+        @spriteset.tipsvar[2][0] = false
+      end
+    else
+      @spriteset.tipsvar[1][0] = true
+    end
+  end
+  
+  def mouse_in_itemrect?
+    tpos = Mouse.pos
+    if tpos[0]>=@spriteset.tips[1].x&&tpos[0]<=@spriteset.tips[1].x+205&&tpos[1]>=@spriteset.tips[1].y+4&&tpos[1]<=@spriteset.tips[1].y+57
+      return true
+    else
+      return false
+    end
+  end
+  
+  def item_mouse_index
+    tpos = Mouse.pos
+    [*0..3].each do |i|
+      rx = @spriteset.tips[1].x+5+i*41
+      ry = @spriteset.tips[1].y+12
+      if tpos[0]>=rx&&tpos[0]<=rx+36&&tpos[1]>=ry&&tpos[1]<=ry+36
+        return i
+      end
+    end
+    return false
   end
   #--------------------------------------------------------------------------
   # ● 判定是否可以切换场景
@@ -104,18 +143,22 @@ class Scene_Map < Scene_Base
   # ● 更新非战斗时鼠标点击事件
   #--------------------------------------------------------------------------
   def update_mouse_event
-    if Mouse.click?(1)                                #鼠标点击寻路
-      x_dis = $game_player.x-Fuc.getpos_by_screenpos(Mouse.pos)[0]
-      y_dis = $game_player.y-Fuc.getpos_by_screenpos(Mouse.pos)[1]
-      if x_dis.abs+y_dis.abs == 1 && $game_player.movable?
-        dir = Fuc::DIR_LIST[x_dis][y_dis]
-        if $game_player.direction == dir && !$game_player.passable?($game_player.x, $game_player.y, dir)
-          $game_player.check_action_event
-        else
-          $game_player.move_straight(dir)
+    if Mouse.click?(1)                                
+      if mouse_in_itemrect?
+        
+      else  #鼠标点击寻路
+        x_dis = $game_player.x-Fuc.getpos_by_screenpos(Mouse.pos)[0]
+        y_dis = $game_player.y-Fuc.getpos_by_screenpos(Mouse.pos)[1]
+        if x_dis.abs+y_dis.abs == 1 && $game_player.movable?
+          dir = Fuc::DIR_LIST[x_dis][y_dis]
+          if $game_player.direction == dir && !$game_player.passable?($game_player.x, $game_player.y, dir)
+            $game_player.check_action_event
+          else
+            $game_player.move_straight(dir)
+          end
+        elsif x_dis.abs+y_dis.abs > 1
+          Fuc.sm(*Fuc.getpos_by_screenpos(Mouse.pos))
         end
-      elsif x_dis.abs+y_dis.abs > 1
-        Fuc.sm(*Fuc.getpos_by_screenpos(Mouse.pos))
       end
     end
   end

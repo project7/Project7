@@ -152,8 +152,8 @@ class Scene_File < Scene_MenuBase
   #--------------------------------------------------------------------------
   def update_cursor
     last_index = @index
-    cursor_down (CInput.trigger?($vkey[:Down]))  if $upkeys.included?($vkey[:Down])
-    cursor_up   (CInput.trigger?($vkey[:Up]))    if $upkeys.included?($vkey[:Up])
+    cursor_down (CInput.trigger?($vkey[:Down]))  if CInput.repeat?($vkey[:Down])
+    cursor_up   (CInput.trigger?($vkey[:Up]))    if CInput.repeat?($vkey[:Up])
     cursor_pagedown   if CInput.trigger?($vkey[:R])
     cursor_pageup     if CInput.trigger?($vkey[:L])
     if @index != last_index

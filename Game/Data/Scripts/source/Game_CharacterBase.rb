@@ -22,12 +22,12 @@ class Game_CharacterBase
   attr_reader   :walk_anime               # 步行动画
   attr_reader   :step_anime               # 踏步动画
   attr_reader   :direction_fix            # 固定朝向
-  attr_reader   :opacity                  # 不透明度
+  attr_accessor :opacity                  # 不透明度
   attr_reader   :blend_type               # 合成方式
   attr_reader   :direction                # 方向
   attr_reader   :pattern                  # 图案
   attr_reader   :priority_type            # 优先级类型
-  attr_reader   :through                  # 穿透
+  attr_accessor :through                  # 穿透
   attr_reader   :bush_depth               # 草木深度
   attr_accessor :animation_id             # 动画 ID
   attr_accessor :balloon_id               # 心情图标 ID
@@ -448,10 +448,12 @@ class Game_CharacterBase
       @real_x = $game_map.x_with_direction(@x, reverse_dir(d))
       @real_y = $game_map.y_with_direction(@y, reverse_dir(d))
       increase_steps
+      return true
     elsif turn_ok
       set_direction(d)
       check_event_trigger_touch_front
     end
+    return false
   end
   #--------------------------------------------------------------------------
   # ● 斜向移动

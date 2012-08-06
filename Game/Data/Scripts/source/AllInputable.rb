@@ -1,13 +1,11 @@
 ﻿module CInput
   @R_Key_Hash = {}
   @R_Key_Repeat = {}
-  @down_keys = []
   @press_keys = []
   class << CInput
   
     alias ud update
     def update
-      @down_keys = getall[1]
       @press_keys = getall[2]
       ud
     end
@@ -22,7 +20,7 @@
    
     def repeat?(rkey)
       rkey.each do |i|
-        return true if rrepeat?(i)#@down_keys.include?(i)
+        return true if rrepeat?(i)
       end
       return false
     end

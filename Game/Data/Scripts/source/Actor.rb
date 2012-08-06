@@ -1,5 +1,6 @@
 ﻿class Actor
 
+  attr_accessor :id                           # ID
   attr_accessor :hp                           # 当前生命值
   attr_accessor :sp                           # 当前法力值
   attr_accessor :ap                           # 当前行动力
@@ -8,6 +9,12 @@
   attr_accessor :skill                        # 技能
   attr_accessor :equip                        # 装备
   attr_accessor :name                         # 名称
+  attr_accessor :atk_pic                      # 攻击行走图(缺省)
+  attr_accessor :atk_cot                      # 攻击帧数(缺省)
+  attr_accessor :item_pic                     # 使用物品行走图(缺省)
+  attr_accessor :item_cot                     # 使用物品帧数(缺省)
+  attr_accessor :skill_pic                    # 使用技能行走图(缺省)
+  attr_accessor :skill_cot                    # 使用技能帧数(缺省)
   attr_accessor :maxhp                        # 最大生命值
   attr_accessor :maxsp                        # 最大魔法值
   attr_accessor :maxap                        # 最大行动力
@@ -43,10 +50,10 @@
   attr_accessor :damage_reduce                # 减免伤害
   attr_accessor :cost_reduce_rate             # 减少消耗%
   attr_accessor :cost_reduce                  # 减少消耗
-  attr_accessor :hp_absorb_rate               # 吸血率
-  attr_accessor :hp_absorb                    # 吸血值
-  attr_accessor :sp_absorb_rate               # 吸魔法率
-  attr_accessor :sp_absorb                    # 吸魔法值
+  attr_accessor :hp_absorb_rate               # 按对方血量百分比吸血
+  attr_accessor :hp_absorb                    # 按造成伤害百分比吸血
+  attr_accessor :sp_absorb_rate               # 按对方法力百分比抽蓝
+  attr_accessor :sp_absorb                    # 按造成伤害百分比抽蓝
   attr_accessor :invincible                   # 无敌
   attr_accessor :ignore_physical              # 物免 
   attr_accessor :ignore_magic                 # 魔免
@@ -58,6 +65,9 @@
   attr_accessor :event_id                     # 关联事件ID
   attr_accessor :animation                    # 动画
   attr_accessor :team                         # 阵营
+  attr_accessor :steps                        # 操作数
+  attr_accessor :dead                         # 是否死亡
+  attr_accessor :ai                           # AI
   
   def initialize(event_id=0,t_id=[0])
     @event_id = event_id
@@ -66,13 +76,22 @@
     set_extra
     set_tec
     set_ui
+    set_rd_value
+    set_ai
     init_var
   end
 
   def set_tec
+    @id = 0
     @name = ""
     @skill = []
-    @equip = {"武器"=>[0,0],"防具"=>[1,0]}
+    @equip = {"武器"=>[0,nil],"防具"=>[1,nil]}
+    @atk_pic = nil
+    @atk_cot = 4
+    @item_pic = nil
+    @item_cot = 4
+    @skill_pic = nil
+    @skill_cot = 4
   end
   
   def set_ele
@@ -131,18 +150,27 @@
   def set_ui
     @animation = []
   end
+  
+  def set_ai
+    @ai = nil
+  end
+  
+  def set_rd_value
+    @steps = 0
+  end
 
   def init_var
     @hp = @maxhp+@maxhp_add
-    @sp = @maxsp+@maxsp_add
+    @sp = 0
     @ap = @maxap+@maxap_add
     @buff = []
     @hatred = @hatred_base
+    @dead = false
   end
   
   def phy_damage(value)
-    return [false,0] if rand(100) <= @miss_rate
     return [false,2] if @ignore_physical
+    return [false,0] if xrand(100) < @miss_rate
     value -= @def
     value -= @def_add
     value = [value,1].max
@@ -155,21 +183,34 @@
       value -= @mdef
       value -= @mdef_add
     end
+    value = [value,1].max
     return damage(value)
+  end
+  
+  def rebound_damage(value,re_rate,re)
+    value = value*re_rate/100+re
+    return mag_damage(value)
   end
   
   def damage(value)
     if value > 0
-      value = value * damage_reduce_rate / 100
+      value = value * (100-damage_reduce_rate) / 100
       value -= damage_reduce
     end
+    rdvalue = [value/10,1].max
+    value = value-rdvalue+xrand(2*rdvalue)
+    value = [value,1].max
     return god_damage(value)
   end
   
   def god_damage(value)
-    return [false,1] if value > 0 && rand(100) < @ignore_dmg_rate
+    return [false,1] if value > 0 && xrand(100) < @ignore_dmg_rate
     return [false,4] if value > 0 && @invincible
+    @buff.each do |buff|
+      instance_eval(buff.damage_effect)
+    end
     @hp -= value
+    @hp = [[@maxhp,@hp].min,0].max
     return [true,value]
   end
   
@@ -184,15 +225,18 @@
   
   def god_sp_damage(value)
     @sp -= value
+    @sp = [[@maxsp,@sp].min,0].max
     return [true,value]
   end
   
   def ap_cost(value)
     @ap -= value
+    @ap = [@ap,0].max
   end
   
-  def cost_ap_for(type)
+  def cost_ap_for(type,para=nil)
     per_step_effect
+    @steps+=1
     case type
     when 0
       ap_cost(@per_step_cost_ap+@per_step_cost_ap_add)
@@ -200,16 +244,27 @@
       ap_cost(@atk_cost_ap+@atk_cost_ap_add)
     when 2
       ap_cost(@item_cost_ap+@item_cost_ap_add)
+    when 3
+      ap_cost(para)
     end
   end
   
   def per_step_effect
     actor = self
-    actor.buff.each do |i|
-      eval(i.per_step_effect)
+    @buff.each do |buff|
+      instance_eval(buff.per_step_effect)
     end
-    god_damage(@hp_rec)
-    god_sp_damage(@sp_rec)
+    if @hp>0
+      god_damage(-@hp_rec)
+      god_sp_damage(-@sp_rec)
+    end
+  end
+  
+  def add_buff(buff)
+    actor = self
+    @buff.each do |buff|
+      instance_eval(buff.use_effect)
+    end
   end
   
   def x
@@ -229,15 +284,75 @@
   end
   
   def maxstep
-    return @ap/(@per_step_cost_ap+@per_step_cost_ap_add)
+    return @ap/get_ap_for_step
   end
   
   def event
     return @event_id == 0 ? $game_player : $game_map.events[@event_id]
   end
   
+  def fighting_power
+    return get_atk/10+get_maxhp/100+get_def/10
+  end
+  
   def change_team(val)
     @team = val
   end
   
+  def get_atk
+    return @atk+@atk_add
+  end
+  
+  def get_def
+    return @def+@def_add
+  end
+  
+  def get_maxhp
+    return @maxhp+@maxhp_add
+  end
+  
+  def get_ap_for_step
+    return @per_step_cost_ap+@per_step_cost_ap_add
+  end
+  
+  def get_ap_for_atk
+    return @per_step_cost_ap+@per_step_cost_ap_add
+  end
+  
+  def absorb_hp_by_rate(hp)
+    return god_damage(-hp*@hp_absorb_rate/100)
+  end
+  
+  def absorb_hp(value)
+    return god_damage(-value*@hp_absorb/100)
+  end
+  
+  def absorb_sp_by_rate(sp)
+    return god_sp_damage(-sp*@sp_absorb_rate/100)
+  end
+  
+  def absorb_sp(value)
+    return god_sp_damage(-value*@sp_absorb/100)
+  end
+  
+  # 生成随机数
+  def xrand(value)
+    return 0 if value < 1
+    return $random_center.rand(value)
+  end
+  
+  def will_dead?
+    return @hp<=0 && !@dead
+  end
+  
+  def dead?
+    return @dead
+  end
+  
+  def die
+    @dead = true
+    self.event.opacity = 100
+    self.event.through = true
+  end
+
 end
