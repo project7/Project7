@@ -12,7 +12,7 @@
   attr_accessor  :fighter_num
   attr_accessor  :last_action_state
 
-  def initialize(end_req="@fighter_num<=1")
+  def initialize(end_req="@partner_num==0||@enemy_num==0")
     @end_req = end_req
     var_init
     cal_var
@@ -86,7 +86,19 @@
   end
 
   def cal_fighter_num
-    @fighter_num = @action_list.find_all{|e| !e.dead?}.size
+    arra = []
+    arrb = []
+    @action_list.each do |e|
+      if !e.dead?
+        if (e.team&$pl_actor.team).size>0
+          arra << e
+        else
+          arrb << e
+        end
+      end
+    end
+    @partner_num = arra.size
+    @enemy_num = arrb.size
   end
   
   def turn_begin_cal
@@ -103,6 +115,7 @@
   end
   
   def update
+    @mousexy = Fuc.getpos_by_screenpos(Mouse.pos)
     case @scene_id
     when 0
       if @cur_actor.ai
@@ -149,7 +162,7 @@
       $team_set.each do |i|
         body = i.event_id == 0 ? $game_player : i.event
         if @effectarea.include?(body.x,body.y)
-          if (i.team&@cur_actor.team).size<=0
+          if (i.team&@cur_actor.team).size==0
             if i.dead?
               err_id ||= 3
             else
@@ -183,7 +196,6 @@
 
   def update_action
     return if $game_map.interpreter.running?
-    @mousexy = Fuc.getpos_by_screenpos(Mouse.pos)
     # 四方向按键
     if @actor.movable? && CInput.dir4 > 0
       action(0,CInput.dir4)
@@ -208,6 +220,7 @@
     end
     # TAB
     if CInput.trigger?($vkey[:Tab])
+      mouse_fuck_up
       @actor.auto_move_path=[]
       action(4)
       return
@@ -241,6 +254,8 @@
       return
     end
     if Mouse.press?(2)
+      @target_pos = nil
+      @mouse_right_down = true
       @splink.tipsvar[1][0] = true
       Mouse.set_cursor(Mouse::EmptyCursor)
       @actor.cantmove = true
@@ -252,13 +267,19 @@
       $game_map.set_display_pos($game_map.parallax_x+dis_x,$game_map.parallax_y+dis_y)
       Mouse.set_pos(*@click_pos)
     elsif Mouse.up?(2) && @click_pos
-      Mouse.set_cursor(Mouse::CursorFile)
-      @actor.cantmove = false
-      @splink.fillup[0].visible = true
-      Mouse.set_pos(*@click_pos)
-      set_view_pos(@cur_actor.x,@cur_actor.y)
-      @click_pos = nil
+      mouse_fuck_up
     end
+  end
+  
+  def mouse_fuck_up
+    return unless @mouse_right_down
+    @mouse_right_down = false
+    Mouse.set_cursor(Mouse::CursorFile)
+    @actor.cantmove = false
+    @splink.fillup[0].visible = true
+    Mouse.set_pos(*@click_pos) if @click_pos
+    set_view_pos(@cur_actor.x,@cur_actor.y)
+    @click_pos = nil
   end
   
   def update_ai
@@ -271,9 +292,9 @@
   def create_effectarea
     @effectarea.dispose if @effectarea
     @effectarea = Effect_Area.new([0,0],@cur_actor.atk_area,true,EFFECT_AREA_C[0],EFFECT_AREA_C[1])
+    @splink.fillup[3].bitmap = @effectarea.bitmap
     ssx = $game_map.adjust_x(@mousexy[0]+@effectarea.offset_x) * 32
     ssy = $game_map.adjust_y(@mousexy[1]+@effectarea.offset_y) * 32
-    @splink.fillup[3].bitmap = @effectarea.bitmap
     @splink.fillup[3].x = ssx
     @splink.fillup[3].y = ssy
   end
@@ -379,7 +400,15 @@
         return false
       end
     when 1#攻击
+      return false if @cur_actor.ap<@cur_actor.get_ap_for_atk
       temp = area_can_effect(para)
+      tsx = @cur_actor.x-@mousexy[0]
+      tsy = @cur_actor.y-@mousexy[1]
+      if tsx.abs > tsy.abs
+        @cur_actor.event.set_direction(tsx > 0 ? 4 : 6)
+      elsif tsy != 0
+        @cur_actor.event.set_direction(tsy > 0 ? 8 : 2)
+      end
       if temp.is_a?(Array)
         tempb = []
         temp.each do |i|
@@ -449,7 +478,7 @@
     body = nil
     max = -1
     @action_list.each do |i|
-      if i.hatred > max && (i.team&team_id).size<=0 && !i.dead?
+      if i.hatred > max && (i.team&team_id).size==0 && !i.dead?
         max = i.hatred
         body = i
       end

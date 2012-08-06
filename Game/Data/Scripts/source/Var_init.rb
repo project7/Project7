@@ -1,7 +1,7 @@
 ﻿$team_set = []
 $pl_actor = nil
 $sel_body = nil
-$random_center = Random.new(Graphics.frame_count)
+$random_center = Random.new(65535)
 
 begin
   Dir["*.log"].each{|i| File.delete((Dir.getwd + '/'+i))}

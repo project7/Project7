@@ -316,7 +316,7 @@
   end
   
   def get_ap_for_atk
-    return @per_step_cost_ap+@per_step_cost_ap_add
+    return @atk_cost_ap+@atk_cost_ap_add
   end
   
   def absorb_hp_by_rate(hp)
