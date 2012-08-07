@@ -311,19 +311,19 @@ class Spriteset_Map
           @fillup[0].visible = false
         end
       when 1
-        next unless $map_battle
+        break unless $map_battle
         if $map_battle.movearea
           @fillup[1].x = $map_battle.movearea.screen_x
           @fillup[1].y = $map_battle.movearea.screen_y
         end
       when 2
-        next unless $map_battle
+        break unless $map_battle
         if $map_battle.wayarea
           @fillup[2].x = $map_battle.wayarea.screen_x
           @fillup[2].y = $map_battle.wayarea.screen_y
         end
       when 3
-        next unless $map_battle
+        break unless $map_battle
         if $map_battle.effectarea
           tpos = Fuc.getpos_by_screenpos(Mouse.pos)
           $map_battle.effectarea.x = tpos[0] unless $map_battle.cur_actor.ai
@@ -332,7 +332,7 @@ class Spriteset_Map
           @fillup[3].y = $map_battle.effectarea.screen_y
         end
       when 4
-        next unless $map_battle
+        break unless $map_battle
         if $map_battle.enablearea
           @fillup[4].x = $map_battle.enablearea.screen_x
           @fillup[4].y = $map_battle.enablearea.screen_y

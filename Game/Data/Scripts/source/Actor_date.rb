@@ -19,7 +19,7 @@ class Fucker < Actor
     @maxsp = 80
     @maxap = 5
     @atk = 32
-    @atk_area = [[0]]
+    @atk_area = [ [[0,0,1,3]] ,false]
     @atk_dis_min = 1
     @atk_dis_max = 1
     @def = 10
@@ -31,7 +31,40 @@ class Fucker < Actor
     @atk_cost_ap = 2
     @item_cost_ap = 2
     @hatred_base = 1
-    @miss_rate = 0
+    @miss_rate = 25
+  end
+  
+  def set_extra
+    @maxhp_add = 0
+    @maxsp_add = 0
+    @maxap_add = 0
+    @atk_add = 0
+    @def_add = 0
+    @int_add = 0
+    @mdef_add = 0
+    @hp_rec_add = 0
+    @sp_rec_add = 0
+    @per_step_cost_ap_add = 0
+    @atk_cost_ap_add = 0
+    @item_cost_ap_add = 0
+    @bingo_rate = 50
+    @bingo_damage = 300
+    @damage_reduce_rate = 0
+    @damage_reduce = 0
+    @cost_reduce_rate = 0
+    @cost_reduce = 0
+    @hp_absorb_rate = 0
+    @hp_absorb = 10
+    @sp_absorb_rate = 0
+    @sp_absorb = 0
+    @invincible = false
+    @ignore_physical = false
+    @ignore_magic = false
+    @invisible = false
+    @deinvisible = false
+    @ignore_dmg_rate = 25
+    @dmg_rebound = 0
+    @dmg_rebound_rate = 0
   end
   
 end
@@ -57,7 +90,7 @@ class Shit < Actor
     @maxsp = 100
     @maxap = 20
     @atk = 25
-    @atk_area = [[1]]
+    @atk_area = [ [[1]] ,true]
     @atk_dis_min = 3
     @atk_dis_max = 5
     @def = 5
@@ -73,7 +106,7 @@ class Shit < Actor
   end
   
   def set_ai
-    @ai = Fux.new(self)
+    @ai = SB_AI.new(self)
   end
 
   def set_extra
@@ -96,7 +129,7 @@ class Shit < Actor
     @cost_reduce_rate = 0
     @cost_reduce = 0
     @hp_absorb_rate = 0
-    @hp_absorb = 10
+    @hp_absorb = 0
     @sp_absorb_rate = 0
     @sp_absorb = 0
     @invincible = false
@@ -105,8 +138,8 @@ class Shit < Actor
     @invisible = false
     @deinvisible = true
     @ignore_dmg_rate = 0
-    @dmg_rebound = 1
-    @dmg_rebound_rate = 0
+    @dmg_rebound = 0
+    @dmg_rebound_rate = 50
   end
 
 end
@@ -127,23 +160,60 @@ class God < Actor
   end
   
   def set_ele
-    @maxhp = 100
+    @maxhp = 1500
     @maxsp = 100
-    @maxap = 1
+    @maxap = 10
     @atk = 5
-    @atk_area = [[-3,-3,7,1]]
-    @atk_dis_min = 5
-    @atk_dis_max = 10
-    @def = 5
+    @atk_area = [ [[0,0,1,3]] ,false]
+    @atk_dis_min = 1
+    @atk_dis_max = 3
+    @def = -100
     @int = 5
     @mdef = 5
-    @hp_rec = 50
-    @sp_rec = 50
+    @hp_rec = 1
+    @sp_rec = 1
     @per_step_cost_ap = 1
     @atk_cost_ap = 1
     @item_cost_ap = 1
-    @hatred_base = 1000
-    @miss_rate = 50
+    @hatred_base = 500
+    @miss_rate = 0
+  end
+  
+  def set_extra
+    @maxhp_add = 0
+    @maxsp_add = 0
+    @maxap_add = 0
+    @atk_add = 0
+    @def_add = 0
+    @int_add = 0
+    @mdef_add = 0
+    @hp_rec_add = 0
+    @sp_rec_add = 0
+    @per_step_cost_ap_add = 0
+    @atk_cost_ap_add = 0
+    @item_cost_ap_add = 0
+    @bingo_rate = 10
+    @bingo_damage = 1000
+    @damage_reduce_rate = 0
+    @damage_reduce = 0
+    @cost_reduce_rate = 0
+    @cost_reduce = 0
+    @hp_absorb_rate = 0
+    @hp_absorb = 10
+    @sp_absorb_rate = 0
+    @sp_absorb = 0
+    @invincible = false
+    @ignore_physical = false
+    @ignore_magic = true
+    @invisible = false
+    @deinvisible = true
+    @ignore_dmg_rate = 0
+    @dmg_rebound = 1
+    @dmg_rebound_rate = 0
+  end
+  
+  def set_ai
+    @ai = SB_AI.new(self)
   end
 
 

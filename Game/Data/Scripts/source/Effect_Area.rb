@@ -1,5 +1,7 @@
 ﻿class Effect_Area
-
+  
+  attr_accessor :four_d
+  attr_accessor :arg
   attr_accessor :rect_arr
   attr_accessor :point_arr
   attr_accessor :bitmap
@@ -11,6 +13,8 @@
   attr_reader   :height
 
   def initialize(pos,arg=[],four_d=true,color=Fuc::MOV_AREA_C[0],bcolor=Fuc::MOV_AREA_C[1])
+    @four_d = four_d
+    @arg = arg
     @rect_arr = []
     @point_arr = []
     @bitmap = nil
@@ -101,7 +105,6 @@
   
   def create_bitmap(color,bcolor)
     @bitmap.dispose if @bitmap
-    p @rect_arr if @width < 1 || @height < 1
     return if @width < 1 || @height < 1
     @bitmap = Bitmap.new(@width*32,@height*32)
     @point_arr.each{|i| @bitmap.gradient_fill_rect((i[0]-@offset_x)*32,(i[1]-@offset_y)*32,32,32,color,bcolor,true)}

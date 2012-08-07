@@ -169,6 +169,11 @@
     elsif CInput.repeat?($vkey[:Up])
       Mouse.set_pos(*Fuc.getpos_by_gamepos([tpos[0],tpos[1]-1]))
     end
+    unless @cur_actor.atk_area[1]
+      if Fuc.mouse_dir_body(@cur_actor,@mousexy)!=@now_dir
+        create_effectarea
+      end
+    end
     if Mouse.down?(1) || CInput.press?($vkey[:Check])
       tempb = action(1,tpos)
       return unless tempb
@@ -317,9 +322,15 @@
     end
   end
   
-  def create_effectarea
+  def create_effectarea(target=nil)
     @effectarea.dispose if @effectarea
-    @effectarea = Effect_Area.new([0,0],@cur_actor.atk_area,true,EFFECT_AREA_C[0],EFFECT_AREA_C[1])
+    if @cur_actor.atk_area[1]
+      @effectarea = Effect_Area.new([0,0],*@cur_actor.atk_area,EFFECT_AREA_C[0],EFFECT_AREA_C[1])
+    else
+      target ||= @mousexy
+      @now_dir = Fuc.mouse_dir_body(@cur_actor,target)
+      @effectarea = Effect_Area.new([0,0],Fuc.turn(@cur_actor.atk_area[0].clone,@now_dir),false,EFFECT_AREA_C[0],EFFECT_AREA_C[1])
+    end
     @splink.fillup[3].bitmap = @effectarea.bitmap
     ssx = $game_map.adjust_x(@mousexy[0]+@effectarea.offset_x) * 32
     ssy = $game_map.adjust_y(@mousexy[1]+@effectarea.offset_y) * 32
@@ -440,10 +451,18 @@
       end
       if temp.is_a?(Array)
         tempb = []
+        if $random_center.rand(100) < @cur_actor.bingo_rate
+          bingo_color = BINGO_COLOR
+          bingo_size = 30
+        else
+          bingo_color = HP_COST_COLOR
+          bingo_size = 20
+        end
         temp.each do |i|
           dama = i.phy_damage(@cur_actor.get_atk)
           tempb << dama
           if dama[0]
+            dama[1] = dama[1]*@cur_actor.bingo_damage/100 if bingo_size > 20
             if @cur_actor.hp_absorb_rate != 0 || @cur_actor.hp_absorb != 0
               a = @cur_actor.absorb_hp(dama[1])
               b = @cur_actor.absorb_hp_by_rate(i.hp)
@@ -458,7 +477,7 @@
               a = @cur_actor.rebound_damage(dama[1],i.dmg_rebound_rate,i.dmg_rebound)
               @splink.show_text(a[1].to_s,@cur_actor.event,HP_COST_COLOR) if a[0]
             end
-            @splink.show_text(dama[1].to_s,i.event,HP_COST_COLOR)
+            @splink.show_text(dama[1].to_s,i.event,bingo_color,bingo_size)
             i.die if i.will_dead?
           elsif dama[1]<=1
             @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)

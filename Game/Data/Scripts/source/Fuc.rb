@@ -10,6 +10,7 @@
   WHITE_COLOR =   Color.new(255,255,255,255)
   HP_COST_COLOR = Color.new(255,0,0,255)
   HP_ADD_COLOR =  Color.new(0,255,0,255)
+  BINGO_COLOR =   Color.new(255,255,0,255)
   SP_COST_COLOR = Color.new(255,255,255,255)
   SP_ADD_COLOR =  Color.new(255,255,255,255)
   TIPS_POINT = Bitmap.new("Graphics/System/cur_actor.png")
@@ -60,6 +61,47 @@
     screen_pos[0] = pos[0]*32-$game_map.display_x*32+16
     screen_pos[1] = pos[1]*32-$game_map.display_y*32+16
     return screen_pos
+  end
+  
+  # 旋转区域数组
+  def self.turn(para,dir)
+    return para if dir == 0
+    para.each_index do |i|
+      case para[i].size
+      when 2
+        case dir
+        when 8
+          para[i] = [-para[i][0],-para[i][1]]
+        when 6
+          para[i] = [para[i][1],-para[i][0]]
+        when 4
+          para[i] = [-para[i][1],para[i][0]]
+        end
+      when 4
+        case dir
+        when 8
+          para[i] = [-para[i][0]-para[i][2]+1,-para[i][1]-para[i][3]+1,para[i][2],para[i][3]]
+        when 6
+          para[i] = [para[i][1],-para[i][0]-para[i][2]+1,para[i][3],para[i][2]]
+        when 4
+          para[i] = [-para[i][1]-para[i][3]+1,para[i][0],para[i][3],para[i][2]]
+        end
+      end
+    end
+    return para
+  end
+  
+  # 鼠标在角色的方向
+  def self.mouse_dir_body(actor,target)
+    tempos = target.is_a?(Array) ? target : [target.x,target.y]
+    sx = actor.x-tempos[0]
+    sy = actor.y-tempos[1]
+    if sx.abs > sy.abs
+      return sx > 0 ? 4 : 6
+    elsif sy != 0
+      return sy > 0 ? 8 : 2
+    end
+    return 0
   end
   
   # 鼠标指向地板的选框
@@ -113,5 +155,7 @@
     end
     return nil
   end
+  
+  
 
 end

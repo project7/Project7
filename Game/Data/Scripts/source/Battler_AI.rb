@@ -12,7 +12,11 @@
     $map_battle.set_view_pos(@user.x,@user.y)
     $map_battle.movearea.dispose if $map_battle.movearea
     $map_battle.create_enablearea
-    $map_battle.create_effectarea
+    if @user.atk_area[1]
+      $map_battle.create_effectarea
+    else
+      $map_battle.create_effectarea(@target)
+    end
     $map_battle.effectarea.x = @target.x
     $map_battle.effectarea.y = @target.y
     SceneManager.scene.spriteset.fillup[0].visible = false
