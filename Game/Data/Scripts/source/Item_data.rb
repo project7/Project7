@@ -29,8 +29,8 @@
     @hp_damage = 666
     @sp_damage = 0
     @ap_damage = 0
-    @buff = [[0,100]]
-    @debuff = [[0,100]]
+    @buff = []
+    @debuff = []
     @descr = "一根按摩棒"
   end
   

@@ -260,11 +260,29 @@
     end
   end
   
-  def add_buff(buff)
-    actor = self
-    @buff.each do |buff|
-      instance_eval(buff.use_effect)
+  def add_buff(new_buff)
+    @buff.each do |buff| 
+      if buff.id==new_buff.id
+        buff.refresh
+        return
+      end
     end
+    @buff << new_buff
+    instance_eval(new_buff.use_effect)
+  end
+  
+  def kill_buff(buff_id)
+    @buff.delete{|i| i.id==buff_id}
+  end
+  
+  def dec_buff(buff_id)
+    @buff.each do |buff| 
+      if buff.id==buff_id
+        instance_eval(buff.end_effect)
+        break
+      end
+    end
+    @buff.delete_if{|i| i.id==buff_id}
   end
   
   def x

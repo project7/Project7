@@ -11,6 +11,7 @@
   attr_accessor :per_turn_start_effect            # 每回合开始的效果
   attr_accessor :per_step_effect                  # 每次操作的效果
   attr_accessor :per_turn_end_effect              # 每回合结束的效果
+  attr_accessor :end_effect                       # 加持结束时的效果
   attr_accessor :atk_effect                       # 攻击时的效果
   attr_accessor :damage_effect                    # 伤害总结时的效果
   attr_accessor :end_req                          # 结束条件
@@ -27,6 +28,7 @@
   def set_ele(user)
     @id = 0
     @user = user
+    @name = ""
     @icon = nil
     @animation = []
     @keep_turn = 0
@@ -35,6 +37,7 @@
     @per_turn_start_effect = ""
     @per_step_effect = ""
     @per_turn_end_effect = ""
+    @end_effect = ""
     @atk_effect = ""
     @damage_effect = ""
   end
@@ -45,8 +48,13 @@
   end
   
   def init_var
-    @lived_turn = 0
-    @lived_step = 0
+    @lived_turn = $map_battle.turn
+    @lived_step = $map_battle.steps
+  end
+  
+  def refresh
+    @lived_turn = $map_battle.turn
+    @lived_step = $map_battle.steps
   end
 
 end

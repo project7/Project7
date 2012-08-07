@@ -19,6 +19,13 @@
     SceneManager.scene.spriteset.fillup[3].x = $map_battle.effectarea.screen_x
     SceneManager.scene.spriteset.fillup[3].y = $map_battle.effectarea.screen_y
   end
+  
+  def do_attack_end
+    $map_battle.set_view_pos(@user.x,@user.y)
+    $map_battle.create_maparea
+    $map_battle.effectarea.dispose if $map_battle.effectarea
+    $map_battle.enablearea.dispose if $map_battle.enablearea
+  end
 
   def toward_character(character)
     sx = distance_x_from(character.x)
@@ -32,6 +39,8 @@
         if @user.event.passable?(@user.x, @user.y, dir)
           return [0,dir]
         end
+      else
+        return [0,$random_center.rand(10)<5 ? 8 : 2]
       end
     elsif sy != 0
       dir = sy > 0 ? 8 : 2
@@ -42,6 +51,8 @@
         if @user.event.passable?(@user.x, @user.y, dir)
           return [0,dir]
         end
+      else
+        return [0,$random_center.rand(10)<5 ? 4 : 6]
       end
     end
     return [4,0]
@@ -59,6 +70,8 @@
         if @user.event.passable?(@user.x, @user.y, dir)
           return [0,dir]
         end
+      else
+        return [0,$random_center.rand(10)<5 ? 2 : 8]
       end
     elsif sy != 0
       dir = sy > 0 ? 2 : 8
@@ -69,6 +82,8 @@
         if @user.event.passable?(@user.x, @user.y, dir)
           return [0,dir]
         end
+      else
+        return [0,$random_center.rand(10)<5 ? 6 : 4]
       end
     end
     return [4,0]

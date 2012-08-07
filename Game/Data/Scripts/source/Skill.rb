@@ -44,7 +44,7 @@
   end
   
   def set_ui
-    @icon = Bitmap.new(32,32)
+    @icon = nil
     @user_animation = []
     @target_partner_animation = []
     @target_enemy_animation = []

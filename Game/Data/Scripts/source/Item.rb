@@ -1,5 +1,9 @@
 ﻿class Item < Skill
   
+  attr_accessor :use_cost_num
+  attr_accessor :can_use
+  
+  
   def ele
     @id = 0
     @use_cost_num = 1

@@ -1,7 +1,7 @@
 ﻿class YangffsChuShou < Equip
 
   def set_ui
-    @icon = Bitmap.new(32,32)
+    @icon = nil
     @atk_pic = "atk"
     @animation = []
   end

@@ -84,6 +84,15 @@
       return 2 if @press_keys.included?($vkey[:Down])
       return 0
     end
+    
+    def item5
+      return 1 if trigger?($vkey[:Item1])
+      return 2 if trigger?($vkey[:Item1])
+      return 3 if trigger?($vkey[:Item1])
+      return 4 if trigger?($vkey[:Item1])
+      return 5 if trigger?($vkey[:Item1])
+      return 0
+    end
  
   end
 end

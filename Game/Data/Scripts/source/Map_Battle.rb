@@ -11,6 +11,8 @@
   attr_accessor  :enablearea
   attr_accessor  :fighter_num
   attr_accessor  :last_action_state
+  attr_accessor  :turn
+  attr_accessor  :steps
 
   def initialize(end_req="@partner_num==0||@enemy_num==0")
     @end_req = end_req
@@ -28,6 +30,7 @@
     @effectarea = nil       #效果范围
     @scene_id = 0           #当前刷新的场景id
     @turn = 0               #回合
+    @steps = 0              #操作数
     @fighter_num = 0        #参战人数
     @battle_end_flag = false
     @last_action_state = true
@@ -97,11 +100,35 @@
         end
       end
     end
+    @steps+=1
+    per_steps_cal
     @partner_num = arra.size
     @enemy_num = arrb.size
   end
   
   def turn_begin_cal
+    actor = @cur_actor
+    actor.buff.each do |buff|
+      if instance_eval(buff.end_req)
+        @cur_actor.dec_buff(buff.id)
+      else
+        instance_eval(buff.per_turn_start_effect)
+      end
+    end
+  end
+  
+  def per_steps_cal
+    actor = @cur_actor
+    actor.buff.each do |buff|
+      if instance_eval(buff.end_req)
+        @cur_actor.dec_buff(buff.id)
+      else
+        instance_eval(buff.per_step_effect)
+      end
+    end
+  end
+  
+  def turn_end_cal
     actor = @cur_actor
     actor.buff.each do |buff|
       instance_eval(buff.per_turn_start_effect)
@@ -197,8 +224,9 @@
   def update_action
     return if $game_map.interpreter.running?
     # 四方向按键
-    if @actor.movable? && CInput.dir4 > 0
-      action(0,CInput.dir4)
+    tinp = CInput.dir4
+    if @actor.movable? && tinp > 0
+      action(0,tinp)
       @actor.auto_move_path=[]
       @wayarea.dispose if @wayarea
       return
@@ -346,6 +374,7 @@
     if instance_eval(@end_req)
       end_battle
     elsif @cur_actor.ap <= 0
+      turn_end_cal
       next_actor
     end
   end
@@ -402,8 +431,8 @@
     when 1#攻击
       return false if @cur_actor.ap<@cur_actor.get_ap_for_atk
       temp = area_can_effect(para)
-      tsx = @cur_actor.x-@mousexy[0]
-      tsy = @cur_actor.y-@mousexy[1]
+      tsx = @cur_actor.x-para[0]
+      tsy = @cur_actor.y-para[1]
       if tsx.abs > tsy.abs
         @cur_actor.event.set_direction(tsx > 0 ? 4 : 6)
       elsif tsy != 0
@@ -443,6 +472,7 @@
     when 2#技能
     when 3#物品
     when 4#跳过
+      @cur_actor.add_buff(Wait_buff.new)
       next_actor
     end
   end
@@ -475,15 +505,13 @@
   end
   
   def top_hatred(team_id)
-    body = nil
-    max = -1
+    hatred_list = []
     @action_list.each do |i|
-      if i.hatred > max && (i.team&team_id).size==0 && !i.dead?
-        max = i.hatred
-        body = i
+      if (i.team&team_id).size==0 && !i.dead?
+        hatred_list << i
       end
     end
-    return body
+    return hatred_list.sort_by{|i| i.hatred}.reverse
   end
   
 end
