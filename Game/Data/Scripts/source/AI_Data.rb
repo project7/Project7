@@ -9,7 +9,7 @@
   def get_action
     get_target
     return [4,0] unless @target
-    return [4,0] unless $map_battle.last_action_state
+    return [4,0] unless $map_battle.last_action_state || ($map_battle.last_action_state.is_a?(Array) && !$map_battle.last_action_state[0] && $map_battle.last_action_state[1]>1)
     if @user.ap >= @user.get_ap_for_atk
       ssx = distance_x_from(@target.x)
       ssy = distance_y_from(@target.y)

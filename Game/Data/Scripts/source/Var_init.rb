@@ -2,6 +2,7 @@
 $pl_actor = nil
 $sel_body = nil
 $random_center = Random.new(65535)
+Font.default_name = "方正隶变简体"
 
 begin
   Dir["*.log"].each{|i| File.delete((Dir.getwd + '/'+i))}

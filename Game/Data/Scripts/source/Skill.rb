@@ -52,7 +52,7 @@
     @target_e_dead_animation = []
   end
   
-  def ele
+  def set_ele
     @id = 0
     @name = ""
     @init_skill = true
@@ -77,7 +77,7 @@
     @descr = ""
   end
   
-  def extra
+  def set_extra
     @spec_effect = ""
     @sp_cost_rate = 0
     @hp_cost_rate = 0

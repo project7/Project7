@@ -153,18 +153,6 @@ class Game_Player < Game_Character
     !@through && (pos?(x, y) || followers.collide?(x, y))
   end
   #--------------------------------------------------------------------------
-  # ● 画面中央的 X 坐标
-  #--------------------------------------------------------------------------
-  def center_x
-    (Graphics.width / 32 - 1) / 2.0
-  end
-  #--------------------------------------------------------------------------
-  # ● 画面中央的 Y 坐标
-  #--------------------------------------------------------------------------
-  def center_y
-    (Graphics.height / 32 - 1) / 2.0
-  end
-  #--------------------------------------------------------------------------
   # ● 设置显示位置为地图中央
   #--------------------------------------------------------------------------
   def center(x, y)
@@ -294,7 +282,7 @@ class Game_Player < Game_Character
     last_real_y = @real_y
     last_moving = moving?
     super
-    update_scroll(last_real_x, last_real_y)
+    update_scroll(last_real_x, last_real_y) if !$map_battle || ($map_battle && $map_battle.cur_actor.event == self)
     update_vehicle
     update_nonmoving(last_moving) unless moving?
     @followers.update

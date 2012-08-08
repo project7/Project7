@@ -8,6 +8,7 @@
   attr_accessor :buff                         # 状态
   attr_accessor :skill                        # 技能
   attr_accessor :equip                        # 装备
+  attr_accessor :bag                          # 背包
   attr_accessor :name                         # 名称
   attr_accessor :atk_pic                      # 攻击行走图(缺省)
   attr_accessor :atk_cot                      # 攻击帧数(缺省)
@@ -68,6 +69,8 @@
   attr_accessor :steps                        # 操作数
   attr_accessor :dead                         # 是否死亡
   attr_accessor :ai                           # AI
+  attr_accessor :buff_rem                     # BUFF编号
+  attr_accessor :bag_rem                      # 物品编号
   
   def initialize(event_id=0,t_id=[0])
     @event_id = event_id
@@ -78,6 +81,7 @@
     set_ui
     set_rd_value
     set_ai
+    set_item
     init_var
   end
 
@@ -155,7 +159,13 @@
     @ai = nil
   end
   
+  def set_item
+    @bag = []
+    @bag_rem = []
+  end
+  
   def set_rd_value
+    @buff_rem = []
     @steps = 0
   end
 
@@ -211,6 +221,7 @@
     end
     @hp -= value
     @hp = [[@maxhp,@hp].min,0].max
+    self.die if self.will_dead?
     return [true,value]
   end
   
@@ -260,6 +271,48 @@
     end
   end
   
+  def learn_skill(skill)
+    @skill << skill
+    @skill.uniq!{|i| i.id}
+  end
+  
+  def forget_skill(skill_id)
+    @skill.delete_if{|i| i.id==skill_id}
+  end
+  
+  def gain_item(item,num)
+    @bag.each_with_index do |i,j|
+      if i[0].id == item.id
+        @bag[j][1] += num
+        cal_item_rem
+        return
+      end
+    end
+    @bag << [item,num]
+    cal_item_rem
+  end
+  
+  def cal_item_rem
+    @bag_rem = []
+    @bag.each do |i|
+      @bag_rem << [i[0].id,i[1]]
+    end
+  end
+  
+  def lose_item(item_id,num)
+    @bag.each_with_index do |i,j|
+      if i[0].id == item_id
+        if i[1] > num
+          @bag[j][1] -= num
+        else
+          @bag[j][1] = 0
+        end
+      end
+    end
+    @bag.delete_if{|i| i[1]==0}
+    cal_item_rem
+  end
+  
   def add_buff(new_buff)
     @buff.each do |buff| 
       if buff.id==new_buff.id
@@ -269,10 +322,12 @@
     end
     @buff << new_buff
     instance_eval(new_buff.use_effect)
+    cal_buff_rem
   end
   
   def kill_buff(buff_id)
     @buff.delete{|i| i.id==buff_id}
+    cal_buff_rem
   end
   
   def dec_buff(buff_id)
@@ -283,6 +338,12 @@
       end
     end
     @buff.delete_if{|i| i.id==buff_id}
+    cal_buff_rem
+  end
+  
+  def cal_buff_rem
+    @buff_rem = []
+    @buff.each{|i| @buff_rem << i.id}
   end
   
   def x
@@ -302,7 +363,8 @@
   end
   
   def maxstep
-    return @ap/get_ap_for_step
+    max_step = get_ap_for_step < 1 ? -1 : @ap/get_ap_for_step
+    return max_step
   end
   
   def event
@@ -335,6 +397,10 @@
   
   def get_ap_for_atk
     return @atk_cost_ap+@atk_cost_ap_add
+  end
+  
+  def get_ap_for_item
+    return @item_cost_ap+@item_cost_ap_add
   end
   
   def absorb_hp_by_rate(hp)
@@ -371,6 +437,14 @@
     @dead = true
     self.event.opacity = 100
     self.event.through = true
+    $map_battle.next_actor if $map_battle
+  end
+  
+  def relive
+    @hp = 1 if @hp <= 0
+    @dead = false
+    self.event.opacity = 255
+    self.event.through = false
   end
 
 end

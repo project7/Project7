@@ -15,10 +15,10 @@ class Fucker < Actor
   end
 
   def set_ele
-    @maxhp = 120
+    @maxhp = 1200
     @maxsp = 80
-    @maxap = 5
-    @atk = 32
+    @maxap = 80
+    @atk = 10
     @atk_area = [ [[0,0,1,3]] ,false]
     @atk_dis_min = 1
     @atk_dis_max = 1
@@ -27,8 +27,8 @@ class Fucker < Actor
     @mdef = 2
     @hp_rec = 1
     @sp_rec = 1
-    @per_step_cost_ap = 1
-    @atk_cost_ap = 2
+    @per_step_cost_ap = 10
+    @atk_cost_ap = 20
     @item_cost_ap = 2
     @hatred_base = 1
     @miss_rate = 25
@@ -47,14 +47,14 @@ class Fucker < Actor
     @per_step_cost_ap_add = 0
     @atk_cost_ap_add = 0
     @item_cost_ap_add = 0
-    @bingo_rate = 50
-    @bingo_damage = 300
+    @bingo_rate = 12
+    @bingo_damage = 400
     @damage_reduce_rate = 0
     @damage_reduce = 0
     @cost_reduce_rate = 0
     @cost_reduce = 0
     @hp_absorb_rate = 0
-    @hp_absorb = 10
+    @hp_absorb = 0
     @sp_absorb_rate = 0
     @sp_absorb = 0
     @invincible = false
@@ -90,7 +90,7 @@ class Shit < Actor
     @maxsp = 100
     @maxap = 20
     @atk = 25
-    @atk_area = [ [[1]] ,true]
+    @atk_area = [ [[0,0,1,2],[1,2]] ,true]
     @atk_dis_min = 3
     @atk_dis_max = 5
     @def = 5
@@ -122,8 +122,8 @@ class Shit < Actor
     @per_step_cost_ap_add = 0
     @atk_cost_ap_add = 0
     @item_cost_ap_add = 0
-    @bingo_rate = 0
-    @bingo_damage = 0
+    @bingo_rate = 10
+    @bingo_damage = 1000000
     @damage_reduce_rate = 0
     @damage_reduce = 0
     @cost_reduce_rate = 0
@@ -160,14 +160,14 @@ class God < Actor
   end
   
   def set_ele
-    @maxhp = 1500
+    @maxhp = 200
     @maxsp = 100
-    @maxap = 10
-    @atk = 5
+    @maxap = 1#10
+    @atk = 15
     @atk_area = [ [[0,0,1,3]] ,false]
     @atk_dis_min = 1
     @atk_dis_max = 3
-    @def = -100
+    @def = -10
     @int = 5
     @mdef = 5
     @hp_rec = 1
@@ -192,8 +192,8 @@ class God < Actor
     @per_step_cost_ap_add = 0
     @atk_cost_ap_add = 0
     @item_cost_ap_add = 0
-    @bingo_rate = 10
-    @bingo_damage = 1000
+    @bingo_rate = 0
+    @bingo_damage = 0
     @damage_reduce_rate = 0
     @damage_reduce = 0
     @cost_reduce_rate = 0
@@ -208,7 +208,7 @@ class God < Actor
     @invisible = false
     @deinvisible = true
     @ignore_dmg_rate = 0
-    @dmg_rebound = 1
+    @dmg_rebound = 0
     @dmg_rebound_rate = 0
   end
   

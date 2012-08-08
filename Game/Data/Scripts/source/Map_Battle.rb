@@ -14,7 +14,7 @@
   attr_accessor  :turn
   attr_accessor  :steps
 
-  def initialize(end_req="@partner_num==0||@enemy_num==0")
+  def initialize(end_req=COMMON_BATTLE_REQ)
     @end_req = end_req
     var_init
     cal_var
@@ -43,17 +43,7 @@
   end
   
   def get_action_list
-    temp = {}
-    temp_val = []
-    $team_set.each do |i|
-      temp[i.maxap] ||= []
-      temp[i.maxap] << i
-      temp_val << i.maxap
-    end
-    temp_val.uniq.sort.reverse.each do |i|
-      @action_list << temp[i]
-    end
-    @action_list.flatten!
+    @action_list = $team_set.sort_by{|i| i.maxap}.reverse.clone
     @fighter_num = @action_list.size
   end
   
@@ -63,14 +53,14 @@
       @cur_actor= temp_actor
     else
       @cur_actor = @action_list[0]
+      @turn += 1
     end
     isdead = @cur_actor.dead?
     cal_fighter_num
-    @turn += 1
     turn_begin_cal
     @actor = @cur_actor.event
     unless isdead
-      $sel_body = @cur_actor
+      $sel_body = @cur_actor unless @cur_actor.ai
       if @cur_actor.ap >= @cur_actor.maxap
         temp = [@cur_actor.maxap/10,@cur_actor.get_ap_for_step].max
         @cur_actor.ap = @cur_actor.maxap+temp
@@ -138,7 +128,8 @@
   def get_first_actor
     @cur_actor = @action_list[-1]
     next_actor
-    @splink.tips[0].bitmap = TIPS_POINT.clone
+    @splink.tips[0].bitmap.dispose if @splink.tips[0].bitmap
+    @splink.tips[0].bitmap = Bitmap.new(TIPS_POINT)
   end
   
   def update
@@ -152,6 +143,8 @@
       end
     when 1
       update_select_target
+    when 2
+      update_select_effect_area
     end
     update_cal
     update_viewpos
@@ -159,15 +152,14 @@
   
   def update_select_target
     @splink.tipsvar[1][0] = true
-    tpos = Fuc.getpos_by_screenpos(Mouse.pos)
     if CInput.repeat?($vkey[:Down])
-      Mouse.set_pos(*Fuc.getpos_by_gamepos([tpos[0],tpos[1]+1]))
+      Mouse.set_pos(*Fuc.getpos_by_gamepos([@mousexy[0],@mousexy[1]+1]))
     elsif CInput.repeat?($vkey[:Left])
-      Mouse.set_pos(*Fuc.getpos_by_gamepos([tpos[0]-1,tpos[1]]))
+      Mouse.set_pos(*Fuc.getpos_by_gamepos([@mousexy[0]-1,@mousexy[1]]))
     elsif CInput.repeat?($vkey[:Right])
-      Mouse.set_pos(*Fuc.getpos_by_gamepos([tpos[0]+1,tpos[1]]))
+      Mouse.set_pos(*Fuc.getpos_by_gamepos([@mousexy[0]+1,@mousexy[1]]))
     elsif CInput.repeat?($vkey[:Up])
-      Mouse.set_pos(*Fuc.getpos_by_gamepos([tpos[0],tpos[1]-1]))
+      Mouse.set_pos(*Fuc.getpos_by_gamepos([@mousexy[0],@mousexy[1]-1]))
     end
     unless @cur_actor.atk_area[1]
       if Fuc.mouse_dir_body(@cur_actor,@mousexy)!=@now_dir
@@ -175,10 +167,39 @@
       end
     end
     if Mouse.down?(1) || CInput.press?($vkey[:Check])
-      tempb = action(1,tpos)
+      tempb = action(1,@mousexy)
       return unless tempb
       if tempb.all?{|i| i[0]==false&&i[1]>1}
-        @splink.show_text(FAILD_ATTACK_TEXT[tempb[0][1]],@cur_actor.event)
+        @splink.show_tips(FAILD_ATTACK_TEXT[tempb[0][1]])
+      else
+        end_target_select
+      end
+    elsif Mouse.down?(2) || CInput.trigger?($vkey[:X])
+      end_target_select
+    end
+  end
+
+  def update_select_effect_area
+    @splink.tipsvar[1][0] = true
+    if CInput.repeat?($vkey[:Down])
+      Mouse.set_pos(*Fuc.getpos_by_gamepos([@mousexy[0],@mousexy[1]+1]))
+    elsif CInput.repeat?($vkey[:Left])
+      Mouse.set_pos(*Fuc.getpos_by_gamepos([@mousexy[0]-1,@mousexy[1]]))
+    elsif CInput.repeat?($vkey[:Right])
+      Mouse.set_pos(*Fuc.getpos_by_gamepos([@mousexy[0]+1,@mousexy[1]]))
+    elsif CInput.repeat?($vkey[:Up])
+      Mouse.set_pos(*Fuc.getpos_by_gamepos([@mousexy[0],@mousexy[1]-1]))
+    end
+    unless @using_obj.hurt_area[1]
+      if Fuc.mouse_dir_body(@cur_actor,@mousexy)!=@now_dir
+        create_higher_effectarea(@using_obj)
+      end
+    end
+    if Mouse.down?(1) || CInput.press?($vkey[:Check])
+      tempb = action(3,[@using_obj,@mousexy])
+      return unless tempb
+      if tempb.all?{|i| i[0]==false&&i[1]>1}
+        @splink.show_tips(FAILD_ATTACK_TEXT[tempb[0][1]])
       else
         end_target_select
       end
@@ -196,12 +217,12 @@
         if @effectarea.include?(body.x,body.y)
           if (i.team&@cur_actor.team).size==0
             if i.dead?
-              err_id ||= 3
+              err_id = 3
             else
               effect_arr << i
             end
           else
-            err_id ||= 1
+            err_id = 1 if err_id != 3
           end
         else
           err_id ||= 0
@@ -209,6 +230,65 @@
       end
     else
       err_id ||= 2
+    end
+    if effect_arr == []
+      return err_id
+    else
+      return effect_arr
+    end
+  end
+  
+  def higher_area_can_effect(tec)
+    effect_arr = []
+    reffect_arr = []
+    err_id = nil
+    # 过滤目标
+    if tec[1]==0
+      reffect_arr = [@cur_actor]
+    elsif tec[1]==-1
+      reffect_arr = $team_set
+    elsif @enablearea.include?(*tec[1])
+      reffect_arr = $team_set
+    else
+      err_id = 2
+    end
+    reffect_arr.each do |i|
+      beat = (i.team&@cur_actor.team).size==0
+      dead = i.dead?
+      body = i.event_id == 0 ? $game_player : i.event
+      if tec[1]==-1 || @effectarea.include?(body.x,body.y)
+        if beat
+          if tec[0].hurt_enemy
+            if dead
+              if tec[0].hurt_e_dead
+                effect_arr << i
+              else
+                err_id = 6
+              end
+            else
+              effect_arr << i
+            end
+          else
+            err_id = 4 if err_id != 6 || err_id != 7
+          end
+        else
+          if tec[0].hurt_partner
+            if dead
+              if tec[0].hurt_p_dead
+                effect_arr << i
+              else
+                err_id = 7
+              end
+            else
+              effect_arr << i
+            end
+          else
+            err_id = 5 if err_id != 6 || err_id != 7
+          end
+        end
+      else
+        err_id ||= 0
+      end
     end
     if effect_arr == []
       return err_id
@@ -225,6 +305,38 @@
     @splink.fillup[0].visible = true
     @scene_id = 0
   end
+  
+  def ready_for_attack
+    Mouse.set_cursor(Mouse::AttackCursor)
+    @actor.auto_move_path=[]
+    @movearea.dispose if @movearea
+    @wayarea.dispose if @wayarea
+    create_effectarea
+    create_enablearea
+    @splink.fillup[0].visible = false
+    set_view_pos(@cur_actor.x,@cur_actor.y)
+    @scene_id = 1
+  end
+  
+  def ready_for_effect(obj)
+    if obj.hurt_area[0] == [[0]]
+      action(3,[obj,0])
+      return
+    elsif obj.hurt_maxnum < 0
+      action(3,[obj,-1])
+      return
+    end
+    Mouse.set_cursor(Mouse::AttackCursor)
+    @actor.auto_move_path=[]
+    @movearea.dispose if @movearea
+    @wayarea.dispose if @wayarea
+    create_higher_effectarea(obj)
+    create_higher_enablearea(obj)
+    @splink.fillup[0].visible = false
+    set_view_pos(@cur_actor.x,@cur_actor.y)
+    @scene_id = 2
+    @using_obj = obj
+  end
 
   def update_action
     return if $game_map.interpreter.running?
@@ -237,18 +349,8 @@
       return
     end
     # A
-    if CInput.trigger?($vkey[:Attack]) && @cur_actor.ap>=@cur_actor.get_ap_for_atk && @actor.movable?
-      Mouse.set_cursor(Mouse::AttackCursor)
-      if @cur_actor.atk_area
-        @actor.auto_move_path=[]
-        @movearea.dispose if @movearea
-        @wayarea.dispose if @wayarea
-        create_effectarea
-        create_enablearea
-        @splink.fillup[0].visible = false
-        set_view_pos(@cur_actor.x,@cur_actor.y)
-        @scene_id = 1
-      end
+    if CInput.trigger?($vkey[:Attack]) && @cur_actor.ap>=@cur_actor.get_ap_for_atk && @actor.movable? && @cur_actor.atk_area
+      ready_for_attack
       return
     end
     # TAB
@@ -258,10 +360,26 @@
       action(4)
       return
     end
+    # 道具(1234)
+    tkey = CInput.item4
+    if tkey
+      obj = $sel_body.bag[tkey]
+      if @cur_actor.ap>=@cur_actor.get_ap_for_item
+        ready_for_effect(obj[0]) if obj && $sel_body == @cur_actor && obj[0].enough_to_use(obj[1])
+      else
+        @splink.show_tips(NOT_ENOUGH_AP)
+      end
+      return
+    end
     # 鼠标
-    if Mouse.down?(1) && @actor.movable?
+    if Mouse.down?(1)# && @actor.movable?
       if SceneManager.scene.mouse_in_itemrect?
-      
+        obj = $sel_body.bag[@splink.tipsvar[2][1]]
+        if @cur_actor.ap>=@cur_actor.get_ap_for_item
+          ready_for_effect(obj[0]) if obj && $sel_body == @cur_actor && @splink.tipsvar[2][0] && obj[0].enough_to_use(obj[1])
+        else
+          @splink.show_tips(NOT_ENOUGH_AP)
+        end
       else
         $team_set.each do |i|
           body = i.event_id == 0 ? $game_player : i.event
@@ -278,15 +396,15 @@
           if @actor.direction == dir && !@actor.passable?(@actor.x, @actor.y, dir)
             @actor.check_action_event
           else
+            @wayarea.dispose if @wayarea
             action(0,dir)
           end
         elsif x_dis.abs+y_dis.abs > 1
-          create_wayarea
+          create_wayarea if @cur_actor.get_ap_for_step < 1 || @cur_actor.maxstep>=1
         end
       end
       return
-    end
-    if Mouse.press?(2)
+    elsif Mouse.press?(2)
       @target_pos = nil
       @mouse_right_down = true
       @splink.tipsvar[1][0] = true
@@ -346,8 +464,33 @@
     @splink.fillup[4].y = @enablearea.screen_y
   end
   
+  def create_higher_effectarea(obj,target=nil)
+    @effectarea.dispose if @effectarea
+    if obj.hurt_area[1]
+      @effectarea = Effect_Area.new([0,0],*obj.hurt_area,EFFECT_AREA_C[0],EFFECT_AREA_C[1])
+    else
+      target ||= @mousexy
+      @now_dir = Fuc.mouse_dir_body(@cur_actor,target)
+      @effectarea = Effect_Area.new([0,0],Fuc.turn(obj.hurt_area[0].clone,@now_dir),false,EFFECT_AREA_C[0],EFFECT_AREA_C[1])
+    end
+    @splink.fillup[3].bitmap = @effectarea.bitmap
+    ssx = $game_map.adjust_x(@mousexy[0]+@effectarea.offset_x) * 32
+    ssy = $game_map.adjust_y(@mousexy[1]+@effectarea.offset_y) * 32
+    @splink.fillup[3].x = ssx
+    @splink.fillup[3].y = ssy
+  end
+  
+  def create_higher_enablearea(obj)
+    @enablearea.dispose if @enablearea
+    @enablearea = Effect_Area.new([@cur_actor.x,@cur_actor.y],[[obj.use_dis_min,obj.use_dis_max,true]],true,ENABLE_AREA_C[0],ENABLE_AREA_C[1])
+    @splink.fillup[4].bitmap = @enablearea.bitmap
+    @splink.fillup[4].x = @enablearea.screen_x
+    @splink.fillup[4].y = @enablearea.screen_y
+  end
+  
   def create_maparea
     @movearea.dispose if @movearea
+    return if @cur_actor.get_ap_for_step < 1
     @movearea = Effect_Area.new([@cur_actor.x,@cur_actor.y],[[@cur_actor.maxstep]])
     @splink.fillup[1].bitmap = @movearea.bitmap
     @splink.fillup[1].x = @movearea.screen_x
@@ -384,9 +527,9 @@
   def update_cal
     if instance_eval(@end_req)
       end_battle
-    elsif @cur_actor.ap <= 0
-      turn_end_cal
-      next_actor
+    #elsif @cur_actor.ap <= 0
+    #  turn_end_cal
+    #  next_actor
     end
   end
   
@@ -394,7 +537,7 @@
     if @target_pos
       now_pos = [$game_map.parallax_x,$game_map.parallax_y]
       if (@last_sc_pos[0]-now_pos[0]).abs <= 0.01 && (@last_sc_pos[1]-now_pos[1]).abs <= 0.01
-        $game_map.set_display_pos(*@target_pos)
+        #$game_map.set_display_pos(*@target_pos)
         @target_pos = nil
       else
         sx = (@target_pos[0].to_f - now_pos[0])/10
@@ -413,7 +556,7 @@
   def action(id,para=nil)
     revar = ctrl(id,para)
     if revar.is_a?(Array)
-      @last_action_state = !revar.flatten.include?(false)
+      @last_action_state = revar
       @order_rem << [id,para]
       cal_fighter_num
       return revar
@@ -432,6 +575,7 @@
     actor = @cur_actor.event
     case id
     when 0#移动
+      return false if @cur_actor.ap < @cur_actor.get_ap_for_step
       if @actor.move_straight(para)
         @cur_actor.cost_ap_for(0)
         create_maparea
@@ -459,10 +603,11 @@
           bingo_size = 20
         end
         temp.each do |i|
-          dama = i.phy_damage(@cur_actor.get_atk)
+          tempama = @cur_actor.get_atk
+          tempama = tempama*@cur_actor.bingo_damage/100 if bingo_size > 20
+          dama = i.phy_damage(tempama)
           tempb << dama
           if dama[0]
-            dama[1] = dama[1]*@cur_actor.bingo_damage/100 if bingo_size > 20
             if @cur_actor.hp_absorb_rate != 0 || @cur_actor.hp_absorb != 0
               a = @cur_actor.absorb_hp(dama[1])
               b = @cur_actor.absorb_hp_by_rate(i.hp)
@@ -478,7 +623,6 @@
               @splink.show_text(a[1].to_s,@cur_actor.event,HP_COST_COLOR) if a[0]
             end
             @splink.show_text(dama[1].to_s,i.event,bingo_color,bingo_size)
-            i.die if i.will_dead?
           elsif dama[1]<=1
             @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
           end
@@ -490,7 +634,61 @@
       end
     when 2#技能
     when 3#物品
+      return false if @cur_actor.ap<@cur_actor.get_ap_for_item
+      temp = higher_area_can_effect(para)
+      if para[1]!=-1 && para[1] != 0
+        tsx = @cur_actor.x-para[1][0]
+        tsy = @cur_actor.y-para[1][1]
+        if tsx.abs > tsy.abs
+          @cur_actor.event.set_direction(tsx > 0 ? 4 : 6)
+        elsif tsy != 0
+          @cur_actor.event.set_direction(tsy > 0 ? 8 : 2)
+        end
+      end
+      if temp.is_a?(Array)
+        tempb = []
+        temp.each do |i|
+          tempama = para[0].hp_damage
+          if tempama != 0
+            color = tempama > 0 ? HP_COST_COLOR : HP_ADD_COLOR
+            dama = i.mag_damage(tempama)
+            tempb << dama
+            if dama[0]
+              @splink.show_text(dama[1].to_s,i.event,color)
+            elsif dama[1]<=1
+              @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
+            end
+          end
+          tempama = para[0].sp_damage
+          if tempama != 0
+            color = tempama > 0 ? SP_COST_COLOR : SP_ADD_COLOR
+            dama = i.mag_damage(tempama)
+            tempb << dama
+            if dama[0]
+              @splink.show_text(dama[1].to_s,i.event,color)
+            elsif dama[1]<=1
+              @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
+            end
+          end
+          tempama = para[0].ap_damage
+          if tempama != 0
+            color = tempama > 0 ? AP_COST_COLOR : AP_ADD_COLOR
+            dama = i.mag_damage(tempama)
+            tempb << dama
+            if dama[0]
+              @splink.show_text(dama[1].to_s,i.event,color)
+            elsif dama[1]<=1
+              @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
+            end
+          end
+        end
+        @cur_actor.cost_ap_for(1)
+        return tempb
+      else
+        return [[false,5+temp]]
+      end
     when 4#跳过
+      turn_end_cal
       @cur_actor.add_buff(Wait_buff.new)
       next_actor
     end
@@ -501,6 +699,7 @@
     dispose_all
     $game_switches[1]=false
     $map_battle = nil
+    $game_temp.reserve_common_event(1)
   end
   
   def dispose_all

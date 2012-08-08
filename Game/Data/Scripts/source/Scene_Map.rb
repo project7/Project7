@@ -71,7 +71,7 @@ class Scene_Map < Scene_Base
   # ● 更新画面
   #--------------------------------------------------------------------------
   def update_ui
-    if mouse_in_itemrect?
+    if !$game_message.busy? && !$game_message.visible && mouse_in_itemrect?
       @spriteset.tipsvar[1][0] = false
       tempa = item_mouse_index
       if tempa

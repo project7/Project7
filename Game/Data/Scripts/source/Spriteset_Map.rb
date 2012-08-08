@@ -80,33 +80,69 @@ class Spriteset_Map
     @fillup[3].z = 4
     @fillup[4].z = 3
     # UI
-    @tipsvar = [[0,0],[true,10],[false,0],nil]
+    @tipsvar = [[0,0],[true,10],[false,0],nil,nil,nil,0,nil,nil,[],[false,-1],[],[],[],[]]
     @tips = 
     [ Sprite.new(@viewport2),
       Sprite.new(@viewport3),
       Sprite.new(@viewport3),
       Sprite.new(@viewport3),
       Sprite.new(@viewport3),
+      Sprite.new(@viewport3),
+      Sprite.new(@viewport3),
+      Sprite.new(@viewport3),
+      Sprite.new(@viewport3),
+      Sprite.new(@viewport3),
+      Sprite.new(@viewport3),
+      Sprite.new(@viewport3),
+      Sprite.new(@viewport3),
+      Sprite.new(@viewport3),
       Sprite.new(@viewport3)
     ]
-    @tips[0].z = 1
-    @tips[1].bitmap = Fuc.ui_item
+    @tips[0].z = 1                                      #鼠标指针
+    @tips[1].bitmap = Fuc.ui_item                       #物品栏
     @tips[1].x = -175
     @tips[1].y = Graphics.height*77/100
     @tips[1].z = 100
-    @tips[2].bitmap = Fuc.ui_item_rect
+    @tips[2].bitmap = Fuc.ui_item_rect                  #物品栏选框
     @tips[2].y = @tips[1].y+12
-    @tips[2].z = 101
-    @tips[3].bitmap = Fuc.ui_detail
+    @tips[2].z = 102
+    @tips[3].bitmap = Fuc.ui_detail                     #头像背景
     @tips[3].y = 6
     @tips[3].x = 6
     @tips[3].z = 100
-    @tips[4].y = 6
+    @tips[4].y = 6                                      #头像
     @tips[4].x = 6
     @tips[4].z = 101
-    @tips[5].y = 6
+    @tips[5].y = 6                                      #头像资料ap
     @tips[5].x = 6
     @tips[5].z = 102
+    @tips[6].bitmap = Bitmap.new(Fuc::TIPS_TEXT)        #提示文字背景
+    @tips[6].y = Graphics.height - @tips[6].bitmap.height-10
+    @tips[6].x = Graphics.width/2-@tips[6].bitmap.width/2
+    @tips[6].opacity = 0
+    @tips[6].z = 102
+    @tips[7].bitmap = Bitmap.new(@tips[6].bitmap.width*2,@tips[6].bitmap.height)
+    #@tips[7].bitmap.font.color = Fuc::TIPS_TEXT_COLOR
+    @tips[7].bitmap.font.shadow = false
+    @tips[7].y = Graphics.height - @tips[7].bitmap.height-10  #提示文字
+    @tips[7].x = Graphics.width/2-@tips[7].bitmap.width/2
+    @tips[7].opacity = 0
+    @tips[7].z = 103
+    @tips[8].bitmap = Bitmap.new(Fuc::BUFF_BACK)        #buff背景
+    @tips[8].x = Graphics.width-@tips[8].bitmap.width
+    @tips[8].z = 100
+    @tips[9].bitmap = Fuc.get_buff_bitmap;@tipsvar[9]=$sel_body ? $sel_body.buff_rem : []      #buff图标
+    @tips[9].y = @tips[8].y+@tips[8].bitmap.height/2-@tips[9].bitmap.height/2
+    @tips[9].x = Graphics.width-@tips[9].bitmap.width
+    @tips[9].z = 101
+    @tips[10].y = @tips[8].y+@tips[8].bitmap.height
+    @tips[10].z = 102         #提示
+    [*11..14].each do |i|                   # 道具显示
+      @tips[i].bitmap = Fuc.get_item_bitmap(i-11)
+      @tips[i].y = @tips[1].y+12
+      @tips[i].x = @tips[1].x+5+(i-11)*41
+      @tips[i].z = 101
+    end
     # 数据显示
     @richtext = []
   end
@@ -115,6 +151,15 @@ class Spriteset_Map
   #--------------------------------------------------------------------------
   def show_text(text,xy,color=Fuc::WHITE_COLOR,size=20)
     @richtext << Sprite_RichText.new(text,xy,color,size,@viewport3)
+  end
+  #--------------------------------------------------------------------------
+  # ● 显示提示文字
+  #--------------------------------------------------------------------------
+  def show_tips(text)
+    @tips[7].bitmap.clear
+    @tips[7].bitmap.draw_text(0,0,@tips[7].bitmap.width,@tips[7].bitmap.height,text,1)
+    @tips[6].opacity = @tips[7].opacity = 255
+    @tipsvar[6] = 60
   end
   #--------------------------------------------------------------------------
   # ● 生成人物精灵
@@ -233,6 +278,7 @@ class Spriteset_Map
   def dispose_ui_view
     @fillup.each{|i| i.bitmap.dispose if i.bitmap;i.dispose}
     @tips.each{|i| i.bitmap.dispose if i.bitmap;i.dispose}
+    @richtext.each{|i| i.bitmap.dispose if i.bitmap;i.dispose}
   end
   #--------------------------------------------------------------------------
   # ● 更新人物
@@ -404,6 +450,53 @@ class Spriteset_Map
           @last_value2 = $sel_body.name
           @last_sel_body2 = $sel_body
         end
+      when 6
+        if @tipsvar[6] <= 0
+          @tipsvar[6] = 0
+          @tips[6].opacity >= 5 ? @tips[6].opacity-=5 : @tips[6].opacity = 0
+        else
+          @tipsvar[6] -= 1
+        end
+      when 7
+        @tips[7].opacity = @tips[6].opacity
+      when 9
+        @tips[9].bitmap.dispose if !$sel_body && @tips[9].bitmap
+        if @tipsvar[9]!=$sel_body.buff_rem
+          @tips[9].bitmap.dispose if @tips[9].bitmap
+          @tips[9].bitmap = Fuc.get_buff_bitmap
+          @tips[9].x = Graphics.width-@tips[9].bitmap.width
+          @tipsvar[9]=$sel_body.buff_rem.clone
+        end
+      when 10
+        dx = Mouse.pos[0]-@tips[9].x
+        dy = Mouse.pos[1]-@tips[9].y
+        if $sel_body.buff!=[]&&dx>=0&&dx<=@tips[9].bitmap.width&&dy>=0&&dy<=@tips[9].bitmap.height
+          if !@tipsvar[10][0] || @tipsvar[10][1]!=dx/22
+            @tipsvar[10][0] = true
+            @tipsvar[10][1] = dx/22
+            @tips[10].bitmap = Fuc.get_buff_descr(dx/22)
+            @tips[10].x = Graphics.width-@tips[10].bitmap.width
+            @tips[10].y = @tips[8].y+@tips[8].bitmap.height
+          end
+        elsif !tipsvar[1][0] && @tipsvar[2][0] && $sel_body.bag[@tipsvar[2][1]] 
+          @tips[10].bitmap = Fuc.get_item_descr(@tipsvar[2][1])
+          @tips[10].x = 4
+          @tips[10].y = @tips[1].y-@tips[10].bitmap.height
+        else
+          if @tipsvar[10][0]
+            @tipsvar[10][0] = false
+            @tipsvar[10][1] = -1
+          end
+          @tips[10].bitmap.dispose if @tips[10].bitmap
+        end
+      when 11..14
+        next unless $sel_body.bag_rem[i-11]
+        if @tipsvar[i]!=$sel_body.bag_rem[i-11]
+          @tipsvar[i]=$sel_body.bag_rem[i-11].clone
+          @tips[i].bitmap = Fuc.get_item_bitmap(i-11)
+        end
+        @tips[i].y = @tips[1].y+12
+        @tips[i].x = @tips[1].x+5+(i-11)*41
       end
     end
     # 刷数据

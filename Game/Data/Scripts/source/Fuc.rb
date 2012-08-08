@@ -1,29 +1,43 @@
 ﻿module Fuc
 
-  DIR_LIST =      [[0,8,2],[4],[6]]# 方向表，方便写
-  SP_OPA =        [255,100,150,200,100] # 透明度表
-  MOV_AREA_C =    [Color.new(0,100,255,255),Color.new(0,150,255,255)]
-  WAY_AREA_C =    [Color.new(0,180,100,255),Color.new(100,200,50,255)]
-  EFFECT_AREA_C = [Color.new(255,255,50,255),Color.new(200,200,0,200)]
-  ENABLE_AREA_C = [Color.new(200,20,20,255),Color.new(255,50,0,255)]
-  OPA_COLOR =     Color.new(0,0,0,0)
-  WHITE_COLOR =   Color.new(255,255,255,255)
-  HP_COST_COLOR = Color.new(255,0,0,255)
-  HP_ADD_COLOR =  Color.new(0,255,0,255)
-  BINGO_COLOR =   Color.new(255,255,0,255)
-  SP_COST_COLOR = Color.new(255,255,255,255)
-  SP_ADD_COLOR =  Color.new(255,255,255,255)
-  TIPS_POINT = Bitmap.new("Graphics/System/cur_actor.png")
+  DIR_LIST =        [[0,8,2],[4],[6]]# 方向表，方便写
+  SP_OPA =          [255,100,150,200,100] # 透明度表
+  UI_SKILL_POS =    [ [51,5],[92,27],[92,74],[51,97],[10,74],[10,27] ]
+  MOV_AREA_C =      [Color.new(0,100,255,255),Color.new(0,150,255,255)]
+  WAY_AREA_C =      [Color.new(0,180,100,255),Color.new(100,200,50,255)]
+  EFFECT_AREA_C =   [Color.new(255,255,50,255),Color.new(200,200,0,200)]
+  ENABLE_AREA_C =   [Color.new(200,20,20,255),Color.new(255,50,0,255)]
+  OPA_COLOR =       Color.new(0,0,0,0)
+  WHITE_COLOR =     Color.new(255,255,255,255)
+  HP_COST_COLOR =   Color.new(255,0,0,255)
+  HP_ADD_COLOR =    Color.new(0,255,0,255)
+  BINGO_COLOR =     Color.new(255,255,0,255)
+  SP_COST_COLOR =   Color.new(100,100,100,255)
+  SP_ADD_COLOR =    Color.new(0,100,255,255)
+  AP_COST_COLOR =   Color.new(100,255,100,255)
+  AP_ADD_COLOR =    Color.new(255,100,255,255)
+  DAMGE_GREEN =     Color.new(102,0,255,255)
+  BUFF_DES_BACK =   Color.new(0,0,0,180)
+  TIPS_TEXT_COLOR = Color.new(0,0,0,255)
+  TIPS_POINT = "Graphics/System/cur_actor.png"
+  TIPS_TEXT = "Graphics/System/Tips_Text.png"
+  BUFF_BACK = "Graphics/System/Buff_Back.png"
+  COMMON_BATTLE_REQ = "@partner_num==0||@enemy_num==0"
+  NOT_ENOUGH_AP = "行动力不足"
   FAILD_ATTACK_TEXT = 
-  [ "伤害被闪避",
-    "伤害被无效化",
+  [ "Miss",
+    "Trick",
     "目标对物理伤害免疫",
     "目标是魔免的",
     "目标是无敌的",
-    "攻击范围内没有任何目标",
+    "作用范围内无目标",
     "不能攻击友方单位",
     "目标点超出攻击范围",
     "你不能攻击尸体",
+    "该技能不能作用于敌人",
+    "该技能不能作用于友方",
+    "该技能不能作用于敌方尸体",
+    "该技能不能作用于友方尸体"
   ]
 
   # 寻路
@@ -43,7 +57,11 @@
     astr = AStar.new($game_map,actor)
     astr.set_origin(actor.x, actor.y)
     astr.set_target(x, y)
-    actor.auto_move_path = (astr.do_search)[0,dis]
+    if dis < 1
+      actor.auto_move_path = (astr.do_search)
+    else
+      actor.auto_move_path = (astr.do_search)[0,dis]
+    end
     return actor.auto_move_path
   end
   
@@ -148,7 +166,6 @@
     if $sel_body
       a = Bitmap.new(193,105)
       a.font.color = Color.new(255,255,255,255)
-      a.font.name = "方正隶变简体"
       a.draw_text(104,25,60,30,$sel_body.ap.to_s,1)
       a.draw_text(96,70,100,30,$sel_body.name,1)
       return a
@@ -156,6 +173,78 @@
     return nil
   end
   
+  # 获取当前角色
+  def self.cur_actor
+    if $map_battle
+      return $map_battle.cur_actor
+    else
+      return $pl_actor
+    end
+  end
   
-
+  # 获取buff位图
+  def self.get_buff_bitmap
+    actor = $sel_body
+    return Bitmap.new(22,20) unless $sel_body
+    tbitmap = Bitmap.new([22*actor.buff.size,22].max,20)
+    trect = Rect.new(0,0,21,20)
+    actor.buff.each_with_index do |i,j|
+      tbitmap.blt(j*22,0,Bitmap.new("Graphics/Icon/"+i.icon+".png"),trect)
+    end
+    return tbitmap
+  end
+  
+  # 获取buff说明
+  def self.get_buff_descr(index)
+    index = [index,$sel_body.buff.size-1].min
+    text = $sel_body.buff[index].descr
+    textarr = text.split(/\n/)
+    tbitmap = Bitmap.new(10,10)
+    tbitmap.font.size = 16
+    maxw = 0
+    lineh = tbitmap.text_size("■").height
+    maxh = lineh*textarr.size+8
+    textarr.each{|i| tw = tbitmap.text_size(i).width;maxw=tw if tw>maxw}
+    maxw+=8
+    tbitmap.dispose
+    tbitmap = Bitmap.new(maxw,maxh)
+    tbitmap.font.size = 16
+    tbitmap.fill_rect(0,0,maxw,maxh,BUFF_DES_BACK)
+    textarr.each_with_index{|i,j| tbitmap.draw_text(2,2+j*lineh,maxw,lineh,i,0)}
+    return tbitmap
+  end
+  
+  # 获取道具位图
+  def self.get_item_bitmap(index)
+    return Bitmap.new(36,36) if !$sel_body || !$sel_body.bag[index]
+    a = Bitmap.new("Graphics/Icon/"+$sel_body.bag[index][0].icon+".png")
+    tBitmap = Bitmap.new(36,36)
+    tBitmap.font.size = 16
+    tBitmap.blt(18-a.width/2,18-a.height/2,a,Rect.new(0,0,a.width,a.height))
+    trect = tBitmap.text_size($sel_body.bag[index][1].to_s)
+    trect.width+=2
+    trect.height+=2
+    tBitmap.draw_text(0,36-trect.height,36,trect.height,$sel_body.bag[index][1].to_s,2)
+    return tBitmap
+  end
+  
+  # 获取道具描述
+  def self.get_item_descr(index)
+    text = $sel_body.bag[index][0].descr
+    textarr = text.split(/\n/)
+    tbitmap = Bitmap.new(10,10)
+    tbitmap.font.size = 16
+    maxw = 0
+    lineh = tbitmap.text_size("■").height
+    maxh = lineh*textarr.size+8
+    textarr.each{|i| tw = tbitmap.text_size(i).width;maxw=tw if tw>maxw}
+    maxw+=8
+    tbitmap.dispose
+    tbitmap = Bitmap.new(maxw,maxh)
+    tbitmap.font.size = 16
+    tbitmap.fill_rect(0,0,maxw,maxh,BUFF_DES_BACK)
+    textarr.each_with_index{|i,j| tbitmap.draw_text(2,2+j*lineh,maxw,lineh,i,0)}
+    return tbitmap
+  end
+  
 end

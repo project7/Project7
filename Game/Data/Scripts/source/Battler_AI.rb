@@ -25,7 +25,7 @@
   end
   
   def do_attack_end
-    $map_battle.set_view_pos(@user.x,@user.y)
+    #$map_battle.set_view_pos(@user.x,@user.y)
     $map_battle.create_maparea
     $map_battle.effectarea.dispose if $map_battle.effectarea
     $map_battle.enablearea.dispose if $map_battle.enablearea

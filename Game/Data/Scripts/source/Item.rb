@@ -2,9 +2,8 @@
   
   attr_accessor :use_cost_num
   attr_accessor :can_use
-  
-  
-  def ele
+
+  def set_ele
     @id = 0
     @use_cost_num = 1
     @can_use = true
@@ -27,6 +26,14 @@
     @buff = [[0,100]]
     @debuff = [[0,100]]
     @descr = ""
+  end
+  
+  def enough_to_use(num)
+    if num >= @use_cost_num && @can_use && @use_req
+      return true
+    else
+      reutrn false
+    end
   end
   
 end

@@ -356,10 +356,26 @@ class Game_Event < Game_Character
     start if @trigger == 3
   end
   #--------------------------------------------------------------------------
+  # ● 处理卷动
+  #--------------------------------------------------------------------------
+  def update_scroll(last_real_x, last_real_y)
+    ax1 = $game_map.adjust_x(last_real_x)
+    ay1 = $game_map.adjust_y(last_real_y)
+    ax2 = $game_map.adjust_x(@real_x)
+    ay2 = $game_map.adjust_y(@real_y)
+    $game_map.scroll_down (ay2 - ay1) if ay2 > ay1 && ay2 > center_y
+    $game_map.scroll_left (ax1 - ax2) if ax2 < ax1 && ax2 < center_x
+    $game_map.scroll_right(ax2 - ax1) if ax2 > ax1 && ax2 > center_x
+    $game_map.scroll_up   (ay1 - ay2) if ay2 < ay1 && ay2 < center_y
+  end
+  #--------------------------------------------------------------------------
   # ● 更新画面
   #--------------------------------------------------------------------------
   def update
+    last_real_x = @real_x
+    last_real_y = @real_y
     super
+    update_scroll(last_real_x, last_real_y) if $map_battle && $map_battle.cur_actor.event == self
     check_event_trigger_auto
     return unless @interpreter
     @interpreter.setup(@list, @event.id) unless @interpreter.running?

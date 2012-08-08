@@ -17,8 +17,7 @@
   :Item1=>[0x31],
   :Item2=>[0x32],
   :Item3=>[0x33],
-  :Item4=>[0x34],
-  :Item5=>[0x35]
+  :Item4=>[0x34]
 }
 
 class Array

@@ -219,7 +219,7 @@ module DataManager
     contents[:troop]         = $game_troop
     contents[:map]           = $game_map
     contents[:player]        = $game_player
-    contents[:pl_actor]     = $pl_actor
+    contents[:pl_actor]      = $pl_actor
     contents
   end
   #--------------------------------------------------------------------------
@@ -237,7 +237,7 @@ module DataManager
     $game_troop         = contents[:troop]
     $game_map           = contents[:map]
     $game_player        = contents[:player]
-    $pl_actor = contents[:pl_actor]
+    $pl_actor           = contents[:pl_actor]
   end
   #--------------------------------------------------------------------------
   # ● 如果数据已更新则重载地图
