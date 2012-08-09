@@ -27,12 +27,12 @@
     @hurt_maxnum = 0
     @sp_cost = 0
     @hp_cost = 50
-    @hp_damage = 666
+    @hp_damage = 66
     @sp_damage = 0
     @ap_damage = 0
     @buff = []
     @debuff = []
-    @descr = "一瓶神仙水.\n传说拥有生死人,肉白骨的功效.\n对范围5格内所有单位造成666点魔法伤害.\n使用一次消耗2瓶.\n(卧槽这还叫神仙水?)"
+    @descr = "一瓶神仙水.\n传说拥有生死人,肉白骨的功效.\n对范围5格内所有单位造成66点魔法伤害.\n使用一次消耗2瓶.\n(卧槽这还叫神仙水?)"
   end
   
 end
@@ -71,7 +71,7 @@ class YellowBook < Item
     @ap_damage = 0
     @buff = []
     @debuff = []
-    @descr = "可以让你自由出入战场.\n瞬间移动到5格内任意位置.\n不消耗道具."
+    @descr = "可以让你自由出入战场.\n瞬间移动到5格内任意位置.\n不消耗道具.\n每次使用消耗10HP."
   end
   
   def set_extra

@@ -15,7 +15,7 @@ class Fucker < Actor
   end
 
   def set_ele
-    @maxhp = 1200
+    @maxhp = 120
     @maxsp = 80
     @maxap = 80
     @atk = 10
@@ -122,7 +122,7 @@ class Shit < Actor
     @per_step_cost_ap_add = 0
     @atk_cost_ap_add = 0
     @item_cost_ap_add = 0
-    @bingo_rate = 10
+    @bingo_rate = 2
     @bingo_damage = 1000000
     @damage_reduce_rate = 0
     @damage_reduce = 0
