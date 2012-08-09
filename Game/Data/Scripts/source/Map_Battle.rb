@@ -518,20 +518,22 @@
         end
       end
       return
-    elsif Mouse.press?(2)
-      @target_pos = nil
+    elsif Mouse.down?(2)
       @mouse_right_down = true
-      @splink.tipsvar[1][0] = true
-      Mouse.set_cursor(Mouse::EmptyCursor)
+      @click_pos = Mouse.pos
       @actor.cantmove = true
-      @wayarea.dispose if @wayarea
+      @target_pos = nil
+      @splink.tipsvar[1][0] = true
       @splink.fillup[0].visible = false
-      @click_pos ||= Mouse.pos
+      @wayarea.dispose if @wayarea
+      
+      Mouse.set_cursor(Mouse::EmptyCursor)
+    elsif Mouse.press?(2) && @mouse_right_down
       dis_x = (Mouse.pos[0]-@click_pos[0]).to_f/32
       dis_y = (Mouse.pos[1]-@click_pos[1]).to_f/32
       $game_map.set_display_pos($game_map.parallax_x+dis_x,$game_map.parallax_y+dis_y)
       Mouse.set_pos(*@click_pos)
-    elsif Mouse.up?(2) && @click_pos
+    elsif Mouse.up?(2) && @mouse_right_down
       mouse_fuck_up
     end
   end

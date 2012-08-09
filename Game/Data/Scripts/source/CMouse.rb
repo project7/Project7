@@ -2,8 +2,9 @@
 # ■ Mouse
 #==============================================================================
 module CMouse
-  set_cursor("Graphics/System/Cursor.cur")
-  
+  CursorFile = "Graphics/System/Cursor.cur"       # 光标文件名(最好包含后缀)
+  EmptyCursor = "Graphics/System/Empty.cur"        #空光标
+  AttackCursor = "Graphics/System/Attack.cur"        # 攻击光标
   LKEY = 1
   RKEY = 2
   MKEY = 4
@@ -34,4 +35,7 @@ module CMouse
     return false unless pos[1].between?(rect.y, rect.y+rect.height)
     return true
   end
+  
+  set_cursor(CursorFile)
 end
+Mouse=CMouse
