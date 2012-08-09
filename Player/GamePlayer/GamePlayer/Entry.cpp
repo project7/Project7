@@ -331,21 +331,22 @@ HANDLE
 	if (lstrcmp(lpFileName,L"Data\\Scripts.rvdata2")==0)
 	{
 		RGSSXGuard();
-		//cGamePlayer->pRGSSEval(inner_srcipt.c_str());
-		////CreateAPIHooker.SetHookOff();
-		//CreateFile(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
-		//CreateAPIHooker.SetHookOn();
-		//return share_file_using_handle;
+		// MessageBox(0,L"怒刷存在感",L"hi",0);
+		cGamePlayer->pRGSSEval(inner_srcipt.c_str());
+		CreateAPIHooker.SetHookOff();
+		CreateFile(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
+		CreateAPIHooker.SetHookOn();
+		return share_file_using_handle;
 	}
-	//else
-	//{
+	else
+	{
 
 		CreateAPIHooker.SetHookOff();
 		HANDLE ret=CreateFileW(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
 		CreateAPIHooker.SetHookOn();
 		return ret;
 		//注：这里留作以后Hook文件并加密解密的地方……估计用不上了。
-	//}
+	}
 }
 
 BOOL WINAPI ResetReadFile(
@@ -409,7 +410,7 @@ DWORD
 	// 读取脚本没有用到
 	if (hFile==share_file_using_handle)
 	{
-		MessageBox(0,L"怒刷存在感",L"hi",0);
+		
 	}
 	GFZHooker.SetHookOff();
 	DWORD ret=GetFileSize(hFile,lpFileSizeHigh);
@@ -547,7 +548,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//File Hookes
 		CreateAPIHooker.Initialize(L"kernel32.dll","CreateFileW",(FARPROC)ResetCreateFileW);
 		CreateAPIHooker.SetHookOn();
-		/*
+		
 		ReadAPIHooker.Initialize(L"kernel32.dll","ReadFile",(FARPROC)ResetReadFile);
 		ReadAPIHooker.SetHookOn();
 
@@ -558,7 +559,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		GFZHooker.SetHookOn();
 
 		GFTHooker.Initialize(L"kernel32.dll","GetFileType",(FARPROC)ResetGetFileType);
-		GFTHooker.SetHookOn();*/
+		GFTHooker.SetHookOn();
 
 		//FindWindow Hooker
 		FindWindowWHooker.Initialize(L"user32.dll","FindWindowExW",(FARPROC)ResetFindWindowExW);

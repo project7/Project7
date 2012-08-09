@@ -1,4 +1,5 @@
 #include "GamePlayer.h"
+#include <cassert>
 GamePlayer::GamePlayer(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpCmdLine, int _nCmdShow,int width,int height)
 {
 	hInstance=_hInstance;
@@ -207,6 +208,11 @@ bool GamePlayer::InitRGSS()
 }
 void GamePlayer::RunGame()
 {
+	//char buff[255];
+	//sprintf(buff,"%d",g_hWnd);
+	//MessageBoxA(0,buff,"hwnd",0);
+	assert(g_hWnd);
+	assert(szScripts);
 	pRGSSGameMain(g_hWnd, szScripts,  (wchar_t **) L"");
 	___exit();
 }
