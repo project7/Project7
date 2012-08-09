@@ -17,7 +17,7 @@ class Fucker < Actor
   def set_ele
     @maxhp = 120
     @maxsp = 80
-    @maxap = 80
+    @maxap = 20
     @atk = 10
     @atk_area = [ [[0,0,1,3]] ,false]
     @atk_dis_min = 1
@@ -27,9 +27,9 @@ class Fucker < Actor
     @mdef = 2
     @hp_rec = 1
     @sp_rec = 1
-    @per_step_cost_ap = 10
-    @atk_cost_ap = 20
-    @item_cost_ap = 2
+    @per_step_cost_ap = 3
+    @atk_cost_ap = 6
+    @item_cost_ap = 4
     @hatred_base = 1
     @miss_rate = 25
   end
@@ -47,7 +47,7 @@ class Fucker < Actor
     @per_step_cost_ap_add = 0
     @atk_cost_ap_add = 0
     @item_cost_ap_add = 0
-    @bingo_rate = 12
+    @bingo_rate = 20
     @bingo_damage = 400
     @damage_reduce_rate = 0
     @damage_reduce = 0
@@ -122,7 +122,7 @@ class Shit < Actor
     @per_step_cost_ap_add = 0
     @atk_cost_ap_add = 0
     @item_cost_ap_add = 0
-    @bingo_rate = 2
+    @bingo_rate = 20
     @bingo_damage = 1000000
     @damage_reduce_rate = 0
     @damage_reduce = 0
@@ -139,7 +139,7 @@ class Shit < Actor
     @deinvisible = false
     @ignore_dmg_rate = 0
     @dmg_rebound = 0
-    @dmg_rebound_rate = 0
+    @dmg_rebound_rate = 50
   end
 
 end
