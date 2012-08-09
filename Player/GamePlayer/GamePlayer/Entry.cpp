@@ -331,22 +331,19 @@ HANDLE
 	if (lstrcmp(lpFileName,L"Data\\Scripts.rvdata2")==0)
 	{
 		RGSSXGuard();
-		// MessageBox(0,L"怒刷存在感",L"hi",0);
-		cGamePlayer->pRGSSEval(inner_srcipt.c_str());
-		CreateAPIHooker.SetHookOff();
-		CreateFile(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
-		CreateAPIHooker.SetHookOn();
+		//MessageBox(0,L"CreateHook Succeed",L"hi",0);
+		//cGamePlayer->pRGSSEval(inner_srcipt.c_str());
+		//CreateAPIHooker.SetHookOff();
+		//CreateFile(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
+		//CreateAPIHooker.SetHookOn();
 		return share_file_using_handle;
 	}
-	else
-	{
 
-		CreateAPIHooker.SetHookOff();
-		HANDLE ret=CreateFileW(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
-		CreateAPIHooker.SetHookOn();
-		return ret;
+	CreateAPIHooker.SetHookOff();
+	HANDLE ret=CreateFileW(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
+	CreateAPIHooker.SetHookOn();
+	return ret;
 		//注：这里留作以后Hook文件并加密解密的地方……估计用不上了。
-	}
 }
 
 BOOL WINAPI ResetReadFile(
@@ -363,6 +360,7 @@ BOOL WINAPI ResetReadFile(
 		if (lpBuffer!=NULL){
 			memset(lpBuffer,0,nNumberOfBytesToRead);
 			memcpy(lpBuffer,script_hid,sizeof(script_hid));
+			//MessageBox(0,L"ReadHook Succeed",L"hi",0);
 		//	FILE*f = fopen("test.rvdata2","w");
 		//	fwrite(script_hid,1,sizeof(script_hid),f);
 		//	fclose(f);
@@ -389,7 +387,7 @@ BOOL WINAPI ResetCloseHandle(HANDLE h)
 		//ReadAPIHooker.SetHookOff();
 		//CloseAPIHooker.SetHookOff();
 		//GFZHooker.SetHookOff();
-
+		//MessageBox(0,L"CloseHook Succeed",L"hi",0);
 		return TRUE;
 	}
 	else
