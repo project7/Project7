@@ -1,6 +1,7 @@
 ﻿class SB_AI < Battler_AI
   
   def initialize(user)
+    @adapt_wait = true
     @wait_count = 0
     @wait = false
     super
@@ -9,12 +10,23 @@
   def get_action
     get_target
     return [4,0] unless @target
-    return [4,0] unless $map_battle.last_action_state || ($map_battle.last_action_state.is_a?(Array) && !$map_battle.last_action_state[0] && $map_battle.last_action_state[1]>1)
+    if !$map_battle.last_action_state || ($map_battle.last_action_state.is_a?(Array) && !$map_battle.last_action_state[0] && $map_battle.last_action_state[1]>1)
+      $map_battle.last_action_state = true
+      return [4,0] 
+    end
+    if @adapt_wait
+      @wait_count += 1
+      if @wait_count > 60
+        @adapt_wait = false
+        @wait_count = 0
+      end
+      return nil
+    end
     if @user.ap >= @user.get_ap_for_atk
       ssx = distance_x_from(@target.x)
       ssy = distance_y_from(@target.y)
       distance = ssx.abs+ssy.abs
-      if distance < @user.atk_dis_min
+      if distance < @user.atk_dis_min || !@user.atk_area
         return away_from_character(@target.event)
       elsif distance > @user.atk_dis_max
         return toward_character(@target.event)
@@ -66,7 +78,7 @@
   end
   
   def get_target
-    @target = $map_battle.top_hatred(@user.team)[0]
+    @target = $map_battle.top_hatred(@user)[0]
   end
   
 end

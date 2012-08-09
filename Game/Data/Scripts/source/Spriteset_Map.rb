@@ -145,12 +145,23 @@ class Spriteset_Map
     end
     # 数据显示
     @richtext = []
+    @richvalue = {}
   end
   #--------------------------------------------------------------------------
   # ● 增加数据显示
   #--------------------------------------------------------------------------
   def show_text(text,xy,color=Fuc::WHITE_COLOR,size=20)
     @richtext << Sprite_RichText.new(text,xy,color,size,@viewport3)
+  end
+  #--------------------------------------------------------------------------
+  # ● 增加血条显示
+  #--------------------------------------------------------------------------
+  def show_value(rate,xy,color=Fuc::HP_VALUE_COLOR,wh=nil)
+    if @richvalue[xy]
+      @richvalue[xy].refresh(rate,xy,color,wh)
+    else
+      @richvalue[xy] = Sprite_RichValue.new(rate,xy,color,wh,@viewport3)
+    end
   end
   #--------------------------------------------------------------------------
   # ● 显示提示文字
@@ -513,6 +524,19 @@ class Spriteset_Map
       end
     end
     @richtext.compact!
+    @richvalue.each_key do |i|
+      unless @richvalue[i].bitmap
+        @richvalue[i] = nil
+        next
+      end
+      if @richvalue[i].dead
+        @richvalue[i].dispose
+        @richvalue[i] = nil
+      else
+        @richvalue[i].update
+      end
+    end
+    @richvalue.delete_if{|key| !@richvalue[key]}
   end
   #--------------------------------------------------------------------------
   # ● 更新飞艇影子

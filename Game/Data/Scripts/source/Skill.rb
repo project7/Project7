@@ -17,6 +17,8 @@
   attr_accessor :hurt_partner                       #是否作用于友方
   attr_accessor :hurt_p_dead                        #是否作用于友军尸体
   attr_accessor :hurt_e_dead                        #是否作用于敌方尸体
+  attr_accessor :hurt_nothing                       #是否作用于空地
+  attr_accessor :hurt_cant_move                     #是否作用于不可移动地区
   attr_accessor :hurt_area                          #作用范围
   attr_accessor :hurt_maxnum                        #最大作用单位数
   attr_accessor :sp_cost                            #消耗sp
@@ -36,6 +38,7 @@
   attr_accessor :hp_damage_add                      #hp伤害增加(eval)
   attr_accessor :sp_damage_add                      #sp伤害增加(eval)
   attr_accessor :ap_damage_add                      #ap伤害增加(eval)
+  attr_accessor :ignore_mag_det                     #无视魔法免疫
   
   def initialize
     set_ui
@@ -56,7 +59,7 @@
     @id = 0
     @name = ""
     @init_skill = true
-    @use_req = "actor.sp > skill.sp_cost*actor.cost_reduce_rate/100+actor.cost_reduce"
+    @use_req = "true"
     @use_dis_min = 0
     @use_dis_max = 0
     @hotkey = nil
@@ -64,6 +67,8 @@
     @hurt_partner = false
     @hurt_p_dead = false
     @hurt_e_dead = false
+    @hurt_nothing = false
+    @hurt_cant_move = false
     @hurt_area = nil
     @hurt_maxnum = 1
     @sp_cost = 1
@@ -86,6 +91,31 @@
     @hp_damage_add = "skill.level*100"
     @sp_damage_add = "skill.level*50"
     @ap_damage_add = "0"
+    @ignore_mag_det = false
+  end
+  
+  def enough_to_use(ap,hp,sp)
+    if ap>=@ap_cost
+      if hp >= @hp_cost
+        if sp>=@sp_cost
+          if @can_use
+            if eval(@use_req)
+              return true
+            else
+              return 0
+            end
+          else
+            return 1
+          end
+        else
+          return 3
+        end
+      else
+        return 4
+      end
+    else
+      return 5
+    end
   end
   
 end

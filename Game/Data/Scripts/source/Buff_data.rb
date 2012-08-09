@@ -6,7 +6,7 @@
     @id = 1
     @user = user
     @name = "待机"
-    @icon = "待机"
+    @icon = "wait"
     @animation = []
     @keep_turn = 1
     @keep_step = 0
@@ -34,7 +34,7 @@ class Sick < Buff
     @id = 2
     @user = user
     @name = "毒"
-    @icon = "中毒"
+    @icon = "shit_damage"
     @animation = []
     @keep_turn = 10
     @keep_step = 0

@@ -40,6 +40,7 @@ Sprite_Character
 Sprite_Battler
 Sprite_Picture
 Sprite_RichText
+Sprite_RichValue
 Sprite_Timer
 Spriteset_Weather
 Spriteset_Map

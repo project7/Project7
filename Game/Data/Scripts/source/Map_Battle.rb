@@ -1,7 +1,7 @@
 ﻿class Map_Battle
   
   include Fuc
-
+  
   attr_accessor  :action_list
   attr_accessor  :cur_actor
   attr_accessor  :order_rem
@@ -13,9 +13,10 @@
   attr_accessor  :last_action_state
   attr_accessor  :turn
   attr_accessor  :steps
-
+  
   def initialize(end_req=COMMON_BATTLE_REQ)
     @end_req = end_req
+    $random_center = Random.new(rand(1000))
     var_init
     cal_var
   end
@@ -59,6 +60,11 @@
     cal_fighter_num
     turn_begin_cal
     @actor = @cur_actor.event
+    @skill_hotkeys = []
+    @cur_actor.skill.each do |i|
+      @skill_hotkeys<<i.hotkey
+    end
+    @skill_hotkeys.compact!
     unless isdead
       $sel_body = @cur_actor unless @cur_actor.ai
       if @cur_actor.ap >= @cur_actor.maxap
@@ -75,9 +81,10 @@
       set_view_pos(@cur_actor.x,@cur_actor.y)
     else
       @cur_actor.ap = 0
+      next_actor
     end
   end
-
+  
   def cal_fighter_num
     arra = []
     arrb = []
@@ -178,7 +185,7 @@
       end_target_select
     end
   end
-
+  
   def update_select_effect_area
     @splink.tipsvar[1][0] = true
     if CInput.repeat?($vkey[:Down])
@@ -319,7 +326,7 @@
   end
   
   def ready_for_effect(obj)
-    if obj.hurt_area[0] == [[0]]
+    if obj.hurt_area[0] == [[0]] && obj.use_dis_max == 0
       action(3,[obj,0])
       return
     elsif obj.hurt_maxnum < 0
@@ -337,7 +344,7 @@
     @scene_id = 2
     @using_obj = obj
   end
-
+  
   def update_action
     return if $game_map.interpreter.running?
     # 四方向按键
@@ -349,8 +356,12 @@
       return
     end
     # A
-    if CInput.trigger?($vkey[:Attack]) && @cur_actor.ap>=@cur_actor.get_ap_for_atk && @actor.movable? && @cur_actor.atk_area
-      ready_for_attack
+    if CInput.trigger?($vkey[:Attack]) && @actor.movable? && @cur_actor.atk_area
+      if @cur_actor.ap>=@cur_actor.get_ap_for_atk
+        ready_for_attack
+      else
+        @splink.show_tips(FAILD_ATTACK_TEXT[19])
+      end
       return
     end
     # TAB
@@ -364,21 +375,29 @@
     tkey = CInput.item4
     if tkey
       obj = $sel_body.bag[tkey]
-      if @cur_actor.ap>=@cur_actor.get_ap_for_item
-        ready_for_effect(obj[0]) if obj && $sel_body == @cur_actor && obj[0].enough_to_use(obj[1])
-      else
-        @splink.show_tips(NOT_ENOUGH_AP)
+      if obj && $sel_body == @cur_actor
+        sick = obj[0].enough_to_use(obj[1],@cur_actor.ap>=@cur_actor.get_ap_for_item,@cur_actor.hp,@cur_actor.sp)
+        if sick==true
+          ready_for_effect(obj[0])
+        else
+          @splink.show_tips(FAILD_ATTACK_TEXT[14+sick])
+        end
       end
       return
     end
+    # 技能(hotkey)
+    
     # 鼠标
     if Mouse.down?(1)# && @actor.movable?
       if SceneManager.scene.mouse_in_itemrect?
         obj = $sel_body.bag[@splink.tipsvar[2][1]]
-        if @cur_actor.ap>=@cur_actor.get_ap_for_item
-          ready_for_effect(obj[0]) if obj && $sel_body == @cur_actor && @splink.tipsvar[2][0] && obj[0].enough_to_use(obj[1])
-        else
-          @splink.show_tips(NOT_ENOUGH_AP)
+        if obj && $sel_body == @cur_actor && @splink.tipsvar[2][0]
+          sick = obj[0].enough_to_use(obj[1],@cur_actor.ap>=@cur_actor.get_ap_for_item,@cur_actor.hp,@cur_actor.sp)
+          if sick==true
+            ready_for_effect(obj[0])
+          else
+            @splink.show_tips(FAILD_ATTACK_TEXT[14+sick])
+          end
         end
       else
         $team_set.each do |i|
@@ -527,9 +546,9 @@
   def update_cal
     if instance_eval(@end_req)
       end_battle
-    #elsif @cur_actor.ap <= 0
-    #  turn_end_cal
-    #  next_actor
+      #elsif @cur_actor.ap <= 0
+      #  turn_end_cal
+      #  next_actor
     end
   end
   
@@ -614,10 +633,6 @@
               c = -a[1]-b[1]
               @splink.show_text(c.to_s,@cur_actor.event,HP_ADD_COLOR)
             end
-            #if @cur_actor.sp_absorb_rate != 0 || @cur_actor.sp_absorb != 0
-            #  @cur_actor.absorb_sp(dama[1])
-            #  @cur_actor.absorb_sp_by_rate(i.sp)
-            #end
             if i.dmg_rebound !=0 || i.dmg_rebound_rate != 0
               a = @cur_actor.rebound_damage(dama[1],i.dmg_rebound_rate,i.dmg_rebound)
               @splink.show_text(a[1].to_s,@cur_actor.event,HP_COST_COLOR) if a[0]
@@ -626,6 +641,7 @@
           elsif dama[1]<=1
             @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
           end
+          @splink.show_value(i.hp*100/i.maxhp,i.event)
         end
         @cur_actor.cost_ap_for(1)
         return tempb
@@ -633,9 +649,28 @@
         return [[false,5+temp]]
       end
     when 2#技能
-    when 3#物品
-      return false if @cur_actor.ap<@cur_actor.get_ap_for_item
-      temp = higher_area_can_effect(para)
+      return false if !para[0].enough_to_use(@cur_actor.ap,@cur_actor.hp,@cur_actor.sp)
+      if (para[0].hurt_nothing && $game_map.can_move(@cur_actor.event,*para[1])) || (para[0].hurt_cant_move && !$game_map.can_move(@cur_actor.event,*para[1]))
+        if @enablearea.include?(*para[1])
+          instance_eval(para[0].spec_effect)
+          tsx = @cur_actor.x-para[1][0]
+          tsy = @cur_actor.y-para[1][1]
+          if tsx.abs > tsy.abs
+            @cur_actor.event.set_direction(tsx > 0 ? 4 : 6)
+          elsif tsy != 0
+            @cur_actor.event.set_direction(tsy > 0 ? 8 : 2)
+          end
+          @cur_actor.cost_ap_for(1)
+          @cur_actor.lose_item(para[0].id,para[0].use_cost_num)
+          return [[true,0]]
+        else
+          return [[false,7]]
+        end
+      elsif para[0].hurt_nothing || para[0].hurt_cant_move
+        return [[false,13]]
+      else
+        temp = higher_area_can_effect(para)
+      end
       if para[1]!=-1 && para[1] != 0
         tsx = @cur_actor.x-para[1][0]
         tsy = @cur_actor.y-para[1][1]
@@ -681,8 +716,93 @@
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
             end
           end
+          @splink.show_value(i.hp*100/i.maxhp,i.event)
         end
-        @cur_actor.cost_ap_for(1)
+        unless tempb.all?{|e| e[0]==false&&e[1]>1}
+          @cur_actor.cost_ap_for(3,para[0].ap_cost)
+          @cur_actor.god_sp_damage(para[0].sp_cost,true)
+          @cur_actor.god_damage(para[0].hp_cost,true)
+        end
+        return tempb
+      else
+        return [[false,5+temp]]
+      end
+    when 3#物品
+      return false if !para[0].enough_to_use(@cur_actor.item_num(para[0]),@cur_actor.ap>=@cur_actor.get_ap_for_item,@cur_actor.hp,@cur_actor.sp)
+      if (para[0].hurt_nothing && $game_map.can_move(@cur_actor.event,*para[1])) || (para[0].hurt_cant_move && !$game_map.can_move(@cur_actor.event,*para[1]))
+        if @enablearea.include?(*para[1])
+          instance_eval(para[0].spec_effect)
+          tsx = @cur_actor.x-para[1][0]
+          tsy = @cur_actor.y-para[1][1]
+          if tsx.abs > tsy.abs
+            @cur_actor.event.set_direction(tsx > 0 ? 4 : 6)
+          elsif tsy != 0
+            @cur_actor.event.set_direction(tsy > 0 ? 8 : 2)
+          end
+          @cur_actor.cost_ap_for(1)
+          @cur_actor.lose_item(para[0].id,para[0].use_cost_num)
+          return [[true,0]]
+        else
+          return [[false,7]]
+        end
+      elsif para[0].hurt_nothing || para[0].hurt_cant_move
+        return [[false,13]]
+      else
+        temp = higher_area_can_effect(para)
+      end
+      if para[1]!=-1 && para[1] != 0
+        tsx = @cur_actor.x-para[1][0]
+        tsy = @cur_actor.y-para[1][1]
+        if tsx.abs > tsy.abs
+          @cur_actor.event.set_direction(tsx > 0 ? 4 : 6)
+        elsif tsy != 0
+          @cur_actor.event.set_direction(tsy > 0 ? 8 : 2)
+        end
+      end
+      if temp.is_a?(Array)
+        tempb = []
+        temp.each do |i|
+          tempama = para[0].hp_damage
+          if tempama != 0
+            color = tempama > 0 ? HP_COST_COLOR : HP_ADD_COLOR
+            dama = i.mag_damage(tempama)
+            tempb << dama
+            if dama[0]
+              @splink.show_text(dama[1].to_s,i.event,color)
+            elsif dama[1]<=1
+              @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
+            end
+          end
+          tempama = para[0].sp_damage
+          if tempama != 0
+            color = tempama > 0 ? SP_COST_COLOR : SP_ADD_COLOR
+            dama = i.mag_damage(tempama)
+            tempb << dama
+            if dama[0]
+              @splink.show_text(dama[1].to_s,i.event,color)
+            elsif dama[1]<=1
+              @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
+            end
+          end
+          tempama = para[0].ap_damage
+          if tempama != 0
+            color = tempama > 0 ? AP_COST_COLOR : AP_ADD_COLOR
+            dama = i.mag_damage(tempama)
+            tempb << dama
+            if dama[0]
+              @splink.show_text(dama[1].to_s,i.event,color)
+            elsif dama[1]<=1
+              @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
+            end
+          end
+          @splink.show_value(i.hp*100/i.maxhp,i.event)
+        end
+        unless tempb.all?{|e| e[0]==false&&e[1]>1}
+          @cur_actor.cost_ap_for(2)
+          @cur_actor.god_sp_damage(para[0].sp_cost,true)
+          @cur_actor.god_damage(para[0].hp_cost,true)
+          @cur_actor.lose_item(para[0].id,para[0].use_cost_num)
+        end
         return tempb
       else
         return [[false,5+temp]]
@@ -722,10 +842,10 @@
     @splink.tips[0].bitmap.dispose if @splink.tips[0].bitmap
   end
   
-  def top_hatred(team_id)
+  def top_hatred(boy)
     hatred_list = []
     @action_list.each do |i|
-      if (i.team&team_id).size==0 && !i.dead?
+      if i!=boy && (i.team&boy.team).size==0 && !i.dead?
         hatred_list << i
       end
     end

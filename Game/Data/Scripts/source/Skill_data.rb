@@ -1,7 +1,7 @@
 ﻿class FuckEachOther < Skill
   
   def set_ui
-    @icon = "波"
+    @icon = "bo"
     @user_animation = []
     @target_partner_animation = []
     @target_enemy_animation = []
@@ -11,7 +11,7 @@
 
   def ele
     @id = 1
-    @name = "一个波"
+    @name = "剧毒新星"
     @init_skill = true
     @use_req = "actor.ap => skill.ap_cost&&actor.sp => skill.sp_cost"
     @use_dis_min = 1

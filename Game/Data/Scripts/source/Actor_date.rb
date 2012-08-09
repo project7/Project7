@@ -134,12 +134,12 @@ class Shit < Actor
     @sp_absorb = 0
     @invincible = false
     @ignore_physical = false
-    @ignore_magic = true
+    @ignore_magic = false
     @invisible = false
-    @deinvisible = true
+    @deinvisible = false
     @ignore_dmg_rate = 0
     @dmg_rebound = 0
-    @dmg_rebound_rate = 50
+    @dmg_rebound_rate = 0
   end
 
 end
@@ -162,7 +162,7 @@ class God < Actor
   def set_ele
     @maxhp = 200
     @maxsp = 100
-    @maxap = 1#10
+    @maxap = 10
     @atk = 15
     @atk_area = [ [[0,0,1,3]] ,false]
     @atk_dis_min = 1
@@ -199,7 +199,7 @@ class God < Actor
     @cost_reduce_rate = 0
     @cost_reduce = 0
     @hp_absorb_rate = 0
-    @hp_absorb = 10
+    @hp_absorb = 150
     @sp_absorb_rate = 0
     @sp_absorb = 0
     @invincible = false

@@ -213,9 +213,9 @@
     return god_damage(value)
   end
   
-  def god_damage(value)
-    return [false,1] if value > 0 && xrand(100) < @ignore_dmg_rate
-    return [false,4] if value > 0 && @invincible
+  def god_damage(value,force=false)
+    return [false,1] if value > 0 && xrand(100) < @ignore_dmg_rate && !force
+    return [false,4] if value > 0 && @invincible && !force
     @buff.each do |buff|
       instance_eval(buff.damage_effect)
     end
@@ -234,7 +234,9 @@
     return god_sp_damage(value)
   end
   
-  def god_sp_damage(value)
+  def god_sp_damage(value,force=false)
+    return [false,1] if value > 0 && xrand(100) < @ignore_dmg_rate && !force
+    return [false,4] if value > 0 && @invincible && !force
     @sp -= value
     @sp = [[@maxsp,@sp].min,0].max
     return [true,value]
@@ -259,7 +261,7 @@
       ap_cost(para)
     end
   end
-  
+
   def per_step_effect
     actor = self
     @buff.each do |buff|
@@ -299,6 +301,15 @@
     end
   end
   
+  def item_num(item)
+    @bag.each do |i|
+      if i[0].id == item.id
+        return i[1]
+      end
+    end
+    return 0
+  end
+  
   def lose_item(item_id,num)
     @bag.each_with_index do |i,j|
       if i[0].id == item_id
@@ -307,6 +318,7 @@
         else
           @bag[j][1] = 0
         end
+        break
       end
     end
     @bag.delete_if{|i| i[1]==0}
@@ -437,7 +449,7 @@
     @dead = true
     self.event.opacity = 100
     self.event.through = true
-    $map_battle.next_actor if $map_battle
+    $map_battle.next_actor if $map_battle && $map_battle.cur_actor == self
   end
   
   def relive

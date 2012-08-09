@@ -1,29 +1,30 @@
 ﻿module Fuc
 
-  DIR_LIST =        [[0,8,2],[4],[6]]# 方向表，方便写
-  SP_OPA =          [255,100,150,200,100] # 透明度表
-  UI_SKILL_POS =    [ [51,5],[92,27],[92,74],[51,97],[10,74],[10,27] ]
-  MOV_AREA_C =      [Color.new(0,100,255,255),Color.new(0,150,255,255)]
-  WAY_AREA_C =      [Color.new(0,180,100,255),Color.new(100,200,50,255)]
-  EFFECT_AREA_C =   [Color.new(255,255,50,255),Color.new(200,200,0,200)]
-  ENABLE_AREA_C =   [Color.new(200,20,20,255),Color.new(255,50,0,255)]
-  OPA_COLOR =       Color.new(0,0,0,0)
-  WHITE_COLOR =     Color.new(255,255,255,255)
-  HP_COST_COLOR =   Color.new(255,0,0,255)
-  HP_ADD_COLOR =    Color.new(0,255,0,255)
-  BINGO_COLOR =     Color.new(255,255,0,255)
-  SP_COST_COLOR =   Color.new(100,100,100,255)
-  SP_ADD_COLOR =    Color.new(0,100,255,255)
-  AP_COST_COLOR =   Color.new(100,255,100,255)
-  AP_ADD_COLOR =    Color.new(255,100,255,255)
-  DAMGE_GREEN =     Color.new(102,0,255,255)
-  BUFF_DES_BACK =   Color.new(0,0,0,180)
-  TIPS_TEXT_COLOR = Color.new(0,0,0,255)
+  DIR_LIST =          [[0,8,2],[4],[6]]# 方向表，方便写
+  SP_OPA =            [255,100,150,200,100] # 透明度表
+  UI_SKILL_POS =      [ [51,5],[92,27],[92,74],[51,97],[10,74],[10,27] ]
+  MOV_AREA_C =        [Color.new(0,100,255,255),Color.new(0,150,255,255)]
+  WAY_AREA_C =        [Color.new(0,180,100,255),Color.new(100,200,50,255)]
+  EFFECT_AREA_C =     [Color.new(255,255,50,255),Color.new(200,200,0,200)]
+  ENABLE_AREA_C =     [Color.new(200,20,20,255),Color.new(255,50,0,255)]
+  OPA_COLOR =         Color.new(0,0,0,0)
+  WHITE_COLOR =       Color.new(255,255,255,255)
+  HP_COST_COLOR =     Color.new(255,0,0,255)
+  HP_ADD_COLOR =      Color.new(0,255,0,255)
+  BINGO_COLOR =       Color.new(255,255,0,255)
+  SP_COST_COLOR =     Color.new(100,100,100,255)
+  SP_ADD_COLOR =      Color.new(0,100,255,255)
+  AP_COST_COLOR =     Color.new(100,255,100,255)
+  AP_ADD_COLOR =      Color.new(255,100,255,255)
+  DAMGE_GREEN =       Color.new(102,0,255,255)
+  BUFF_DES_BACK =     Color.new(0,0,0,180)
+  TIPS_TEXT_COLOR =   Color.new(0,0,0,255)
+  DESCR_TITLE_COLOR = Color.new(255,255,0,255)
+  HP_VALUE_COLOR =    Color.new(255,0,0,255)
   TIPS_POINT = "Graphics/System/cur_actor.png"
   TIPS_TEXT = "Graphics/System/Tips_Text.png"
   BUFF_BACK = "Graphics/System/Buff_Back.png"
   COMMON_BATTLE_REQ = "@partner_num==0||@enemy_num==0"
-  NOT_ENOUGH_AP = "行动力不足"
   FAILD_ATTACK_TEXT = 
   [ "Miss",
     "Trick",
@@ -34,10 +35,18 @@
     "不能攻击友方单位",
     "目标点超出攻击范围",
     "你不能攻击尸体",
-    "该技能不能作用于敌人",
-    "该技能不能作用于友方",
-    "该技能不能作用于敌方尸体",
-    "该技能不能作用于友方尸体"
+    "不能作用于敌人",
+    "不能作用于友方",
+    "不能作用于敌方尸体",
+    "不能作用于友方尸体",
+    "无法作用于目标点",
+    "未满足使用条件",
+    "无法使用的技能",
+    "无法使用的道具",
+    "怒气值不足",
+    "生命值不足",
+    "行动力不足",
+    "物品数量不足"
   ]
 
   # 寻路
@@ -197,20 +206,29 @@
   # 获取buff说明
   def self.get_buff_descr(index)
     index = [index,$sel_body.buff.size-1].min
+    title = $sel_body.buff[index].name
     text = $sel_body.buff[index].descr
     textarr = text.split(/\n/)
     tbitmap = Bitmap.new(10,10)
     tbitmap.font.size = 16
     maxw = 0
     lineh = tbitmap.text_size("■").height
-    maxh = lineh*textarr.size+8
+    tbitmap.font.size = 20
+    titleh = tbitmap.text_size("■").height
+    tbitmap.font.size = 16
+    maxh = lineh*textarr.size+8+titleh
     textarr.each{|i| tw = tbitmap.text_size(i).width;maxw=tw if tw>maxw}
     maxw+=8
     tbitmap.dispose
     tbitmap = Bitmap.new(maxw,maxh)
-    tbitmap.font.size = 16
+    tbitmap.font.size = 20
     tbitmap.fill_rect(0,0,maxw,maxh,BUFF_DES_BACK)
-    textarr.each_with_index{|i,j| tbitmap.draw_text(2,2+j*lineh,maxw,lineh,i,0)}
+    rem = tbitmap.font.color.clone
+    tbitmap.font.color = DESCR_TITLE_COLOR
+    tbitmap.draw_text(2,2,maxw,titleh,title,0)
+    tbitmap.font.color = rem
+    tbitmap.font.size = 16
+    textarr.each_with_index{|i,j| tbitmap.draw_text(2,2+j*lineh+titleh,maxw,lineh,i,0)}
     return tbitmap
   end
   
@@ -230,20 +248,29 @@
   
   # 获取道具描述
   def self.get_item_descr(index)
+    title = $sel_body.bag[index][0].name
     text = $sel_body.bag[index][0].descr
     textarr = text.split(/\n/)
     tbitmap = Bitmap.new(10,10)
     tbitmap.font.size = 16
     maxw = 0
     lineh = tbitmap.text_size("■").height
-    maxh = lineh*textarr.size+8
+    tbitmap.font.size = 20
+    titleh = tbitmap.text_size("■").height
+    tbitmap.font.size = 16
+    maxh = lineh*textarr.size+8+titleh
     textarr.each{|i| tw = tbitmap.text_size(i).width;maxw=tw if tw>maxw}
     maxw+=8
     tbitmap.dispose
     tbitmap = Bitmap.new(maxw,maxh)
-    tbitmap.font.size = 16
+    tbitmap.font.size = 20
     tbitmap.fill_rect(0,0,maxw,maxh,BUFF_DES_BACK)
-    textarr.each_with_index{|i,j| tbitmap.draw_text(2,2+j*lineh,maxw,lineh,i,0)}
+    rem = tbitmap.font.color.clone
+    tbitmap.font.color = DESCR_TITLE_COLOR
+    tbitmap.draw_text(2,2,maxw,titleh,title,0)
+    tbitmap.font.color = rem
+    tbitmap.font.size = 16
+    textarr.each_with_index{|i,j| tbitmap.draw_text(2,2+j*lineh+titleh,maxw,lineh,i,0)}
     return tbitmap
   end
   

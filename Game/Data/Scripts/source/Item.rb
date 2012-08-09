@@ -15,9 +15,11 @@
     @hurt_partner = false
     @hurt_p_dead = false
     @hurt_e_dead = false
+    @hurt_nothing = false
+    @hurt_cant_move = false
     @hurt_area = nil
     @hurt_maxnum = 1
-    @sp_cost = 1
+    @sp_cost = 0
     @hp_cost = 0
     @ap_cost = 0
     @hp_damage = 1
@@ -28,11 +30,31 @@
     @descr = ""
   end
   
-  def enough_to_use(num)
-    if num >= @use_cost_num && @can_use && @use_req
-      return true
+  def enough_to_use(num,ap,hp,sp)
+    if num >= @use_cost_num
+      if ap
+        if hp >= @hp_cost
+          if sp>=@sp_cost
+            if @can_use
+              if eval(@use_req)
+                return true
+              else
+                return 0
+              end
+            else
+              return 2
+            end
+          else
+            return 3
+          end
+        else
+          return 4
+        end
+      else
+        return 5
+      end
     else
-      reutrn false
+      return 6
     end
   end
   
