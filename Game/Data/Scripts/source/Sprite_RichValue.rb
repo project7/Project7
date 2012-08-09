@@ -31,14 +31,14 @@
     self.bitmap.fill_rect(0,0,*@wh,Fuc::BUFF_DES_BACK)
     self.bitmap.fill_rect(1,1,value,@wh[1]-2,@color)
     self.x=@xy.screen_x-self.bitmap.width/2
-    self.y=@xy.screen_y-self.bitmap.height-@xy.gra_height
+    self.y=@xy.screen_y-self.bitmap.height-@xy.gra_height-2
   end
   
   def update
     if !@dead
       unless @freeze_text
         self.x = @xy.screen_x-self.bitmap.width/2
-        self.y = @xy.screen_y-self.bitmap.height-@xy.gra_height
+        self.y = @xy.screen_y-self.bitmap.height-@xy.gra_height-2
         if @opa_time>0
           @opa_time-=1
         else

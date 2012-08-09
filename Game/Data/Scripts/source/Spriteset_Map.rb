@@ -80,9 +80,11 @@ class Spriteset_Map
     @fillup[3].z = 4
     @fillup[4].z = 3
     # UI
-    @tipsvar = [[0,0],[true,10],[false,0],nil,nil,nil,0,nil,nil,[],[false,-1],[],[],[],[],false]
+    @tipsvar = [[0,0],[true,10],[false,0],nil,nil,nil,0,nil,nil,[],[false,-1],[],[],[],[],[false,-1],false]
     @tips = 
     [ Sprite.new(@viewport2),
+      Sprite.new(@viewport3),
+      Sprite.new(@viewport3),
       Sprite.new(@viewport3),
       Sprite.new(@viewport3),
       Sprite.new(@viewport3),
@@ -143,6 +145,9 @@ class Spriteset_Map
       @tips[i].x = @tips[1].x+5+(i-11)*41
       @tips[i].z = 101
     end
+    @tips[15].bitmap = Bitmap.new(Fuc::SKILL_BACK)
+    @tips[15].y = Graphics.height-5-@tips[15].bitmap.height
+    @tips[15].x = Graphics.width-5-@tips[15].bitmap.width
     # 数据显示
     @richtext = []
     @richvalue = {}
@@ -489,9 +494,10 @@ class Spriteset_Map
             @tips[10].x = Graphics.width-@tips[10].bitmap.width
             @tips[10].y = @tips[8].y+@tips[8].bitmap.height
           end
-        elsif !tipsvar[1][0] && @tipsvar[2][0] && $sel_body.bag[@tipsvar[2][1]] 
-          if !@tipsvar[15]
-            @tipsvar[15] = true
+        elsif !tipsvar[1][0] && @tipsvar[2][0] && $sel_body.bag[@tipsvar[2][1]]
+          if !@tipsvar[15][0] || @tipsvar[15][1]!=@tipsvar[2][1]
+            @tipsvar[15][0] = true
+            @tipsvar[15][1] = @tipsvar[2][1]
             @tips[10].bitmap = Fuc.get_item_descr(@tipsvar[2][1])
             @tips[10].x = 4
             @tips[10].y = @tips[1].y-@tips[10].bitmap.height
@@ -499,8 +505,9 @@ class Spriteset_Map
         else
           if @tipsvar[10][0] || @tipsvar[15]
             @tipsvar[10][0] = false
-            @tipsvar[15] = false
             @tipsvar[10][1] = -1
+            @tipsvar[15][0] = false
+            @tipsvar[15][1] = -1
           end
           @tips[10].bitmap.dispose if @tips[10].bitmap
         end

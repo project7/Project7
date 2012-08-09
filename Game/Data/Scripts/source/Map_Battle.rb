@@ -399,6 +399,8 @@
             @splink.show_tips(FAILD_ATTACK_TEXT[14+sick])
           end
         end
+      elsif SceneManager.scene.mouse_in_skillrect?
+        
       else
         $team_set.each do |i|
           body = i.event_id == 0 ? $game_player : i.event
@@ -644,6 +646,7 @@
           @splink.show_value(i.hp*100/i.maxhp,i.event)
         end
         @cur_actor.cost_ap_for(1)
+        @splink.show_value(@cur_actor.hp*100/@cur_actor.maxhp,@cur_actor.event)
         return tempb
       else
         return [[false,5+temp]]
@@ -660,8 +663,10 @@
           elsif tsy != 0
             @cur_actor.event.set_direction(tsy > 0 ? 8 : 2)
           end
-          @cur_actor.cost_ap_for(1)
-          @cur_actor.lose_item(para[0].id,para[0].use_cost_num)
+          @cur_actor.cost_ap_for(3,para[0].ap_cost)
+          @cur_actor.god_sp_damage(para[0].sp_cost,true)
+          @cur_actor.god_damage(para[0].hp_cost,true)
+          @splink.show_value(@cur_actor.hp*100/@cur_actor.maxhp,@cur_actor.event)
           return [[true,0]]
         else
           return [[false,7]]
@@ -723,6 +728,7 @@
           @cur_actor.god_sp_damage(para[0].sp_cost,true)
           @cur_actor.god_damage(para[0].hp_cost,true)
         end
+        @splink.show_value(@cur_actor.hp*100/@cur_actor.maxhp,@cur_actor.event)
         return tempb
       else
         return [[false,5+temp]]
@@ -739,8 +745,11 @@
           elsif tsy != 0
             @cur_actor.event.set_direction(tsy > 0 ? 8 : 2)
           end
-          @cur_actor.cost_ap_for(1)
+          @cur_actor.cost_ap_for(2)
+          @cur_actor.god_sp_damage(para[0].sp_cost,true)
+          @cur_actor.god_damage(para[0].hp_cost,true)
           @cur_actor.lose_item(para[0].id,para[0].use_cost_num)
+          @splink.show_value(@cur_actor.hp*100/@cur_actor.maxhp,@cur_actor.event)
           return [[true,0]]
         else
           return [[false,7]]
@@ -803,6 +812,7 @@
           @cur_actor.god_damage(para[0].hp_cost,true)
           @cur_actor.lose_item(para[0].id,para[0].use_cost_num)
         end
+        @splink.show_value(@cur_actor.hp*100/@cur_actor.maxhp,@cur_actor.event)
         return tempb
       else
         return [[false,5+temp]]
