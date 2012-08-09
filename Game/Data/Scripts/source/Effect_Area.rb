@@ -38,12 +38,16 @@
         end
       when 3
         [*(i[0]..i[1])].each do |j|
-          j.times do |k|
-            point = [k,j-k]
-            @point_arr << point
-            @point_arr << [-point[0],-point[1]]
-            @point_arr << [point[1],-point[0]]
-            @point_arr << [-point[1],point[0]]
+          if j==0
+            @point_arr << [0,0]
+          else
+            j.times do |k|
+              point = [k,j-k]
+              @point_arr << point
+              @point_arr << [-point[0],-point[1]]
+              @point_arr << [point[1],-point[0]]
+              @point_arr << [-point[1],point[0]]
+            end
           end
         end
       when 4

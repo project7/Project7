@@ -34,7 +34,7 @@
     "目标是无敌的",
     "作用范围内无目标",
     "不能攻击友方单位",
-    "目标点超出攻击范围",
+    "目标点超出允许范围",
     "你不能攻击尸体",
     "不能作用于敌人",
     "不能作用于友方",
@@ -275,18 +275,51 @@
     return tbitmap
   end
   
-  # 获取技能位图
-  def self.get_item_bitmap(index)
-    return Bitmap.new(36,36) if !$sel_body || !$sel_body.bag[index]
-    a = Bitmap.new("Graphics/Icon/"+$sel_body.bag[index][0].icon+".png")
-    tBitmap = Bitmap.new(36,36)
-    tBitmap.font.size = 16
-    tBitmap.blt(18-a.width/2,18-a.height/2,a,Rect.new(0,0,a.width,a.height))
-    trect = tBitmap.text_size($sel_body.bag[index][1].to_s)
-    trect.width+=2
-    trect.height+=2
-    tBitmap.draw_text(0,36-trect.height,36,trect.height,$sel_body.bag[index][1].to_s,2)
+  # 获取整个技能位图
+  def self.get_all_skill_bitmap
+    tBitmap = Bitmap.new(136,136)
+    trect = Rect.new(0,0,38,38)
+    [*0..5].each do |i|
+      tBitmap.blt(*UI_SKILL_POS[i],self.get_skill_bitmap(i),trect)
+    end
     return tBitmap
+  end
+  
+  # 获取技能位图
+  def self.get_skill_bitmap(index)
+    return Bitmap.new(38,38) if !$sel_body || !$sel_body.skill[index]
+    a = Bitmap.new("Graphics/Icon/"+$sel_body.skill[index].icon+".png")
+    tBitmap = Bitmap.new(38,38)
+    tBitmap.blt(18-a.width/2,18-a.height/2,a,Rect.new(0,0,a.width,a.height))
+    return tBitmap
+  end
+  
+  # 获取技能说明
+  def self.get_skill_descr(index)
+    title = $sel_body.skill[index].name
+    text = $sel_body.skill[index].descr
+    textarr = text.split(/\n/)
+    tbitmap = Bitmap.new(10,10)
+    tbitmap.font.size = 16
+    maxw = 0
+    lineh = tbitmap.text_size("■").height
+    tbitmap.font.size = 20
+    titleh = tbitmap.text_size("■").height
+    tbitmap.font.size = 16
+    maxh = lineh*textarr.size+8+titleh
+    textarr.each{|i| tw = tbitmap.text_size(i).width;maxw=tw if tw>maxw}
+    maxw+=8
+    tbitmap.dispose
+    tbitmap = Bitmap.new(maxw,maxh)
+    tbitmap.font.size = 20
+    tbitmap.fill_rect(0,0,maxw,maxh,BUFF_DES_BACK)
+    rem = tbitmap.font.color.clone
+    tbitmap.font.color = DESCR_TITLE_COLOR
+    tbitmap.draw_text(2,2,maxw,titleh,title,0)
+    tbitmap.font.color = rem
+    tbitmap.font.size = 16
+    textarr.each_with_index{|i,j| tbitmap.draw_text(2,2+j*lineh+titleh,maxw,lineh,i,0)}
+    return tbitmap
   end
   
 end

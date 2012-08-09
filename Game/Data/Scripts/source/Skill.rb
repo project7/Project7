@@ -77,8 +77,8 @@
     @hp_damage = 1
     @sp_damage = 0
     @ap_damage = 0
-    @buff = [[0,100]]
-    @debuff = [[0,100]]
+    @buff = []
+    @debuff = []
     @descr = ""
   end
   
@@ -96,9 +96,9 @@
   
   def enough_to_use(ap,hp,sp)
     if ap>=@ap_cost
-      if hp >= @hp_cost
+      if hp>= @hp_cost
         if sp>=@sp_cost
-          if @can_use
+          if @init_skill
             if eval(@use_req)
               return true
             else
