@@ -80,7 +80,7 @@ class Spriteset_Map
     @fillup[3].z = 4
     @fillup[4].z = 3
     # UI
-    @tipsvar = [[0,0],[true,10],[false,0],nil,nil,nil,0,nil,nil,[],[false,-1],[],[],[],[],[false,-1],false]
+    @tipsvar = [[0,0],[true,10],[false,0],nil,nil,nil,0,nil,nil,[],[false,-1],[],[],[],[],[false,-1],[],[false,0],[false,-1]]
     @tips = 
     [ Sprite.new(@viewport2),
       Sprite.new(@viewport3),
@@ -148,6 +148,11 @@ class Spriteset_Map
     @tips[15].bitmap = Bitmap.new(Fuc::SKILL_BACK)
     @tips[15].y = Graphics.height-5-@tips[15].bitmap.height
     @tips[15].x = Graphics.width-5-@tips[15].bitmap.width
+    @tips[15].z = 100
+    @tips[16].bitmap = Fuc.get_all_skill_bitmap
+    @tips[16].y = @tips[15].y
+    @tips[16].x = @tips[15].x
+    @tips[16].z = 101
     # 数据显示
     @richtext = []
     @richvalue = {}
@@ -295,6 +300,7 @@ class Spriteset_Map
     @fillup.each{|i| i.bitmap.dispose if i.bitmap;i.dispose}
     @tips.each{|i| i.bitmap.dispose if i.bitmap;i.dispose}
     @richtext.each{|i| i.bitmap.dispose if i.bitmap;i.dispose}
+    @richvalue.each_value{|i| i.bitmap.dispose if i.bitmap;i.dispose}
   end
   #--------------------------------------------------------------------------
   # ● 更新人物
@@ -364,7 +370,7 @@ class Spriteset_Map
     [*0...@fillup.size].each do |i|
       case i
       when 0
-        if !$game_message.busy? && !$game_message.visible
+        if $map_battle && $map_battle.scene_id == 0 && !$game_message.busy? && !$game_message.visible
           tpos = Fuc.getpos_by_screenpos(Mouse.pos)
           @fillup[0].x = $game_map.adjust_x(tpos[0]) * 32
           @fillup[0].y = $game_map.adjust_y(tpos[1]) * 32
@@ -491,10 +497,10 @@ class Spriteset_Map
             @tipsvar[10][0] = true
             @tipsvar[10][1] = dx/22
             @tips[10].bitmap = Fuc.get_buff_descr(dx/22)
-            @tips[10].x = Graphics.width-@tips[10].bitmap.width
+            @tips[10].x = Graphics.width-@tips[10].bitmap.width-4
             @tips[10].y = @tips[8].y+@tips[8].bitmap.height
           end
-        elsif !tipsvar[1][0] && @tipsvar[2][0] && $sel_body.bag[@tipsvar[2][1]]
+        elsif !@tipsvar[1][0] && @tipsvar[2][0] && $sel_body.bag[@tipsvar[2][1]]
           if !@tipsvar[15][0] || @tipsvar[15][1]!=@tipsvar[2][1]
             @tipsvar[15][0] = true
             @tipsvar[15][1] = @tipsvar[2][1]
@@ -502,12 +508,22 @@ class Spriteset_Map
             @tips[10].x = 4
             @tips[10].y = @tips[1].y-@tips[10].bitmap.height
           end
+        elsif @tipsvar[16] && @tipsvar[17][0] && $sel_body.skill[@tipsvar[17][1]]
+          if !@tipsvar[18][0] || @tipsvar[18][1]!=@tipsvar[17][1]
+            @tipsvar[18][0] = true
+            @tipsvar[18][1] = @tipsvar[17][1]
+            @tips[10].bitmap = Fuc.get_skill_descr(@tipsvar[17][1])
+            @tips[10].x = Graphics.width-4-@tips[10].bitmap.width
+            @tips[10].y = @tips[16].y-@tips[10].bitmap.height-4
+          end
         else
           if @tipsvar[10][0] || @tipsvar[15]
             @tipsvar[10][0] = false
             @tipsvar[10][1] = -1
             @tipsvar[15][0] = false
             @tipsvar[15][1] = -1
+            @tipsvar[18][0] = false
+            @tipsvar[18][1] = -1
           end
           @tips[10].bitmap.dispose if @tips[10].bitmap
         end
@@ -515,10 +531,17 @@ class Spriteset_Map
         next unless $sel_body.bag_rem[i-11]
         if @tipsvar[i]!=$sel_body.bag_rem[i-11]
           @tipsvar[i]=$sel_body.bag_rem[i-11].clone
+          @tips[i].bitmap.dispose if @tips[i].bitmap
           @tips[i].bitmap = Fuc.get_item_bitmap(i-11)
         end
         @tips[i].y = @tips[1].y+12
         @tips[i].x = @tips[1].x+5+(i-11)*41
+      when 16
+        if @tipsvar[16]!=$sel_body.skill_rem
+          @tipsvar[16]=$sel_body.skill_rem.clone
+          @tips[16].bitmap.dispose if @tips[16].bitmap
+          @tips[16].bitmap = Fuc.get_all_skill_bitmap
+        end
       end
     end
     # 刷数据
