@@ -275,4 +275,18 @@
     return tbitmap
   end
   
+  # 获取技能位图
+  def self.get_item_bitmap(index)
+    return Bitmap.new(36,36) if !$sel_body || !$sel_body.bag[index]
+    a = Bitmap.new("Graphics/Icon/"+$sel_body.bag[index][0].icon+".png")
+    tBitmap = Bitmap.new(36,36)
+    tBitmap.font.size = 16
+    tBitmap.blt(18-a.width/2,18-a.height/2,a,Rect.new(0,0,a.width,a.height))
+    trect = tBitmap.text_size($sel_body.bag[index][1].to_s)
+    trect.width+=2
+    trect.height+=2
+    tBitmap.draw_text(0,36-trect.height,36,trect.height,$sel_body.bag[index][1].to_s,2)
+    return tBitmap
+  end
+  
 end

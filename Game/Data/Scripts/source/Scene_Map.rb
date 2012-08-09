@@ -81,13 +81,17 @@ class Scene_Map < Scene_Base
         else
           @spriteset.tipsvar[2][0] = false
         end
-      elsif mouse_in_skillrect?
+      else
+        @spriteset.tipsvar[1][0] = true
+      end
+      if mouse_in_skillrect?
         @spriteset.tipsvar[16] = true
       else
         @spriteset.tipsvar[16] = false
       end
     else
       @spriteset.tipsvar[1][0] = true
+      @spriteset.tipsvar[16] = false
     end
   end
   
