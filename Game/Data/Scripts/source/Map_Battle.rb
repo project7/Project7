@@ -399,6 +399,8 @@
             @splink.show_tips(FAILD_ATTACK_TEXT[14+sick])
           end
         end
+      elsif SceneManager.scene.mouse_in_skillrect?
+        
       else
         $team_set.each do |i|
           body = i.event_id == 0 ? $game_player : i.event
@@ -660,8 +662,9 @@
           elsif tsy != 0
             @cur_actor.event.set_direction(tsy > 0 ? 8 : 2)
           end
-          @cur_actor.cost_ap_for(1)
-          @cur_actor.lose_item(para[0].id,para[0].use_cost_num)
+          @cur_actor.cost_ap_for(3,para[0].ap_cost)
+          @cur_actor.god_sp_damage(para[0].sp_cost,true)
+          @cur_actor.god_damage(para[0].hp_cost,true)
           return [[true,0]]
         else
           return [[false,7]]
@@ -739,7 +742,9 @@
           elsif tsy != 0
             @cur_actor.event.set_direction(tsy > 0 ? 8 : 2)
           end
-          @cur_actor.cost_ap_for(1)
+          @cur_actor.cost_ap_for(2)
+          @cur_actor.god_sp_damage(para[0].sp_cost,true)
+          @cur_actor.god_damage(para[0].hp_cost,true)
           @cur_actor.lose_item(para[0].id,para[0].use_cost_num)
           return [[true,0]]
         else

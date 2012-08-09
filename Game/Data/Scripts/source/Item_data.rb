@@ -26,7 +26,7 @@
     @hurt_area = [ [[2]] ,true]
     @hurt_maxnum = 0
     @sp_cost = 0
-    @hp_cost = 50
+    @hp_cost = 0
     @hp_damage = 66
     @sp_damage = 0
     @ap_damage = 0
@@ -65,7 +65,7 @@ class YellowBook < Item
     @hurt_area = [ [[0]] ,true]
     @hurt_maxnum = 0
     @sp_cost = 0
-    @hp_cost = 0
+    @hp_cost = 10
     @hp_damage = 0
     @sp_damage = 0
     @ap_damage = 0

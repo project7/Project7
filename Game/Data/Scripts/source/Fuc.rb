@@ -24,6 +24,7 @@
   TIPS_POINT = "Graphics/System/cur_actor.png"
   TIPS_TEXT = "Graphics/System/Tips_Text.png"
   BUFF_BACK = "Graphics/System/Buff_Back.png"
+  SKILL_BACK = "Graphics/System/Skill_Back.png"
   COMMON_BATTLE_REQ = "@partner_num==0||@enemy_num==0"
   FAILD_ATTACK_TEXT = 
   [ "Miss",

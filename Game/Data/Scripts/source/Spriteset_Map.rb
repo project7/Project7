@@ -80,9 +80,11 @@ class Spriteset_Map
     @fillup[3].z = 4
     @fillup[4].z = 3
     # UI
-    @tipsvar = [[0,0],[true,10],[false,0],nil,nil,nil,0,nil,nil,[],[false,-1],[],[],[],[],false]
+    @tipsvar = [[0,0],[true,10],[false,0],nil,nil,nil,0,nil,nil,[],[false,-1],[],[],[],[],false,false]
     @tips = 
     [ Sprite.new(@viewport2),
+      Sprite.new(@viewport3),
+      Sprite.new(@viewport3),
       Sprite.new(@viewport3),
       Sprite.new(@viewport3),
       Sprite.new(@viewport3),
@@ -143,6 +145,9 @@ class Spriteset_Map
       @tips[i].x = @tips[1].x+5+(i-11)*41
       @tips[i].z = 101
     end
+    @tips[15].bitmap = Bitmap.new(Fuc::SKILL_BACK)
+    @tips[15].y = Graphics.height-5-@tips[15].bitmap.height
+    @tips[15].x = Graphics.width-5-@tips[15].bitmap.width
     # 数据显示
     @richtext = []
     @richvalue = {}

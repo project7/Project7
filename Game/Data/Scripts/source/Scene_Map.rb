@@ -71,14 +71,20 @@ class Scene_Map < Scene_Base
   # ● 更新画面
   #--------------------------------------------------------------------------
   def update_ui
-    if !$game_message.busy? && !$game_message.visible && mouse_in_itemrect?
-      @spriteset.tipsvar[1][0] = false
-      tempa = item_mouse_index
-      if tempa
-        @spriteset.tipsvar[2][0] = true
-        @spriteset.tipsvar[2][1] = tempa
+    if !$game_message.busy? && !$game_message.visible
+      if mouse_in_itemrect?
+        @spriteset.tipsvar[1][0] = false
+        tempa = item_mouse_index
+        if tempa
+          @spriteset.tipsvar[2][0] = true
+          @spriteset.tipsvar[2][1] = tempa
+        else
+          @spriteset.tipsvar[2][0] = false
+        end
+      elsif mouse_in_skillrect?
+        @spriteset.tipsvar[16] = true
       else
-        @spriteset.tipsvar[2][0] = false
+        @spriteset.tipsvar[16] = false
       end
     else
       @spriteset.tipsvar[1][0] = true
@@ -100,6 +106,27 @@ class Scene_Map < Scene_Base
       rx = @spriteset.tips[1].x+5+i*41
       ry = @spriteset.tips[1].y+12
       if tpos[0]>=rx&&tpos[0]<=rx+36&&tpos[1]>=ry&&tpos[1]<=ry+36
+        return i
+      end
+    end
+    return false
+  end
+  
+  def mouse_in_skillrect?
+    tpos = Mouse.pos
+    if tpos[0]>=@spriteset.tips[15].x&&tpos[0]<=@spriteset.tips[15].x+136&&tpos[1]>=@spriteset.tips[15].y&&tpos[1]<=@spriteset.tips[15].y+136
+      return true
+    else
+      return false
+    end
+  end
+  
+  def skill_mouse_index
+    tpos = Mouse.pos
+    [*0..5].each do |i|
+      rx = @spriteset.tips[1].x+Fuc::UI_SKILL_POS[i][0]
+      ry = @spriteset.tips[1].y+Fuc::UI_SKILL_POS[i][1]
+      if tpos[0]>=rx&&tpos[0]<=rx+38&&tpos[1]>=ry&&tpos[1]<=ry+38
         return i
       end
     end
@@ -145,6 +172,8 @@ class Scene_Map < Scene_Base
   def update_mouse_event
     if Mouse.click?(1)                                
       if mouse_in_itemrect?
+        
+      elsif mouse_in_skillrect?
         
       else  #鼠标点击寻路
         x_dis = $game_player.x-Fuc.getpos_by_screenpos(Mouse.pos)[0]
