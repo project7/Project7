@@ -86,6 +86,13 @@ class Scene_Map < Scene_Base
       end
       if mouse_in_skillrect?
         @spriteset.tipsvar[16] = true
+        tempb = skill_mouse_index
+        if tempb
+          @spriteset.tipsvar[17][0] = true
+          @spriteset.tipsvar[17][1] = tempb
+        else
+          @spriteset.tipsvar[17][0] = false
+        end
       else
         @spriteset.tipsvar[16] = false
       end
@@ -128,8 +135,8 @@ class Scene_Map < Scene_Base
   def skill_mouse_index
     tpos = Mouse.pos
     [*0..5].each do |i|
-      rx = @spriteset.tips[1].x+Fuc::UI_SKILL_POS[i][0]
-      ry = @spriteset.tips[1].y+Fuc::UI_SKILL_POS[i][1]
+      rx = @spriteset.tips[15].x+Fuc::UI_SKILL_POS[i][0]
+      ry = @spriteset.tips[15].y+Fuc::UI_SKILL_POS[i][1]
       if tpos[0]>=rx&&tpos[0]<=rx+38&&tpos[1]>=ry&&tpos[1]<=ry+38
         return i
       end

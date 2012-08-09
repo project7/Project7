@@ -22,7 +22,7 @@
   
   def set_extra
     @end_req = "@turn-buff.lived_turn>=buff.keep_turn"
-    @descr = "待机保持警惕\n物理防御力提高ap剩余百分比\n最多提高%50."
+    @descr = "待机保持警惕\n物理防御力提高ap剩余百分比\n最多提高%50.\n持续1回合."
     @add_def = 0
   end
 
@@ -36,7 +36,7 @@ class Sick < Buff
     @name = "毒"
     @icon = "shit_damage"
     @animation = []
-    @keep_turn = 10
+    @keep_turn = 3
     @keep_step = 0
     @use_effect = ""
     @per_turn_start_effect = "a=@cur_actor.mag_damage(@cur_actor.maxhp/10);
@@ -50,7 +50,7 @@ class Sick < Buff
   
   def set_extra
     @end_req = "@turn-buff.lived_turn>=buff.keep_turn"
-    @descr = "每回合损失最大生命值的%10\n持续10回合."
+    @descr = "每回合损失最大生命值的%10\n持续3回合."
   end
 
 end

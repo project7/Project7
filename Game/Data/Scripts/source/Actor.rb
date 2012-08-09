@@ -71,6 +71,7 @@
   attr_accessor :ai                           # AI
   attr_accessor :buff_rem                     # BUFF编号
   attr_accessor :bag_rem                      # 物品编号
+  attr_accessor :skill_rem                    # 技能编号
   
   def initialize(event_id=0,t_id=[0])
     @event_id = event_id
@@ -166,6 +167,7 @@
   
   def set_rd_value
     @buff_rem = []
+    @skill_rem = []
     @steps = 0
   end
 
@@ -276,10 +278,19 @@
   def learn_skill(skill)
     @skill << skill
     @skill.uniq!{|i| i.id}
+    cal_skill_rem
+  end
+  
+  def cal_skill_rem
+    @skill_rem = []
+    @skill.each do |i|
+      @skill_rem << i.id
+    end
   end
   
   def forget_skill(skill_id)
     @skill.delete_if{|i| i.id==skill_id}
+    cal_skill_rem
   end
   
   def gain_item(item,num)
