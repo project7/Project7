@@ -58,7 +58,7 @@
   end
   
   def can_use
-    return false unless can_use
+    return false unless @can_use
     return false if $map_battle && !@use_in_battle
     return false if !$map_battle && !@use_in_scene
     return true

@@ -482,6 +482,7 @@
             @splink.show_tips(FAILD_ATTACK_TEXT[14+sick])
           end
         end
+        return
       elsif SceneManager.scene.mouse_in_skillrect?
         iii = SceneManager.scene.skill_mouse_index
         obj = iii ? $sel_body.skill[iii] : nil
@@ -494,6 +495,7 @@
             @splink.show_tips(FAILD_ATTACK_TEXT[14+sick])
           end
         end
+        return
       else
         $team_set.each do |i|
           body = i.event_id == 0 ? $game_player : i.event
