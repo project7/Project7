@@ -490,6 +490,10 @@ class Spriteset_Map
           @tipsvar[9]=$sel_body.buff_rem.clone
         end
       when 10
+        if !$game_message.busy? && !$game_message.visible
+          @tips[10].bitmap.dispose if @tips[10].bitmap
+          next
+        end
         dx = Mouse.pos[0]-@tips[9].x
         dy = Mouse.pos[1]-@tips[9].y
         if $sel_body.buff!=[]&&dx>=0&&dx<=@tips[9].bitmap.width&&dy>=0&&dy<=@tips[9].bitmap.height
@@ -508,7 +512,7 @@ class Spriteset_Map
             @tips[10].x = 4
             @tips[10].y = @tips[1].y-@tips[10].bitmap.height
           end
-        elsif @tipsvar[16] && @tipsvar[17][0] && $sel_body.skill[@tipsvar[17][1]]
+        elsif @tipsvar[19] && @tipsvar[17][0] && $sel_body.skill[@tipsvar[17][1]]
           if !@tipsvar[18][0] || @tipsvar[18][1]!=@tipsvar[17][1]
             @tipsvar[18][0] = true
             @tipsvar[18][1] = @tipsvar[17][1]

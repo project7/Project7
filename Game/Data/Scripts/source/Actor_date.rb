@@ -58,8 +58,8 @@ class Fucker < Actor
     @damage_reduce = 0
     @cost_reduce_rate = 0
     @cost_reduce = 0
-    @hp_absorb_rate = 40
-    @hp_absorb = 0
+    @hp_absorb_rate = 0
+    @hp_absorb = 40
     @sp_absorb_rate = 0
     @sp_absorb = 0
     @invincible = false
