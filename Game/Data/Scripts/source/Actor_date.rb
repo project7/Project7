@@ -20,7 +20,7 @@ class Fucker < Actor
   end
 
   def set_ele
-    @maxhp = 300
+    @maxhp = 600
     @maxsp = 100
     @maxap = 20
     @atk = 10
@@ -58,7 +58,7 @@ class Fucker < Actor
     @damage_reduce = 0
     @cost_reduce_rate = 0
     @cost_reduce = 0
-    @hp_absorb_rate = 0
+    @hp_absorb_rate = 40
     @hp_absorb = 0
     @sp_absorb_rate = 0
     @sp_absorb = 0
@@ -91,7 +91,7 @@ class Shit < Actor
   end
   
   def set_ele
-    @maxhp = 1#600
+    @maxhp = 600
     @maxsp = 100
     @maxap = 20
     @atk = 25

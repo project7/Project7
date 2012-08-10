@@ -112,14 +112,14 @@ class Relive < Skill
     @hurt_area = [ [[0]] ,true]
     @hurt_maxnum = 1
     @sp_cost = 0
-    @hp_cost = 150
-    @ap_cost = 0
+    @hp_cost = 310
+    @ap_cost = 1
     @hp_damage = 60
     @sp_damage = 0
     @ap_damage = 0
     @buff = [["Ctrled.new",100]]
     @debuff = []
-    @descr = "消耗150点生命力.\n复活并操控一具尸体为你作战.\n死尸在持续时间内不会死亡.\n死尸所受的伤害由施法者承担.\n持续10回合.\n施法距离:1-4."
+    @descr = "消耗1点行动力和310点生命力.\n复活并操控一具尸体为你作战.\n死尸在持续时间内不会死亡.\n死尸所受的伤害由施法者承担.\n持续10回合.\n施法距离:1-4."
   end
   
   def set_extra
