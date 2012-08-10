@@ -490,7 +490,7 @@ class Spriteset_Map
           @tipsvar[9]=$sel_body.buff_rem.clone
         end
       when 10
-        if !$game_message.busy? && !$game_message.visible
+        if $game_message.busy? || $game_message.visible
           @tips[10].bitmap.dispose if @tips[10].bitmap
           next
         end
