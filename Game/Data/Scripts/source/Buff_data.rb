@@ -86,3 +86,34 @@ class Weak < Buff
   end
 
 end
+
+class Ctrled < Buff
+  
+  attr_accessor :temp_damage
+
+  def set_ele(user)
+    @id = 4
+    @user = user
+    @name = "被操控"
+    @icon = "ctrled"
+    @animation = []
+    @keep_turn = 10
+    @keep_step = 0
+    @use_effect = ""
+    @per_turn_start_effect = ""
+    @per_step_effect = ""
+    @per_turn_end_effect = ""
+    @end_effect = "@cur_actor.die"
+    @atk_effect = ""
+    @damage_effect = "@hp=[@hp,1].max;
+                      a = buff.user.mag_damage(value);
+                      SceneManager.scene.spriteset.show_text(a[1].to_s,buff.user.event,Fuc::AP_COST_COLOR) if a[0]"
+  end
+  
+  def set_extra
+    @end_req = "@turn-buff.lived_turn>=buff.keep_turn"
+    @descr = "每回合开始时损失25%的当前生命.\n每进行一次动作损失行走所需行动力的生命值.\n回合结束时,回复回合开始时损失的生命.\n持续2回合"
+    @temp_damage = 0
+  end
+
+end

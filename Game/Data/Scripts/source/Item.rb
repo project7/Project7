@@ -32,7 +32,7 @@
   def enough_to_use(num,ap,hp,sp)
     if num >= @use_cost_num
       if ap
-        if hp >= @hp_cost
+        if hp > @hp_cost
           if sp>=@sp_cost
             if can_use
               if eval(@use_req)

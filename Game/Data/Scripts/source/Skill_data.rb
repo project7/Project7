@@ -61,7 +61,7 @@ class FuckWithOutMoney < Skill
     @hurt_e_dead = false
     @hurt_area = [ [[5]] ,true]
     @hurt_maxnum = 0
-    @sp_cost = 20
+    @sp_cost = 0#20
     @hp_cost = 0
     @ap_cost = 18
     @hp_damage = 60
@@ -82,6 +82,56 @@ class FuckWithOutMoney < Skill
     @sp_damage_add = "skill.level*50"
     @ap_damage_add = "0"
     @ignore_mag_det = true
+  end
+  
+end
+
+class Relive < Skill
+  
+  def set_ui
+    @icon = "relive"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 3
+    @name = "操纵死尸(R)"
+    @init_skill = true
+    @use_req = "true"
+    @use_dis_min = 1
+    @use_dis_max = 4
+    @hotkey = 0x52
+    @hurt_enemy = false
+    @hurt_partner = false
+    @hurt_p_dead = true
+    @hurt_e_dead = true
+    @hurt_area = [ [[0]] ,true]
+    @hurt_maxnum = 1
+    @sp_cost = 0
+    @hp_cost = 150
+    @ap_cost = 0
+    @hp_damage = 60
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = [["Ctrled.new",100]]
+    @debuff = []
+    @descr = "消耗150点生命力.\n复活并操控一具尸体为你作战.\n死尸在持续时间内不会死亡.\n死尸所受的伤害由施法者承担.\n持续10回合.\n施法距离:1-4."
+  end
+  
+  def set_extra
+    @spec_effect = "i.relive;i.hp=i.maxhp;i.ai=nil;i.team=@cur_actor.team"
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @ignore_mag_det = false
   end
   
 end

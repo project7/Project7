@@ -220,12 +220,13 @@
   def god_damage(value,force=false)
     return [false,1] if value > 0 && xrand(100) < @ignore_dmg_rate && !force
     return [false,4] if value > 0 && @invincible && !force
-    return [false,8] if self.dead? && !force
+    return [true,0] if self.dead? && !force
     @buff.each do |buff|
       instance_eval(buff.damage_effect)
     end
     @hp -= value
     @hp = [[@maxhp,@hp].min,0].max
+    @buff.each{|buff| instance_eval(buff.damage_effect)}
     self.die if self.will_dead?
     return [true,value]
   end
@@ -242,7 +243,7 @@
   def god_sp_damage(value,force=false)
     return [false,1] if value > 0 && xrand(100) < @ignore_dmg_rate && !force
     return [false,4] if value > 0 && @invincible && !force
-    return [false,8] if self.dead? && !force
+    return [true,0] if self.dead? && !force
     @sp -= value
     @sp = [[@maxsp,@sp].min,0].max
     return [true,value]

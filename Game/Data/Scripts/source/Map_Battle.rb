@@ -291,13 +291,15 @@
       body = i.event_id == 0 ? $game_player : i.event
       if tec[1]==-1 || @effectarea.include?(body.x,body.y)
         if beat
-          if tec[0].hurt_enemy
+          if tec[0].hurt_enemy || tec[0].hurt_e_dead
             if dead
               if tec[0].hurt_e_dead
                 effect_arr << i
               else
                 err_id = 6
               end
+            elsif tec[0].hurt_e_dead
+              err_id = 4 if err_id != 6 || err_id != 7
             else
               effect_arr << i
             end
@@ -305,13 +307,15 @@
             err_id = 4 if err_id != 6 || err_id != 7
           end
         else
-          if tec[0].hurt_partner
+          if tec[0].hurt_partner || tec[0].hurt_p_dead
             if dead
               if tec[0].hurt_p_dead
                 effect_arr << i
               else
                 err_id = 7
               end
+            elsif tec[0].hurt_p_dead
+              err_id = 5 if err_id != 6 || err_id != 7
             else
               effect_arr << i
             end
@@ -727,6 +731,7 @@
         temp.each do |i|
           tempama = @cur_actor.get_atk
           tempama = tempama*@cur_actor.bingo_damage/100 if bingo_size > 20
+          @cur_actor.buff.each{|i| instance_eval(i.atk_effect)}
           dama = i.phy_damage(tempama)
           tempb << dama
           if dama[0]
@@ -791,6 +796,7 @@
       end
       if temp.is_a?(Array)
         tempb = []
+        succ_count = 0
         temp.each do |i|
           succ_count = 0
           tempama = para[0].hp_damage
@@ -829,24 +835,31 @@
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
             end
           end
-          if succ_count>0 || para[0].ignore_mag_det
+          if succ_count>0 || (i.ignore_magic && para[0].ignore_mag_det)
             i.god_sp_damage(-2,true)
             para[0].debuff.each do |debuff|
               if $random_center.rand(100) < debuff[1]
+                succ_count+=1
                 i.dec_buff(debuff[0])
               end
             end
             para[0].buff.each do |buff|
               if $random_center.rand(100) < buff[1]
+                succ_count+=1
                 sm = instance_eval(buff[0]+"("+"@cur_actor"+")")
                 i.add_buff(sm)
                 @splink.show_text("+"+sm.name,i.event,SP_ADD_COLOR)
               end
             end
+            if para[0].spec_effect!=""
+              succ_count+=1
+              instance_eval(para[0].spec_effect)
+              p i.team
+            end
           end
           @splink.show_value(i.hp*100/i.maxhp,i.event)
         end
-        unless tempb.all?{|e| e[0]==false&&e[1]>1}
+        unless succ_count<=0#tempb.all?{|e| e[0]==false&&e[1]>1}
           @actor.animation_id = para[0].user_animation
           @cur_actor.god_sp_damage(-2,true)
           @cur_actor.cost_ap_for(3,para[0].ap_cost)
@@ -896,6 +909,7 @@
       end
       if temp.is_a?(Array)
         tempb = []
+        succ_count = 0
         temp.each do |i|
           succ_count = 0
           tempama = para[0].hp_damage
@@ -938,20 +952,26 @@
             i.god_sp_damage(-2,true)
             para[0].debuff.each do |debuff|
               if $random_center.rand(100) < debuff[1]
+                succ_count+=1
                 i.dec_buff(debuff[0])
               end
             end
             para[0].buff.each do |buff|
               if $random_center.rand(100) < buff[1]
+                succ_count+=1
                 sm = instance_eval(buff[0]+"("+"@cur_actor"+")")
                 i.add_buff(sm)
                 @splink.show_text("+"+buff.name,i.event,SP_ADD_COLOR)
               end
             end
+            if para[0].spec_effect!=""
+              succ_count+=1
+              instance_eval(para[0].spec_effect)
+            end
           end
           @splink.show_value(i.hp*100/i.maxhp,i.event)
         end
-        unless tempb.all?{|e| e[0]==false&&e[1]>1}
+        unless succ_count<=0#tempb.all?{|e| e[0]==false&&e[1]>1}
           @actor.animation_id = para[0].user_animation
           @cur_actor.god_sp_damage(-2,true)
           @cur_actor.cost_ap_for(2)
