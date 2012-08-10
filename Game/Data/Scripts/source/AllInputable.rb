@@ -2,36 +2,32 @@
   @R_Key_Hash = {}
   @R_Key_Repeat = {}
   @press_keys = []
+  @down_keys = []
   class << CInput
   
     alias ud update
     def update
-      @press_keys = getall[2]
+      @down_keys,@press_keys = getall[1],getall[2]
       ud
+    end
+    
+    alias dn down?
+    def down?(rkey)
+      return rkey.any?{|i| @down_keys.include?(i)}
     end
 
     alias pre press?
     def press?(rkey)
-      rkey.each do |i|
-        return true if @press_keys.include?(i)
-      end
-      return false
+      return rkey.any?{|i| @press_keys.include?(i)}
     end
    
     def repeat?(rkey)
-      rkey.each do |i|
-        return true if rrepeat?(i)
-      end
-      return false
+      return rkey.any?{|i| rrepeat?(i)}
     end
 
     def trigger?(rkey)
-      rkey.each do |i|
-        return true if rtrigger?(i)
-      end
-      return false
+      return rkey.any?{|i| rtrigger?(i)}
     end
-    
 
     def rrepeat?(rkey)
       result = @press_keys.include?(rkey)

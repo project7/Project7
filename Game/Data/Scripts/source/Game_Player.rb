@@ -347,7 +347,7 @@ class Game_Player < Game_Character
       $game_party.on_player_walk
       return if check_touch_event
     end
-    if movable? && CInput.trigger?($vkey[:Check])
+    if movable? && CInput.trigger?($vkey[:Check]) && !$map_battle
       return if get_on_off_vehicle
       return if check_action_event
     end

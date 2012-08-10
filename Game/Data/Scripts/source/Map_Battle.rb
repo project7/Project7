@@ -14,10 +14,11 @@
   attr_accessor  :turn
   attr_accessor  :scene_id
   attr_accessor  :steps
+  attr_reader  :mouse_right_down
   
   def initialize(end_req=COMMON_BATTLE_REQ)
     @end_req = end_req
-    $random_center = Random.new(rand(1000))
+    $random_center = Random.new(rand(1073741823))
     var_init
     cal_var
   end
@@ -433,6 +434,10 @@
       end
       return
     end
+    # C
+    if CInput.down?($vkey[:C]) && @actor.movable?
+      @actor.check_action_event
+    end
     # TAB
     if CInput.trigger?($vkey[:Tab])
       mouse_fuck_up
@@ -471,7 +476,7 @@
       end
     end
     # 鼠标
-    if Mouse.down?(1)# && @actor.movable?
+    if Mouse.down?(1) && @actor.movable?
       if SceneManager.scene.mouse_in_itemrect?
         obj = $sel_body.bag[@splink.tipsvar[2][1]]
         if obj && $sel_body == @cur_actor && @splink.tipsvar[2][0]
@@ -526,9 +531,7 @@
       @actor.cantmove = true
       @target_pos = nil
       @splink.tipsvar[1][0] = true
-      @splink.fillup[0].visible = false
       @wayarea.dispose if @wayarea
-      
       Mouse.set_cursor(Mouse::EmptyCursor)
     elsif Mouse.press?(2) && @mouse_right_down
       dis_x = (Mouse.pos[0]-@click_pos[0]).to_f/32

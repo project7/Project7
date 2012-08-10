@@ -260,7 +260,7 @@ class Yangff < Actor
   end
   
   def set_ai
-    @ai = SB_AI.new(self)
+    @ai = nil#SB_AI.new(self)
   end
 
   def set_extra

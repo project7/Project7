@@ -33,7 +33,7 @@
     @debuff = []
     @descr = "消耗12点行动力.\n对3x3范围内敌人造成30点魔法伤害\n并且有60%概率对敌人附加中毒状态.\n施法距离:1-5"
   end
-  
+
 end
 
 class FuckWithOutMoney < Skill
