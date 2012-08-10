@@ -1,25 +1,9 @@
 #include "RGSSMouse.h"
 int RGSSMouse::mouse_x = 0;
 int RGSSMouse::mouse_y = 0;
-bool RGSSMouse::mouse_ldown;
-bool RGSSMouse::mouse_rdown;
-bool RGSSMouse::mouse_mdown;
-bool RGSSMouse::mouse_lup;
-bool RGSSMouse::mouse_rup;
-bool RGSSMouse::mouse_mup;
-
-bool RGSSMouse::mouse_ldblc;
-bool RGSSMouse::mouse_rdblc;
-bool RGSSMouse::mouse_mdblc;
-bool RGSSMouse::mouse_ltoggle;
-bool RGSSMouse::mouse_rtoggle;
-bool RGSSMouse::mouse_mtoggle;
-bool RGSSMouse::mouse_moved;
-bool RGSSMouse::mouse_lpress;
-bool RGSSMouse::mouse_rpress;
-bool RGSSMouse::mouse_mpress;
+RGSSMouseStatus* RGSSMouse::present;
+RGSSMouseStatus* RGSSMouse::past;
 LONG RGSSMouse::dwNewLong;
-int RGSSMouse::mouse_wheel;
 
 int RGSSMouse::pos;
 #ifdef HookerTest
@@ -36,61 +20,67 @@ LRESULT WINAPI RGSSMouse::MouseWndProcHook(HWND hWnd,UINT Msg,WPARAM wParam,LPAR
 
 	if (Msg==WM_LBUTTONDOWN)
 	{
-		mouse_ldown=true;
-		mouse_lpress=true;
-		mouse_ltoggle=!mouse_ltoggle;
+		present->mouse_ldown=true;
+		present->mouse_lup=false;
+		present->mouse_lpress=true;
+		present->mouse_ltoggle=!present->mouse_ltoggle;
+		SetCapture(gameplayer->g_hWnd);
 	}
 	if (Msg==WM_RBUTTONDOWN)
 	{
-		mouse_rdown=true;
-		mouse_rpress=true;
-		mouse_rtoggle=!mouse_rtoggle;
+		present->mouse_rdown=true;
+		present->mouse_rup=false;
+		present->mouse_rpress=true;
+		present->mouse_rtoggle=!present->mouse_rtoggle;
+		SetCapture(gameplayer->g_hWnd);
 	}
 	if (Msg==WM_MBUTTONDOWN)
 	{
-		mouse_mdown=true;
-		mouse_mpress=true;
-		mouse_mtoggle=!mouse_mtoggle;
+		present->mouse_mdown=true;
+		present->mouse_mup=false;
+		present->mouse_mpress=true;
+		present->mouse_mtoggle=!present->mouse_mtoggle;
+		SetCapture(gameplayer->g_hWnd);
 	}
 	if (Msg==WM_LBUTTONUP)
 	{
-		mouse_ldown=false;
-		mouse_lup=true;
-		mouse_lpress=false;
+		present->mouse_lup=true;
+		present->mouse_lpress=false;
+		ReleaseCapture();
 	}
 	if (Msg==WM_RBUTTONUP)
 	{
-		mouse_rdown=false;
-		mouse_rup=true;
-		mouse_rpress=false;
+		present->mouse_rup=true;
+		present->mouse_rpress=false;
+		ReleaseCapture();
 	}
 	if (Msg==WM_MBUTTONUP)
 	{
-		mouse_mdown=false;
-		mouse_mup=true;
-		mouse_mpress=false;
+		present->mouse_mup=true;
+		present->mouse_mpress=false;
+		ReleaseCapture();
 	}
 	if (Msg==WM_LBUTTONDBLCLK)
 	{
-		mouse_ldblc = true;
+		present->mouse_ldblc = true;
 	}
 	if (Msg==WM_RBUTTONDBLCLK)
 	{
-		mouse_rdblc = true;
+		present->mouse_rdblc = true;
 	}
 	if (Msg==WM_MBUTTONDBLCLK)
 	{
-		mouse_mdblc = true;
+		present->mouse_mdblc = true;
 	}
 	if (Msg==WM_MOUSEMOVE)
 	{
 		mouse_x = IParam&0xffff;
 		mouse_y = IParam>>16;
-		mouse_moved = true;
+		present->mouse_moved = true;
 	}
 	if (Msg==WM_MOUSEWHEEL)
 	{
-		mouse_wheel += GET_WHEEL_DELTA_WPARAM(wParam);
+		present->mouse_wheel += GET_WHEEL_DELTA_WPARAM(wParam);
 	}
 	//if (Msg == WM_ACTIVATEAPP)
 	//	return 0;
@@ -98,13 +88,15 @@ LRESULT WINAPI RGSSMouse::MouseWndProcHook(HWND hWnd,UINT Msg,WPARAM wParam,LPAR
 }
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::MouseUpdate(RGSS3Runtime::VALUE obj)
 {
-	mouse_ldown = mouse_rdown = mouse_mdown = false;
-	mouse_lup = mouse_rup = mouse_mup = false;
-	mouse_ldblc = mouse_rdblc = mouse_mdblc = false;
-	mouse_moved = false;
-	mouse_wheel = 0;
+	RGSSMouseStatus* swap;
+	swap = past;past = present;present = swap;
+	present->mouse_ldown = present->mouse_rdown = present->mouse_mdown = false;
+	present->mouse_lup = present->mouse_rup = present->mouse_mup = false;
+	present->mouse_ldblc = present->mouse_rdblc = present->mouse_mdblc = false;
+	present->mouse_moved = false;
+	present->mouse_wheel = 0;
 #ifdef HookerTest
-	fprintf(LOG,"LeftUp:%d\n\r",mouse_lup);fflush(LOG);
+	fprintf(LOG,"LeftUp:%d\n\r",present->mouse_lup);fflush(LOG);
 #endif	
 	return RGSS3Runtime::Qnil;
 }
@@ -126,7 +118,7 @@ RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_get_y(RGSS3Runtime::VALUE obj)
 
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_up(int argc, RGSS3Runtime::VALUE *argv,RGSS3Runtime::VALUE obj){
 	//return (!(GetKeyState(runtime->FIX2INT(argv[0]))&0x8000));
-	return RBOOL(((mouse_lup | ((mouse_rup) << 1) | ((mouse_mup) << 2)) & (argc == 0 ? 7 : runtime->FIX2INT(argv[0]))) != 0);
+	return RBOOL(((past->mouse_lup | ((past->mouse_rup) << 1) | ((past->mouse_mup) << 2)) & (argc == 0 ? 7 : runtime->FIX2INT(argv[0]))) != 0);
 }
 /*
 #     Mouse.down?(key)
@@ -134,7 +126,7 @@ RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_up(int argc, RGSS3Runtime::VALUE *arg
 */
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_down(int argc, RGSS3Runtime::VALUE *argv, RGSS3Runtime::VALUE obj){
 	//return (GetKeyState(runtime->FIX2INT(argv[0]))&0x8000);
-	return RBOOL(((mouse_ldown | (mouse_rdown << 1) | (mouse_mdown << 2)) & (argc == 0 ? 7 : runtime->FIX2INT(argv[0]))) != 0);
+	return RBOOL(((past->mouse_ldown | (past->mouse_rdown << 1) | (past->mouse_mdown << 2)) & (argc == 0 ? 7 : runtime->FIX2INT(argv[0]))) != 0);
 }
 /*
 #     Mouse.click?(key)
@@ -142,42 +134,42 @@ RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_down(int argc, RGSS3Runtime::VALUE *a
 */
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_click(int argc, RGSS3Runtime::VALUE *argv, RGSS3Runtime::VALUE obj){
 	//return (GetKeyState(runtime->FIX2INT(argv[0]))&0x8000);
-	return RBOOL(((mouse_ldown | (mouse_rdown << 1) | (mouse_mdown << 2)) & (argc == 0 ? 7 : runtime->FIX2INT(argv[0]))) != 0);
+	return RBOOL(((past->mouse_ldown | (past->mouse_rdown << 1) | (past->mouse_mdown << 2)) & (argc == 0 ? 7 : runtime->FIX2INT(argv[0]))) != 0);
 }
 /*
 #     Mouse.dbl_clk?(key)
 #       鼠标按键双击
 */
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_dbl_clk(int argc, RGSS3Runtime::VALUE *argv, RGSS3Runtime::VALUE obj){
-	return RBOOL(((mouse_ldblc | (mouse_rdblc << 1) | (mouse_mdblc << 2)) & (argc == 0 ? 7 : runtime->FIX2INT(argv[0]))) != 0);
+	return RBOOL(((past->mouse_ldblc | (past->mouse_rdblc << 1) | (past->mouse_mdblc << 2)) & (argc == 0 ? 7 : runtime->FIX2INT(argv[0]))) != 0);
 }
 /*
 #     Mouse.press?(key)
 #       鼠标按键是否处在"按下"的状态
 */
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_press(int argc, RGSS3Runtime::VALUE *argv, RGSS3Runtime::VALUE obj){
-	return RBOOL(((mouse_lpress | (mouse_rpress << 1) | (mouse_mpress << 2)) & (argc == 0 ? 7 : runtime->FIX2INT(argv[0]))) != 0);
+	return RBOOL(((past->mouse_lpress | (past->mouse_rpress << 1) | (past->mouse_mpress << 2)) & (argc == 0 ? 7 : runtime->FIX2INT(argv[0]))) != 0);
 }
 /*
 #     Mouse.toggle?(key)
 #       鼠标按键的触发状态(在开和关之间切换)
 */
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_toggle(int argc, RGSS3Runtime::VALUE *argv, RGSS3Runtime::VALUE obj){
-	return RBOOL(((mouse_ltoggle | (mouse_rtoggle << 1) | (mouse_mtoggle << 2)) & (argc == 0 ? 7 : runtime->FIX2INT(argv[0]))) != 0);
+	return RBOOL(((past->mouse_ltoggle | (past->mouse_rtoggle << 1) | (past->mouse_mtoggle << 2)) & (argc == 0 ? 7 : runtime->FIX2INT(argv[0]))) != 0);
 }
 /*
 #     Mouse.scroll
 #       返回鼠标滚轮的滚动值.正值表示向前,负值表示向后,零表示未发生滚动
 */
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_scroll(RGSS3Runtime::VALUE obj){
-	return runtime->INT2FIX(mouse_wheel);
+	return runtime->INT2FIX(past->mouse_wheel);
 }
 /*
 #     Mouse.move?
 #       判断鼠标是否移动
 */
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_move(RGSS3Runtime::VALUE obj){
-	return RBOOL(mouse_moved);
+	return RBOOL(past->mouse_moved);
 }
 /*
 #     Mouse.set_pos(x,y)
@@ -185,8 +177,10 @@ RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_move(RGSS3Runtime::VALUE obj){
 */
 RGSS3Runtime::VALUE RUBYCALL RGSSMouse::dm_set_pos(RGSS3Runtime::VALUE obj,RGSS3Runtime::VALUE x,RGSS3Runtime::VALUE y){
 	POINT point;
+	point.x = runtime->FIX2INT(x);
+	point.y = runtime->FIX2INT(y);
 	ClientToScreen(gameplayer->g_hWnd, &point);
-	return RBOOL(SetCursorPos(point.x + runtime->FIX2INT(x), point.y + runtime->FIX2INT(y)));
+	return RBOOL(SetCursorPos(point.x, point.y));
 }
 /*
 #     Mouse.set_cursor(file)
@@ -248,6 +242,8 @@ void RGSSMouse::InitRuby()
 	runtime->rb_define_module_function(rbcMouse,"set_cursor",(RGSS3Runtime::RubyFunc)dm_set_cursor,1);
 	runtime->rb_define_module_function(rbcMouse,"sys_cursor",(RGSS3Runtime::RubyFunc)dm_sys_cursor,0);
 	runtime->rb_define_module_function(rbcMouse,"clip",(RGSS3Runtime::RubyFunc)dm_clip,-1);
+	present = new RGSSMouseStatus();
+	past = new RGSSMouseStatus();
 }
 bool RGSSMouse::Install()
 {
