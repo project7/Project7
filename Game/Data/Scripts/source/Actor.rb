@@ -267,10 +267,6 @@
   end
 
   def per_step_effect
-    actor = self
-    @buff.each do |buff|
-      instance_eval(buff.per_step_effect)
-    end
     if @hp>0
       god_damage(-@hp_rec)
       god_sp_damage(-@sp_rec)

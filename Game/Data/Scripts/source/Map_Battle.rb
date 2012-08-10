@@ -125,7 +125,7 @@
   def turn_end_cal
     actor = @cur_actor
     actor.buff.each do |buff|
-      instance_eval(buff.per_turn_start_effect)
+      instance_eval(buff.per_turn_end_effect)
     end
   end
   

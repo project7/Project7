@@ -61,15 +61,15 @@ class FuckWithOutMoney < Skill
     @hurt_e_dead = false
     @hurt_area = [ [[5]] ,true]
     @hurt_maxnum = 0
-    @sp_cost = 16
+    @sp_cost = 0#16
     @hp_cost = 0
     @ap_cost = 18
     @hp_damage = 60
     @sp_damage = 0
     @ap_damage = 0
-    @buff = []
+    @buff = [["Weak.new",80]]
     @debuff = []
-    @descr = "消耗18点行动力和16点怒气.\n立即对周身5格内敌人造成60点伤害.\n无视魔法免疫."
+    @descr = "消耗18点行动力和16点怒气.\n立即对周身5格内敌人造成60点伤害.\n80%的概率附加撕裂状态.\n无视魔法免疫."
   end
   
   def set_extra
