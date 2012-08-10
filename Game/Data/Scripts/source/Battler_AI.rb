@@ -24,6 +24,22 @@
     SceneManager.scene.spriteset.fillup[3].y = $map_battle.effectarea.screen_y
   end
   
+  def do_effect_ready(obj)
+    $map_battle.set_view_pos(@user.x,@user.y)
+    $map_battle.movearea.dispose if $map_battle.movearea
+    $map_battle.create_higher_enablearea(obj)
+    if @user.atk_area[1]
+      $map_battle.create_higher_effectarea(obj)
+    else
+      $map_battle.create_higher_effectarea(obj,@target)
+    end
+    $map_battle.effectarea.x = @target.x
+    $map_battle.effectarea.y = @target.y
+    SceneManager.scene.spriteset.fillup[0].visible = false
+    SceneManager.scene.spriteset.fillup[3].x = $map_battle.effectarea.screen_x
+    SceneManager.scene.spriteset.fillup[3].y = $map_battle.effectarea.screen_y
+  end
+  
   def do_attack_end
     #$map_battle.set_view_pos(@user.x,@user.y)
     $map_battle.create_maparea

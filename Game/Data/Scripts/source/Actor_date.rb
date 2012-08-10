@@ -21,7 +21,7 @@ class Fucker < Actor
 
   def set_ele
     @maxhp = 120
-    @maxsp = 80
+    @maxsp = 100
     @maxap = 20
     @atk = 10
     @atk_area = [ [[0,0,1,3]] ,false]
@@ -154,7 +154,7 @@ class God < Actor
   def set_tec
     @id = 3
     @name = "神"
-    @skill = []
+    @skill = [FuckEachOther.new]
     @equip = {}
     @atk_pic = nil
     @atk_cot = 4
@@ -165,9 +165,9 @@ class God < Actor
   end
   
   def set_ele
-    @maxhp = 200
+    @maxhp = 1000
     @maxsp = 100
-    @maxap = 10
+    @maxap = 40
     @atk = 15
     @atk_area = [ [[0,0,1,3]] ,false]
     @atk_dis_min = 1
@@ -177,9 +177,9 @@ class God < Actor
     @mdef = 5
     @hp_rec = 1
     @sp_rec = 1
-    @per_step_cost_ap = 1
-    @atk_cost_ap = 2
-    @item_cost_ap = 1
+    @per_step_cost_ap = 6
+    @atk_cost_ap = 11
+    @item_cost_ap = 10
     @hatred_base = 500
     @miss_rate = 0
   end
@@ -218,7 +218,7 @@ class God < Actor
   end
   
   def set_ai
-    @ai = SB_AI.new(self)
+    @ai = OrzAI.new(self)
   end
 
 
@@ -241,7 +241,7 @@ class Yangff < Actor
   
   def set_ele
     @maxhp = 10
-    @maxsp = 0
+    @maxsp = 100
     @maxap = 5
     @atk = -1
     @atk_area = [ [[0] ] ,true]

@@ -23,7 +23,7 @@
     @hurt_e_dead = false
     @hurt_area = [ [[-1,-1,3,3]] ,true]
     @hurt_maxnum = 0
-    @sp_cost = 0
+    @sp_cost = 14
     @hp_cost = 0
     @ap_cost = 12
     @hp_damage = 30
@@ -31,7 +31,7 @@
     @ap_damage = 0
     @buff = [["Sick.new",60]]
     @debuff = []
-    @descr = "消耗12点行动力.\n对3x3范围内敌人造成30点魔法伤害\n并且有60%概率对敌人附加中毒状态.\n施法距离:1-5"
+    @descr = "消耗12点行动力和14点怒气.\n对3x3范围内敌人造成30点魔法伤害\n并且有60%概率对敌人附加中毒状态.\n施法距离:1-5"
   end
 
 end
@@ -61,7 +61,7 @@ class FuckWithOutMoney < Skill
     @hurt_e_dead = false
     @hurt_area = [ [[5]] ,true]
     @hurt_maxnum = 0
-    @sp_cost = 0
+    @sp_cost = 16
     @hp_cost = 0
     @ap_cost = 18
     @hp_damage = 60
@@ -69,7 +69,7 @@ class FuckWithOutMoney < Skill
     @ap_damage = 0
     @buff = []
     @debuff = []
-    @descr = "消耗18点行动力.\n立即对周身5格内敌人造成60点伤害.\n无视魔法免疫."
+    @descr = "消耗18点行动力和16点怒气.\n立即对周身5格内敌人造成60点伤害.\n无视魔法免疫."
   end
   
   def set_extra

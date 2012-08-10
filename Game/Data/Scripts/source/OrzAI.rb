@@ -23,10 +23,24 @@
       end
       return nil
     end
+    if @wait_to_use
+      a = @wait_to_use
+      @wait_to_use = nil
+      return [2,[a,[@target.x, @target.y]]]
+    end
     if @user.ap >= @user.get_ap_for_atk
       ssx = distance_x_from(@target.x)
       ssy = distance_y_from(@target.y)
       distance = ssx.abs+ssy.abs
+      @user.skill.each do |i|
+        sick = i.enough_to_use(@user.ap,@user.hp,@user.sp)
+        if sick==true && distance.between?(i.use_dis_min,i.use_dis_max)
+          @wait_to_use = i
+          do_effect_ready(i)
+          @adapt_wait = true
+          return nil
+        end
+      end
       if (distance > @user.atk_dis_min)
         return toward_character(@target.event)
       elsif @user.atk_area[1]
@@ -37,7 +51,7 @@
           else
             @wait_count = 0
             @wait = false
-            return fuck @target.x, @target.y
+            return [1,[@target.x, @target.y]]
           end
         else
           do_attack_ready
@@ -53,7 +67,7 @@
             else
               @wait_count = 0
               @wait = false
-              return fuck @target.x, @target.y
+              return [1,[@target.x,@target.y]]
             end
           else
             do_attack_ready
@@ -79,23 +93,5 @@
   def get_target
     @target = $map_battle.top_hatred(@user)[0]
   end
-  
-  def fuck x, y
-    skill = @user.skill
-    if skill != [] && skill.size > 0
-      rnd = $random_center.rand(skill.size + 2)
-      if rnd < 2
-        return [1,[x, y]]
-      else
-        sk = skill[rnd-3]
-        if sk.enough_to_use(@user.ap,@user.hp,@user.sp)
-          return [2,[sk, [x + ($random_center.rand(2) == 1 ? 1 : - 1), y + ($random_center.rand(2) == 1 ? 1 : - 1)]]]
-        else
-          return fuck x, y
-        end
-      end
-    else
-      return [1,[x, y]]
-    end
-  end
+
 end

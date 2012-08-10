@@ -740,11 +740,13 @@
               @splink.show_text(a[1].to_s,@cur_actor.event,HP_COST_COLOR) if a[0]
             end
             @splink.show_text(dama[1].to_s,i.event,bingo_color,bingo_size)
+            i.sp+=2
           elsif dama[1]<=1
             @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
           end
           @splink.show_value(i.hp*100/i.maxhp,i.event)
         end
+        @cur_actor.sp+=2
         @cur_actor.cost_ap_for(1)
         @splink.show_value(@cur_actor.hp*100/@cur_actor.maxhp,@cur_actor.event)
         return tempb
@@ -752,7 +754,7 @@
         return [[false,5+temp]]
       end
     when 2#技能
-      return false if !para[0].enough_to_use(@cur_actor.ap,@cur_actor.hp,@cur_actor.sp)
+      return false if para[0].enough_to_use(@cur_actor.ap,@cur_actor.hp,@cur_actor.sp)!=true
       if (para[0].hurt_nothing && $game_map.can_move(@cur_actor.event,*para[1])) || (para[0].hurt_cant_move && !$game_map.can_move(@cur_actor.event,*para[1]))
         if @enablearea.include?(*para[1])
           instance_eval(para[0].spec_effect)
@@ -826,6 +828,7 @@
             end
           end
           if succ_count>0 || para[0].ignore_mag_det
+            i.god_sp_damage(-2,true)
             para[0].debuff.each do |debuff|
               if $random_center.rand(100) < debuff[1]
                 i.dec_buff(debuff[0])
@@ -842,6 +845,7 @@
           @splink.show_value(i.hp*100/i.maxhp,i.event)
         end
         unless tempb.all?{|e| e[0]==false&&e[1]>1}
+          @cur_actor.god_sp_damage(-2,true)
           @cur_actor.cost_ap_for(3,para[0].ap_cost)
           @cur_actor.god_sp_damage(para[0].sp_cost,true)
           @cur_actor.god_damage(para[0].hp_cost,true)
@@ -852,7 +856,7 @@
         return [[false,5+temp]]
       end
     when 3#物品
-      return false if !para[0].enough_to_use(@cur_actor.item_num(para[0]),@cur_actor.ap>=@cur_actor.get_ap_for_item,@cur_actor.hp,@cur_actor.sp)
+      return false if para[0].enough_to_use(@cur_actor.item_num(para[0]),@cur_actor.ap>=@cur_actor.get_ap_for_item,@cur_actor.hp,@cur_actor.sp)!=true
       if (para[0].hurt_nothing && $game_map.can_move(@cur_actor.event,*para[1])) || (para[0].hurt_cant_move && !$game_map.can_move(@cur_actor.event,*para[1]))
         if @enablearea.include?(*para[1])
           instance_eval(para[0].spec_effect)
@@ -927,6 +931,7 @@
             end
           end
           if succ_count>0 || para[0].ignore_mag_det
+            i.god_sp_damage(-2,true)
             para[0].debuff.each do |debuff|
               if $random_center.rand(100) < debuff[1]
                 i.dec_buff(debuff[0])
@@ -943,6 +948,7 @@
           @splink.show_value(i.hp*100/i.maxhp,i.event)
         end
         unless tempb.all?{|e| e[0]==false&&e[1]>1}
+          @cur_actor.god_sp_damage(-2,true)
           @cur_actor.cost_ap_for(2)
           @cur_actor.god_sp_damage(para[0].sp_cost,true)
           @cur_actor.god_damage(para[0].hp_cost,true)
