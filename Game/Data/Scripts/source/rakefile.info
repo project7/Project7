@@ -130,6 +130,7 @@ Item
 Item_data
 Battler_AI
 AI_Data
+OrzAI
 Map_Battle
 AllInputable
 Inputset
