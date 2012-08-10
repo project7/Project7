@@ -3,7 +3,7 @@ class Fucker < Actor
 
   def set_tec
     @id = 1
-    @name = "MainActor"
+    @name = "男主角"
     @skill = []
     @equip = {"武器"=>[0,nil],"盾牌"=>[1,nil],"挂件"=>[2,nil],"指环"=>[3,nil]}
     @atk_pic = "atk"
@@ -12,6 +12,11 @@ class Fucker < Actor
     @item_cot = 4
     @skill_pic = "skill"
     @skill_cot = 4
+  end
+  
+  def set_ui
+    @head = "MainActor"
+    @animation = []
   end
 
   def set_ele

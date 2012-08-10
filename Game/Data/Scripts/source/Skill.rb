@@ -44,6 +44,7 @@
     set_ui
     set_ele
     set_extra
+    set_other
   end
   
   def set_ui
@@ -82,6 +83,11 @@
     @descr = ""
   end
   
+  def set_other
+    @use_in_battle = true
+    @use_in_scene = false
+  end
+  
   def set_extra
     @spec_effect = ""
     @sp_cost_rate = 0
@@ -98,7 +104,7 @@
     if ap>=@ap_cost
       if hp>= @hp_cost
         if sp>=@sp_cost
-          if @init_skill
+          if can_use
             if eval(@use_req)
               return true
             else
@@ -116,6 +122,13 @@
     else
       return 5
     end
+  end
+  
+  def can_use
+    return false unless @init_skill
+    return false if $map_battle && !@use_in_battle
+    return false if !$map_battle && !@use_in_scene
+    return true
   end
   
 end

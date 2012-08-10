@@ -10,6 +10,7 @@
   attr_accessor :equip                        # 装备
   attr_accessor :bag                          # 背包
   attr_accessor :name                         # 名称
+  attr_accessor :head                         # 头像
   attr_accessor :atk_pic                      # 攻击行走图(缺省)
   attr_accessor :atk_cot                      # 攻击帧数(缺省)
   attr_accessor :item_pic                     # 使用物品行走图(缺省)
@@ -153,6 +154,7 @@
   end
   
   def set_ui
+    @head = ""
     @animation = []
   end
   

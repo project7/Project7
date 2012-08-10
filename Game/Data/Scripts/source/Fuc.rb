@@ -25,7 +25,6 @@
   TIPS_TEXT = "Graphics/System/Tips_Text.png"
   BUFF_BACK = "Graphics/System/Buff_Back.png"
   SKILL_BACK = "Graphics/System/Skill_Back.png"
-  COMMON_BATTLE_REQ = "@partner_num==0||@enemy_num==0"
   FAILD_ATTACK_TEXT = 
   [ "Miss",
     "Trick",
@@ -49,6 +48,13 @@
     "行动力不足",
     "物品数量不足"
   ]
+  COMMON_BATTLE_REQ = " $game_switches[2] = @partner_num==0;
+                        $game_switches[3] = @enemy_num==0;
+                        $game_switches[2] || $game_switches[3]"
+  LVLUP_END_REQ     = " $game_switches[2] = @partner_num==0;
+                        $game_switches[3] = @enemy_num==0;
+                        $game_switches[4] = $team_set[2].dead?;
+                        $game_switches[2] || $game_switches[3] || $game_switches[4]"
 
   # 寻路
   def self.sm(x,y)
@@ -162,7 +168,7 @@
   def self.ui_head
     if $sel_body
       begin
-        a = Bitmap.new("Graphics/Heads/"+$sel_body.name+".png")
+        a = Bitmap.new("Graphics/Heads/"+$sel_body.head+".png")
         return a
       rescue
         return nil

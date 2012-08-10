@@ -80,7 +80,7 @@ class Spriteset_Map
     @fillup[3].z = 4
     @fillup[4].z = 3
     # UI
-    @tipsvar = [[0,0],[true,10],[false,0],nil,nil,nil,0,nil,nil,[],[false,-1],[],[],[],[],[false,-1],[],[false,0],[false,-1]]
+    @tipsvar = [[0,0],[true,10],[false,0],nil,nil,nil,0,nil,nil,[],[false,-1],[],[],[],[],[false,-1],[],[false,0],[false,-1],false]
     @tips = 
     [ Sprite.new(@viewport2),
       Sprite.new(@viewport3),

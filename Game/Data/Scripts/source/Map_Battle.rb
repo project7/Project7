@@ -783,12 +783,14 @@
       if temp.is_a?(Array)
         tempb = []
         temp.each do |i|
+          succ_count = 0
           tempama = para[0].hp_damage
           if tempama != 0
             color = tempama > 0 ? HP_COST_COLOR : HP_ADD_COLOR
             dama = para[0].ignore_mag_det ? i.damage(tempama) : i.mag_damage(tempama)
             tempb << dama
             if dama[0]
+              succ_count+=1
               @splink.show_text(dama[1].to_s,i.event,color)
             elsif dama[1]<=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
@@ -800,6 +802,7 @@
             dama = para[0].ignore_mag_det ? i.damage(tempama) : i.mag_damage(tempama)
             tempb << dama
             if dama[0]
+              succ_count+=1
               @splink.show_text(dama[1].to_s,i.event,color)
             elsif dama[1]<=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
@@ -811,12 +814,13 @@
             dama = para[0].ignore_mag_det ? i.damage(tempama) : i.mag_damage(tempama)
             tempb << dama
             if dama[0]
+              succ_count+=1
               @splink.show_text(dama[1].to_s,i.event,color)
             elsif dama[1]<=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
             end
           end
-          if para[0].ignore_mag_det
+          if succ_count>0 || para[0].ignore_mag_det
             para[0].debuff.each do |debuff|
               if $random_center.rand(100) < debuff[1]
                 i.dec_buff(debuff[0])
@@ -880,12 +884,14 @@
       if temp.is_a?(Array)
         tempb = []
         temp.each do |i|
+          succ_count = 0
           tempama = para[0].hp_damage
           if tempama != 0
             color = tempama > 0 ? HP_COST_COLOR : HP_ADD_COLOR
             dama = para[0].ignore_mag_det ? i.damage(tempama) : i.mag_damage(tempama)
             tempb << dama
             if dama[0]
+              succ_count+=1
               @splink.show_text(dama[1].to_s,i.event,color)
             elsif dama[1]<=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
@@ -897,6 +903,7 @@
             dama = para[0].ignore_mag_det ? i.damage(tempama) : i.mag_damage(tempama)
             tempb << dama
             if dama[0]
+              succ_count+=1
               @splink.show_text(dama[1].to_s,i.event,color)
             elsif dama[1]<=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
@@ -908,12 +915,13 @@
             dama = para[0].ignore_mag_det ? i.damage(tempama) : i.mag_damage(tempama)
             tempb << dama
             if dama[0]
+              succ_count+=1
               @splink.show_text(dama[1].to_s,i.event,color)
             elsif dama[1]<=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
             end
           end
-          if para[0].ignore_mag_det
+          if succ_count>0 || para[0].ignore_mag_det
             para[0].debuff.each do |debuff|
               if $random_center.rand(100) < debuff[1]
                 i.dec_buff(debuff[0])

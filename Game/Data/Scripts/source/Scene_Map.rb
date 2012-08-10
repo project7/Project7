@@ -85,7 +85,7 @@ class Scene_Map < Scene_Base
         @spriteset.tipsvar[1][0] = true
       end
       if mouse_in_skillrect?
-        @spriteset.tipsvar[16] = true
+        @spriteset.tipsvar[19] = true
         tempb = skill_mouse_index
         if tempb
           @spriteset.tipsvar[17][0] = true
@@ -94,11 +94,11 @@ class Scene_Map < Scene_Base
           @spriteset.tipsvar[17][0] = false
         end
       else
-        @spriteset.tipsvar[16] = false
+        @spriteset.tipsvar[19] = false
       end
     else
       @spriteset.tipsvar[1][0] = true
-      @spriteset.tipsvar[16] = false
+      @spriteset.tipsvar[19] = false
     end
   end
   

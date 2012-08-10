@@ -1,7 +1,6 @@
 ﻿class Item < Skill
   
   attr_accessor :use_cost_num
-  attr_accessor :can_use
 
   def set_ele
     @id = 0
@@ -35,7 +34,7 @@
       if ap
         if hp >= @hp_cost
           if sp>=@sp_cost
-            if @can_use
+            if can_use
               if eval(@use_req)
                 return true
               else
@@ -56,6 +55,13 @@
     else
       return 6
     end
+  end
+  
+  def can_use
+    return false unless can_use
+    return false if $map_battle && !@use_in_battle
+    return false if !$map_battle && !@use_in_scene
+    return true
   end
   
 end
