@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Sound
 #------------------------------------------------------------------------------
@@ -130,6 +130,11 @@ module Sound
   # 使用技能
   def self.play_use_skill
     play_system_sound(23)
+  end
+  
+  def self.bingo
+    Audio.se_stop
+    Audio.se_play("Audio/SE/bingo.ogg",100,100)
   end
 
 end

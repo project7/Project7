@@ -2,11 +2,11 @@
   
   def set_ui
     @icon = "godwater"
-    @user_animation = []
-    @target_partner_animation = []
-    @target_enemy_animation = []
-    @target_p_dead_animation = []
-    @target_e_dead_animation = []
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
   end
   
   def set_ele
@@ -41,11 +41,11 @@ class YellowBook < Item
   
   def set_ui
     @icon = "book"
-    @user_animation = []
-    @target_partner_animation = []
-    @target_enemy_animation = []
-    @target_p_dead_animation = []
-    @target_e_dead_animation = []
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
   end
   
   def set_ele

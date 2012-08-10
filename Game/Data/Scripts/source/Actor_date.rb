@@ -20,7 +20,7 @@ class Fucker < Actor
   end
 
   def set_ele
-    @maxhp = 120
+    @maxhp = 300
     @maxsp = 100
     @maxap = 20
     @atk = 10
@@ -91,7 +91,7 @@ class Shit < Actor
   end
   
   def set_ele
-    @maxhp = 100
+    @maxhp = 600
     @maxsp = 100
     @maxap = 20
     @atk = 25
@@ -165,7 +165,7 @@ class God < Actor
   end
   
   def set_ele
-    @maxhp = 1000
+    @maxhp = 800
     @maxsp = 100
     @maxap = 40
     @atk = 15
@@ -197,8 +197,8 @@ class God < Actor
     @per_step_cost_ap_add = 0
     @atk_cost_ap_add = 0
     @item_cost_ap_add = 0
-    @bingo_rate = 0
-    @bingo_damage = 0
+    @bingo_rate = 20
+    @bingo_damage = 200
     @damage_reduce_rate = 0
     @damage_reduce = 0
     @cost_reduce_rate = 0

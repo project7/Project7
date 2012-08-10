@@ -717,6 +717,7 @@
       if temp.is_a?(Array)
         tempb = []
         if $random_center.rand(100) < @cur_actor.bingo_rate
+          Sound.bingo
           bingo_color = BINGO_COLOR
           bingo_size = 30
         else
@@ -765,6 +766,7 @@
           elsif tsy != 0
             @cur_actor.event.set_direction(tsy > 0 ? 8 : 2)
           end
+          @actor.animation_id = para[0].user_animation
           @cur_actor.cost_ap_for(3,para[0].ap_cost)
           @cur_actor.god_sp_damage(para[0].sp_cost,true)
           @cur_actor.god_damage(para[0].hp_cost,true)
@@ -845,6 +847,7 @@
           @splink.show_value(i.hp*100/i.maxhp,i.event)
         end
         unless tempb.all?{|e| e[0]==false&&e[1]>1}
+          @actor.animation_id = para[0].user_animation
           @cur_actor.god_sp_damage(-2,true)
           @cur_actor.cost_ap_for(3,para[0].ap_cost)
           @cur_actor.god_sp_damage(para[0].sp_cost,true)
@@ -867,6 +870,7 @@
           elsif tsy != 0
             @cur_actor.event.set_direction(tsy > 0 ? 8 : 2)
           end
+          @actor.animation_id = para[0].user_animation
           @cur_actor.cost_ap_for(2)
           @cur_actor.god_sp_damage(para[0].sp_cost,true)
           @cur_actor.god_damage(para[0].hp_cost,true)
@@ -948,6 +952,7 @@
           @splink.show_value(i.hp*100/i.maxhp,i.event)
         end
         unless tempb.all?{|e| e[0]==false&&e[1]>1}
+          @actor.animation_id = para[0].user_animation
           @cur_actor.god_sp_damage(-2,true)
           @cur_actor.cost_ap_for(2)
           @cur_actor.god_sp_damage(para[0].sp_cost,true)

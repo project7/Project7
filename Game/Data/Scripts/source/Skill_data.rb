@@ -2,11 +2,11 @@
   
   def set_ui
     @icon = "bo"
-    @user_animation = []
-    @target_partner_animation = []
-    @target_enemy_animation = []
-    @target_p_dead_animation = []
-    @target_e_dead_animation = []
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
   end
 
   def set_ele
@@ -40,11 +40,11 @@ class FuckWithOutMoney < Skill
   
   def set_ui
     @icon = "fuckall"
-    @user_animation = []
-    @target_partner_animation = []
-    @target_enemy_animation = []
-    @target_p_dead_animation = []
-    @target_e_dead_animation = []
+    @user_animation = 1
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
   end
 
   def set_ele

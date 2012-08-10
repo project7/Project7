@@ -92,8 +92,8 @@
   # 通过游戏坐标获取屏幕坐标
   def self.getpos_by_gamepos(pos)
     screen_pos = [0,0]
-    screen_pos[0] = pos[0]*32-$game_map.display_x*32+16
-    screen_pos[1] = pos[1]*32-$game_map.display_y*32+16
+    screen_pos[0] = (pos[0]*32-$game_map.display_x*32+16).to_i
+    screen_pos[1] = (pos[1]*32-$game_map.display_y*32+16).to_i
     return screen_pos
   end
   
