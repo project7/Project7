@@ -67,7 +67,7 @@ class Fucker < Actor
     @ignore_magic = false
     @invisible = false
     @deinvisible = false
-    @ignore_dmg_rate = 25
+    @ignore_dmg_rate = 10
     @dmg_rebound = 0
     @dmg_rebound_rate = 0
   end
@@ -107,7 +107,7 @@ class Shit < Actor
     @atk_cost_ap = 8
     @item_cost_ap = 1
     @hatred_base = 1000
-    @miss_rate = 0
+    @miss_rate = 10
   end
   
   def set_ai
@@ -181,7 +181,7 @@ class God < Actor
     @atk_cost_ap = 11
     @item_cost_ap = 10
     @hatred_base = 500
-    @miss_rate = 0
+    @miss_rate = 10
   end
   
   def set_extra
@@ -243,24 +243,24 @@ class Yangff < Actor
     @maxhp = 10
     @maxsp = 100
     @maxap = 5
-    @atk = -1
+    @atk = 10
     @atk_area = [ [[0] ] ,true]
     @atk_dis_min = 1
     @atk_dis_max = 1
     @def = 5000
     @int = 5
     @mdef = 5000
-    @hp_rec = 2
-    @sp_rec = 2
+    @hp_rec = 3
+    @sp_rec = 0
     @per_step_cost_ap = 1
-    @atk_cost_ap = 10
+    @atk_cost_ap = 3
     @item_cost_ap = 10
     @hatred_base = 5000
-    @miss_rate = 50
+    @miss_rate = 0
   end
   
   def set_ai
-    @ai = nil#SB_AI.new(self)
+    @ai = SB_AI.new(self)
   end
 
   def set_extra
@@ -291,9 +291,9 @@ class Yangff < Actor
     @ignore_magic = false
     @invisible = false
     @deinvisible = false
-    @ignore_dmg_rate = 50
-    @dmg_rebound = 10
-    @dmg_rebound_rate = 0
+    @ignore_dmg_rate = 30
+    @dmg_rebound = 0
+    @dmg_rebound_rate = 100
   end
 
 end
