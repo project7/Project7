@@ -60,16 +60,16 @@ class Scene_Map < Scene_Base
   #--------------------------------------------------------------------------
   def update
     super
-    unless @menu_calling
+    #unless @menu_calling
       $game_map.update(true)
       $game_player.update
       $game_timer.update
       @spriteset.update
       update_ui
       update_scene if scene_change_ok?
-    else
-      update_system_menu
-    end
+    #else
+    #  update_system_menu
+    #end
   end
   #--------------------------------------------------------------------------
   # ● 更新UI
@@ -311,7 +311,7 @@ class Scene_Map < Scene_Base
       @menu_calling = nil
     else
       @menu_calling ||= CInput.trigger?($vkey[:X]) || (!$map_battle && Mouse.down?(2))
-      #call_menu if @menu_calling && !$game_player.moving?
+      call_menu if @menu_calling && !$game_player.moving?
     end
   end
   #--------------------------------------------------------------------------
