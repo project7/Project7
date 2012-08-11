@@ -684,12 +684,10 @@
     if revar.is_a?(Array)
       @last_action_state = revar
       @order_rem << [id,para]
-      cal_fighter_num
       return revar
     elsif revar
       @last_action_state = true
       @order_rem << [id,para]
-      cal_fighter_num
       return true
     else
       @last_action_state = false
