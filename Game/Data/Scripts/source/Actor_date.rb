@@ -23,7 +23,7 @@ class Fucker < Actor
     @maxhp = 600
     @maxsp = 100
     @maxap = 20
-    @atk = 10
+    @atk = 25
     @atk_area = [ [[0,0,1,3]] ,false]
     @atk_dis_min = 1
     @atk_dis_max = 1
@@ -31,7 +31,7 @@ class Fucker < Actor
     @int = 20
     @mdef = 2
     @hp_rec = 1
-    @sp_rec = 1
+    @sp_rec = 0
     @per_step_cost_ap = 3
     @atk_cost_ap = 6
     @item_cost_ap = 4
@@ -101,7 +101,7 @@ class Shit < Actor
     @def = 5
     @int = 5
     @mdef = 5
-    @hp_rec = 0
+    @hp_rec = 1
     @sp_rec = 0
     @per_step_cost_ap = 1
     @atk_cost_ap = 8
@@ -176,7 +176,7 @@ class God < Actor
     @int = 5
     @mdef = 5
     @hp_rec = 1
-    @sp_rec = 1
+    @sp_rec = 0
     @per_step_cost_ap = 6
     @atk_cost_ap = 11
     @item_cost_ap = 10

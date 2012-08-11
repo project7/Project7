@@ -10,10 +10,10 @@ class Game_CharacterBase
   # ● 定义实例变量
   #--------------------------------------------------------------------------
   attr_reader   :id                       # ID
-  attr_reader   :x                        # 地图 X 坐标（理论坐标）
-  attr_reader   :y                        # 地图 Y 坐标（理论坐标）
-  attr_reader   :real_x                   # 地图 X 坐标（实际坐标）
-  attr_reader   :real_y                   # 地图 Y 坐标（实际坐标）
+  attr_accessor   :x                        # 地图 X 坐标（理论坐标）
+  attr_accessor   :y                        # 地图 Y 坐标（理论坐标）
+  attr_accessor   :real_x                   # 地图 X 坐标（实际坐标）
+  attr_accessor   :real_y                   # 地图 Y 坐标（实际坐标）
   attr_reader   :tile_id                  # 图块 ID（0 则无效）
   attr_reader   :character_name           # 行走图文件名
   attr_reader   :character_index          # 行走图索引

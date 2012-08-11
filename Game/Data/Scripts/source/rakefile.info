@@ -132,7 +132,8 @@ Battler_AI
 AI_Data
 OrzAI
 Map_Battle
+Plus
 AllInputable
-Inputset
+SystemSetting
 Window_Mouse
 Var_init
