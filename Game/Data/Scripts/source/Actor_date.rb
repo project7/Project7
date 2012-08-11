@@ -40,6 +40,7 @@ class Fucker < Actor
   end
   
   def set_extra
+    @atk_buff = []
     @maxhp_add = 0
     @maxsp_add = 0
     @maxap_add = 0
@@ -59,7 +60,7 @@ class Fucker < Actor
     @cost_reduce_rate = 0
     @cost_reduce = 0
     @hp_absorb_rate = 0
-    @hp_absorb = 40
+    @hp_absorb = 14
     @sp_absorb_rate = 0
     @sp_absorb = 0
     @invincible = false
@@ -92,7 +93,7 @@ class Shit < Actor
   
   def set_ele
     @maxhp = 600
-    @maxsp = 100
+    @maxsp = 0
     @maxap = 20
     @atk = 25
     @atk_area = [ [[0,0,1,2],[1,2]] ,true]
@@ -115,6 +116,7 @@ class Shit < Actor
   end
 
   def set_extra
+    @atk_buff = []
     @maxhp_add = 0
     @maxsp_add = 0
     @maxap_add = 0
@@ -166,7 +168,7 @@ class God < Actor
   
   def set_ele
     @maxhp = 800
-    @maxsp = 100
+    @maxsp = 8
     @maxap = 20
     @atk = 15
     @atk_area = [ [[0,0,1,3]] ,false]
@@ -176,7 +178,7 @@ class God < Actor
     @int = 5
     @mdef = 5
     @hp_rec = 1
-    @sp_rec = 0
+    @sp_rec = -1
     @per_step_cost_ap = 3
     @atk_cost_ap = 6
     @item_cost_ap = 5
@@ -185,6 +187,7 @@ class God < Actor
   end
   
   def set_extra
+    @atk_buff = []
     @maxhp_add = 0
     @maxsp_add = 0
     @maxap_add = 0
@@ -204,7 +207,7 @@ class God < Actor
     @cost_reduce_rate = 0
     @cost_reduce = 0
     @hp_absorb_rate = 0
-    @hp_absorb = 150
+    @hp_absorb = 14
     @sp_absorb_rate = 0
     @sp_absorb = 0
     @invincible = false
@@ -242,7 +245,7 @@ class Yangff < Actor
   def set_ele
     @maxhp = 10
     @maxsp = 100
-    @maxap = 5
+    @maxap = 10
     @atk = 10
     @atk_area = [ [[0] ] ,true]
     @atk_dis_min = 1
@@ -264,6 +267,7 @@ class Yangff < Actor
   end
 
   def set_extra
+    @atk_buff = []
     @maxhp_add = 0
     @maxsp_add = 0
     @maxap_add = 0
@@ -276,7 +280,7 @@ class Yangff < Actor
     @per_step_cost_ap_add = 0
     @atk_cost_ap_add = 0
     @item_cost_ap_add = 0
-    @bingo_rate = 6
+    @bingo_rate = 12
     @bingo_damage = 1000000
     @damage_reduce_rate = 0
     @damage_reduce = 0
@@ -294,6 +298,82 @@ class Yangff < Actor
     @ignore_dmg_rate = 30
     @dmg_rebound = 0
     @dmg_rebound_rate = 100
+  end
+
+end
+
+# 测试
+class Orzfly < Actor
+
+  def set_tec
+    @id = 4
+    @name = "Orzfly"
+    @skill = []
+    @equip = {}
+    @atk_pic = nil
+    @atk_cot = 4
+    @item_pic = nil
+    @item_cot = 4
+    @skill_pic = nil
+    @skill_cot = 4
+  end
+  
+  def set_ele
+    @maxhp = 8000000
+    @maxsp = 100
+    @maxap = 1
+    @atk = 0
+    @atk_area = [ [[0] ] ,true]
+    @atk_dis_min = 1
+    @atk_dis_max = 1
+    @def = -100
+    @int = 5
+    @mdef = -100
+    @hp_rec = 3
+    @sp_rec = 0
+    @per_step_cost_ap = 1
+    @atk_cost_ap = 100
+    @item_cost_ap = 100
+    @hatred_base = 50000
+    @miss_rate = 0
+  end
+  
+  def set_ai
+    @ai = SB_AI.new(self)
+  end
+
+  def set_extra
+    @atk_buff = []
+    @maxhp_add = 0
+    @maxsp_add = 0
+    @maxap_add = 0
+    @atk_add = 0
+    @def_add = 0
+    @int_add = 0
+    @mdef_add = 0
+    @hp_rec_add = 0
+    @sp_rec_add = 0
+    @per_step_cost_ap_add = 0
+    @atk_cost_ap_add = 0
+    @item_cost_ap_add = 0
+    @bingo_rate = 0
+    @bingo_damage = 0
+    @damage_reduce_rate = 0
+    @damage_reduce = 0
+    @cost_reduce_rate = 0
+    @cost_reduce = 0
+    @hp_absorb_rate = 0
+    @hp_absorb = 0
+    @sp_absorb_rate = 0
+    @sp_absorb = 0
+    @invincible = false
+    @ignore_physical = false
+    @ignore_magic = false
+    @invisible = false
+    @deinvisible = false
+    @ignore_dmg_rate = 0
+    @dmg_rebound = 0
+    @dmg_rebound_rate = 10
   end
 
 end

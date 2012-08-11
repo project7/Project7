@@ -73,6 +73,7 @@
   attr_accessor :buff_rem                     # BUFF编号
   attr_accessor :bag_rem                      # 物品编号
   attr_accessor :skill_rem                    # 技能编号
+  attr_accessor :atk_buff                     # 法球效果
   
   def initialize(event_id=0,t_id=[0])
     @event_id = event_id
@@ -121,6 +122,7 @@
   end
   
   def set_extra
+    @atk_buff = []
     @maxhp_add = 0
     @maxsp_add = 0
     @maxap_add = 0
@@ -221,12 +223,10 @@
     return [false,1] if value > 0 && xrand(100) < @ignore_dmg_rate && !force
     return [false,4] if value > 0 && @invincible && !force
     return [true,0] if self.dead? && !force
-    @buff.each do |buff|
-      instance_eval(buff.damage_effect)
-    end
+    @buff.each{|buff| instance_eval(buff.b_damage_effect)}
     @hp -= value
     @hp = [[@maxhp,@hp].min,0].max
-    @buff.each{|buff| instance_eval(buff.damage_effect)}
+    @buff.each{|buff| instance_eval(buff.a_damage_effect)}
     self.die if self.will_dead?
     return [true,value]
   end
@@ -340,7 +340,7 @@
   def add_buff(new_buff)
     @buff.each do |buff| 
       if buff.id==new_buff.id
-        buff.refresh
+        buff.refresh(new_buff.user)
         return
       end
     end
