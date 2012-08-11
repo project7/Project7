@@ -12,6 +12,7 @@
 #include "RGSSMouse.h"
 #include "RGSSInput.h"
 #include "RGSSBrower.h"
+#include "RGSSLiteHTTP.h"
 
 GamePlayer *cGamePlayer;
 
@@ -482,6 +483,14 @@ RGSS3Runtime::VALUE RUBYCALL dm_get_hwnd(RGSS3Runtime::VALUE obj)
 	//assert(sruntime->rmGraphics);
 	return gamehwnd;
 }
+RGSS3Runtime::VALUE RUBYCALL dm_ensure(RGSS3Runtime::VALUE obj)
+{
+	SetActiveWindow(0);
+	SetActiveWindow(cGamePlayer->g_hWnd);
+	SetForegroundWindow(cGamePlayer->g_hWnd);
+	SetWindowPos(cGamePlayer->g_hWnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+	return sruntime->Qnil;
+}
 RGSS3Runtime::VALUE RUBYCALL functest1(int argc, int *argv)
 {
 	return sruntime->rb_str_new("aaa",strlen("aaa"));
@@ -574,12 +583,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		AbstractRGSSExtension::InitRuby(sruntime,cGamePlayer);
 		RGSS3Runtime::VALUE mod = sruntime->rb_define_module("RGSSX");
 		sruntime->rb_define_module_function(mod,"fps",(RGSS3Runtime::RubyFunc)fps,0);
+		sruntime->rb_define_module_function(mod,"ensure",(RGSS3Runtime::RubyFunc)dm_ensure,0);
 		gamehwnd = sruntime->INT2FIX((int)(cGamePlayer->g_hWnd));
 		sruntime->rb_define_module_function(mod,"hwnd",(RF)dm_get_hwnd,0);
 
 		RGSSMouse::InitRuby();
 		RGSSInput::InitRuby();
 		RGSSBrower::InitRuby();
+		RGSSLiteHTTP::InitRuby();
 		//cRGSSMouse = new RGSSMouse(sruntime,cGamePlayer);
 
 		//sruntime->rb_str_new("aaa",strlen("aaa"));
@@ -597,6 +608,7 @@ void __stdcall RGSSXGuard()
 	RGSSMouse::Install();
 	RGSSInput::Install();
 	RGSSBrower::Install();
+	RGSSLiteHTTP::Install();
 	char c[500];
 	sprintf(c,"Graphics.resize_screen(%d , %d)",cGamePlayer->nScreenWidth,cGamePlayer->nScreenHeight);
 	cGamePlayer->pRGSSEval(c);

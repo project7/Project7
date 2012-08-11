@@ -71,8 +71,6 @@ class Scene_Menu < Scene_MenuBase
   # ● 指令“存档”
   #--------------------------------------------------------------------------
   def command_save
-    SceneManager.call Scene_WebLogin
-    return
     SceneManager.call(Scene_Save)
   end
   #--------------------------------------------------------------------------

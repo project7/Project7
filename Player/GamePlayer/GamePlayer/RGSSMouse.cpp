@@ -24,7 +24,7 @@ LRESULT WINAPI RGSSMouse::MouseWndProcHook(HWND hWnd,UINT Msg,WPARAM wParam,LPAR
 		present->mouse_lup=false;
 		present->mouse_lpress=true;
 		present->mouse_ltoggle=!present->mouse_ltoggle;
-		SetCapture(gameplayer->g_hWnd);
+		//SetCapture(gameplayer->g_hWnd);
 	}
 	if (Msg==WM_RBUTTONDOWN)
 	{
@@ -32,7 +32,7 @@ LRESULT WINAPI RGSSMouse::MouseWndProcHook(HWND hWnd,UINT Msg,WPARAM wParam,LPAR
 		present->mouse_rup=false;
 		present->mouse_rpress=true;
 		present->mouse_rtoggle=!present->mouse_rtoggle;
-		SetCapture(gameplayer->g_hWnd);
+		//SetCapture(gameplayer->g_hWnd);
 	}
 	if (Msg==WM_MBUTTONDOWN)
 	{
@@ -40,25 +40,25 @@ LRESULT WINAPI RGSSMouse::MouseWndProcHook(HWND hWnd,UINT Msg,WPARAM wParam,LPAR
 		present->mouse_mup=false;
 		present->mouse_mpress=true;
 		present->mouse_mtoggle=!present->mouse_mtoggle;
-		SetCapture(gameplayer->g_hWnd);
+		//SetCapture(gameplayer->g_hWnd);
 	}
 	if (Msg==WM_LBUTTONUP)
 	{
 		present->mouse_lup=true;
 		present->mouse_lpress=false;
-		ReleaseCapture();
+		//ReleaseCapture();
 	}
 	if (Msg==WM_RBUTTONUP)
 	{
 		present->mouse_rup=true;
 		present->mouse_rpress=false;
-		ReleaseCapture();
+		//ReleaseCapture();
 	}
 	if (Msg==WM_MBUTTONUP)
 	{
 		present->mouse_mup=true;
 		present->mouse_mpress=false;
-		ReleaseCapture();
+		//ReleaseCapture();
 	}
 	if (Msg==WM_LBUTTONDBLCLK)
 	{
@@ -258,3 +258,4 @@ RGSSMouse::RGSSMouse(void)
 RGSSMouse::~RGSSMouse(void)
 {
 }
+#undef RBOOL

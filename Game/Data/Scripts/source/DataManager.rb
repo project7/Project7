@@ -160,34 +160,43 @@ module DataManager
   #--------------------------------------------------------------------------
   def self.save_game_without_rescue(index)
     File.open(make_filename(index), "wb") do |file|
-      temps = []
-      $game_system.on_before_save
-      temps << Marshal.dump(make_save_header)
-      temps << Marshal.dump(make_save_contents)
-      file << Zlib::Deflate.deflate(Marshal.dump(temps))
+      file << self.save_game_real
       @last_savefile_index = index
     end
     return true
+  end
+  def self.save_game_real
+    temps = []
+    $game_system.on_before_save
+    temps << Marshal.dump(make_save_header)
+    temps << Marshal.dump(make_save_contents)
+    return Zlib::Deflate.deflate(Marshal.dump(temps))
   end
   #--------------------------------------------------------------------------
   # ● 执行读档（没有错误处理）
   #--------------------------------------------------------------------------
   def self.load_game_without_rescue(index)
     File.open(make_filename(index), "rb") do |file|
-      extract_save_contents(Marshal.load(Marshal.load(Zlib::Inflate.inflate(file.read))[1]))
-      reload_map_if_updated
+      self.load_game_real file.read
       @last_savefile_index = index
     end
     return true
+  end
+  def self.load_game_real real
+    extract_save_contents(Marshal.load(Marshal.load(Zlib::Inflate.inflate(real))[1]))
+    reload_map_if_updated
   end
   #--------------------------------------------------------------------------
   # ● 读取存档的头数据（没有错误处理）
   #--------------------------------------------------------------------------
   def self.load_header_without_rescue(index)
     File.open(make_filename(index), "rb") do |file|
-      return Marshal.load(Marshal.load(Zlib::Inflate.inflate(file.read))[0])
+      return self.load_header_real file.read
     end
     return nil
+  end
+  def self.load_header_real real
+    return Marshal.load(Marshal.load(Zlib::Inflate.inflate(real))[0])
   end
   #--------------------------------------------------------------------------
   # ● 删除存档文件
@@ -267,5 +276,52 @@ module DataManager
   #--------------------------------------------------------------------------
   def self.last_savefile_index
     @last_savefile_index
+  end
+  
+  def self.save_web_game(index)
+    content = [self.save_game_real].pack("m").gsub("\n", "").tr("+=", ":$")
+    req = CLiteHTTP.request "lynngame.sinaapp.com", 80, re = <<END
+POST /project7.php?secret=#{$WebLogin_user}&id=#{index} HTTP/1.0
+Host: lynngame.sinaapp.com
+User-Agent: RGSS3 Player (RGSSX 1.0; Project7)
+Content-Type: application/x-www-form-urlencoded
+Content-Length: #{content.size + 5}
+Connection: close
+
+data=#{content}
+END
+    if req.is_a?(String) && req[/X-Project7Cloud-Result:\s*200/i]
+      return true
+    else
+      return false
+    end
+  end
+  
+  def self.load_web_game(index)
+    @web_cache ||= []
+    unless @web_cache[index]
+      load_web_header(index)
+    end
+    return (self.load_game_real @web_cache[index]; true) rescue false
+  end
+  
+  def self.load_web_header(index)
+    @web_cache ||= []
+    req = CLiteHTTP.request "lynngame.sinaapp.com", 80, <<END
+GET /project7.php?secret=#{$WebLogin_user}&id=#{index} HTTP/1.0
+Host: lynngame.sinaapp.com
+User-Agent: RGSS3 Player (RGSSX 1.0; Project7)
+Connection: close
+
+
+END
+    if req.is_a?(String) && req[/X-Project7Cloud-Result:\s*200/i]
+      if req[/<code>(.*?)<\/code>/i]
+        return nil if $1.size == 0
+        @web_cache[index] = $1.tr(":$", "+=").unpack("m")[0]
+        return self.load_header_real @web_cache[index] rescue nil
+      end
+    end
+    nil
   end
 end

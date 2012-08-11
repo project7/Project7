@@ -6,10 +6,16 @@
 class Scene_WebLogin < Scene_Base
   class Jiecao
     def call(e)
-      puts e
-      args = e[/^lynn:\/\/(.*)$/i]
+      args = e[/^lynn:\/\/(.*)\/?$/i]
       if args
-        puts args
+        hook=$1
+        if hook[/^cancel\/?$/i]
+          $WebLogin_user = nil
+          SceneManager.return
+        else
+          hook[/^(.*)\/(.*)$/]
+          $WebLogin_user = $2
+        end
         @browser.dispose
         @browser = nil
         return false
@@ -24,6 +30,7 @@ class Scene_WebLogin < Scene_Base
       Graphics.update
       break unless jiecao.instance_variable_get :@browser
     end
+    RGSSX.ensure
     return_scene
   end
 end

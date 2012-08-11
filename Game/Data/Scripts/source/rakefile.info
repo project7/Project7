@@ -109,7 +109,12 @@ Scene_Name
 Scene_Debug
 Scene_Battle
 Scene_Gameover
+Window_WebSaveFile
 Scene_WebLogin
+Scene_WebFile
+Scene_WebSave
+Scene_WebLoad
+Web
 Fuc
 Ruby.ex 1.0
 CMouse

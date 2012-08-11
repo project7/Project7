@@ -254,6 +254,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\RGSSLiteHTTP.h"
+				>
+			</File>
+			<File
 				RelativePath=".\RGSSMouse.h"
 				>
 			</File>
