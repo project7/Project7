@@ -76,7 +76,7 @@ class Weak < Buff
                             @splink.show_text(a[1].to_s,@cur_actor.event,AP_ADD_COLOR) if a[0]"
     @per_turn_end_effect = ""
     @end_effect = "a=self.god_damage(-buff.temp_damage[1]);
-                   SceneManager.scene.spriteset.show_text(a[1].to_s,self.event,Fuc::AP_COST_COLOR) if a[0]"
+                   SceneManager.scene.spriteset.show_text(a[1].abs.to_s,self.event,Fuc::AP_COST_COLOR) if a[0]"
     @atk_effect = ""
     @b_damage_effect = ""
     @a_damage_effect = ""
@@ -110,7 +110,7 @@ class Ctrled < Buff
     @atk_effect = ""
     @b_damage_effect = "@hp=[@hp,1].max;
                         a = buff.user.mag_damage(value);
-                        SceneManager.scene.spriteset.show_text(a[1].to_s,buff.user.event,Fuc::AP_ADD_COLOR) if a[0]"
+                        SceneManager.scene.spriteset.show_text(a[1].abs.to_s,buff.user.event,Fuc::AP_ADD_COLOR) if a[0]"
     @a_damage_effect = ""
   end
   
