@@ -41,6 +41,7 @@
           return nil
         end
       end
+      do_attack_end
       if (distance > @user.atk_dis_min)
         return toward_character(@target.event)
       elsif @user.atk_area[1]

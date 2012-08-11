@@ -431,6 +431,7 @@
     end
     # A
     if CInput.trigger?($vkey[:Attack]) && @actor.movable? && @cur_actor.atk_area
+      $sel_body = @cur_actor
       if @cur_actor.ap>=@cur_actor.get_ap_for_atk
         ready_for_attack
       else

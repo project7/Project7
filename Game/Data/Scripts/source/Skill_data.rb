@@ -64,7 +64,7 @@ class FuckWithOutMoney < Skill
     @sp_cost = 12
     @hp_cost = 0
     @ap_cost = 14
-    @hp_damage = 60
+    @hp_damage = 160
     @sp_damage = 0
     @ap_damage = 0
     @buff = [["Weak.new",50]]

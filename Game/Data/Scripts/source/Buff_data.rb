@@ -39,7 +39,7 @@ class Sick < Buff
     @keep_turn = 3
     @keep_step = 0
     @use_effect = ""
-    @per_turn_start_effect = "a=@cur_actor.mag_damage(@cur_actor.maxhp/10);
+    @per_turn_start_effect = "a=@cur_actor.mag_damage(@cur_actor.hp/5);
                               @splink.show_text(a[1].to_s,@cur_actor.event,DAMGE_GREEN) if a[0]"
     @per_step_effect = ""
     @per_turn_end_effect = ""
@@ -50,7 +50,7 @@ class Sick < Buff
   
   def set_extra
     @end_req = "@turn-buff.lived_turn>=buff.keep_turn"
-    @descr = "每回合损失最大生命值的%10\n持续3回合."
+    @descr = "每回合损失当前生命值的%20\n持续3回合."
   end
 
 end
