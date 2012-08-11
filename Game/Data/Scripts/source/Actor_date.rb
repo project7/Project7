@@ -297,3 +297,78 @@ class Yangff < Actor
   end
 
 end
+
+# 测试
+class Orzfly < Actor
+
+  def set_tec
+    @id = 4
+    @name = "Orzfly"
+    @skill = []
+    @equip = {}
+    @atk_pic = nil
+    @atk_cot = 4
+    @item_pic = nil
+    @item_cot = 4
+    @skill_pic = nil
+    @skill_cot = 4
+  end
+  
+  def set_ele
+    @maxhp = 8000000
+    @maxsp = 100
+    @maxap = 1
+    @atk = 0
+    @atk_area = [ [[0] ] ,true]
+    @atk_dis_min = 1
+    @atk_dis_max = 1
+    @def = -100
+    @int = 5
+    @mdef = -100
+    @hp_rec = 3
+    @sp_rec = 0
+    @per_step_cost_ap = 1
+    @atk_cost_ap = 100
+    @item_cost_ap = 100
+    @hatred_base = 50000
+    @miss_rate = 0
+  end
+  
+  def set_ai
+    @ai = SB_AI.new(self)
+  end
+
+  def set_extra
+    @maxhp_add = 0
+    @maxsp_add = 0
+    @maxap_add = 0
+    @atk_add = 0
+    @def_add = 0
+    @int_add = 0
+    @mdef_add = 0
+    @hp_rec_add = 0
+    @sp_rec_add = 0
+    @per_step_cost_ap_add = 0
+    @atk_cost_ap_add = 0
+    @item_cost_ap_add = 0
+    @bingo_rate = 0
+    @bingo_damage = 0
+    @damage_reduce_rate = 0
+    @damage_reduce = 0
+    @cost_reduce_rate = 0
+    @cost_reduce = 0
+    @hp_absorb_rate = 0
+    @hp_absorb = 0
+    @sp_absorb_rate = 0
+    @sp_absorb = 0
+    @invincible = false
+    @ignore_physical = false
+    @ignore_magic = true
+    @invisible = false
+    @deinvisible = false
+    @ignore_dmg_rate = 0
+    @dmg_rebound = 0
+    @dmg_rebound_rate = 0
+  end
+
+end
