@@ -108,10 +108,10 @@ class Ctrled < Buff
     @per_turn_end_effect = ""
     @end_effect = "self.die"
     @atk_effect = ""
-    @b_damage_effect = "@hp=[@hp,1].max;
+    @b_damage_effect = ""
+    @a_damage_effect = "@hp=[@hp,1].max;
                         a = buff.user.mag_damage(value);
                         SceneManager.scene.spriteset.show_text(a[1].abs.to_s,buff.user.event,Fuc::AP_ADD_COLOR) if a[0]"
-    @a_damage_effect = ""
   end
   
   def set_extra

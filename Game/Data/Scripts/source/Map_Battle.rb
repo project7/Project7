@@ -972,7 +972,7 @@
                 @succ_count+=1
                 sm = instance_eval(buff[0]+"("+"@cur_actor"+")")
                 i.add_buff(sm)
-                @splink.show_text("+"+buff.name,i.event,SP_ADD_COLOR)
+                @splink.show_text("+"+sm.name,i.event,SP_ADD_COLOR)
               end
             end
             if para[0].spec_effect!=""

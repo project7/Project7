@@ -40,7 +40,7 @@ class Fucker < Actor
   end
   
   def set_extra
-    @atk_buff = [["Deep_Damage.new",100]]
+    @atk_buff = []
     @maxhp_add = 0
     @maxsp_add = 0
     @maxap_add = 0
@@ -93,7 +93,7 @@ class Shit < Actor
   
   def set_ele
     @maxhp = 600
-    @maxsp = 100
+    @maxsp = 0
     @maxap = 20
     @atk = 25
     @atk_area = [ [[0,0,1,2],[1,2]] ,true]
@@ -168,7 +168,7 @@ class God < Actor
   
   def set_ele
     @maxhp = 800
-    @maxsp = 100
+    @maxsp = 8
     @maxap = 20
     @atk = 15
     @atk_area = [ [[0,0,1,3]] ,false]
@@ -178,7 +178,7 @@ class God < Actor
     @int = 5
     @mdef = 5
     @hp_rec = 1
-    @sp_rec = 0
+    @sp_rec = -1
     @per_step_cost_ap = 3
     @atk_cost_ap = 6
     @item_cost_ap = 5
@@ -373,7 +373,7 @@ class Orzfly < Actor
     @deinvisible = false
     @ignore_dmg_rate = 0
     @dmg_rebound = 0
-    @dmg_rebound_rate = 150
+    @dmg_rebound_rate = 10
   end
 
 end
