@@ -94,8 +94,6 @@
         end
       end
     end
-    @steps+=1
-    per_steps_cal
     @partner_num = arra.size
     @enemy_num = arrb.size
   end
@@ -112,6 +110,7 @@
   end
   
   def per_steps_cal
+    @steps+=1
     actor = @cur_actor
     actor.buff.each do |buff|
       if instance_eval(buff.end_req)
@@ -204,7 +203,7 @@
     if Mouse.down?(1) || CInput.press?($vkey[:Check])
       tempb = action(3,[@using_obj,@mousexy])
       return unless tempb
-      if tempb.all?{|i| i[0]==false&&i[1]>1}
+      if tempb.all?{|i| i[0]==false&&i[1]>1} && ttt.size>0
         @splink.show_tips(FAILD_ATTACK_TEXT[tempb[0][1]])
       else
         end_target_select
@@ -233,7 +232,7 @@
     if Mouse.down?(1) || CInput.press?($vkey[:Check])
       tempb = action(2,[@using_obj,@mousexy])
       return unless tempb
-      if tempb.all?{|i| i[0]==false&&i[1]>1}
+      if tempb.all?{|i| i[0]==false&&i[1]>1} && ttt.size>0
         @splink.show_tips(FAILD_ATTACK_TEXT[tempb[0][1]])
       else
         end_target_select
@@ -368,7 +367,7 @@
       @effectarea.y = @cur_actor.y
       ttt = action(3,[obj,[@cur_actor.x,@cur_actor.y]])
       return unless ttt
-      if ttt.all?{|i| i[0]==false&&i[1]>1}
+      if ttt.all?{|i| i[0]==false&&i[1]>1} && ttt.size>0
         @splink.show_tips(FAILD_ATTACK_TEXT[ttt[0][1]])
       end
       end_target_select
@@ -398,7 +397,7 @@
       @effectarea.y = @cur_actor.y
       ttt = action(2,[obj,[@cur_actor.x,@cur_actor.y]])
       return unless ttt
-      if ttt.all?{|i| i[0]==false&&i[1]>1}
+      if ttt.all?{|i| i[0]==false&&i[1]>1} && ttt.size>0
         @splink.show_tips(FAILD_ATTACK_TEXT[ttt[0][1]])
       end
       end_target_select
@@ -685,10 +684,12 @@
     if revar.is_a?(Array)
       @last_action_state = revar
       @order_rem << [id,para]
+      per_steps_cal
       return revar
     elsif revar
       @last_action_state = true
       @order_rem << [id,para]
+      per_steps_cal
       return true
     else
       @last_action_state = false
@@ -837,7 +838,7 @@
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
             end
           end
-          if @succ_count>0 || (i.ignore_magic && para[0].ignore_mag_det)
+          if !i.ignore_magic || (i.ignore_magic && para[0].ignore_mag_det)
             i.god_sp_damage(-2,true)
             para[0].debuff.each do |debuff|
               if $random_center.rand(100) < debuff[1]
@@ -951,7 +952,7 @@
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
             end
           end
-          if @succ_count>0 || para[0].ignore_mag_det
+          if !i.ignore_magic || (i.ignore_magic && para[0].ignore_mag_det)
             i.god_sp_damage(-2,true)
             para[0].debuff.each do |debuff|
               if $random_center.rand(100) < debuff[1]

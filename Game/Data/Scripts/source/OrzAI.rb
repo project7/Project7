@@ -34,7 +34,7 @@
       distance = ssx.abs+ssy.abs
       @user.skill.each do |i|
         sick = i.enough_to_use(@user.ap,@user.hp,@user.sp)
-        if sick==true && distance.between?(i.use_dis_min,i.use_dis_max)
+        if sick==true && distance.between?(i.use_dis_min,i.use_dis_max) && !@target.ignore_magic
           @wait_to_use = i
           do_effect_ready(i)
           @adapt_wait = true
