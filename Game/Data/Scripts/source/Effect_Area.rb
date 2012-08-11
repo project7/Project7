@@ -60,7 +60,7 @@
       end
     end
     cale
-    create_bitmap(color,bcolor)
+    create_bitmap(color,bcolor) if $syseting[:show_maparea]
   end
   
   def set_offet(x,y)
