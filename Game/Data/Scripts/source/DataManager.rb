@@ -160,9 +160,11 @@ module DataManager
   #--------------------------------------------------------------------------
   def self.save_game_without_rescue(index)
     File.open(make_filename(index), "wb") do |file|
+      temps = []
       $game_system.on_before_save
-      Marshal.dump(make_save_header, file)
-      Marshal.dump(make_save_contents, file)
+      temps << Marshal.dump(make_save_header)
+      temps << Marshal.dump(make_save_contents)
+      file << Zlib::Deflate.deflate(Marshal.dump(temps))
       @last_savefile_index = index
     end
     return true
@@ -172,8 +174,7 @@ module DataManager
   #--------------------------------------------------------------------------
   def self.load_game_without_rescue(index)
     File.open(make_filename(index), "rb") do |file|
-      Marshal.load(file)
-      extract_save_contents(Marshal.load(file))
+      extract_save_contents(Marshal.load(Marshal.load(Zlib::Inflate.inflate(file.read))[1]))
       reload_map_if_updated
       @last_savefile_index = index
     end
@@ -184,7 +185,7 @@ module DataManager
   #--------------------------------------------------------------------------
   def self.load_header_without_rescue(index)
     File.open(make_filename(index), "rb") do |file|
-      return Marshal.load(file)
+      return Marshal.load(Marshal.load(Zlib::Inflate.inflate(file.read))[0])
     end
     return nil
   end

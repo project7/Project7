@@ -20,13 +20,10 @@
   :Item4=>[0x34]
 }
 
-class Array
-  def included?(arr)
-    arr.each do |i|
-      if self.include?(i)
-        return true
-      end
-    end
-    return false
-  end
-end
+$syseting =
+{ :screen_size=>1,
+  :show_maparea=>true,
+  :bgm_value=>100,
+  :me_value=>100,
+  :se_value=>100
+}

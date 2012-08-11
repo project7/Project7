@@ -75,7 +75,9 @@ class YellowBook < Item
   end
   
   def set_extra
-    @spec_effect = "@cur_actor.event.jump(para[1][0]-@cur_actor.x,para[1][1]-@cur_actor.y)"
+    @spec_effect = "@cur_actor.event.x=@cur_actor.event.real_x=para[1][0];
+                    @cur_actor.event.y=@cur_actor.event.real_y=para[1][1];
+                    set_view_pos(@cur_actor.x,@cur_actor.y)"
     @sp_cost_rate = 0
     @hp_cost_rate = 0
     @ap_cost_rate = 0

@@ -42,6 +42,7 @@
         end
       end
       if (distance > @user.atk_dis_min)
+        do_attack_end
         return toward_character(@target.event)
       elsif @user.atk_area[1]
         if @wait

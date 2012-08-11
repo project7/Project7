@@ -431,6 +431,7 @@
     end
     # A
     if CInput.trigger?($vkey[:Attack]) && @actor.movable? && @cur_actor.atk_area
+      $sel_body = @cur_actor
       if @cur_actor.ap>=@cur_actor.get_ap_for_atk
         ready_for_attack
       else
@@ -510,6 +511,7 @@
           body = i.event_id == 0 ? $game_player : i.event
           if body.x == @mousexy[0] && body.y == @mousexy[1] && !i.dead?
             $sel_body = i
+            @splink.show_value(i.hp*100/i.maxhp,i.event)
             return
           end
         end
@@ -683,12 +685,10 @@
     if revar.is_a?(Array)
       @last_action_state = revar
       @order_rem << [id,para]
-      cal_fighter_num
       return revar
     elsif revar
       @last_action_state = true
       @order_rem << [id,para]
-      cal_fighter_num
       return true
     else
       @last_action_state = false
@@ -796,18 +796,18 @@
       end
       if temp.is_a?(Array)
         tempb = []
-        succ_count = 0
+        @succ_count = 0
         temp.each do |i|
-          succ_count = 0
           tempama = para[0].hp_damage
           if tempama != 0
             color = tempama > 0 ? HP_COST_COLOR : HP_ADD_COLOR
             dama = para[0].ignore_mag_det ? i.damage(tempama) : i.mag_damage(tempama)
             tempb << dama
             if dama[0]
-              succ_count+=1
+              @succ_count+=1
               @splink.show_text(dama[1].to_s,i.event,color)
             elsif dama[1]<=1
+              @succ_count+=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
             end
           end
@@ -817,9 +817,10 @@
             dama = para[0].ignore_mag_det ? i.damage(tempama) : i.mag_damage(tempama)
             tempb << dama
             if dama[0]
-              succ_count+=1
+              @succ_count+=1
               @splink.show_text(dama[1].to_s,i.event,color)
             elsif dama[1]<=1
+              @succ_count+=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
             end
           end
@@ -829,37 +830,37 @@
             dama = para[0].ignore_mag_det ? i.damage(tempama) : i.mag_damage(tempama)
             tempb << dama
             if dama[0]
-              succ_count+=1
+              @succ_count+=1
               @splink.show_text(dama[1].to_s,i.event,color)
             elsif dama[1]<=1
+              @succ_count+=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
             end
           end
-          if succ_count>0 || (i.ignore_magic && para[0].ignore_mag_det)
+          if @succ_count>0 || (i.ignore_magic && para[0].ignore_mag_det)
             i.god_sp_damage(-2,true)
             para[0].debuff.each do |debuff|
               if $random_center.rand(100) < debuff[1]
-                succ_count+=1
+                @succ_count+=1
                 i.dec_buff(debuff[0])
               end
             end
             para[0].buff.each do |buff|
               if $random_center.rand(100) < buff[1]
-                succ_count+=1
+                @succ_count+=1
                 sm = instance_eval(buff[0]+"("+"@cur_actor"+")")
                 i.add_buff(sm)
                 @splink.show_text("+"+sm.name,i.event,SP_ADD_COLOR)
               end
             end
             if para[0].spec_effect!=""
-              succ_count+=1
+              @succ_count+=1
               instance_eval(para[0].spec_effect)
-              p i.team
             end
           end
           @splink.show_value(i.hp*100/i.maxhp,i.event)
         end
-        unless succ_count<=0#tempb.all?{|e| e[0]==false&&e[1]>1}
+        if @succ_count>0
           @actor.animation_id = para[0].user_animation
           @cur_actor.god_sp_damage(-2,true)
           @cur_actor.cost_ap_for(3,para[0].ap_cost)
@@ -909,18 +910,18 @@
       end
       if temp.is_a?(Array)
         tempb = []
-        succ_count = 0
+        @succ_count = 0
         temp.each do |i|
-          succ_count = 0
           tempama = para[0].hp_damage
           if tempama != 0
             color = tempama > 0 ? HP_COST_COLOR : HP_ADD_COLOR
             dama = para[0].ignore_mag_det ? i.damage(tempama) : i.mag_damage(tempama)
             tempb << dama
             if dama[0]
-              succ_count+=1
+              @succ_count+=1
               @splink.show_text(dama[1].to_s,i.event,color)
             elsif dama[1]<=1
+              @succ_count+=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
             end
           end
@@ -930,9 +931,10 @@
             dama = para[0].ignore_mag_det ? i.damage(tempama) : i.mag_damage(tempama)
             tempb << dama
             if dama[0]
-              succ_count+=1
+              @succ_count+=1
               @splink.show_text(dama[1].to_s,i.event,color)
             elsif dama[1]<=1
+              @succ_count+=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
             end
           end
@@ -942,36 +944,37 @@
             dama = para[0].ignore_mag_det ? i.damage(tempama) : i.mag_damage(tempama)
             tempb << dama
             if dama[0]
-              succ_count+=1
+              @succ_count+=1
               @splink.show_text(dama[1].to_s,i.event,color)
             elsif dama[1]<=1
+              @succ_count+=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
             end
           end
-          if succ_count>0 || para[0].ignore_mag_det
+          if @succ_count>0 || para[0].ignore_mag_det
             i.god_sp_damage(-2,true)
             para[0].debuff.each do |debuff|
               if $random_center.rand(100) < debuff[1]
-                succ_count+=1
+                @succ_count+=1
                 i.dec_buff(debuff[0])
               end
             end
             para[0].buff.each do |buff|
               if $random_center.rand(100) < buff[1]
-                succ_count+=1
+                @succ_count+=1
                 sm = instance_eval(buff[0]+"("+"@cur_actor"+")")
                 i.add_buff(sm)
                 @splink.show_text("+"+buff.name,i.event,SP_ADD_COLOR)
               end
             end
             if para[0].spec_effect!=""
-              succ_count+=1
+              @succ_count+=1
               instance_eval(para[0].spec_effect)
             end
           end
           @splink.show_value(i.hp*100/i.maxhp,i.event)
         end
-        unless succ_count<=0#tempb.all?{|e| e[0]==false&&e[1]>1}
+        if @succ_count>0
           @actor.animation_id = para[0].user_animation
           @cur_actor.god_sp_damage(-2,true)
           @cur_actor.cost_ap_for(2)

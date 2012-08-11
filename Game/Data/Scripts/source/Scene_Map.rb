@@ -60,15 +60,19 @@ class Scene_Map < Scene_Base
   #--------------------------------------------------------------------------
   def update
     super
-    $game_map.update(true)
-    $game_player.update
-    $game_timer.update
-    @spriteset.update
-    update_ui
-    update_scene if scene_change_ok?
+    #unless @menu_calling
+      $game_map.update(true)
+      $game_player.update
+      $game_timer.update
+      @spriteset.update
+      update_ui
+      update_scene if scene_change_ok?
+    #else
+    #  update_system_menu
+    #end
   end
   #--------------------------------------------------------------------------
-  # ● 更新画面
+  # ● 更新UI
   #--------------------------------------------------------------------------
   def update_ui
     if !$game_message.busy? && !$game_message.visible
@@ -203,6 +207,12 @@ class Scene_Map < Scene_Base
     end
   end
   #--------------------------------------------------------------------------
+  # ● 更新菜单
+  #--------------------------------------------------------------------------
+  def update_system_menu
+    
+  end
+  #--------------------------------------------------------------------------
   # ● 更新画面（消退用）
   #--------------------------------------------------------------------------
   def update_for_fade
@@ -297,10 +307,10 @@ class Scene_Map < Scene_Base
   # ● 监听取消键的按下。如果菜单可用且地图上没有事件在运行，则打开菜单界面。
   #--------------------------------------------------------------------------
   def update_call_menu
-    if $game_system.menu_disabled || $game_map.interpreter.running? || $map_battle
-      @menu_calling = false
+    if $game_system.menu_disabled || $game_map.interpreter.running?
+      @menu_calling = nil
     else
-      @menu_calling ||= CInput.trigger?($vkey[:X]) || Mouse.down?(2)
+      @menu_calling ||= CInput.trigger?($vkey[:X]) || (!$map_battle && Mouse.down?(2))
       call_menu if @menu_calling && !$game_player.moving?
     end
   end

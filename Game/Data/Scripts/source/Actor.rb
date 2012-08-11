@@ -462,6 +462,7 @@
     self.event.opacity = 100
     self.event.through = true
     $map_battle.next_actor if $map_battle && $map_battle.cur_actor == self
+    $map_battle.cal_fighter_num if $map_battle
   end
   
   def relive

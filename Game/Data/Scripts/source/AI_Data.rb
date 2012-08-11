@@ -27,8 +27,10 @@
       ssy = distance_y_from(@target.y)
       distance = ssx.abs+ssy.abs
       if distance < @user.atk_dis_min || !@user.atk_area
+        do_attack_end
         return away_from_character(@target.event)
       elsif distance > @user.atk_dis_max
+        do_attack_end
         return toward_character(@target.event)
       elsif @user.atk_area[1]
         if @wait
