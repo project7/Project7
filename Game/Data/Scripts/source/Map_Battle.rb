@@ -510,6 +510,7 @@
           body = i.event_id == 0 ? $game_player : i.event
           if body.x == @mousexy[0] && body.y == @mousexy[1] && !i.dead?
             $sel_body = i
+            @splink.show_value(i.hp*100/i.maxhp,i.event)
             return
           end
         end

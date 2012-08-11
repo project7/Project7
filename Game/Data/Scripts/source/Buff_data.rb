@@ -103,7 +103,7 @@ class Ctrled < Buff
     @per_turn_start_effect = ""
     @per_step_effect = ""
     @per_turn_end_effect = ""
-    @end_effect = "@cur_actor.die"
+    @end_effect = "self.die"
     @atk_effect = ""
     @damage_effect = "@hp=[@hp,1].max;
                       a = buff.user.mag_damage(value);
