@@ -109,6 +109,7 @@ Scene_Name
 Scene_Debug
 Scene_Battle
 Scene_Gameover
+Scene_WebLogin
 Fuc
 Ruby.ex 1.0
 CMouse
