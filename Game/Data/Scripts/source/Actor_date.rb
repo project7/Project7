@@ -373,7 +373,7 @@ class Orzfly < Actor
     @deinvisible = false
     @ignore_dmg_rate = 0
     @dmg_rebound = 0
-    @dmg_rebound_rate = 0
+    @dmg_rebound_rate = 150
   end
 
 end
