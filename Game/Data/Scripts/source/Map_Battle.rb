@@ -174,7 +174,7 @@
     if Mouse.down?(1) || CInput.press?($vkey[:Check])
       tempb = action(1,@mousexy)
       return unless tempb
-      if tempb.all?{|i| i[0]==false&&i[1]>1}
+      if tempb.all?{|i| i[0]==false&&i[1]>1} || tempb.size>0
         @splink.show_tips(FAILD_ATTACK_TEXT[tempb[0][1]])
       else
         end_target_select
@@ -203,7 +203,7 @@
     if Mouse.down?(1) || CInput.press?($vkey[:Check])
       tempb = action(3,[@using_obj,@mousexy])
       return unless tempb
-      if tempb.all?{|i| i[0]==false&&i[1]>1} && ttt.size>0
+      if tempb.all?{|i| i[0]==false&&i[1]>1} && tempb.size>0
         @splink.show_tips(FAILD_ATTACK_TEXT[tempb[0][1]])
       else
         end_target_select
@@ -232,7 +232,7 @@
     if Mouse.down?(1) || CInput.press?($vkey[:Check])
       tempb = action(2,[@using_obj,@mousexy])
       return unless tempb
-      if tempb.all?{|i| i[0]==false&&i[1]>1} && ttt.size>0
+      if tempb.all?{|i| i[0]==false&&i[1]>1} && tempb.size>0
         @splink.show_tips(FAILD_ATTACK_TEXT[tempb[0][1]])
       else
         end_target_select
