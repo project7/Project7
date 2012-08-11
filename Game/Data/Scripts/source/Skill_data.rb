@@ -61,9 +61,9 @@ class FuckWithOutMoney < Skill
     @hurt_e_dead = false
     @hurt_area = [ [[5]] ,true]
     @hurt_maxnum = 0
-    @sp_cost = 12
+    @sp_cost = 0#12
     @hp_cost = 0
-    @ap_cost = 14
+    @ap_cost = 0#14
     @hp_damage = 160
     @sp_damage = 0
     @ap_damage = 0

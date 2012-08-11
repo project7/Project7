@@ -13,7 +13,8 @@
   attr_accessor :per_turn_end_effect              # 每回合结束的效果
   attr_accessor :end_effect                       # 加持结束时的效果
   attr_accessor :atk_effect                       # 攻击时的效果
-  attr_accessor :damage_effect                    # 伤害总结时的效果
+  attr_accessor :b_damage_effect                  # 伤害总结之前的效果
+  attr_accessor :a_damage_effect                  # 伤害总结之后的效果
   attr_accessor :end_req                          # 结束条件
   attr_accessor :descr                            # buff说明
   attr_accessor :lived_turn                       # buff已经存在的回合数
@@ -39,7 +40,8 @@
     @per_turn_end_effect = ""
     @end_effect = ""
     @atk_effect = ""
-    @damage_effect = ""
+    @a_damage_effect = ""
+    @b_damage_effect = ""
   end
   
   def set_extra
@@ -52,7 +54,8 @@
     @lived_step = $map_battle.steps
   end
   
-  def refresh
+  def refresh(user)
+    @user = user
     @lived_turn = $map_battle.turn
     @lived_step = $map_battle.steps
   end

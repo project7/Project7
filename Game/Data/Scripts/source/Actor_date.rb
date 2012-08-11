@@ -40,6 +40,7 @@ class Fucker < Actor
   end
   
   def set_extra
+    @atk_buff = [["Deep_Damage.new",100]]
     @maxhp_add = 0
     @maxsp_add = 0
     @maxap_add = 0
@@ -59,7 +60,7 @@ class Fucker < Actor
     @cost_reduce_rate = 0
     @cost_reduce = 0
     @hp_absorb_rate = 0
-    @hp_absorb = 40
+    @hp_absorb = 14
     @sp_absorb_rate = 0
     @sp_absorb = 0
     @invincible = false
@@ -115,6 +116,7 @@ class Shit < Actor
   end
 
   def set_extra
+    @atk_buff = []
     @maxhp_add = 0
     @maxsp_add = 0
     @maxap_add = 0
@@ -185,6 +187,7 @@ class God < Actor
   end
   
   def set_extra
+    @atk_buff = []
     @maxhp_add = 0
     @maxsp_add = 0
     @maxap_add = 0
@@ -204,7 +207,7 @@ class God < Actor
     @cost_reduce_rate = 0
     @cost_reduce = 0
     @hp_absorb_rate = 0
-    @hp_absorb = 150
+    @hp_absorb = 14
     @sp_absorb_rate = 0
     @sp_absorb = 0
     @invincible = false
@@ -242,7 +245,7 @@ class Yangff < Actor
   def set_ele
     @maxhp = 10
     @maxsp = 100
-    @maxap = 5
+    @maxap = 10
     @atk = 10
     @atk_area = [ [[0] ] ,true]
     @atk_dis_min = 1
@@ -264,6 +267,7 @@ class Yangff < Actor
   end
 
   def set_extra
+    @atk_buff = []
     @maxhp_add = 0
     @maxsp_add = 0
     @maxap_add = 0
@@ -276,7 +280,7 @@ class Yangff < Actor
     @per_step_cost_ap_add = 0
     @atk_cost_ap_add = 0
     @item_cost_ap_add = 0
-    @bingo_rate = 6
+    @bingo_rate = 12
     @bingo_damage = 1000000
     @damage_reduce_rate = 0
     @damage_reduce = 0
@@ -339,6 +343,7 @@ class Orzfly < Actor
   end
 
   def set_extra
+    @atk_buff = []
     @maxhp_add = 0
     @maxsp_add = 0
     @maxap_add = 0
@@ -363,7 +368,7 @@ class Orzfly < Actor
     @sp_absorb = 0
     @invincible = false
     @ignore_physical = false
-    @ignore_magic = true
+    @ignore_magic = false
     @invisible = false
     @deinvisible = false
     @ignore_dmg_rate = 0

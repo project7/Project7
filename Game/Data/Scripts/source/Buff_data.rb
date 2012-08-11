@@ -17,7 +17,8 @@
     @per_turn_end_effect = ""
     @end_effect = "self.def_add-=buff.add_def"
     @atk_effect = ""
-    @damage_effect = ""
+    @b_damage_effect = ""
+    @a_damage_effect = ""
   end
   
   def set_extra
@@ -45,7 +46,8 @@ class Sick < Buff
     @per_turn_end_effect = ""
     @end_effect = ""
     @atk_effect = ""
-    @damage_effect = ""
+    @b_damage_effect = ""
+    @a_damage_effect = ""
   end
   
   def set_extra
@@ -67,21 +69,22 @@ class Weak < Buff
     @animation = []
     @keep_turn = 2
     @keep_step = 0
-    @use_effect = ""
-    @per_turn_start_effect = "buff.temp_damage=@cur_actor.damage(@cur_actor.hp/4);
-                              @splink.show_text(buff.temp_damage[1].to_s,@cur_actor.event,AP_ADD_COLOR) if buff.temp_damage[0]"
+    @use_effect = "new_buff.temp_damage=self.damage(self.hp/4);
+                   SceneManager.scene.spriteset.show_text(new_buff.temp_damage[1].to_s,self.event,Fuc::AP_ADD_COLOR) if new_buff.temp_damage[0]"
+    @per_turn_start_effect = ""
     @per_step_effect = "a=@cur_actor.mag_damage(@cur_actor.get_ap_for_step*10);
                             @splink.show_text(a[1].to_s,@cur_actor.event,AP_ADD_COLOR) if a[0]"
-    @per_turn_end_effect = "a=@cur_actor.god_damage(buff.temp_damage[1]);
-                            @splink.show_text(a[1].to_s,@cur_actor.event,AP_COST_COLOR) if a[0]"
-    @end_effect = ""
+    @per_turn_end_effect = ""
+    @end_effect = "a=self.god_damage(-buff.temp_damage[1]);
+                   SceneManager.scene.spriteset.show_text(a[1].to_s,self.event,Fuc::AP_COST_COLOR) if a[0]"
     @atk_effect = ""
-    @damage_effect = ""
+    @b_damage_effect = ""
+    @a_damage_effect = ""
   end
   
   def set_extra
     @end_req = "@turn-buff.lived_turn>=buff.keep_turn"
-    @descr = "每回合开始时损失25%的当前生命.\n每进行一次动作损失行走所需行动力十倍的生命值.\n回合结束时,回复回合开始时损失的生命.\n开始和结束的回复与伤害效果无视魔法免疫.\n持续2回合"
+    @descr = "被附加时损失25%的当前生命.\n每进行一次动作损失行走所需行动力十倍的生命值.\nbuff效果消失时,回复开始时损失的生命.\n开始和结束的回复与伤害效果无视魔法免疫.\n持续2回合"
     @temp_damage = 0
   end
 
@@ -105,15 +108,46 @@ class Ctrled < Buff
     @per_turn_end_effect = ""
     @end_effect = "self.die"
     @atk_effect = ""
-    @damage_effect = "@hp=[@hp,1].max;
-                      a = buff.user.mag_damage(value);
-                      SceneManager.scene.spriteset.show_text(a[1].to_s,buff.user.event,Fuc::AP_ADD_COLOR) if a[0]"
+    @b_damage_effect = "@hp=[@hp,1].max;
+                        a = buff.user.mag_damage(value);
+                        SceneManager.scene.spriteset.show_text(a[1].to_s,buff.user.event,Fuc::AP_ADD_COLOR) if a[0]"
+    @a_damage_effect = ""
   end
   
   def set_extra
     @end_req = "@turn-buff.lived_turn>=buff.keep_turn"
     @descr = "该单位死亡后被操控.\n无法被杀死.\n所受伤害由施法者承担.\n持续2回合."
     @temp_damage = 0
+  end
+
+end
+
+class Deep_Damage < Buff
+  
+  attr_accessor :rem_damage
+
+  def set_ele(user)
+    @id = 5
+    @user = user
+    @name = "伤害加深"
+    @icon = "ctrled"
+    @animation = []
+    @keep_turn = 2
+    @keep_step = 0
+    @use_effect = ""
+    @per_turn_start_effect = ""
+    @per_step_effect = ""
+    @per_turn_end_effect = ""
+    @end_effect = ""
+    @atk_effect = ""
+    @b_damage_effect = "if $map_battle.cur_actor==buff.user;value+=buff.rem_damage;buff.rem_damage+=30;end"
+    @a_damage_effect = ""
+  end
+  
+  def set_extra
+    @end_req = "@turn-buff.lived_turn>=buff.keep_turn"
+    @descr = "该单位每次被施法者攻击.\n都会受到30点更多的伤害.\n可无限叠加.\n持续2回合."
+    @rem_damage = 0
   end
 
 end

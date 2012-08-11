@@ -747,6 +747,13 @@
               @splink.show_text(a[1].to_s,@cur_actor.event,HP_COST_COLOR) if a[0]
             end
             @splink.show_text(dama[1].to_s,i.event,bingo_color,bingo_size)
+            @cur_actor.atk_buff.each do |buff|
+              if $random_center.rand(100) < buff[1]
+                sm = instance_eval(buff[0]+"("+"@cur_actor"+")")
+                i.add_buff(sm)
+                @splink.show_text("+"+sm.name,i.event,SP_ADD_COLOR)
+              end
+            end
             i.sp+=2
           elsif dama[1]<=1
             @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
