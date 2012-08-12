@@ -299,7 +299,7 @@
               else
                 err_id = 6
               end
-            elsif tec[0].hurt_e_dead
+            elsif tec[0].hurt_e_dead && !tec[0].hurt_enemy
               err_id = 4 if err_id != 6 || err_id != 7
             else
               effect_arr << i
@@ -315,7 +315,7 @@
               else
                 err_id = 7
               end
-            elsif tec[0].hurt_p_dead
+            elsif tec[0].hurt_p_dead && !tec[0].hurt_partner
               err_id = 5 if err_id != 6 || err_id != 7
             else
               effect_arr << i
@@ -655,9 +655,6 @@
   def update_cal
     if instance_eval(@end_req)
       end_battle
-      #elsif @cur_actor.ap <= 0
-      #  turn_end_cal
-      #  next_actor
     end
   end
   
@@ -756,13 +753,13 @@
                 @splink.show_text("+"+sm.name,i.event,SP_ADD_COLOR)
               end
             end
-            i.sp+=2
+            i.god_sp_damage(-2,true)
           elsif dama[1]<=1
             @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
           end
           @splink.show_value(i.hp*100/i.maxhp,i.event)
         end
-        @cur_actor.sp+=2
+        @cur_actor.god_sp_damage(-2,true)
         @cur_actor.cost_ap_for(1)
         @splink.show_value(@cur_actor.hp*100/@cur_actor.maxhp,@cur_actor.event)
         return tempb
@@ -848,11 +845,10 @@
             end
           end
           if !i.ignore_magic || (i.ignore_magic && para[0].ignore_mag_det)
-            i.god_sp_damage(-2,true)
             para[0].debuff.each do |debuff|
               if $random_center.rand(100) < debuff[1]
                 @succ_count+=1
-                i.dec_buff(debuff[0])
+                i.dec_buff(debuff[0].id)
               end
             end
             para[0].buff.each do |buff|
@@ -867,12 +863,13 @@
               @succ_count+=1
               instance_eval(para[0].spec_effect)
             end
+          else
+            tempb<<[false,3]
           end
           @splink.show_value(i.hp*100/i.maxhp,i.event)
         end
         if @succ_count>0
           @actor.animation_id = para[0].user_animation
-          @cur_actor.god_sp_damage(-2,true)
           @cur_actor.cost_ap_for(3,para[0].ap_cost)
           @cur_actor.god_sp_damage(para[0].sp_cost,true)
           @cur_actor.god_damage(para[0].hp_cost,true)
@@ -962,11 +959,10 @@
             end
           end
           if !i.ignore_magic || (i.ignore_magic && para[0].ignore_mag_det)
-            i.god_sp_damage(-2,true)
             para[0].debuff.each do |debuff|
               if $random_center.rand(100) < debuff[1]
                 @succ_count+=1
-                i.dec_buff(debuff[0])
+                i.dec_buff(debuff[0].id)
               end
             end
             para[0].buff.each do |buff|
@@ -981,12 +977,13 @@
               @succ_count+=1
               instance_eval(para[0].spec_effect)
             end
+          else
+            tempb<<[false,3]
           end
           @splink.show_value(i.hp*100/i.maxhp,i.event)
         end
         if @succ_count>0
           @actor.animation_id = para[0].user_animation
-          @cur_actor.god_sp_damage(-2,true)
           @cur_actor.cost_ap_for(2)
           @cur_actor.god_sp_damage(para[0].sp_cost,true)
           @cur_actor.god_damage(para[0].hp_cost,true)

@@ -11,27 +11,41 @@
 
   def set_ele
     @id = 1
-    @name = "剧毒新星"
+    @name = "意念抛投"
     @init_skill = true
-    @use_req = "true"
+    @use_req = "sp>=4&&ap>=5"
     @use_dis_min = 1
-    @use_dis_max = 5
-    @hotkey = 0x46
+    @use_dis_max = 6
+    @hotkey = 0x44
     @hurt_enemy = true
-    @hurt_partner = false
-    @hurt_p_dead = false
-    @hurt_e_dead = false
-    @hurt_area = [ [[-1,-1,3,3]] ,true]
+    @hurt_partner = true
+    @hurt_p_dead = true
+    @hurt_e_dead = true
+    @hurt_nothing = false
+    @hurt_cant_move = false
+    @hurt_area = [ [[0]] ,true]
     @hurt_maxnum = 0
-    @sp_cost = 8
+    @sp_cost = 0
     @hp_cost = 0
-    @ap_cost = 10
-    @hp_damage = 30
+    @ap_cost = 0
+    @hp_damage = 0
     @sp_damage = 0
     @ap_damage = 0
-    @buff = [["Sick.new",60]]
+    @buff = [["Catch.new",100]]
     @debuff = []
-    @descr = "消耗10点行动力和8点怒气.\n对3x3范围内敌人造成30点魔法伤害\n并且有60%概率对敌人附加中毒状态.\n施法距离:1-5"
+    @descr = "将一个友方单位或是能力低于自己的敌人吸上半空.\n向指定的目标格抛出造成伤害.\n施法距离:1-6"
+  end
+  
+  def set_extra
+    @spec_effect = ""
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @ignore_mag_det = false
   end
 
 end
@@ -40,7 +54,7 @@ class FuckWithOutMoney < Skill
   
   def set_ui
     @icon = "fuckall"
-    @user_animation = 1
+    @user_animation = 0
     @target_partner_animation = 0
     @target_enemy_animation = 0
     @target_p_dead_animation = 0
@@ -49,31 +63,33 @@ class FuckWithOutMoney < Skill
 
   def set_ele
     @id = 2
-    @name = "大爆炸"
+    @name = "投掷"
     @init_skill = true
     @use_req = "true"
     @use_dis_min = 0
-    @use_dis_max = 0
-    @hotkey = 0x42
+    @use_dis_max = 6
+    @hotkey = 0x44
     @hurt_enemy = true
-    @hurt_partner = false
-    @hurt_p_dead = false
+    @hurt_partner = true
+    @hurt_p_dead = true
     @hurt_e_dead = false
-    @hurt_area = [ [[5]] ,true]
+    @hurt_nothing = true
+    @hurt_cant_move = false
+    @hurt_area = [ [[0]] ,true]
     @hurt_maxnum = 0
-    @sp_cost = 12
+    @sp_cost = 4
     @hp_cost = 0
-    @ap_cost = 14
-    @hp_damage = 160
+    @ap_cost = 5
+    @hp_damage = 0
     @sp_damage = 0
     @ap_damage = 0
-    @buff = [["Weak.new",50]]
+    @buff = []
     @debuff = []
-    @descr = "消耗14点行动力和14点怒气.\n立即对周身5格内敌人造成60点伤害.\n50%的概率附加撕裂状态.\n无视魔法免疫."
+    @descr = "将选中的单位投向目标地点.\n造成巨大伤害.\n施法距离:1-6"
   end
   
   def set_extra
-    @spec_effect = ""
+    @spec_effect = "$team_set.each{|i| if i.in_buff(6);dx=para[1][0]-i.x;dy=para[1][1]-i.y;i.event.jump(dx,dy);i.dec_buff(6);end}"
     @sp_cost_rate = 0
     @hp_cost_rate = 0
     @ap_cost_rate = 0

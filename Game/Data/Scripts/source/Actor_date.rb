@@ -156,7 +156,7 @@ class God < Actor
   def set_tec
     @id = 3
     @name = "神"
-    @skill = [FuckEachOther.new]
+    @skill = []
     @equip = {}
     @atk_pic = nil
     @atk_cot = 4

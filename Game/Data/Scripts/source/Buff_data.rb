@@ -151,3 +151,35 @@ class Deep_Damage < Buff
   end
 
 end
+
+class Catch < Buff
+  
+  attr_accessor :rem_skill
+
+  def set_ele(user)
+    @id = 6
+    @user = user
+    @name = "意念抛投"
+    @icon = "ctrled"
+    @animation = []
+    @keep_turn = 0
+    @keep_step = 0
+    @use_effect = " new_buff.user.change_skill(new_buff.user.rskill);
+                    new_buff.user.fake_skill.each_with_index{|i,j| new_buff.user.fake_skill[j]=FuckWithOutMoney.new if i.id==1;
+                    new_buff.user.cal_skill_rem}"
+    @per_turn_start_effect = ""
+    @per_step_effect = ""
+    @per_turn_end_effect = ""
+    @end_effect = "buff.user.resc_skill"
+    @atk_effect = ""
+    @b_damage_effect = ""
+    @a_damage_effect = ""
+  end
+  
+  def set_extra
+    @end_req = "false"
+    @descr = "该单位被人盯上了."
+    @rem_skill = nil
+  end
+  
+end
