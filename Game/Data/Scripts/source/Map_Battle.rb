@@ -299,7 +299,7 @@
               else
                 err_id = 6
               end
-            elsif tec[0].hurt_e_dead
+            elsif tec[0].hurt_e_dead && !tec[0].hurt_enemy
               err_id = 4 if err_id != 6 || err_id != 7
             else
               effect_arr << i
@@ -315,7 +315,7 @@
               else
                 err_id = 7
               end
-            elsif tec[0].hurt_p_dead
+            elsif tec[0].hurt_p_dead && !tec[0].hurt_partner
               err_id = 5 if err_id != 6 || err_id != 7
             else
               effect_arr << i
@@ -655,9 +655,6 @@
   def update_cal
     if instance_eval(@end_req)
       end_battle
-      #elsif @cur_actor.ap <= 0
-      #  turn_end_cal
-      #  next_actor
     end
   end
   
@@ -851,7 +848,7 @@
             para[0].debuff.each do |debuff|
               if $random_center.rand(100) < debuff[1]
                 @succ_count+=1
-                i.dec_buff(debuff[0])
+                i.dec_buff(debuff[0].id)
               end
             end
             para[0].buff.each do |buff|
@@ -866,6 +863,8 @@
               @succ_count+=1
               instance_eval(para[0].spec_effect)
             end
+          else
+            tempb<<[false,3]
           end
           @splink.show_value(i.hp*100/i.maxhp,i.event)
         end
@@ -963,7 +962,7 @@
             para[0].debuff.each do |debuff|
               if $random_center.rand(100) < debuff[1]
                 @succ_count+=1
-                i.dec_buff(debuff[0])
+                i.dec_buff(debuff[0].id)
               end
             end
             para[0].buff.each do |buff|
@@ -978,6 +977,8 @@
               @succ_count+=1
               instance_eval(para[0].spec_effect)
             end
+          else
+            tempb<<[false,3]
           end
           @splink.show_value(i.hp*100/i.maxhp,i.event)
         end

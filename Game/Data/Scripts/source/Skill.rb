@@ -105,7 +105,7 @@
       if hp> @hp_cost
         if sp>=@sp_cost
           if can_use
-            if eval(@use_req)
+            if instance_eval(@use_req)
               return true
             else
               return 0

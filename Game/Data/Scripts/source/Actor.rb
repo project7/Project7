@@ -74,6 +74,7 @@
   attr_accessor :bag_rem                      # 物品编号
   attr_accessor :skill_rem                    # 技能编号
   attr_accessor :atk_buff                     # 法球效果
+  attr_accessor :fake_skill                   # 技能壳
   
   def initialize(event_id=0,t_id=[0])
     @event_id = event_id
@@ -298,13 +299,17 @@
     return @fake_skill ? @fake_skill : @skill
   end
   
+  def rskill
+    return @skill
+  end
+  
   def forget_skill(skill_id)
     @skill.delete_if{|i| i.id==skill_id}
     cal_skill_rem
   end
   
   def change_skill(skill_arr)
-    @fake_skill = skill_arr
+    @fake_skill = skill_arr.clone
     cal_skill_rem
   end
   
@@ -371,6 +376,10 @@
   def kill_buff(buff_id)
     @buff.delete{|i| i.id==buff_id}
     cal_buff_rem
+  end
+  
+  def in_buff(buff_id)
+    return @buff.any?{|i| i.id == buff_id}
   end
   
   def dec_buff(buff_id)
