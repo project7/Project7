@@ -234,7 +234,7 @@ class Scene_Map < Scene_Base
       end
     end
     if Mouse.click?(1)
-      if mouse_in_itemrect?
+      if mouse_in_itemrect? && item_mouse_index
         obj = $sel_body.bag[item_mouse_index]
         if obj
           sick = obj[0].enough_to_use(obj[1],true,$sel_body.hp,9999)
@@ -249,7 +249,7 @@ class Scene_Map < Scene_Base
             @spriteset.show_tips(FAILD_ATTACK_TEXT[14+sick])
           end
         end
-      elsif mouse_in_skillrect?
+      elsif mouse_in_skillrect? && skill_mouse_index
         sks = $sel_body.skill
         obj = sks[skill_mouse_index]
         if obj
