@@ -184,6 +184,10 @@
     @dead = false
   end
   
+  def link(id)
+    @event_id=id
+  end
+  
   def phy_damage(value)
     return [false,2] if @ignore_physical
     return [false,0] if xrand(100) < @miss_rate
@@ -284,9 +288,14 @@
   
   def cal_skill_rem
     @skill_rem = []
-    @skill.each do |i|
+    nskill = @fake_skill ? @fake_skill : @skill
+    nskill.each do |i|
       @skill_rem << i.id
     end
+  end
+  
+  def skill
+    return @fake_skill ? @fake_skill : @skill
   end
   
   def forget_skill(skill_id)
@@ -294,7 +303,17 @@
     cal_skill_rem
   end
   
-  def gain_item(item,num)
+  def change_skill(skill_arr)
+    @fake_skill = skill_arr
+    cal_skill_rem
+  end
+  
+  def resc_skill
+    @fake_skill = nil
+    cal_skill_rem
+  end
+  
+  def gain_item(item,num=1)
     @bag.each_with_index do |i,j|
       if i[0].id == item.id
         @bag[j][1] += num
@@ -322,7 +341,7 @@
     return 0
   end
   
-  def lose_item(item_id,num)
+  def lose_item(item_id,num=1)
     @bag.each_with_index do |i,j|
       if i[0].id == item_id
         if i[1] > num
@@ -442,8 +461,7 @@
   def absorb_sp(value)
     return god_sp_damage(-value*@sp_absorb/100)
   end
-  
-  # 生成随机数
+
   def xrand(value)
     return 0 if value < 1
     return $random_center.rand(value)

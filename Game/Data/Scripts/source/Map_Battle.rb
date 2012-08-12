@@ -87,7 +87,7 @@
     arrb = []
     @action_list.each do |e|
       if !e.dead?
-        if (e.team&$pl_actor.team).size>0
+        if (e.team&$party.members[0].team).size>0
           arra << e
         else
           arrb << e
@@ -206,6 +206,7 @@
       if tempb.all?{|i| i[0]==false&&i[1]>1} && tempb.size>0
         @splink.show_tips(FAILD_ATTACK_TEXT[tempb[0][1]])
       else
+        @splink.show_tips(@using_obj.name)
         end_target_select
       end
     elsif Mouse.down?(2) || CInput.trigger?($vkey[:X])
@@ -235,6 +236,7 @@
       if tempb.all?{|i| i[0]==false&&i[1]>1} && tempb.size>0
         @splink.show_tips(FAILD_ATTACK_TEXT[tempb[0][1]])
       else
+        @splink.show_tips(@using_obj.name)
         end_target_select
       end
     elsif Mouse.down?(2) || CInput.trigger?($vkey[:X])

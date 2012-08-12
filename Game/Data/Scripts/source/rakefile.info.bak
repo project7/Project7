@@ -40,6 +40,7 @@ Sprite_Character
 Sprite_Battler
 Sprite_Picture
 Sprite_RichText
+Sprite_RichValue
 Sprite_Timer
 Spriteset_Weather
 Spriteset_Map
@@ -108,6 +109,13 @@ Scene_Name
 Scene_Debug
 Scene_Battle
 Scene_Gameover
+Window_WebSaveFile
+Scene_WebLogin
+Scene_WebFile
+Scene_WebSave
+Scene_WebLoad
+Web
+Fuc
 Ruby.ex 1.0
 CMouse
 Mouse
@@ -115,6 +123,7 @@ Furnace
 Wayfinding
 Effect_Area
 UI
+Party
 Actor
 Actor_date
 Buff
@@ -125,9 +134,12 @@ Equip
 Equip_data
 Item
 Item_data
+Battler_AI
+AI_Data
+OrzAI
 Map_Battle
-Fuc
+Plus
 AllInputable
-Inputset
+SystemSetting
 Window_Mouse
 Var_init

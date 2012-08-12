@@ -452,7 +452,7 @@ class Spriteset_Map
         @tips[2].x = @tips[1].x+5+@tipsvar[2][1]*41 if @tipsvar[2][0]
       when 4
         unless $map_battle
-          $sel_body = $pl_actor
+          $sel_body = $party.members[0]
         end
         if $sel_body != @last_sel_body1
           @tips[4].bitmap.dispose if @tips[4].bitmap
@@ -513,7 +513,7 @@ class Spriteset_Map
             @tips[10].y = @tips[1].y-@tips[10].bitmap.height
           end
         elsif @tipsvar[19] && @tipsvar[17][0] && $sel_body.skill[@tipsvar[17][1]]
-          if !@tipsvar[18][0] || @tipsvar[18][1]!=@tipsvar[17][1]
+          if !@tipsvar[18][0] || @tipsvar[18][1]!=@tipsvar[17][1] || @tipsvar[16]!=$sel_body.skill_rem
             @tipsvar[18][0] = true
             @tipsvar[18][1] = @tipsvar[17][1]
             @tips[10].bitmap = Fuc.get_skill_descr(@tipsvar[17][1])
@@ -521,7 +521,7 @@ class Spriteset_Map
             @tips[10].y = @tips[16].y-@tips[10].bitmap.height-4
           end
         else
-          if @tipsvar[10][0] || @tipsvar[15]
+          if @tipsvar[10][0] || @tipsvar[15][0] || @tipsvar[18][0]
             @tipsvar[10][0] = false
             @tipsvar[10][1] = -1
             @tipsvar[15][0] = false
@@ -542,6 +542,7 @@ class Spriteset_Map
         @tips[i].x = @tips[1].x+5+(i-11)*41
       when 16
         if @tipsvar[16]!=$sel_body.skill_rem || @tipsvar[20]!=$sel_body.sp
+          @menu_calling = false
           @tipsvar[16]=$sel_body.skill_rem.clone
           @tipsvar[20]=$sel_body.sp
           @tips[16].bitmap.dispose if @tips[16].bitmap

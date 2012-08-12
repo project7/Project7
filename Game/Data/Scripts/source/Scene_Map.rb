@@ -6,8 +6,11 @@
 #==============================================================================
 
 class Scene_Map < Scene_Base
+  
+  include Fuc
 
   attr_accessor :spriteset
+  attr_accessor :menu_calling
   #--------------------------------------------------------------------------
   # ● 开始处理
   #--------------------------------------------------------------------------
@@ -19,7 +22,12 @@ class Scene_Map < Scene_Base
     $game_message.visible = false
     create_spriteset
     create_all_windows
+    @menu_sprite_sin = Sprite.new
+    @menu_sprite_sin.z = 1000
+    @menu_sprite_act = Sprite.new
+    @menu_sprite_act.z = 1001
     @menu_calling = false
+    @menu_called_inedx = 0
   end
   #--------------------------------------------------------------------------
   # ● 执行进入场景时的渐变
@@ -51,6 +59,10 @@ class Scene_Map < Scene_Base
   #--------------------------------------------------------------------------
   def terminate
     super
+    @menu_sprite_sin.bitmap.dispose if @menu_sprite_sin.bitmap
+    @menu_sprite_sin.dispose if @menu_sprite_sin
+    @menu_sprite_act.bitmap.dispose if @menu_sprite_act.bitmap
+    @menu_sprite_act.dispose if @menu_sprite_act
     SceneManager.snapshot_for_background
     dispose_spriteset
     perform_battle_transition if SceneManager.scene_is?(Scene_Battle)
@@ -60,16 +72,16 @@ class Scene_Map < Scene_Base
   #--------------------------------------------------------------------------
   def update
     super
-    #unless @menu_calling
+    unless @menu_called_inedx > 0
       $game_map.update(true)
       $game_player.update
       $game_timer.update
       @spriteset.update
       update_ui
       update_scene if scene_change_ok?
-    #else
-    #  update_system_menu
-    #end
+    else
+      update_system_menu(@menu_called_inedx)
+    end
   end
   #--------------------------------------------------------------------------
   # ● 更新UI
@@ -185,12 +197,74 @@ class Scene_Map < Scene_Base
   # ● 更新非战斗时鼠标点击事件
   #--------------------------------------------------------------------------
   def update_mouse_event
-    if Mouse.click?(1)                                
+    tkey = CInput.item4
+    if tkey
+      obj = $sel_body.bag[tkey]
+      if obj
+        sick = obj[0].enough_to_use(obj[1],true,$sel_body.hp,9999)
+        if sick==true
+          $sel_body.event.animation_id = obj[0].user_animation
+          $sel_body.god_damage(obj[0].hp_cost,true)
+          instance_eval(obj[0].spec_effect)
+          $sel_body.lose_item(obj[0].id,obj[0].use_cost_num)
+          @spriteset.show_tips(obj[0].name)
+          return
+        else
+          @spriteset.show_tips(FAILD_ATTACK_TEXT[14+sick])
+        end
+      end
+    end
+    sks = $sel_body.skill
+    sks.each_with_index do |i,j|
+      next unless i.hotkey
+      if CInput.trigger?([i.hotkey])
+        obj = i
+        if obj
+          sick = obj.enough_to_use(9999,$sel_body.hp,9999)
+          if sick==true
+            $sel_body.event.animation_id = obj.user_animation
+            $sel_body.god_damage(obj.hp_cost,true)
+            instance_eval(obj.spec_effect)
+            @spriteset.show_tips(obj.name)
+            return
+          else
+            @spriteset.show_tips(FAILD_ATTACK_TEXT[14+sick])
+          end
+        end
+      end
+    end
+    if Mouse.click?(1)
       if mouse_in_itemrect?
-        
+        obj = $sel_body.bag[item_mouse_index]
+        if obj
+          sick = obj[0].enough_to_use(obj[1],true,$sel_body.hp,9999)
+          if sick==true
+            $sel_body.event.animation_id = obj[0].user_animation
+            $sel_body.god_damage(obj[0].hp_cost,true)
+            instance_eval(obj[0].spec_effect)
+            $sel_body.lose_item(obj[0].id,obj[0].use_cost_num)
+            @spriteset.show_tips(obj[0].name)
+            return
+          else
+            @spriteset.show_tips(FAILD_ATTACK_TEXT[14+sick])
+          end
+        end
       elsif mouse_in_skillrect?
-        
-      else  #鼠标点击寻路
+        sks = $sel_body.skill
+        obj = sks[skill_mouse_index]
+        if obj
+          sick = obj.enough_to_use(9999,$sel_body.hp,9999)
+          if sick==true
+            $sel_body.event.animation_id = obj.user_animation
+            $sel_body.god_damage(obj.hp_cost,true)
+            instance_eval(obj.spec_effect)
+            @spriteset.show_tips(obj.name)
+            return
+          else
+            @spriteset.show_tips(FAILD_ATTACK_TEXT[14+sick])
+          end
+        end
+      elsif @menu_called_inedx==0  #鼠标点击寻路
         x_dis = $game_player.x-Fuc.getpos_by_screenpos(Mouse.pos)[0]
         y_dis = $game_player.y-Fuc.getpos_by_screenpos(Mouse.pos)[1]
         if x_dis.abs+y_dis.abs == 1 && $game_player.movable?
@@ -206,11 +280,92 @@ class Scene_Map < Scene_Base
       end
     end
   end
+  
+  def call_ele_scene
+    create_menu(MENU_ELE)
+    @menu_called_inedx = 1
+  end
+  
+  def call_gra_scene
+    create_menu(MENU_GRA)
+    @menu_called_inedx = 2
+  end
+  
+  def call_voi_scene
+    create_menu(MENU_VOI)
+    @menu_called_inedx = 3
+  end
+  
+  def call_save_scene
+    create_menu(MENU_SAV)
+    @menu_called_inedx = 4
+  end
+  
+  def call_mes_scene
+    create_menu(MENU_MES)
+    @menu_called_inedx = 5
+  end
+  
+  def create_menu(res)
+    @menu_sprite_sin.bitmap.dispose if @menu_sprite_sin.bitmap
+    @menu_sprite_sin.bitmap = Bitmap.new(res)
+    @menu_sprite_act.bitmap.dispose if @menu_sprite_act.bitmap
+    @menu_sprite_act.bitmap = Bitmap.new(@menu_sprite_sin.bitmap.width,@menu_sprite_sin.bitmap.height)
+    @menu_sprite_act.x = @menu_sprite_sin.x = Graphics.width/2-@menu_sprite_sin.bitmap.width/2
+    @menu_sprite_act.y = @menu_sprite_sin.y = Graphics.height/2-@menu_sprite_sin.bitmap.height/2
+  end
+  
+  def call_ret_scene
+    @menu_sprite_sin.bitmap.dispose if @menu_sprite_sin.bitmap
+    @menu_sprite_act.bitmap.dispose if @menu_sprite_act.bitmap
+    resc_skill
+    @menu_calling = false
+    @menu_called_inedx = 0
+  end
   #--------------------------------------------------------------------------
   # ● 更新菜单
   #--------------------------------------------------------------------------
-  def update_system_menu
-    
+  def update_system_menu(index)
+    @spriteset.update_ui_view
+    update_ui
+    update_mouse_event
+    update_call_menu
+    case @menu_called_inedx
+    when 1
+    when 2
+      update_menu_gra
+    when 3
+    when 4
+    when 5
+    end
+  end
+  
+  def update_menu_gra
+    now_set = [$syseting[:ctrl_screen],$syseting[:show_maparea],$syseting[:show_animation],$syseting[:screen_size]]
+    if @menu_rem != now_set
+      @menu_rem = now_set.clone
+      @menu_sprite_act.bitmap.clear
+      4.times{|i| @menu_sprite_act.bitmap.blt(*MENU_GRA_POS[i],Bitmap.new(MENU_SEL),RECT_SEL) if @menu_rem[i]}
+    end
+    if Mouse.click?(1)
+      tpos = [Mouse.pos[0]-@menu_sprite_act.x,Mouse.pos[1]-@menu_sprite_act.y]
+      MENU_GRA_POS.each_with_index do |i,j|
+        if tpos[0]>=i[0]&&tpos[0]<=i[0]+26&&tpos[1]>=i[1]&&tpos[1]<=i[1]+26
+          case j
+          when 0
+            $syseting[:ctrl_screen]=!$syseting[:ctrl_screen]
+          when 1
+            $syseting[:show_maparea]=!$syseting[:show_maparea]
+          when 2
+            $syseting[:show_animation]=!$syseting[:show_animation]
+          when 3
+            $syseting[:screen_size]=!$syseting[:screen_size]
+            $syseting[:screen_size] ? Graphics.resize_screen(800,600) : Graphics.resize_screen(640,480)
+            $syseting[:screen_size] ? RGSSX.resize_window(800,600) : RGSSX.resize_window(640,480)
+          end
+        end
+      end
+    end
   end
   #--------------------------------------------------------------------------
   # ● 更新画面（消退用）
@@ -308,11 +463,26 @@ class Scene_Map < Scene_Base
   #--------------------------------------------------------------------------
   def update_call_menu
     if $game_system.menu_disabled || $game_map.interpreter.running?
-      @menu_calling = nil
+      @menu_calling = false
     else
-      @menu_calling ||= CInput.trigger?($vkey[:X]) || (!$map_battle && Mouse.down?(2))
-      call_menu if @menu_calling && !$game_player.moving?
+      if CInput.trigger?($vkey[:X]) || (!$map_battle && Mouse.down?(2))
+        @menu_calling =!@menu_calling
+        if @menu_calling
+          @menu_rem = nil
+          change_skill
+        else
+          call_ret_scene
+        end
+      end
     end
+  end
+  
+  def change_skill
+    $sel_body.change_skill($menu_skill)
+  end
+  
+  def resc_skill
+    $sel_body.resc_skill
   end
   #--------------------------------------------------------------------------
   # ● 打开菜单画面

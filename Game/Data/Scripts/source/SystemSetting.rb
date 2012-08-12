@@ -21,8 +21,10 @@
 }
 
 $syseting =
-{ :screen_size=>1,
+{ :ctrl_screen=>false,
   :show_maparea=>true,
+  :show_animation=>true,
+  :screen_size=>1,
   :bgm_value=>100,
   :me_value=>100,
   :se_value=>100

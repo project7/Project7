@@ -90,6 +90,7 @@ Window_TitleCommand
 Window_GameEnd
 Window_DebugLeft
 Window_DebugRight
+Fuc
 Scene_Base
 Scene_Title
 Scene_Map
@@ -115,9 +116,6 @@ Scene_WebFile
 Scene_WebSave
 Scene_WebLoad
 Web
-Fuc
-RPGAudio
-FModEx
 Ruby.ex 1.0
 CMouse
 Mouse
@@ -125,7 +123,6 @@ Furnace
 Wayfinding
 Effect_Area
 UI
-Party
 Actor
 Actor_date
 Buff
@@ -139,6 +136,7 @@ Item_data
 Battler_AI
 AI_Data
 OrzAI
+Party
 Map_Battle
 Plus
 AllInputable

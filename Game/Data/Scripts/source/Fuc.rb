@@ -3,6 +3,7 @@
   DIR_LIST =          [[0,8,2],[4],[6]]# 方向表，方便写
   SP_OPA =            [255,100,150,200,100] # 透明度表
   UI_SKILL_POS =      [ [51,5],[92,27],[92,74],[51,97],[10,74],[10,27] ]
+  MENU_GRA_POS =      [ [157,51],[157,89],[157,127],[157,165] ]
   MOV_AREA_C =        [Color.new(0,100,255,255),Color.new(0,150,255,255)]
   WAY_AREA_C =        [Color.new(0,180,100,255),Color.new(100,200,50,255)]
   EFFECT_AREA_C =     [Color.new(255,255,50,255),Color.new(200,200,0,200)]
@@ -25,6 +26,13 @@
   TIPS_TEXT = "Graphics/System/Tips_Text.png"
   BUFF_BACK = "Graphics/System/Buff_Back.png"
   SKILL_BACK = "Graphics/System/Skill_Back.png"
+  MENU_ELE = "Graphics/System/Skill_Back.png"
+  MENU_GRA = "Graphics/System/graphic_scene.png"
+  MENU_VOI = "Graphics/System/voice_scene.png"
+  MENU_SAV = "Graphics/System/save_scene.png"
+  MENU_MES = "Graphics/System/mesg_scene.png"
+  MENU_SEL = "Graphics/System/seled.png"
+  RECT_SEL = Rect.new(0,0,26,26)
   FAILD_ATTACK_TEXT = 
   [ "Miss",
     "Trick",
@@ -194,7 +202,7 @@
     if $map_battle
       return $map_battle.cur_actor
     else
-      return $pl_actor
+      return $party.members[0]
     end
   end
   
@@ -289,7 +297,12 @@
       tBitmap.blt(*UI_SKILL_POS[i],self.get_skill_bitmap(i),trect)
     end
     tBitmap.font.size = 30
-    tBitmap.draw_text(39,37,60,60,$sel_body.sp,1) if $sel_body
+    if SceneManager.scene.menu_calling
+      tBitmap.font.size = 22
+      tBitmap.draw_text(39,40,60,60,"设置",1) if $sel_body
+    else
+      tBitmap.draw_text(39,37,60,60,$sel_body.sp,1) if $sel_body
+    end
     return tBitmap
   end
   
@@ -304,7 +317,7 @@
   
   # 获取技能说明
   def self.get_skill_descr(index)
-    title = $sel_body.skill[index].name
+    title = $sel_body.skill[index].name+"("+$sel_body.skill[index].hotkey.chr+")"
     text = $sel_body.skill[index].descr
     textarr = text.split(/\n/)
     tbitmap = Bitmap.new(10,10)

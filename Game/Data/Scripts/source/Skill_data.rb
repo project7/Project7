@@ -11,7 +11,7 @@
 
   def set_ele
     @id = 1
-    @name = "剧毒新星(F)"
+    @name = "剧毒新星"
     @init_skill = true
     @use_req = "true"
     @use_dis_min = 1
@@ -49,7 +49,7 @@ class FuckWithOutMoney < Skill
 
   def set_ele
     @id = 2
-    @name = "大爆炸(B)"
+    @name = "大爆炸"
     @init_skill = true
     @use_req = "true"
     @use_dis_min = 0
@@ -99,7 +99,7 @@ class Relive < Skill
 
   def set_ele
     @id = 3
-    @name = "操纵死尸(R)"
+    @name = "操纵死尸"
     @init_skill = true
     @use_req = "true"
     @use_dis_min = 1
@@ -132,6 +132,336 @@ class Relive < Skill
     @sp_damage_add = "skill.level*50"
     @ap_damage_add = "0"
     @ignore_mag_det = false
+  end
+  
+end
+
+class CallEleScene < Skill
+  
+  def set_ui
+    @icon = "ele"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 4
+    @name = "属性界面"
+    @init_skill = true
+    @use_req = "true"
+    @use_dis_min = 0
+    @use_dis_max = 0
+    @hotkey = 0x45
+    @hurt_enemy = false
+    @hurt_partner = true
+    @hurt_p_dead = false
+    @hurt_e_dead = false
+    @hurt_area = [ [[0]] ,true]
+    @hurt_maxnum = 1
+    @sp_cost = 0
+    @hp_cost = 0
+    @ap_cost = 0
+    @hp_damage = 0
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = []
+    @debuff = []
+    @descr = "查看人物状态以及能力."
+  end
+  
+  def set_other
+    @use_in_battle = true
+    @use_in_scene = true
+  end
+  
+  def set_extra
+    @spec_effect = "SceneManager.scene.call_ele_scene"
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @ignore_mag_det = true
+  end
+  
+end
+
+class CallGraScene < Skill
+  
+  def set_ui
+    @icon = "gra"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 5
+    @name = "画面设置"
+    @init_skill = true
+    @use_req = "true"
+    @use_dis_min = 0
+    @use_dis_max = 0
+    @hotkey = 0x47
+    @hurt_enemy = false
+    @hurt_partner = true
+    @hurt_p_dead = false
+    @hurt_e_dead = false
+    @hurt_area = [ [[0]] ,true]
+    @hurt_maxnum = 1
+    @sp_cost = 0
+    @hp_cost = 0
+    @ap_cost = 0
+    @hp_damage = 0
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = []
+    @debuff = []
+    @descr = "调整画面效果.\n影响游戏性能."
+  end
+  
+  def set_other
+    @use_in_battle = true
+    @use_in_scene = true
+  end
+  
+  def set_extra
+    @spec_effect = "SceneManager.scene.call_gra_scene"
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @ignore_mag_det = true
+  end
+  
+end
+
+class CallVoiScene < Skill
+  
+  def set_ui
+    @icon = "voi"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 6
+    @name = "声音设置"
+    @init_skill = true
+    @use_req = "true"
+    @use_dis_min = 0
+    @use_dis_max = 0
+    @hotkey = 0x56
+    @hurt_enemy = false
+    @hurt_partner = true
+    @hurt_p_dead = false
+    @hurt_e_dead = false
+    @hurt_area = [ [[0]] ,true]
+    @hurt_maxnum = 1
+    @sp_cost = 0
+    @hp_cost = 0
+    @ap_cost = 0
+    @hp_damage = 0
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = []
+    @debuff = []
+    @descr = "调整声音效果."
+  end
+  
+  def set_other
+    @use_in_battle = true
+    @use_in_scene = true
+  end
+  
+  def set_extra
+    @spec_effect = "SceneManager.scene.call_voi_scene"
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @ignore_mag_det = true
+  end
+  
+end
+
+class CallSaveScene < Skill
+  
+  def set_ui
+    @icon = "sav"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 7
+    @name = "存档界面"
+    @init_skill = true
+    @use_req = "true"
+    @use_dis_min = 0
+    @use_dis_max = 0
+    @hotkey = 0x53
+    @hurt_enemy = false
+    @hurt_partner = true
+    @hurt_p_dead = false
+    @hurt_e_dead = false
+    @hurt_area = [ [[0]] ,true]
+    @hurt_maxnum = 1
+    @sp_cost = 0
+    @hp_cost = 0
+    @ap_cost = 0
+    @hp_damage = 0
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = []
+    @debuff = []
+    @descr = "进入存档界面.\n保存游戏进度."
+  end
+  
+  def set_other
+    @use_in_battle = false
+    @use_in_scene = true
+  end
+  
+  def set_extra
+    @spec_effect = "SceneManager.scene.call_save_scene"
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @ignore_mag_det = true
+  end
+  
+end
+
+class CallMesScene < Skill
+  
+  def set_ui
+    @icon = "mes"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 8
+    @name = "获取公告"
+    @init_skill = true
+    @use_req = "true"
+    @use_dis_min = 0
+    @use_dis_max = 0
+    @hotkey = 0x4D
+    @hurt_enemy = false
+    @hurt_partner = true
+    @hurt_p_dead = false
+    @hurt_e_dead = false
+    @hurt_area = [ [[0]] ,true]
+    @hurt_maxnum = 1
+    @sp_cost = 0
+    @hp_cost = 0
+    @ap_cost = 0
+    @hp_damage = 0
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = []
+    @debuff = []
+    @descr = "获取游戏最新消息."
+  end
+  
+  def set_other
+    @use_in_battle = true
+    @use_in_scene = true
+  end
+  
+  def set_extra
+    @spec_effect = "SceneManager.scene.call_mes_scene"
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @ignore_mag_det = true
+  end
+  
+end
+
+class CallRetScene < Skill
+  
+  def set_ui
+    @icon = "ret"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 9
+    @name = "返回"
+    @init_skill = true
+    @use_req = "true"
+    @use_dis_min = 0
+    @use_dis_max = 0
+    @hotkey = 0x52
+    @hurt_enemy = false
+    @hurt_partner = true
+    @hurt_p_dead = false
+    @hurt_e_dead = false
+    @hurt_area = [ [[0]] ,true]
+    @hurt_maxnum = 1
+    @sp_cost = 0
+    @hp_cost = 0
+    @ap_cost = 0
+    @hp_damage = 0
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = []
+    @debuff = []
+    @descr = "返回技能界面."
+  end
+  
+  def set_other
+    @use_in_battle = true
+    @use_in_scene = true
+  end
+  
+  def set_extra
+    @spec_effect = "SceneManager.scene.call_ret_scene"
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @ignore_mag_det = true
   end
   
 end

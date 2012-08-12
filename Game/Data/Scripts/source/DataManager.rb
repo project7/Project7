@@ -92,7 +92,9 @@ module DataManager
     $game_troop         = Game_Troop.new
     $game_map           = Game_Map.new
     $game_player        = Game_Player.new
-    $pl_actor           = Fucker.new(0,[0])
+    $party              = Party.new
+    $party.members << Fucker.new(0,[0])
+    $party.members << Fucker.new(-1,[0])
   end
   #--------------------------------------------------------------------------
   # ● 设置新游戏
@@ -229,7 +231,7 @@ module DataManager
     contents[:troop]         = $game_troop
     contents[:map]           = $game_map
     contents[:player]        = $game_player
-    contents[:pl_actor]      = $pl_actor
+    contents[:rparty]        = $party
     contents
   end
   #--------------------------------------------------------------------------
@@ -247,7 +249,7 @@ module DataManager
     $game_troop         = contents[:troop]
     $game_map           = contents[:map]
     $game_player        = contents[:player]
-    $pl_actor           = contents[:pl_actor]
+    $party              = contents[:rparty]
   end
   #--------------------------------------------------------------------------
   # ● 如果数据已更新则重载地图
