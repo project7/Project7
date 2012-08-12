@@ -389,6 +389,7 @@ class Scene_Map < Scene_Base
           when 0
             $syseting[:bgm_value]+=5*(ms>0 ? 1 :-1)
             $syseting[:bgm_value]=[[100,$syseting[:bgm_value]].min,0].max
+            Audio.sync_vol if Audio.respond_to? :sync_vol
           when 1
             $syseting[:se_value]+=5*(ms>0 ? 1 :-1)
             $syseting[:se_value]=[[100,$syseting[:se_value]].min,0].max

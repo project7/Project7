@@ -8,7 +8,7 @@
     return false
   end
 end
-
+=begin
 module Audio
   class << Audio
     
@@ -19,3 +19,4 @@ module Audio
 
   end
 end
+=end

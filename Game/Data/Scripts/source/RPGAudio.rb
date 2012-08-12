@@ -1,4 +1,5 @@
-﻿class RPG::BGM < RPG::AudioFile
+﻿
+class RPG::BGM < RPG::AudioFile
   @@last = RPG::BGM.new
   def play(pos = 0)
     if @name.empty?
