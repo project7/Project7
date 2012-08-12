@@ -26,6 +26,6 @@ $syseting =
   :show_animation=>true,
   :screen_size=>1,
   :bgm_value=>100,
-  :me_value=>100,
-  :se_value=>100
+  :se_value=>100,
+  :voi_value=>100
 }

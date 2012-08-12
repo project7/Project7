@@ -335,6 +335,7 @@ class Scene_Map < Scene_Base
     when 2
       update_menu_gra
     when 3
+      update_menu_voi
     when 4
     when 5
     end
@@ -362,6 +363,34 @@ class Scene_Map < Scene_Base
             $syseting[:screen_size]=!$syseting[:screen_size]
             $syseting[:screen_size] ? Graphics.resize_screen(800,600) : Graphics.resize_screen(640,480)
             $syseting[:screen_size] ? RGSSX.resize_window(800,600) : RGSSX.resize_window(640,480)
+          end
+        end
+      end
+    end
+  end
+  
+  def update_menu_voi
+    now_set = [$syseting[:bgm_value],$syseting[:se_value],$syseting[:voi_value]]
+    if @menu_rem != now_set
+      @menu_rem = now_set.clone
+      @menu_sprite_act.bitmap.clear
+      4.times{|i| @menu_sprite_act.bitmap.draw_text(*MENU_VOI_POS[i],60,40,@menu_rem[i].to_s+"%",2) if @menu_rem[i]}
+    end
+    ms = Mouse.scroll
+    if ms!=0
+      tpos = [Mouse.pos[0]-@menu_sprite_act.x,Mouse.pos[1]-@menu_sprite_act.y]
+      MENU_VOI_POS.each_with_index do |i,j|
+        if tpos[1]>=i[1]&&tpos[1]<=i[1]+32
+          case j
+          when 0
+            $syseting[:bgm_value]+=5*(ms>0 ? 1 :-1)
+            $syseting[:bgm_value]=[[100,$syseting[:bgm_value]].min,0].max
+          when 1
+            $syseting[:se_value]+=5*(ms>0 ? 1 :-1)
+            $syseting[:se_value]=[[100,$syseting[:se_value]].min,0].max
+          when 2
+            $syseting[:voi_value]+=5*(ms>0 ? 1: -1)
+            $syseting[:voi_value]=[[100,$syseting[:voi_value]].min,0].max
           end
         end
       end
