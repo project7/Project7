@@ -116,6 +116,8 @@ Scene_WebSave
 Scene_WebLoad
 Web
 Fuc
+RPGAudio
+FModEx
 Ruby.ex 1.0
 CMouse
 Mouse
