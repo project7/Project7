@@ -493,14 +493,15 @@ RGSS3Runtime::VALUE RUBYCALL dm_ensure(RGSS3Runtime::VALUE obj)
 }
 RGSS3Runtime::VALUE RUBYCALL dm_resize_window(RGSS3Runtime::VALUE obj, RGSS3Runtime::VALUE w, RGSS3Runtime::VALUE h)
 {
-	RECT rect;
+	RECT rect, client;
 	GetWindowRect(cGamePlayer->g_hWnd, &rect);
+	GetClientRect(cGamePlayer->g_hWnd, &client);
 	SetWindowPos(
 		cGamePlayer->g_hWnd, HWND_TOP, 
 		rect.left / 2 + rect.right / 2 - sruntime->FIX2INT(w) / 2,
 		rect.top / 2 + rect.bottom / 2 - sruntime->FIX2INT(h) / 2,
-		sruntime->FIX2INT(w),
-		sruntime->FIX2INT(h),
+		sruntime->FIX2INT(w) + rect.right - rect.left - client.right + client.left,
+		sruntime->FIX2INT(h) + rect.bottom - rect.top - client.bottom + client.top,
 		SWP_SHOWWINDOW
 	);
 	return sruntime->Qnil;
