@@ -262,6 +262,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\RGSSToy.h"
+				>
+			</File>
+			<File
 				RelativePath=".\WebBrowser.h"
 				>
 			</File>

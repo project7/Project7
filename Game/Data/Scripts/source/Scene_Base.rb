@@ -46,6 +46,7 @@ class Scene_Base
   #--------------------------------------------------------------------------
   def update_basic
     Graphics.update
+    CToy.update
     CInput.update
     Mouse.update
     update_all_windows

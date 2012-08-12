@@ -364,9 +364,7 @@ class Scene_Map < Scene_Base
           when 2
             $syseting[:show_animation]=!$syseting[:show_animation]
           when 3
-            $syseting[:screen_size]=!$syseting[:screen_size]
-            $syseting[:screen_size] ? Graphics.resize_screen(800,600) : Graphics.resize_screen(640,480)
-            $syseting[:screen_size] ? RGSSX.resize_window(800,600) : RGSSX.resize_window(640,480)
+            CToy.on_fullscreen
           end
         end
       end

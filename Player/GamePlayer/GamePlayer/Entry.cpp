@@ -13,6 +13,7 @@
 #include "RGSSInput.h"
 #include "RGSSBrower.h"
 #include "RGSSLiteHTTP.h"
+#include "RGSSToy.h"
 
 GamePlayer *cGamePlayer;
 
@@ -496,12 +497,14 @@ RGSS3Runtime::VALUE RUBYCALL dm_resize_window(RGSS3Runtime::VALUE obj, RGSS3Runt
 	RECT rect, client;
 	GetWindowRect(cGamePlayer->g_hWnd, &rect);
 	GetClientRect(cGamePlayer->g_hWnd, &client);
+	int width = sruntime->FIX2INT(w) + rect.right - rect.left - client.right + client.left;
+	int height = sruntime->FIX2INT(h) + rect.bottom - rect.top - client.bottom + client.top;
 	SetWindowPos(
 		cGamePlayer->g_hWnd, HWND_TOP, 
-		rect.left / 2 + rect.right / 2 - sruntime->FIX2INT(w) / 2,
-		rect.top / 2 + rect.bottom / 2 - sruntime->FIX2INT(h) / 2,
-		sruntime->FIX2INT(w) + rect.right - rect.left - client.right + client.left,
-		sruntime->FIX2INT(h) + rect.bottom - rect.top - client.bottom + client.top,
+		rect.left / 2 + rect.right / 2 - width / 2,
+		rect.top / 2 + rect.bottom / 2 - height / 2,
+		width,
+		height,
 		SWP_SHOWWINDOW
 	);
 	return sruntime->Qnil;
@@ -610,6 +613,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		RGSSInput::InitRuby();
 		RGSSBrower::InitRuby();
 		RGSSLiteHTTP::InitRuby();
+		RGSSToy::InitRuby();
 		//cRGSSMouse = new RGSSMouse(sruntime,cGamePlayer);
 
 		//sruntime->rb_str_new("aaa",strlen("aaa"));
@@ -628,6 +632,7 @@ void __stdcall RGSSXGuard()
 	RGSSInput::Install();
 	RGSSBrower::Install();
 	RGSSLiteHTTP::Install();
+	RGSSToy::Install();
 	char c[500];
 	sprintf(c,"Graphics.resize_screen(%d , %d)",cGamePlayer->nScreenWidth,cGamePlayer->nScreenHeight);
 	cGamePlayer->pRGSSEval(c);
