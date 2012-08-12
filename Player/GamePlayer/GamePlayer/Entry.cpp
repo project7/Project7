@@ -491,6 +491,20 @@ RGSS3Runtime::VALUE RUBYCALL dm_ensure(RGSS3Runtime::VALUE obj)
 	SetWindowPos(cGamePlayer->g_hWnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
 	return sruntime->Qnil;
 }
+RGSS3Runtime::VALUE RUBYCALL dm_resize_window(RGSS3Runtime::VALUE obj, RGSS3Runtime::VALUE w, RGSS3Runtime::VALUE h)
+{
+	RECT rect;
+	GetWindowRect(cGamePlayer->g_hWnd, &rect);
+	SetWindowPos(
+		cGamePlayer->g_hWnd, HWND_TOP, 
+		rect.left / 2 + rect.right / 2 - sruntime->FIX2INT(w) / 2,
+		rect.top / 2 + rect.bottom / 2 - sruntime->FIX2INT(h) / 2,
+		sruntime->FIX2INT(w),
+		sruntime->FIX2INT(h),
+		SWP_SHOWWINDOW
+	);
+	return sruntime->Qnil;
+}
 RGSS3Runtime::VALUE RUBYCALL functest1(int argc, int *argv)
 {
 	return sruntime->rb_str_new("aaa",strlen("aaa"));
@@ -587,6 +601,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		RGSS3Runtime::VALUE mod = sruntime->rb_define_module("RGSSX");
 		sruntime->rb_define_module_function(mod,"fps",(RGSS3Runtime::RubyFunc)fps,0);
 		sruntime->rb_define_module_function(mod,"ensure",(RGSS3Runtime::RubyFunc)dm_ensure,0);
+		sruntime->rb_define_module_function(mod,"resize_window",(RGSS3Runtime::RubyFunc)dm_resize_window,2);
 		gamehwnd = sruntime->INT2FIX((int)(cGamePlayer->g_hWnd));
 		sruntime->rb_define_module_function(mod,"hwnd",(RF)dm_get_hwnd,0);
 
