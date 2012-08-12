@@ -1,6 +1,8 @@
 ﻿#encoding:utf-8
-$fdebug=File.new("debug_#{Time.now.to_i}.log","w")
-$fdebug.flush
+if $HookerTest
+	$fdebug=File.new("debug_#{Time.now.to_i}.log","w")
+	$fdebug.flush
+end
 #==============================================================================
 # ■ Auto Flush for STDOUT & STDERR
 #------------------------------------------------------------------------------
@@ -122,5 +124,8 @@ rescue
 rescue SyntaxError
 	$!._debugger_
 end
-$fdebug.write(sprintf("<%s> Game exit", Time.now))
-$fdebug.close
+
+if $HookerTest
+	$fdebug.write(sprintf("<%s> Game exit", Time.now))
+	$fdebug.close
+end

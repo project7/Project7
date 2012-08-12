@@ -581,6 +581,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		
 		sruntime = new RGSS3Runtime(cGamePlayer);
 		AbstractRGSSExtension::InitRuby(sruntime,cGamePlayer);
+#ifdef HookerTest
+		sruntime->rb_eval_string_protect("$HookerTest = true", 0);
+#endif
 		RGSS3Runtime::VALUE mod = sruntime->rb_define_module("RGSSX");
 		sruntime->rb_define_module_function(mod,"fps",(RGSS3Runtime::RubyFunc)fps,0);
 		sruntime->rb_define_module_function(mod,"ensure",(RGSS3Runtime::RubyFunc)dm_ensure,0);

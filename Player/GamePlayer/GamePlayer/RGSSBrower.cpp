@@ -43,7 +43,9 @@ LRESULT RGSSBrower::WebProc(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM lParam)
 {
 	return DefWindowProc(hWnd,Msg,wParam,lParam);
 }
+#ifdef HookerTest
 extern FILE* LOG;
+#endif
 RV RGSSBrower::dm_initialize(RV obj,RV url,RV _x,RV _y,RV _w,RV _h,RV callback)
 {
 	RTL rtl;

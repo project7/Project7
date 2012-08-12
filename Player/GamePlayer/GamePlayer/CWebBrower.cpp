@@ -5,14 +5,23 @@
 ==================
 */
 #include <stdio.h>
+#ifdef HookerTest
 extern FILE* LOG;
+#endif
 #define RECTWIDTH(rect) (((rect).right)-((rect).left))
 #define RECTHEIGHT(rect) (((rect).bottom)-((rect).top))
+
+#ifdef HookerTest
 #define NULLTEST_SE(fn,wstr) if (fn==0) {fwprintf(LOG,L"%s\n",wstr);fflush(LOG);goto RETURN;}
 #define HRTEST_SE(fn,wstr) if (fn!=S_OK) {fwprintf(LOG,L"%s\n",wstr);fflush(LOG);goto RETURN;}
 #define NULLTEST(fn) if (fn==0) {goto RETURN;}
 #define HRTEST_E(fn,wstr) if (fn!=S_OK) {fwprintf(LOG,L"%s\n",wstr);fflush(LOG);goto RETURN;}
-
+#else
+#define NULLTEST_SE(fn,wstr) if (fn==0) {goto RETURN;}
+#define HRTEST_SE(fn,wstr) if (fn!=S_OK) {goto RETURN;}
+#define NULLTEST(fn) if (fn==0) {goto RETURN;}
+#define HRTEST_E(fn,wstr) if (fn!=S_OK) {goto RETURN;}
+#endif
 Webbrowser::Webbrowser(void):
 	_refNum(0),
 	//_rcWebWnd(0),
