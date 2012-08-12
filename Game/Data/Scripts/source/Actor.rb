@@ -75,6 +75,7 @@
   attr_accessor :skill_rem                    # 技能编号
   attr_accessor :atk_buff                     # 法球效果
   attr_accessor :fake_skill                   # 技能壳
+  attr_accessor :auto_skill                   # 自动技能
   
   def initialize(event_id=0,t_id=[0])
     @event_id = event_id
@@ -174,6 +175,7 @@
     @buff_rem = []
     @skill_rem = []
     @steps = 0
+    @auto_skill = nil
   end
 
   def init_var
@@ -187,6 +189,11 @@
   
   def link(id)
     @event_id=id
+    return self
+  end
+  
+  def kc_auto_skill
+    @auto_skill = nil
   end
   
   def phy_damage(value)

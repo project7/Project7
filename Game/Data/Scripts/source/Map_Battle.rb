@@ -151,8 +151,28 @@
     when 3
       update_select_skill_area
     end
+    update_spec
     update_cal
     update_viewpos
+  end
+  
+  def update_spec
+    $team_set.each do |i|
+      if i.auto_skill
+        if instance_eval(i.auto_skill[0])
+          a=@cur_actor
+          @cur_actor=i
+          create_higher_effectarea(i.auto_skill[1][0])
+          create_higher_enablearea(i.auto_skill[1][0])
+          @effectarea.x = @cur_actor.x
+          @effectarea.y = @cur_actor.y
+          ctrl(2,i.auto_skill[1])
+          i.kc_auto_skill
+          @cur_actor=a
+          end_target_select
+        end
+      end
+    end
   end
   
   def update_select_target

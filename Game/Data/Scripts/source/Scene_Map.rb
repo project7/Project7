@@ -234,34 +234,38 @@ class Scene_Map < Scene_Base
       end
     end
     if Mouse.click?(1)
-      if mouse_in_itemrect? && item_mouse_index
-        obj = $sel_body.bag[item_mouse_index]
-        if obj
-          sick = obj[0].enough_to_use(obj[1],true,$sel_body.hp,9999)
-          if sick==true
-            $sel_body.event.animation_id = obj[0].user_animation
-            $sel_body.god_damage(obj[0].hp_cost,true)
-            instance_eval(obj[0].spec_effect)
-            $sel_body.lose_item(obj[0].id,obj[0].use_cost_num)
-            @spriteset.show_tips(obj[0].name)
-            return
-          else
-            @spriteset.show_tips(FAILD_ATTACK_TEXT[14+sick])
+      if mouse_in_itemrect?
+        if item_mouse_index
+          obj = $sel_body.bag[item_mouse_index]
+          if obj
+            sick = obj[0].enough_to_use(obj[1],true,$sel_body.hp,9999)
+            if sick==true
+              $sel_body.event.animation_id = obj[0].user_animation
+              $sel_body.god_damage(obj[0].hp_cost,true)
+              instance_eval(obj[0].spec_effect)
+              $sel_body.lose_item(obj[0].id,obj[0].use_cost_num)
+              @spriteset.show_tips(obj[0].name)
+              return
+            else
+              @spriteset.show_tips(FAILD_ATTACK_TEXT[14+sick])
+            end
           end
         end
-      elsif mouse_in_skillrect? && skill_mouse_index
-        sks = $sel_body.skill
-        obj = sks[skill_mouse_index]
-        if obj
-          sick = obj.enough_to_use(9999,$sel_body.hp,9999)
-          if sick==true
-            $sel_body.event.animation_id = obj.user_animation
-            $sel_body.god_damage(obj.hp_cost,true)
-            instance_eval(obj.spec_effect)
-            @spriteset.show_tips(obj.name)
-            return
-          else
-            @spriteset.show_tips(FAILD_ATTACK_TEXT[14+sick])
+      elsif mouse_in_skillrect?
+        if skill_mouse_index
+          sks = $sel_body.skill
+          obj = sks[skill_mouse_index]
+          if obj
+            sick = obj.enough_to_use(9999,$sel_body.hp,9999)
+            if sick==true
+              $sel_body.event.animation_id = obj.user_animation
+              $sel_body.god_damage(obj.hp_cost,true)
+              instance_eval(obj.spec_effect)
+              @spriteset.show_tips(obj.name)
+              return
+            else
+              @spriteset.show_tips(FAILD_ATTACK_TEXT[14+sick])
+            end
           end
         end
       elsif @menu_called_inedx==0  #鼠标点击寻路

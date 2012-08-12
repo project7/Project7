@@ -4,7 +4,84 @@ class Fucker < Actor
   def set_tec
     @id = 1
     @name = "男主角"
-    @skill = []
+    @skill = [Relive.new]
+    @equip = {"武器"=>[0,nil],"盾牌"=>[1,nil],"挂件"=>[2,nil],"指环"=>[3,nil]}
+    @atk_pic = "atk"
+    @atk_cot = 4
+    @item_pic = "item"
+    @item_cot = 4
+    @skill_pic = "skill"
+    @skill_cot = 4
+  end
+  
+  def set_ui
+    @head = "MainActor"
+    @animation = []
+  end
+
+  def set_ele
+    @maxhp = 600
+    @maxsp = 100
+    @maxap = 20
+    @atk = 25
+    @atk_area = [ [[0,0,1,3]] ,false]
+    @atk_dis_min = 1
+    @atk_dis_max = 1
+    @def = 10
+    @int = 20
+    @mdef = 2
+    @hp_rec = 1
+    @sp_rec = 0
+    @per_step_cost_ap = 3
+    @atk_cost_ap = 6
+    @item_cost_ap = 4
+    @hatred_base = 1
+    @miss_rate = 25
+  end
+  
+  def set_extra
+    @atk_buff = []
+    @maxhp_add = 0
+    @maxsp_add = 0
+    @maxap_add = 0
+    @atk_add = 0
+    @def_add = 0
+    @int_add = 0
+    @mdef_add = 0
+    @hp_rec_add = 0
+    @sp_rec_add = 0
+    @per_step_cost_ap_add = 0
+    @atk_cost_ap_add = 0
+    @item_cost_ap_add = 0
+    @bingo_rate = 20
+    @bingo_damage = 400
+    @damage_reduce_rate = 0
+    @damage_reduce = 0
+    @cost_reduce_rate = 0
+    @cost_reduce = 0
+    @hp_absorb_rate = 0
+    @hp_absorb = 14
+    @sp_absorb_rate = 0
+    @sp_absorb = 0
+    @invincible = false
+    @ignore_physical = false
+    @ignore_magic = false
+    @invisible = false
+    @deinvisible = false
+    @ignore_dmg_rate = 10
+    @dmg_rebound = 0
+    @dmg_rebound_rate = 0
+  end
+  
+end
+
+#MainActor2
+class BeFucker < Actor
+
+  def set_tec
+    @id = 2
+    @name = "女主角"
+    @skill = [FuckEachOther.new]
     @equip = {"武器"=>[0,nil],"盾牌"=>[1,nil],"挂件"=>[2,nil],"指环"=>[3,nil]}
     @atk_pic = "atk"
     @atk_cot = 4
@@ -79,7 +156,7 @@ end
 class Shit < Actor
 
   def set_tec
-    @id = 2
+    @id = 3
     @name = "屎"
     @skill = []
     @equip = {}
@@ -154,7 +231,7 @@ end
 class God < Actor
 
   def set_tec
-    @id = 3
+    @id = 4
     @name = "神"
     @skill = []
     @equip = {}
@@ -230,7 +307,7 @@ end
 class Yangff < Actor
 
   def set_tec
-    @id = 3
+    @id = 5
     @name = "Yangff"
     @skill = []
     @equip = {}
@@ -306,7 +383,7 @@ end
 class Orzfly < Actor
 
   def set_tec
-    @id = 4
+    @id = 6
     @name = "Orzfly"
     @skill = []
     @equip = {}

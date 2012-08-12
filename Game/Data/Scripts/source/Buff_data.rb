@@ -177,7 +177,7 @@ class Catch < Buff
   end
   
   def set_extra
-    @end_req = "false"
+    @end_req = "@turn-buff.lived_turn>=buff.keep_turn"
     @descr = "该单位被人盯上了."
     @rem_skill = nil
   end

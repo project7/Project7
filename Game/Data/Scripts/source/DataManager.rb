@@ -94,7 +94,7 @@ module DataManager
     $game_player        = Game_Player.new
     $party              = Party.new
     $party.members << Fucker.new(0,[0])
-    $party.members << Fucker.new(-1,[0])
+    $party.members << BeFucker.new(-1,[0])
   end
   #--------------------------------------------------------------------------
   # ● 设置新游戏
