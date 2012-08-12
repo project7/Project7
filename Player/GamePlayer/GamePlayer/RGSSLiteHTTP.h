@@ -64,7 +64,12 @@ public:
 		my_addr.sin_family = AF_INET ;
 		my_addr.sin_port = htons(runtime->FIX2INT(argv[1]));
 
-		hostent * host = gethostbyname(runtime->rb_string_value_ptr(&argv[0]));
+		hostent * host;
+		host = gethostbyname(runtime->rb_string_value_ptr(&argv[0]));
+		if (host == NULL)
+		{
+			return runtime->INT2FIX(WSAGetLastError());
+		}
 		char * ip = inet_ntoa(*(struct in_addr *)*host->h_addr_list);
 
 		memset(&(my_addr.sin_zero), 0, 8);
