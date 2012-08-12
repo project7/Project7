@@ -158,6 +158,34 @@ class Spriteset_Map
     @richvalue = {}
   end
   #--------------------------------------------------------------------------
+  # ● 自动适应屏幕
+  #--------------------------------------------------------------------------
+  def adapt_screen
+    @viewport1.rect.width = Graphics.width
+    @viewport1.rect.height = Graphics.height
+    @viewport2.rect.width = Graphics.width
+    @viewport2.rect.height = Graphics.height
+    @viewport3.rect.width = Graphics.width
+    @viewport3.rect.height = Graphics.height
+    @tips[1].y = Graphics.height*77/100
+    @tips[2].y = @tips[1].y+12
+    @tips[6].y = Graphics.height - @tips[6].bitmap.height-10
+    @tips[6].x = Graphics.width/2-@tips[6].bitmap.width/2
+    @tips[7].y = Graphics.height - @tips[7].bitmap.height-10  #提示文字
+    @tips[7].x = Graphics.width/2-@tips[7].bitmap.width/2
+    @tips[8].x = Graphics.width-@tips[8].bitmap.width
+    @tips[9].y = @tips[8].y+@tips[8].bitmap.height/2-@tips[9].bitmap.height/2
+    @tips[9].x = Graphics.width-@tips[9].bitmap.width
+    [*11..14].each do |i|                   # 道具显示
+      @tips[i].y = @tips[1].y+12
+      @tips[i].x = @tips[1].x+5+(i-11)*41
+    end
+    @tips[15].y = Graphics.height-5-@tips[15].bitmap.height
+    @tips[15].x = Graphics.width-5-@tips[15].bitmap.width
+    @tips[16].y = @tips[15].y
+    @tips[16].x = @tips[15].x
+  end
+  #--------------------------------------------------------------------------
   # ● 增加数据显示
   #--------------------------------------------------------------------------
   def show_text(text,xy,color=Fuc::WHITE_COLOR,size=20)

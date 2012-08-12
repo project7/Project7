@@ -3,6 +3,8 @@
     $syseting[:screen_size]=!$syseting[:screen_size]
     $syseting[:screen_size] ? Graphics.resize_screen(800,600) : Graphics.resize_screen(640,480)
     $syseting[:screen_size] ? RGSSX.resize_window(800,600) : RGSSX.resize_window(640,480)
+    SceneManager.scene.spriteset.adapt_screen
+    SceneManager.scene.adapt_screen
   end
   def self.on_f1
     msgbox "you pressed f1"
