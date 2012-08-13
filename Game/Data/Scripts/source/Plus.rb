@@ -1,4 +1,5 @@
 ﻿class Array
+  
   def included?(arr)
     arr.each do |i|
       if self.include?(i)
@@ -7,16 +8,12 @@
     end
     return false
   end
-end
-=begin
-module Audio
-  class << Audio
-    
-    alias bgm_v bgm_play
-    def bgm_play(filename,value=100,pitch=100)
-      bgm_v(filename,value*$syseting[:bgm_value]/100,pitch)
+  
+  def inrect?(tar)
+    if self[0]>=tar[0]&&self[0]<=tar[0]+tar[2]&&self[1]>=tar[1]&&self[1]<=tar[1]+tar[3]
+      return true
     end
-
+    return false
   end
+  
 end
-=end

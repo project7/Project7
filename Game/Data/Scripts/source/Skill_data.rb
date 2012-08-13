@@ -31,7 +31,7 @@
     @hp_damage = 0
     @sp_damage = 0
     @ap_damage = 0
-    @buff = [["Catch.new",100]]
+    @buff = [[Catch,100]]
     @debuff = []
     @descr = "将一个友方单位或是能力低于自己的敌人吸上半空.\n向指定的目标格抛出造成伤害.\n施法距离:1-6"
   end
@@ -158,7 +158,7 @@ class Relive < Skill
     @hp_damage = 60
     @sp_damage = 0
     @ap_damage = 0
-    @buff = [["Ctrled.new",100]]
+    @buff = [[Ctrled,100]]
     @debuff = []
     @descr = "消耗1点行动力和100点生命力.\n复活并操控一具尸体为你作战.\n死尸在持续时间内不会死亡.\n死尸所受的伤害由施法者承担.\n持续2回合.\n施法距离:1-4."
   end
@@ -550,7 +550,7 @@ class AutoBang < Skill
   
   def set_extra
     @spec_effect = "if @cur_actor.ap>=@cur_actor.get_ap_for_atk;
-                      i.event.move_backward if i.event.passable?(i.x,i.y,BACK_DIR[i.event.direction]);
+                      i.event.move_backward if i.event.passable?(i.x,i.y,10-i.event.direction);
                       if $random_center.rand(100)<20;
                         i.die;
                         @splink.show_text(\"Bingo!\",i.event,BINGO_COLOR,30);
@@ -560,7 +560,7 @@ class AutoBang < Skill
                       end;
                       @cur_actor.cost_ap_for(1);
                     else;
-                      @cur_actor.event.move_backward if @cur_actor.event.passable?(@cur_actor.x,@cur_actor.y,BACK_DIR[i.event.direction]);
+                      @cur_actor.event.move_backward if @cur_actor.event.passable?(@cur_actor.x,@cur_actor.y,10-i.event.direction);
                       a=@cur_actor.phy_damage(100);
                       @splink.show_text(a[1],@cur_actor.event,HP_COST_COLOR,20) if a[0];
                     end;"
@@ -619,12 +619,12 @@ class AutoT < Skill
   
   def set_extra
     @spec_effect = "if @cur_actor.ap>=@cur_actor.get_ap_for_atk;
-                      i.event.move_backward if i.event.passable?(i.x,i.y,BACK_DIR[i.event.direction]);
+                      i.event.move_backward if i.event.passable?(i.x,i.y,10-i.event.direction);
                       a=i.phy_damage(100);
                       @splink.show_text(a[1],i.event,HP_COST_COLOR,20) if a[0];
                       @cur_actor.cost_ap_for(1);
                     elsif i!=@cur_actor;
-                      @cur_actor.event.move_backward if @cur_actor.event.passable?(@cur_actor.x,@cur_actor.y,BACK_DIR[i.event.direction]);
+                      @cur_actor.event.move_backward if @cur_actor.event.passable?(@cur_actor.x,@cur_actor.y,10-i.event.direction);
                       a=@cur_actor.phy_damage(100);
                       @splink.show_text(a[1],@cur_actor.event,HP_COST_COLOR,20) if a[0];
                     end;"
@@ -683,12 +683,12 @@ class AutoBigBang < Skill
   
   def set_extra
     @spec_effect = "if @cur_actor.ap>=@cur_actor.get_ap_for_atk;
-                      i.event.move_backward if i.event.passable?(i.x,i.y,BACK_DIR[i.event.direction]);
+                      i.event.move_backward if i.event.passable?(i.x,i.y,10-i.event.direction);
                       a=i.phy_damage(100);
                       @splink.show_text(a[1],i.event,HP_COST_COLOR,20) if a[0];
                       @cur_actor.cost_ap_for(1);
                     elsif i!=@cur_actor;
-                      @cur_actor.event.move_backward if @cur_actor.event.passable?(@cur_actor.x,@cur_actor.y,BACK_DIR[i.event.direction]);
+                      @cur_actor.event.move_backward if @cur_actor.event.passable?(@cur_actor.x,@cur_actor.y,10-i.event.direction);
                       a=@cur_actor.phy_damage(100);
                       @splink.show_text(a[1],@cur_actor.event,HP_COST_COLOR,20) if a[0];
                     end;"

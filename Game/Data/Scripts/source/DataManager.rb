@@ -132,7 +132,7 @@ module DataManager
   #     index : 文件索引
   #--------------------------------------------------------------------------
   def self.make_filename(index)
-    sprintf("Save%02d.rvdata2", index + 1)
+    sprintf("SaveData.orzfly", index + 1)
   end
   #--------------------------------------------------------------------------
   # ● 执行存档

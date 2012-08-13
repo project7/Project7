@@ -874,7 +874,7 @@
             para[0].buff.each do |buff|
               if $random_center.rand(100) < buff[1]
                 @succ_count+=1
-                sm = instance_eval(buff[0]+"("+"@cur_actor"+")")
+                sm = buff[0].new(@cur_actor)
                 i.add_buff(sm)
                 @splink.show_text("+"+sm.name,i.event,SP_ADD_COLOR)
               end
@@ -988,7 +988,7 @@
             para[0].buff.each do |buff|
               if $random_center.rand(100) < buff[1]
                 @succ_count+=1
-                sm = instance_eval(buff[0]+"("+"@cur_actor"+")")
+                sm = buff[0].new(@cur_actor)
                 i.add_buff(sm)
                 @splink.show_text("+"+sm.name,i.event,SP_ADD_COLOR)
               end
