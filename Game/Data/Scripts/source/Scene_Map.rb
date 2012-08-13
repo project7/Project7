@@ -175,7 +175,7 @@ class Scene_Map < Scene_Base
     update_transfer_player unless scene_changing?
     update_encounter unless scene_changing?
     update_call_menu unless scene_changing?
-    update_call_debug unless scene_changing?
+    #update_call_debug unless scene_changing?
     if $game_switches[1]
       $map_battle.update unless scene_changing?
     else
@@ -288,21 +288,25 @@ class Scene_Map < Scene_Base
   end
   
   def call_ele_scene
+    return if @menu_called_inedx == 1
     create_menu(MENU_ELE)
     @menu_called_inedx = 1
   end
   
   def call_gra_scene
+    return if @menu_called_inedx == 2
     create_menu(MENU_GRA)
     @menu_called_inedx = 2
   end
   
   def call_voi_scene
+    return if @menu_called_inedx == 3
     create_menu(MENU_VOI)
     @menu_called_inedx = 3
   end
   
   def call_save_scene
+    return if @menu_called_inedx == 4
     create_menu(MENU_SAV)
     if ($WebLogin_user rescue nil) == nil
       @menu_sprite_sin.bitmap.blt(MENU_SAV_POS[0][0],MENU_SAV_POS[0][1],Bitmap.new(MENU_SAV_LOG),Rect.new(0,0,166,34))
@@ -313,6 +317,7 @@ class Scene_Map < Scene_Base
   end
   
   def call_mes_scene
+    return if @menu_called_inedx == 5
     create_menu(MENU_MES)
     @menu_called_inedx = 5
   end

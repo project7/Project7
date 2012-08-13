@@ -191,7 +191,7 @@ class Game_CharacterBase
     x2 = $game_map.round_x_with_direction(x, d)
     y2 = $game_map.round_y_with_direction(y, d)
     return false unless $game_map.valid?(x2, y2)
-    return true if @through || debug_through?
+    #return true if @through || debug_through?
     return false unless map_passable?(x, y, d)
     return false unless map_passable?(x2, y2, reverse_dir(d))
     return false if collide_with_characters?(x2, y2)
