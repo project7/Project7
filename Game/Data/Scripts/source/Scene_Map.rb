@@ -622,6 +622,7 @@ class Scene_Map < Scene_Base
       if CInput.trigger?($vkey[:X]) || (!$map_battle && Mouse.down?(2))
         @menu_calling =!@menu_calling
         if @menu_calling
+          @menu_rem = [nil]*5
           change_skill
         else
           call_ret_scene

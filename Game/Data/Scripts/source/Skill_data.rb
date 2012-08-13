@@ -13,7 +13,7 @@
     @id = 1
     @name = "意念抛投"
     @init_skill = true
-    @use_req = "sp>=4&&ap>=5"
+    @use_req = "sp>=0&&ap>=0"
     @use_dis_min = 1
     @use_dis_max = 6
     @hotkey = 0x44
@@ -33,7 +33,7 @@
     @ap_damage = 0
     @buff = [[Catch,100]]
     @debuff = []
-    @descr = "将一个友方单位或是能力低于自己的敌人吸上半空.\n向指定的目标格抛出造成伤害.\n施法距离:1-6"
+    @descr = "需要4点怒气以及5点行动力催动.\n选中一个友方单位或是能力低于自己的敌人.\n向指定的目标格抛出.\n若指定目标格为空地,则无事.\n若指定目标格为敌人或友军.\n行动力不足以攻击的一方受到伤害.\n施法距离:1-6\n\n特殊效果:\n若投掷男主角,目标区域伤害为3格范围.\n若投掷目标向男主角,则有一定概率秒杀被投掷单位."
   end
   
   def set_extra
@@ -71,21 +71,21 @@ class FuckWithOutMoney < Skill
     @hotkey = 0x44
     @hurt_enemy = true
     @hurt_partner = true
-    @hurt_p_dead = true
+    @hurt_p_dead = false
     @hurt_e_dead = false
     @hurt_nothing = true
     @hurt_cant_move = true
     @hurt_area = [ [[0]] ,true]
     @hurt_maxnum = 0
-    @sp_cost = 4
+    @sp_cost = 0
     @hp_cost = 0
-    @ap_cost = 5
+    @ap_cost = 0
     @hp_damage = 0
     @sp_damage = 0
     @ap_damage = 0
     @buff = []
     @debuff = []
-    @descr = "将选中的单位投向目标地点.\n造成巨大伤害.\n施法距离:1-6"
+    @descr = "消耗4点怒气和5点行动力.\n将选中的单位投向目标地点.\n造成物理伤害,无视魔法免疫.\n施法距离:1-6"
   end
 
   def set_extra
@@ -556,13 +556,21 @@ class AutoBang < Skill
                         @splink.show_text(\"Bingo!\",i.event,BINGO_COLOR,30);
                       else;
                         a=i.phy_damage(100);
-                        @splink.show_text(a[1],i.event,HP_COST_COLOR,20) if a[0];
+                        if a[0];
+                          @splink.show_text(a[1],i.event,HP_COST_COLOR,20);
+                        elsif a[1]<=1;
+                          @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
+                        end;
                       end;
                       @cur_actor.cost_ap_for(1);
                     else;
                       @cur_actor.event.move_backward if @cur_actor.event.passable?(@cur_actor.x,@cur_actor.y,10-i.event.direction);
                       a=@cur_actor.phy_damage(100);
-                      @splink.show_text(a[1],@cur_actor.event,HP_COST_COLOR,20) if a[0];
+                      if a[0];
+                        @splink.show_text(a[1],@cur_actor.event,HP_COST_COLOR,20);
+                      elsif a[1]<=1;
+                        @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
+                      end;
                     end;"
     @sp_cost_rate = 0
     @hp_cost_rate = 0
@@ -621,12 +629,20 @@ class AutoT < Skill
     @spec_effect = "if @cur_actor.ap>=@cur_actor.get_ap_for_atk;
                       i.event.move_backward if i.event.passable?(i.x,i.y,10-i.event.direction);
                       a=i.phy_damage(100);
-                      @splink.show_text(a[1],i.event,HP_COST_COLOR,20) if a[0];
+                      if a[0];
+                        @splink.show_text(a[1],i.event,HP_COST_COLOR,20);
+                      elsif a[1]<=1;
+                        @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
+                      end;
                       @cur_actor.cost_ap_for(1);
                     elsif i!=@cur_actor;
                       @cur_actor.event.move_backward if @cur_actor.event.passable?(@cur_actor.x,@cur_actor.y,10-i.event.direction);
                       a=@cur_actor.phy_damage(100);
-                      @splink.show_text(a[1],@cur_actor.event,HP_COST_COLOR,20) if a[0];
+                      if a[0];
+                        @splink.show_text(a[1],@cur_actor.event,HP_COST_COLOR,20);
+                      elsif a[1]<=1;
+                        @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
+                      end;
                     end;"
     @sp_cost_rate = 0
     @hp_cost_rate = 0
@@ -663,7 +679,7 @@ class AutoBigBang < Skill
     @hurt_partner = false
     @hurt_p_dead = false
     @hurt_e_dead = false
-    @hurt_area = [ [[2]] ,true]
+    @hurt_area = [ [[3]] ,true]
     @hurt_maxnum = 1
     @sp_cost = 0
     @hp_cost = 0
@@ -685,12 +701,20 @@ class AutoBigBang < Skill
     @spec_effect = "if @cur_actor.ap>=@cur_actor.get_ap_for_atk;
                       i.event.move_backward if i.event.passable?(i.x,i.y,10-i.event.direction);
                       a=i.phy_damage(100);
-                      @splink.show_text(a[1],i.event,HP_COST_COLOR,20) if a[0];
+                      if a[0];
+                        @splink.show_text(a[1],i.event,HP_COST_COLOR,20);
+                      elsif a[1]<=1;
+                        @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
+                      end;
                       @cur_actor.cost_ap_for(1);
                     elsif i!=@cur_actor;
                       @cur_actor.event.move_backward if @cur_actor.event.passable?(@cur_actor.x,@cur_actor.y,10-i.event.direction);
                       a=@cur_actor.phy_damage(100);
-                      @splink.show_text(a[1],@cur_actor.event,HP_COST_COLOR,20) if a[0];
+                      if a[0];
+                        @splink.show_text(a[1],@cur_actor.event,HP_COST_COLOR,20);
+                      elsif a[1]<=1;
+                        @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
+                      end;
                     end;"
     @sp_cost_rate = 0
     @hp_cost_rate = 0
