@@ -125,6 +125,7 @@ Scene_WebFile
 Scene_WebSave
 Scene_WebLoad
 Web
+WaterReflection
 Ruby.ex 1.0
 CMouse
 Mouse
