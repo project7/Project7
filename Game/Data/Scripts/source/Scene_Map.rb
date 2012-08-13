@@ -29,7 +29,7 @@ class Scene_Map < Scene_Base
     @menu_calling = false
     @menu_called_inedx = 0
     @now_set = [nil]*5
-    @menu_rem = [nil]*5
+    @menu_rem = nil
   end
   #--------------------------------------------------------------------------
   # ● 执行进入场景时的渐变
@@ -365,10 +365,10 @@ class Scene_Map < Scene_Base
   
   def update_menu_gra
     @now_set[1] = [$syseting[:ctrl_screen],$syseting[:show_maparea],$syseting[:show_animation],$syseting[:screen_size]]
-    if @menu_rem[1] != @now_set[1]
-      @menu_rem[1] = @now_set[1].clone
+    if @menu_rem != @now_set[1]
+      @menu_rem = @now_set[1].clone
       @menu_sprite_act.bitmap.clear
-      4.times{|i| @menu_sprite_act.bitmap.blt(*MENU_GRA_POS[i],Bitmap.new(MENU_SEL),RECT_SEL) if @menu_rem[1][i]}
+      4.times{|i| @menu_sprite_act.bitmap.blt(*MENU_GRA_POS[i],Bitmap.new(MENU_SEL),RECT_SEL) if @menu_rem[i]}
     end
     if Mouse.click?(1)
       tpos = [Mouse.pos[0]-@menu_sprite_act.x,Mouse.pos[1]-@menu_sprite_act.y]
@@ -391,10 +391,10 @@ class Scene_Map < Scene_Base
   
   def update_menu_voi
     @now_set[2] = [$syseting[:bgm_value],$syseting[:se_value],$syseting[:voi_value]]
-    if @menu_rem[2] != @now_set[2]
-      @menu_rem[2] = @now_set[2].clone
+    if @menu_rem != @now_set[2]
+      @menu_rem = @now_set[2].clone
       @menu_sprite_act.bitmap.clear
-      4.times{|i| @menu_sprite_act.bitmap.draw_text(*MENU_VOI_POS[i],60,40,@menu_rem[2][i].to_s+"%",2) if @menu_rem[2][i]}
+      4.times{|i| @menu_sprite_act.bitmap.draw_text(*MENU_VOI_POS[i],60,40,@menu_rem[i].to_s+"%",2) if @menu_rem[i]}
     end
     ms = Mouse.scroll
     if ms!=0
@@ -422,26 +422,26 @@ class Scene_Map < Scene_Base
     tpos = [Mouse.pos[0]-@menu_sprite_act.x,Mouse.pos[1]-@menu_sprite_act.y]
     if ($WebLogin_user rescue nil) == nil
       @now_set[3] = [tpos.inrect?(MENU_SAV_POS[0]),tpos.inrect?(MENU_SAV_POS[3]),tpos.inrect?(MENU_SAV_POS[4])]
-      if @menu_rem[3] != @now_set[3]
-        if @menu_rem[3]&&@menu_rem[3].size == 4
+      if @menu_rem != @now_set[3]
+        if @menu_rem&&@menu_rem.size == 4
           @menu_sprite_sin.bitmap.dispose
           @menu_sprite_sin.bitmap = Bitmap.new(MENU_SAV)
           @menu_sprite_sin.bitmap.blt(MENU_SAV_POS[0][0],MENU_SAV_POS[0][1],Bitmap.new(MENU_SAV_LOG),Rect.new(0,0,166,34))
         end
-        @menu_rem[3] = @now_set[3].clone
+        @menu_rem = @now_set[3].clone
         @menu_sprite_act.bitmap.clear
         3.times do |i|
           case i
           when 0
-            @menu_sprite_act.bitmap.blt(MENU_SAV_POS[0][0],MENU_SAV_POS[0][1],Bitmap.new(MENU_SAV_SEL[0]),Rect.new(0,0,MENU_SAV_POS[0][2],MENU_SAV_POS[0][3])) if @menu_rem[3][i]
+            @menu_sprite_act.bitmap.blt(MENU_SAV_POS[0][0],MENU_SAV_POS[0][1],Bitmap.new(MENU_SAV_SEL[0]),Rect.new(0,0,MENU_SAV_POS[0][2],MENU_SAV_POS[0][3])) if @menu_rem[i]
           when 1
-            @menu_sprite_act.bitmap.blt(MENU_SAV_POS[3][0],MENU_SAV_POS[3][1],Bitmap.new(MENU_SAV_SEL[1]),Rect.new(0,0,MENU_SAV_POS[3][2],MENU_SAV_POS[3][3])) if @menu_rem[3][i]
+            @menu_sprite_act.bitmap.blt(MENU_SAV_POS[3][0],MENU_SAV_POS[3][1],Bitmap.new(MENU_SAV_SEL[1]),Rect.new(0,0,MENU_SAV_POS[3][2],MENU_SAV_POS[3][3])) if @menu_rem[i]
           when 2
-            @menu_sprite_act.bitmap.blt(MENU_SAV_POS[4][0],MENU_SAV_POS[4][1],Bitmap.new(MENU_SAV_SEL[2]),Rect.new(0,0,MENU_SAV_POS[4][2],MENU_SAV_POS[4][3])) if @menu_rem[3][i]
+            @menu_sprite_act.bitmap.blt(MENU_SAV_POS[4][0],MENU_SAV_POS[4][1],Bitmap.new(MENU_SAV_SEL[2]),Rect.new(0,0,MENU_SAV_POS[4][2],MENU_SAV_POS[4][3])) if @menu_rem[i]
           end
         end
       end
-      iindex = @menu_rem[3].index(true)
+      iindex = @menu_rem.index(true)
       if Mouse.click?(1) && iindex
         case iindex
         when 0
@@ -470,28 +470,28 @@ class Scene_Map < Scene_Base
       end
     else
       @now_set[3] = [tpos.inrect?(MENU_SAV_POS[1]),tpos.inrect?(MENU_SAV_POS[2]),tpos.inrect?(MENU_SAV_POS[3]),tpos.inrect?(MENU_SAV_POS[4])]
-      if @menu_rem[3] != @now_set[3]
-        if @menu_rem[3]&&@menu_rem[3].size == 3
+      if @menu_rem != @now_set[3]
+        if @menu_rem&&@menu_rem.size == 3
           @menu_sprite_sin.bitmap.dispose
           @menu_sprite_sin.bitmap = Bitmap.new(MENU_SAV)
           @menu_sprite_sin.bitmap.blt(MENU_SAV_POS[0][0],MENU_SAV_POS[0][1],Bitmap.new(MENU_SAV_SL),Rect.new(0,0,166,34))
         end
-        @menu_rem[3] = @now_set[3].clone
+        @menu_rem = @now_set[3].clone
         @menu_sprite_act.bitmap.clear
         4.times do |i|
           case i
           when 0
-            @menu_sprite_act.bitmap.blt(MENU_SAV_POS[1][0],MENU_SAV_POS[1][1],Bitmap.new(MENU_SAV_SEL[1]),Rect.new(0,0,MENU_SAV_POS[1][2],MENU_SAV_POS[1][3])) if @menu_rem[3][i]
+            @menu_sprite_act.bitmap.blt(MENU_SAV_POS[1][0],MENU_SAV_POS[1][1],Bitmap.new(MENU_SAV_SEL[1]),Rect.new(0,0,MENU_SAV_POS[1][2],MENU_SAV_POS[1][3])) if @menu_rem[i]
           when 1
-            @menu_sprite_act.bitmap.blt(MENU_SAV_POS[2][0],MENU_SAV_POS[2][1],Bitmap.new(MENU_SAV_SEL[2]),Rect.new(0,0,MENU_SAV_POS[2][2],MENU_SAV_POS[2][3])) if @menu_rem[3][i]
+            @menu_sprite_act.bitmap.blt(MENU_SAV_POS[2][0],MENU_SAV_POS[2][1],Bitmap.new(MENU_SAV_SEL[2]),Rect.new(0,0,MENU_SAV_POS[2][2],MENU_SAV_POS[2][3])) if @menu_rem[i]
           when 2
-            @menu_sprite_act.bitmap.blt(MENU_SAV_POS[3][0],MENU_SAV_POS[3][1],Bitmap.new(MENU_SAV_SEL[1]),Rect.new(0,0,MENU_SAV_POS[3][2],MENU_SAV_POS[3][3])) if @menu_rem[3][i]
+            @menu_sprite_act.bitmap.blt(MENU_SAV_POS[3][0],MENU_SAV_POS[3][1],Bitmap.new(MENU_SAV_SEL[1]),Rect.new(0,0,MENU_SAV_POS[3][2],MENU_SAV_POS[3][3])) if @menu_rem[i]
           when 3
-            @menu_sprite_act.bitmap.blt(MENU_SAV_POS[4][0],MENU_SAV_POS[4][1],Bitmap.new(MENU_SAV_SEL[2]),Rect.new(0,0,MENU_SAV_POS[4][2],MENU_SAV_POS[4][3])) if @menu_rem[3][i]
+            @menu_sprite_act.bitmap.blt(MENU_SAV_POS[4][0],MENU_SAV_POS[4][1],Bitmap.new(MENU_SAV_SEL[2]),Rect.new(0,0,MENU_SAV_POS[4][2],MENU_SAV_POS[4][3])) if @menu_rem[i]
           end
         end
       end
-      iindex = @menu_rem[3].index(true)
+      iindex = @menu_rem.index(true)
       if Mouse.click?(1) && iindex
         case iindex
         when 0
@@ -627,7 +627,7 @@ class Scene_Map < Scene_Base
       if CInput.trigger?($vkey[:X]) || (!$map_battle && Mouse.down?(2))
         @menu_calling =!@menu_calling
         if @menu_calling
-          @menu_rem = [nil]*5
+          @menu_rem = nil
           change_skill
         else
           call_ret_scene
