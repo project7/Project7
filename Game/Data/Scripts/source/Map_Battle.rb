@@ -14,7 +14,8 @@
   attr_accessor  :turn
   attr_accessor  :scene_id
   attr_accessor  :steps
-  attr_reader  :mouse_right_down
+  attr_accessor  :real_actor
+  attr_reader    :mouse_right_down
   
   def initialize(end_req=COMMON_BATTLE_REQ)
     @end_req = end_req
@@ -160,7 +161,7 @@
     $team_set.each do |i|
       if i.auto_skill
         if instance_eval(i.auto_skill[0])
-          a=@cur_actor
+          @real_actor=@cur_actor
           @cur_actor=i
           create_higher_effectarea(i.auto_skill[1][0])
           create_higher_enablearea(i.auto_skill[1][0])
@@ -168,7 +169,8 @@
           @effectarea.y = @cur_actor.y
           ctrl(2,i.auto_skill[1])
           i.kc_auto_skill
-          @cur_actor=a
+          @cur_actor=@real_actor
+          @real_actor=nil
           end_target_select
         end
       end
