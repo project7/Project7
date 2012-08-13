@@ -185,6 +185,10 @@ module DataManager
     return true
   end
   def self.load_game_real real
+    Audio.bgm_stop
+    Audio.bgs_stop
+    Audio.me_stop
+    Audio.se_stop
     extract_save_contents(Marshal.load(Marshal.load(Zlib::Inflate.inflate(real))[1]))
     reload_map_if_updated
   end

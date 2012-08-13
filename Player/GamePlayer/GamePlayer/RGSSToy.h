@@ -70,7 +70,11 @@ public:
 
 	static LRESULT WINAPI WndProcHook(HWND hWnd,UINT Msg,WPARAM wParam,LPARAM IParam)
 	{
-		//if (Msg == WM_ACTIVATEAPP)
+		if (Msg == WM_ACTIVATE)
+		{
+			SendMessage(gameplayer->g_hWnd, WM_ERASEBKGND, 0, 0);
+		}
+		// WM_ACTIVEAPP to prevent pause
 		//	return 0;
 
 		if (Msg == WM_COMMAND || Msg == WM_SYSCOMMAND)
