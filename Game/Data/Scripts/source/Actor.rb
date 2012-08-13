@@ -84,10 +84,17 @@
     set_extra
     set_tec
     set_ui
-    set_rd_value
     set_ai
     set_item
+    set_rd_value
     init_var
+    start_play
+  end
+  
+  def start_play
+    cal_skill_rem
+    cal_buff_rem
+    cal_item_rem
   end
 
   def set_tec
