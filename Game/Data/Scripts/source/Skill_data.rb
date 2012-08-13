@@ -31,7 +31,7 @@
     @hp_damage = 0
     @sp_damage = 0
     @ap_damage = 0
-    @buff = [[Catch,100]]
+    @buff = [[Catch,-100]]
     @debuff = []
     @descr = "需要4点怒气以及5点行动力催动.\n选中一个友方单位或是能力低于自己的敌人.\n向指定的目标格抛出.\n若指定目标格为空地,则无事.\n若指定目标格为敌人或友军.\n行动力不足以攻击的一方受到伤害.\n施法距离:1-6\n\n特殊效果:\n若投掷男主角,目标区域伤害为3格范围.\n若投掷目标向男主角,则有一定概率秒杀被投掷单位."
   end
@@ -90,8 +90,8 @@ class FuckWithOutMoney < Skill
 
   def set_extra
     @spec_effect = "target_body = $team_set.find{|i| i.x==para[1][0]&&i.y==para[1][1]};
+                    return [[false,13]] if !$game_map.check_passage(*para[1],0xF)||!target_body&&$game_map.events_xy_nt(*para[1]).size>0;
                     $team_set.each do |i|;
-                      return [[false,13]] if !$game_map.check_passage(*para[1],0xF);
                       dx=para[1][0]-i.x;
                       dy=para[1][1]-i.y;
                       if dx==0&&dy==0;
@@ -105,14 +105,17 @@ class FuckWithOutMoney < Skill
                         else;
                           if target_body.is_a?(Fucker);
                             target_body.auto_skill=[\"$team_set.all?{|i| !i.event.moving?}\",[AutoBang.new,[para[1][0],para[1][1]]]];
-                          elsif i.is_a?(Fucker);
+                          elsif i.is_a?(Fucker) && i.ap>=i.get_ap_for_atk;
+                            i.cost_ap_for(1);
                             i.auto_skill=[\"$team_set.all?{|i| !i.event.moving?}\",[AutoBigBang.new,[para[1][0],para[1][1]]]];
                           else;
-                            i.auto_skill=[\"$team_set.all?{|i| !i.event.moving?}\",[AutoT.new,[para[1][0],para[1][1]]]];
+                            tskill = AutoT.new;
+                            tskill.spec_effect=\"\" unless target_body;
+                            i.auto_skill=[\"$team_set.all?{|i| !i.event.moving?}\",[tskill,[para[1][0],para[1][1]]]];
                           end
                           i.event.jump(dx,dy);
                           i.dec_buff(6);
-                        end
+                        end;
                       end;
                     end"
     @sp_cost_rate = 0
@@ -608,7 +611,7 @@ class AutoT < Skill
     @hurt_p_dead = false
     @hurt_e_dead = false
     @hurt_area = [ [[0]] ,true]
-    @hurt_maxnum = 1
+    @hurt_maxnum = 0
     @sp_cost = 0
     @hp_cost = 0
     @ap_cost = 0
@@ -626,24 +629,23 @@ class AutoT < Skill
   end
   
   def set_extra
-    @spec_effect = "if @cur_actor.ap>=@cur_actor.get_ap_for_atk;
-                      i.event.move_backward if i.event.passable?(i.x,i.y,10-i.event.direction);
-                      a=i.phy_damage(100);
-                      if a[0];
-                        @splink.show_text(a[1],i.event,HP_COST_COLOR,20);
-                      elsif a[1]<=1;
-                        @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
-                      end;
-                      @cur_actor.cost_ap_for(1);
-                    elsif i!=@cur_actor;
+    @spec_effect = "i.event.move_backward if i.event.passable?(i.x,i.y,10-i.event.direction);
+                    a=i.phy_damage(50);
+                    if a[0];
+                      @splink.show_text(a[1],i.event,HP_COST_COLOR,20);
+                    elsif a[1]<=1;
+                      @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
+                    end;
+                    if i!=@cur_actor;
+                      @cur_actor.event.set_direction(10-i.event.direction);
                       @cur_actor.event.move_backward if @cur_actor.event.passable?(@cur_actor.x,@cur_actor.y,10-i.event.direction);
-                      a=@cur_actor.phy_damage(100);
+                      a=@cur_actor.phy_damage(50);
                       if a[0];
                         @splink.show_text(a[1],@cur_actor.event,HP_COST_COLOR,20);
                       elsif a[1]<=1;
                         @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
                       end;
-                    end;"
+                    end"
     @sp_cost_rate = 0
     @hp_cost_rate = 0
     @ap_cost_rate = 0
@@ -680,7 +682,7 @@ class AutoBigBang < Skill
     @hurt_p_dead = false
     @hurt_e_dead = false
     @hurt_area = [ [[3]] ,true]
-    @hurt_maxnum = 1
+    @hurt_maxnum = 0
     @sp_cost = 0
     @hp_cost = 0
     @ap_cost = 0
@@ -698,23 +700,13 @@ class AutoBigBang < Skill
   end
   
   def set_extra
-    @spec_effect = "if @cur_actor.ap>=@cur_actor.get_ap_for_atk;
-                      i.event.move_backward if i.event.passable?(i.x,i.y,10-i.event.direction);
-                      a=i.phy_damage(100);
-                      if a[0];
-                        @splink.show_text(a[1],i.event,HP_COST_COLOR,20);
-                      elsif a[1]<=1;
-                        @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
-                      end;
-                      @cur_actor.cost_ap_for(1);
-                    elsif i!=@cur_actor;
-                      @cur_actor.event.move_backward if @cur_actor.event.passable?(@cur_actor.x,@cur_actor.y,10-i.event.direction);
-                      a=@cur_actor.phy_damage(100);
-                      if a[0];
-                        @splink.show_text(a[1],@cur_actor.event,HP_COST_COLOR,20);
-                      elsif a[1]<=1;
-                        @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
-                      end;
+    @spec_effect = "i.event.set_direction(Fuc.mouse_dir_body(i.event,@cur_actor.event));
+                    i.event.move_backward if i.event.passable?(i.x,i.y,10-i.event.direction);
+                    a=i.phy_damage(100);
+                    if a[0];
+                      @splink.show_text(a[1],i.event,HP_COST_COLOR,20);
+                    elsif a[1]<=1;
+                      @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
                     end;"
     @sp_cost_rate = 0
     @hp_cost_rate = 0

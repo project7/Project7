@@ -767,10 +767,11 @@
             end
             @splink.show_text(dama[1].to_s,i.event,bingo_color,bingo_size)
             @cur_actor.atk_buff.each do |buff|
-              if $random_center.rand(100) < buff[1]
+              trate = buff[1].abs
+              if $random_center.rand(100) < trate
                 sm = instance_eval(buff[0]+"("+"@cur_actor"+")")
                 i.add_buff(sm)
-                @splink.show_text("+"+sm.name,i.event,SP_ADD_COLOR)
+                @splink.show_text("+"+sm.name,i.event,SP_ADD_COLOR) if buff[1]>0
               end
             end
             i.god_sp_damage(-2,true)
@@ -868,19 +869,23 @@
             para[0].debuff.each do |debuff|
               if $random_center.rand(100) < debuff[1]
                 @succ_count+=1
+                tempb<<[true,0]
                 i.dec_buff(debuff[0].id)
               end
             end
             para[0].buff.each do |buff|
-              if $random_center.rand(100) < buff[1]
+              trate = buff[1].abs
+              if $random_center.rand(100) < trate
                 @succ_count+=1
                 sm = buff[0].new(@cur_actor)
                 i.add_buff(sm)
-                @splink.show_text("+"+sm.name,i.event,SP_ADD_COLOR)
+                tempb<<[true,0]
+                @splink.show_text("+"+sm.name,i.event,SP_ADD_COLOR) if buff[1]>0
               end
             end
             if para[0].spec_effect!=""
               @succ_count+=1
+              tempb<<[true,0]
               instance_eval(para[0].spec_effect)
             end
           else
@@ -982,12 +987,14 @@
             para[0].debuff.each do |debuff|
               if $random_center.rand(100) < debuff[1]
                 @succ_count+=1
+                tempb<<[true,0]
                 i.dec_buff(debuff[0].id)
               end
             end
             para[0].buff.each do |buff|
               if $random_center.rand(100) < buff[1]
                 @succ_count+=1
+                tempb<<[true,0]
                 sm = buff[0].new(@cur_actor)
                 i.add_buff(sm)
                 @splink.show_text("+"+sm.name,i.event,SP_ADD_COLOR)
@@ -995,6 +1002,7 @@
             end
             if para[0].spec_effect!=""
               @succ_count+=1
+              tempb<<[true,0]
               instance_eval(para[0].spec_effect)
             end
           else

@@ -30,7 +30,7 @@
     @hp_damage = 66
     @sp_damage = 0
     @ap_damage = 0
-    @buff = [["Deep_Damage.new",100]]
+    @buff = [[Deep_Damage,100]]
     @debuff = []
     @descr = "一瓶神仙水.\n传说拥有生死人,肉白骨的功效.\n对范围5格内所有单位(不分敌我)造成66点魔法伤害.\n并对其附加伤害加深状态.\n使用一次消耗2瓶.\n使用范围:0-5"
   end

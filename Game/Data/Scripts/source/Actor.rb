@@ -500,6 +500,7 @@
   
   def die
     @dead = true
+    @hp = 0
     self.event.opacity = 100
     self.event.through = true
     $map_battle.next_actor if $map_battle && $map_battle.cur_actor == self
