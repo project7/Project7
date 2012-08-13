@@ -6,11 +6,9 @@
 #==============================================================================
 
 class Scene_Title < Scene_Base
-  #--------------------------------------------------------------------------
-  # ● 开始处理
-  #--------------------------------------------------------------------------
   def start
     super
+    create_particle
     SceneManager.clear
     Graphics.freeze
     create_background
@@ -18,20 +16,40 @@ class Scene_Title < Scene_Base
     create_command_window
     play_title_music
   end
-  #--------------------------------------------------------------------------
-  # ● 获取渐变速度
-  #--------------------------------------------------------------------------
-  def transition_speed
-    return 20
+  def update
+    super
+    @stars.update
   end
-  #--------------------------------------------------------------------------
-  # ● 结束处理
-  #--------------------------------------------------------------------------
+  def create_particle
+    @PTCF=PTCF.new(10)
+    @PTCF.enable=false
+    @stars= PTCF.new(1)
+    @stars.set_all(PTCF::Star)
+    @stars.p[0].pImg=Cache.icon("Particle_flashH.png")
+    @stars.p[0].zoom = 0.5
+    @stars.p[0].color=Color.new(255,255,200)
+  end
+  def dispose_particle
+    @stars.dispose
+    @PTCF.dispose
+  end
+  def adapt_screen
+    dispose_particle
+    create_particle
+    @command_window.update_placement
+  end
   def terminate
     super
     SceneManager.snapshot_for_background
     dispose_background
     dispose_foreground
+    dispose_particle
+  end
+  #--------------------------------------------------------------------------
+  # ● 获取渐变速度
+  #--------------------------------------------------------------------------
+  def transition_speed
+    return 20
   end
   #--------------------------------------------------------------------------
   # ● 生成背景

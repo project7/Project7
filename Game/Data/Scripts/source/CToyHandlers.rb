@@ -8,10 +8,8 @@
     SceneManager.scene.adapt_screen rescue nil
   end
   def self.on_f1
-    msgbox "you pressed f1"
-  end
-  def self.on_f2
     his =  CToy.fps_history
+    Graphics.update
     msgbox "当前: #{RGSSX.fps} FPS\n平均: #{his.inject{|k,v|k+=v} / his.size.to_f} FPS\n历史: \n#{his.each_slice(10).map{|sl|sl.join ", "}.join("\n")}"
   end
 end

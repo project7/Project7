@@ -8,6 +8,11 @@ Cache
 DataManager
 SceneManager
 BattleManager
+Particle
+Particle_Factory
+Field_Base
+Field_Template
+Field_Extend
 Game_Temp
 Game_System
 Game_Timer

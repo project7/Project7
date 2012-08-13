@@ -4,13 +4,13 @@
   @press_keys = []
   @down_keys = []
   class << CInput
-  
+    
     alias ud update
     def update
       @down_keys,@press_keys = getall[1],getall[2]
       ud
     end
-    
+
     alias dn down?
     def down?(rkey)
       return rkey.any?{|i| @down_keys.include?(i)}
