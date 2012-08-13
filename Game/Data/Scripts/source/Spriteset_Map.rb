@@ -377,11 +377,13 @@ class Spriteset_Map
     if @parallax_name != $game_map.parallax_name
       @parallax_name = $game_map.parallax_name
       @parallax.bitmap.dispose if @parallax.bitmap
-      @parallax.bitmap = Cache.parallax(@parallax_name)
+      @parallax.bitmap = Cache.parallax(@parallax_name) if @parallax_name.size > 0
       Graphics.frame_reset
     end
-    @parallax.ox = $game_map.parallax_ox(@parallax.bitmap)
-    @parallax.oy = $game_map.parallax_oy(@parallax.bitmap)
+    newox = $game_map.parallax_ox(@parallax.bitmap)
+    newoy = $game_map.parallax_oy(@parallax.bitmap)
+    @parallax.ox = @parallaxlastox = newox unless @parallaxlastox == newox
+    @parallax.oy = @parallaxlastoy = newoy unless @parallaxlastoy == newoy
   end
   #--------------------------------------------------------------------------
   # ● 更新人物精灵

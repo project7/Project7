@@ -160,6 +160,7 @@ class Game_Map
   # ● 计算远景图显示的原点 X 坐标
   #--------------------------------------------------------------------------
   def parallax_ox(bitmap)
+    return 0 unless bitmap
     if @parallax_loop_x
       @parallax_x * 16
     else
@@ -172,9 +173,11 @@ class Game_Map
   # ● 计算远景图显示的原点 Y 坐标
   #--------------------------------------------------------------------------
   def parallax_oy(bitmap)
+    return 0 unless bitmap
     if @parallax_loop_y
       @parallax_y * 16
     else
+      return
       h1 = [bitmap.height - Graphics.height, 0].max
       h2 = [height * 32 - Graphics.height, 1].max
       @parallax_y * 16 * h1 / h2
