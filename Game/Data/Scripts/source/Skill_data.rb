@@ -382,12 +382,16 @@ class CallSaveScene < Skill
   end
   
   def set_other
-    @use_in_battle = false
+    @use_in_battle = true
     @use_in_scene = true
   end
   
   def set_extra
-    @spec_effect = "SceneManager.scene.call_save_scene"
+    @spec_effect = "if $map_battle;
+                      @splink.show_tips(\"战斗中禁止存档\");
+                    else;
+                      SceneManager.scene.call_save_scene;
+                    end;"
     @sp_cost_rate = 0
     @hp_cost_rate = 0
     @ap_cost_rate = 0
