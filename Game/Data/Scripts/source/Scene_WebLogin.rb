@@ -2,25 +2,25 @@
 #==============================================================================
 # ■ Scene_WebLogin
 #==============================================================================
-
-class Scene_WebLogin < Scene_Base
-  class Jiecao
-    def call(e)
-      args = e[/^lynn:\/\/(.*)\/?$/i]
-      if args
-        hook=$1
-        if hook[/^cancel\/?$/i]
-          $WebLogin_user = nil
-        else
-          hook[/^(.*)\/(.*)$/]
-          $WebLogin_user = $2
-        end
-        @browser.dispose
-        @browser = nil
-        return false
+class Jiecao
+  def call(e)
+    args = e[/^lynn:\/\/(.*)\/?$/i]
+    if args
+      hook=$1
+      if hook[/^cancel\/?$/i]
+        $WebLogin_user = nil
+      else
+        hook[/^(.*)\/(.*)$/]
+        $WebLogin_user = $2
       end
+      @browser.dispose
+      @browser = nil
+      return false
     end
   end
+end
+
+class Scene_WebLogin < Scene_Base
   
   def main
     jiecao = Jiecao.new
