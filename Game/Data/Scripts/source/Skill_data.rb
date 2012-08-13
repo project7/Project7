@@ -13,7 +13,7 @@
     @id = 1
     @name = "意念抛投"
     @init_skill = true
-    @use_req = "sp>=0&&ap>=0"
+    @use_req = "sp>=4&&ap>=4"
     @use_dis_min = 1
     @use_dis_max = 6
     @hotkey = 0x44
@@ -33,7 +33,7 @@
     @ap_damage = 0
     @buff = [[Catch,-100]]
     @debuff = []
-    @descr = "需要4点怒气以及5点行动力催动.\n选中一个友方单位或是能力低于自己的敌人.\n向指定的目标格抛出.\n若指定目标格为空地,则无事.\n若指定目标格为敌人或友军.\n行动力不足以攻击的一方受到伤害.\n施法距离:1-6\n\n特殊效果:\n若投掷男主角,目标区域伤害为3格范围.\n若投掷目标向男主角,则有一定概率秒杀被投掷单位."
+    @descr = "需要4点怒气以及4点行动力催动.\n选中一个友方单位或是能力低于自己的敌人.\n向指定的目标格抛出.\n若指定目标格为空地,则无事.\n若指定目标格为敌人或友军.\n行动力不足以攻击的一方受到伤害.\n伤害与被投掷者生命关.\n施法距离:1-6\n\n特殊效果:\n若投掷男主角.\n目标区域伤害为3格范围.\n若投掷目标向男主角.\n则有一定概率秒杀被投掷单位."
   end
   
   def set_extra
@@ -77,15 +77,15 @@ class FuckWithOutMoney < Skill
     @hurt_cant_move = true
     @hurt_area = [ [[0]] ,true]
     @hurt_maxnum = 0
-    @sp_cost = 0
+    @sp_cost = 4
     @hp_cost = 0
-    @ap_cost = 0
+    @ap_cost = 4
     @hp_damage = 0
     @sp_damage = 0
     @ap_damage = 0
     @buff = []
     @debuff = []
-    @descr = "消耗4点怒气和5点行动力.\n将选中的单位投向目标地点.\n造成物理伤害,无视魔法免疫.\n施法距离:1-6"
+    @descr = "消耗4点怒气和4点行动力.\n将选中的单位投向目标地点.\n造成物理伤害,无视魔法免疫.\n施法距离:1-6"
   end
 
   def set_extra
@@ -563,7 +563,7 @@ class AutoBang < Skill
                         i.die;
                         @splink.show_text(\"Bingo!\",i.event,BINGO_COLOR,30);
                       else;
-                        a=i.phy_damage(100);
+                        a=i.phy_damage(i.hp/10);
                         if a[0];
                           @splink.show_text(a[1],i.event,HP_COST_COLOR,20);
                         elsif a[1]<=1;
@@ -573,7 +573,7 @@ class AutoBang < Skill
                       @cur_actor.cost_ap_for(1);
                     else;
                       @cur_actor.event.move_backward if @cur_actor.event.passable?(@cur_actor.x,@cur_actor.y,10-i.event.direction);
-                      a=@cur_actor.phy_damage(100);
+                      a=@cur_actor.phy_damage(i.hp/10);
                       if a[0];
                         @splink.show_text(a[1],@cur_actor.event,HP_COST_COLOR,20);
                       elsif a[1]<=1;
@@ -635,7 +635,7 @@ class AutoT < Skill
   
   def set_extra
     @spec_effect = "i.event.move_backward if i.event.passable?(i.x,i.y,10-i.event.direction);
-                    a=i.phy_damage(50);
+                    a=i.phy_damage(@cur_actor.hp/20);
                     if a[0];
                       @splink.show_text(a[1],i.event,HP_COST_COLOR,20);
                     elsif a[1]<=1;
@@ -644,7 +644,7 @@ class AutoT < Skill
                     if i!=@cur_actor;
                       @cur_actor.event.set_direction(10-i.event.direction);
                       @cur_actor.event.move_backward if @cur_actor.event.passable?(@cur_actor.x,@cur_actor.y,10-i.event.direction);
-                      a=@cur_actor.phy_damage(50);
+                      a=@cur_actor.phy_damage(@cur_actor.hp/20);
                       if a[0];
                         @splink.show_text(a[1],@cur_actor.event,HP_COST_COLOR,20);
                       elsif a[1]<=1;
@@ -707,7 +707,7 @@ class AutoBigBang < Skill
   def set_extra
     @spec_effect = "i.event.set_direction(Fuc.mouse_dir_body(i.event,@cur_actor.event));
                     i.event.move_backward if i.event.passable?(i.x,i.y,10-i.event.direction);
-                    a=i.phy_damage(100);
+                    a=i.phy_damage(@cur_actor.hp/8);
                     if a[0];
                       @splink.show_text(a[1],i.event,HP_COST_COLOR,20);
                     elsif a[1]<=1;

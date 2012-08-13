@@ -217,8 +217,9 @@
     if value > 0
       value -= @mdef
       value -= @mdef_add
+      value = 1 if value<=0
     end
-    value = [value,1].max
+    value = 1 if value == 0
     return damage(value)
   end
   
@@ -231,10 +232,11 @@
     if value > 0
       value = value * (100-damage_reduce_rate) / 100
       value -= damage_reduce
+      value = 1 if value <= 0
     end
     rdvalue = [value/10,1].max
     value = value-rdvalue+xrand(2*rdvalue)
-    value = [value,1].max
+    value = 1 if value == 0
     return god_damage(value)
   end
   
