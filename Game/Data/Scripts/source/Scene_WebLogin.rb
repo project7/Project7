@@ -25,12 +25,18 @@ class Scene_WebLogin < Scene_Base
   
   def main
     jiecao = Jiecao.new
-    jiecao.instance_variable_set :@browser, CBrower.new("http://lynngame.sinaapp.com/?action=ingameLogin", 0, 0, 640, 480, jiecao)
+    jiecao.instance_variable_set :@browser, CBrower.new("http://lynngame.sinaapp.com/?action=ingameLogin", 0, 0, Graphics.width, Graphics.height, jiecao)
     loop do
       Graphics.update
       break unless jiecao.instance_variable_get :@browser
     end
     RGSSX.ensure
     return_scene
+  end
+  
+  def adapt_screen
+    a = (jiecao.instance_variable_get :@browser)
+    a.w = Graphics.width
+    a.h = Graphics.height
   end
 end

@@ -440,7 +440,7 @@ class Scene_Map < Scene_Base
       if Mouse.click?(1) && iindex
         case iindex
         when 0
-          SceneManager.call(Scene_Load)
+          SceneManager.call(Scene_WebLogin)
         when 1
           if DataManager.load_game(0)
             fadeout_all
