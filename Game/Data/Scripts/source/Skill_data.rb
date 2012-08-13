@@ -92,6 +92,7 @@ class FuckWithOutMoney < Skill
     @spec_effect = "target_body = $team_set.find{|i| i.x==para[1][0]&&i.y==para[1][1]};
                     return [[false,13]] if !$game_map.check_passage(*para[1],0xF)||!target_body&&$game_map.events_xy_nt(*para[1]).size>0;
                     $team_set.each do |i|;
+                      relate = (i.team&target_body.team).size==0 if target_body
                       dx=para[1][0]-i.x;
                       dy=para[1][1]-i.y;
                       if dx==0&&dy==0;
@@ -103,10 +104,10 @@ class FuckWithOutMoney < Skill
                           i.dec_buff(6);
                           break;
                         else;
-                          if target_body.is_a?(Fucker);
+                          if target_body.is_a?(Fucker) && relate;
                             target_body.auto_skill=[\"$team_set.all?{|i| !i.event.moving?}\",[AutoBang.new,[para[1][0],para[1][1]]]];
                           elsif i.is_a?(Fucker) && i.ap>=i.get_ap_for_atk;
-                            i.cost_ap_for(1);
+                            i.cost_ap_for(1) && relate;
                             i.auto_skill=[\"$team_set.all?{|i| !i.event.moving?}\",[AutoBigBang.new,[para[1][0],para[1][1]]]];
                           else;
                             tskill = AutoT.new;
