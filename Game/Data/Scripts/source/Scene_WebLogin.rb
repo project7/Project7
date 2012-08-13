@@ -11,7 +11,6 @@ class Scene_WebLogin < Scene_Base
         hook=$1
         if hook[/^cancel\/?$/i]
           $WebLogin_user = nil
-          SceneManager.return
         else
           hook[/^(.*)\/(.*)$/]
           $WebLogin_user = $2
@@ -36,7 +35,7 @@ class Scene_WebLogin < Scene_Base
   
   def adapt_screen
     a = (jiecao.instance_variable_get :@browser)
-    a.w = Graphics.width
-    a.h = Graphics.height
+    a.width = Graphics.width
+    a.height = Graphics.height
   end
 end
