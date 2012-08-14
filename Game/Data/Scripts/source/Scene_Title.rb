@@ -21,17 +21,15 @@ class Scene_Title < Scene_Base
     @stars.update
   end
   def create_particle
-    @PTCF=PTCF.new(10)
-    @PTCF.enable=false
     @stars= PTCF.new(1)
-    @stars.set_all(PTCF::Star)
-    @stars.p[0].pImg=Cache.icon("Particle_flashH.png")
-    @stars.p[0].zoom = 0.5
-    @stars.p[0].color=Color.new(255,255,200)
+    @stars.set_all(PTCF::MistLight)
+    #@stars.set_all(PTCF::Star)
+    #@stars.p[0].pImg=Cache.icon("Particle_flashH.png")
+    #@stars.p[0].zoom = 0.5
+    #@stars.p[0].color=Color.new(255,255,200)
   end
   def dispose_particle
     @stars.dispose
-    @PTCF.dispose
   end
   def adapt_screen
     dispose_particle

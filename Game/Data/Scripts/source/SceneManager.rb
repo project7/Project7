@@ -18,7 +18,6 @@ module SceneManager
   #--------------------------------------------------------------------------
   def self.run
     DataManager.init
-    Audio.setup_midi if use_midi?
     @scene = first_scene_class.new
     @scene.main while @scene
   end

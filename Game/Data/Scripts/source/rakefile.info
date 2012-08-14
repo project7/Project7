@@ -13,6 +13,7 @@ Particle_Factory
 Field_Base
 Field_Template
 Field_Extend
+Field_Mist
 Game_Temp
 Game_System
 Game_Timer
@@ -154,3 +155,8 @@ CToyHandlers
 SystemSetting
 Window_Mouse
 Var_init
+LogoScene_Base
+LogoScene_Mist
+LogoScene_Moe9th
+LogoScene_66RPG
+LogoSceneManager

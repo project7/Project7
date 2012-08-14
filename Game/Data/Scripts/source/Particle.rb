@@ -95,33 +95,33 @@ class Particle
   #■实例化对象，可以传入显示粒子的viewport
   #-============================================-#
   def initialize(viewport=nil)
-   @field = Field_Base.new(self)
-   @viewport=viewport
-   if @viewport==nil
-    self.range=Rect.new(0, 0, Graphics.width, Graphics.height)
-   else
-    self.range=@viewport.rect
-   end
-   @visible = true
-   @opacity_max=255
-   @opacity_min=0
-   @flash_rate=10
-   @dispose = true
-   @delay = 1
-   @freeze = false
-   @zoom_ox=1
-   @zoom_oy=1
-   
-   @timer =[1]
-   @sx =[0.1]
-   @sy =[0.1]
-   @sa =[0.1]
-   @px =[0.1]
-   @py =[0.1]
-   @fix =[0.1]
-   @particle =[]
+    @field = Field_Base.new(self)
+    @viewport=viewport
+    if @viewport==nil
+      self.range=Rect.new(0, 0, Graphics.width, Graphics.height)
+    else
+      self.range=@viewport.rect
+    end
+    @visible = true
+    @opacity_max=255
+    @opacity_min=0
+    @flash_rate=10
+    @dispose = true
+    @delay = 1
+    @freeze = false
+    @zoom_ox=1
+    @zoom_oy=1
+    
+    @timer =[1]
+    @sx =[0.1]
+    @sy =[0.1]
+    @sa =[0.1]
+    @px =[0.1]
+    @py =[0.1]
+    @fix =[0.1]
+    @particle =[]
   end
- 
+  
   #-============================================-#
   #■count=方法，设置粒子数量
   #-============================================-#
@@ -208,7 +208,7 @@ class Particle
       return
     end
     for i in 0..@count-1
-        particle[i].bitmap = @pImg
+      particle[i].bitmap = @pImg
     end
   end
   #-============================================-#
@@ -221,13 +221,13 @@ class Particle
     @isRandTone=r
     max = @count-1
     if @isRandTone
-     for i in 0..max
-      @particle[i].tone = Tone.new(rand(255),rand(255),rand(255),rand(255))
-     end
+      for i in 0..max
+        @particle[i].tone = Tone.new(rand(255),rand(255),rand(255),rand(255))
+      end
     else
-     for i in 0..max
-      @particle[i].tone = @tone
-     end
+      for i in 0..max
+        @particle[i].tone = @tone
+      end
     end
   end
   #-============================================-#
@@ -240,13 +240,13 @@ class Particle
     @isRandColor=r
     max = @count-1
     if @isRandColor
-     for i in 0..max
-      @particle[i].color = Color.new(rand(255),rand(255),rand(255))
-     end
+      for i in 0..max
+        @particle[i].color = Color.new(rand(255),rand(255),rand(255))
+      end
     else
-     for i in 0..max
-      @particle[i].color = @color
-     end
+      for i in 0..max
+        @particle[i].color = @color
+      end
     end
   end
   #-============================================-#
@@ -336,49 +336,49 @@ class Particle
   # 纵向的收缩率（添负数就放大）
   #-============================================-#
   def       set(ini_type,mast_in_screen,wind, gravity_x, gravity_y,\
-                particle_number, particle_speed,\
-                particle_life,  start_x,  start_y,\
-                particle_image = Bitmap.new(24,24),cycle_angle = 0,\
-                start_angle = 270,rand_range = 0,\
-                is_flash = false,\
-                is_random_tone = false,is_random_color=false,\
-                zoom_x = 0.01,zoom_y = 0.01)
-      if !@dispose
-        self.dispose
-      end
-      @count = 0
-      self.count=particle_number
-      
-      @mast_in_screen = mast_in_screen
-      @ini_type = ini_type
-      @wind =wind
-      @gx =gravity_x
-      @gy =gravity_y
-      @speed =particle_speed
-      @life =particle_life
-      @start_x = start_x
-      @start_y = start_y
-      @t_start_x = start_x
-      @t_start_y = start_y
-      self.pImg = particle_image
+      particle_number, particle_speed,\
+      particle_life,  start_x,  start_y,\
+      particle_image = Bitmap.new(24,24),cycle_angle = 0,\
+      start_angle = 270,rand_range = 0,\
+      is_flash = false,\
+      is_random_tone = false,is_random_color=false,\
+      zoom_x = 0.01,zoom_y = 0.01)
+    if !@dispose
+      self.dispose
+    end
+    @count = 0
+    self.count=particle_number
     
-      self.zoom = 1
-      @opacity_max = 255
-      @opacity_min = 0
-      @rand_range = rand_range
-      @start_angle  = start_angle
-      @zoom_x =zoom_x
-      @zoom_y =zoom_y
-      @cycle_angle =cycle_angle     
-      
-      @isFlash =is_flash
-      @color=Color.new(0,0,0,0)
-      @tone=Tone.new(0,0,0,0)
-      self.isRandTone=is_random_tone
-      self.isRandColor=is_random_color
-      
-      @dispose=false
-      self.reset
+    @mast_in_screen = mast_in_screen
+    @ini_type = ini_type
+    @wind =wind
+    @gx =gravity_x
+    @gy =gravity_y
+    @speed =particle_speed
+    @life =particle_life
+    @start_x = start_x
+    @start_y = start_y
+    @t_start_x = start_x
+    @t_start_y = start_y
+    self.pImg = particle_image
+    
+    self.zoom = 1
+    @opacity_max = 255
+    @opacity_min = 0
+    @rand_range = rand_range
+    @start_angle  = start_angle
+    @zoom_x =zoom_x
+    @zoom_y =zoom_y
+    @cycle_angle =cycle_angle     
+    
+    @isFlash =is_flash
+    @color=Color.new(0,0,0,0)
+    @tone=Tone.new(0,0,0,0)
+    self.isRandTone=is_random_tone
+    self.isRandColor=is_random_color
+    
+    @dispose=false
+    self.reset
   end
   #-============================================-#
   #■初始化所有粒子
@@ -390,17 +390,17 @@ class Particle
     @freeze = false
     @sysTime = 0
     max = @count-1
-      for i in 0..max
-        @particle[i].z = SCREEN_Z          
-        case @ini_type
-         when TYPE_SAMETIME
-           @particle[i].visible = false
-           @timer[i] = -@field.get_delay(i)
-         else
-          @particle[i].visible = false
-          @timer[i] = -(@count-i) * @field.get_delay(i)
-        end
+    for i in 0..max
+      @particle[i].z = SCREEN_Z          
+      case @ini_type
+      when TYPE_SAMETIME
+        @particle[i].visible = false
+        @timer[i] = -@field.get_delay(i)
+      else
+        @particle[i].visible = false
+        @timer[i] = -(@count-i) * @field.get_delay(i)
       end
+    end
   end
   #-============================================-#
   #■初始化某个粒子
@@ -411,114 +411,114 @@ class Particle
     end
     @field.reset(i)
     case @ini_type
-      when TYPE_RANDOM
-         @timer[i] = rand(@life)+1
-      else
-         @timer[i] = @field.get_life(i)
+    when TYPE_RANDOM
+      @timer[i] = rand(@life)+1
+    else
+      @timer[i] = @field.get_life(i)
     end
-       @particle[i].visible = @visible
-       @start_x=@field.get_start_x(i)
-       @start_y=@field.get_start_y(i)
-       
-       @px[i] = @start_x
-       @py[i] = @start_y
-       @particle[i].ox = @center_x
-       @particle[i].oy = @center_y
-       @particle[i].opacity = @opacity_max
-       @particle[i].zoom_x =@zoom_ox
-       @particle[i].zoom_y =@zoom_oy
-       @particle[i].x = @px[i]
-       @particle[i].y = @py[i]
-       @particle[i].angle = 0
-       if isRandColor
-        @particle[i].color = Color.new(rand(255),rand(255),rand(255))
-       end
-       if isRandTone
-        @particle[i].tone = Tone.new(rand(255),rand(255),rand(255),rand(255))
-       end
-       
-       @sa[i] = @field.get_sa(i)
-       @sx[i] = Math::cos(@sa[i])*@field.get_speed(i)
-       @sy[i] = Math::sin(@sa[i])*@field.get_speed(i)
-     if @isFlash
-        @fix[i] = -(@opacity_max-@opacity_min)/@flash_rate
-       else
-        @fix[i] = -(@opacity_max-@opacity_min)/@timer[i]
-     end
+    @particle[i].visible = @visible
+    @start_x=@field.get_start_x(i)
+    @start_y=@field.get_start_y(i)
+    
+    @px[i] = @start_x
+    @py[i] = @start_y
+    @particle[i].ox = @center_x
+    @particle[i].oy = @center_y
+    @particle[i].opacity = @opacity_max
+    @particle[i].zoom_x =@zoom_ox
+    @particle[i].zoom_y =@zoom_oy
+    @particle[i].x = @px[i]
+    @particle[i].y = @py[i]
+    @particle[i].angle = 0
+    if isRandColor
+      @particle[i].color = Color.new(rand(255),rand(255),rand(255))
+    end
+    if isRandTone
+      @particle[i].tone = Tone.new(rand(255),rand(255),rand(255),rand(255))
+    end
+    
+    @sa[i] = @field.get_sa(i)
+    @sx[i] = Math::cos(@sa[i])*@field.get_speed(i)
+    @sy[i] = Math::sin(@sa[i])*@field.get_speed(i)
+    if @isFlash
+      @fix[i] = -(@opacity_max-@opacity_min)/@flash_rate
+    else
+      @fix[i] = -(@opacity_max-@opacity_min)/@timer[i]
+    end
   end
   
   #-============================================-#
   #■粒子处理
   #-============================================-#
   def update
-   
-   #不运行就退出 
-   if  @freeze || @dispose
-     return
-   end
-   
-   @field.particle = self
-   @sysTime += 1
-   
-   max = @count-1
-   for i in 0..max
-    #时间变化
-    if @timer[i]<0
-     @timer[i] +=1
-    else
-     @timer[i] -=1
-     
-     #加速度变化
-     @field.gx(i)
-     @field.gy(i)
-   
-     #透明度变化
-     @field.opacity(i)
-     
-     #闪烁控制
-     if @isFlash &&\
-       (@particle[i].opacity >= @opacity_max ||\
-        @particle[i].opacity<=@opacity_min)
-       @fix[i] = -@fix[i]
-     end
     
-     #大小变化
-     @field.zoom_x(i)
-     @field.zoom_y(i)
-     
-     #速度变化
-     @field.sx(i)
-     @field.sy(i)     
-     
-     #位置变化
-     @field.px(i)
-     @field.py(i)
-     
-     @particle[i].x = @px[i]
-     @particle[i].y = @py[i]
+    #不运行就退出 
+    if  @freeze || @dispose
+      return
+    end
     
-     #角度变化
-     if @cycle_angle != 0
-       @particle[i].angle += @cycle_angle
-     end
+    @field.particle = self
+    @sysTime += 1
+    
+    max = @count-1
+    for i in 0..max
+      #时间变化
+      if @timer[i]<0
+        @timer[i] +=1
+      else
+        @timer[i] -=1
+        
+        #加速度变化
+        @field.gx(i)
+        @field.gy(i)
+        
+        #透明度变化
+        @field.opacity(i)
+        
+        #闪烁控制
+        if @isFlash &&\
+          (@particle[i].opacity >= @opacity_max ||\
+            @particle[i].opacity<=@opacity_min)
+          @fix[i] = -@fix[i]
+        end
+        
+        #大小变化
+        @field.zoom_x(i)
+        @field.zoom_y(i)
+        
+        #速度变化
+        @field.sx(i)
+        @field.sy(i)     
+        
+        #位置变化
+        @field.px(i)
+        @field.py(i)
+        
+        @particle[i].x = @px[i]
+        @particle[i].y = @py[i]
+        
+        #角度变化
+        if @cycle_angle != 0
+          @particle[i].angle += @cycle_angle
+        end
+      end
+      
+      #恢复初始状态
+      if @mast_in_screen && @timer[i]>0
+        if @particle[i].x <@left    ||\
+          @particle[i].y <@top     ||\
+          @particle[i].x >@right   ||\
+          @particle[i].y >@buttom
+          self.p_reset(i)
+        end
+      else
+        if @timer[i]==1
+          @timer[i] = -@field.get_delay(i)
+        end
+        if @timer[i]==0
+          self.p_reset(i)
+        end
+      end
     end
-   
-    #恢复初始状态
-    if @mast_in_screen && @timer[i]>0
-      if @particle[i].x <@left    ||\
-         @particle[i].y <@top     ||\
-         @particle[i].x >@right   ||\
-         @particle[i].y >@buttom
-       self.p_reset(i)
-      end
-    else
-      if @timer[i]==1
-        @timer[i] = -@field.get_delay(i)
-      end
-      if @timer[i]==0
-       self.p_reset(i)
-      end
-    end
-   end
   end
 end

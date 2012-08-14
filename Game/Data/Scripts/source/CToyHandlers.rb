@@ -6,6 +6,7 @@
     $syseting[:screen_size] ? RGSSX.resize_window(800,600) : RGSSX.resize_window(640,480)
     SceneManager.scene.spriteset.adapt_screen rescue nil
     SceneManager.scene.adapt_screen rescue nil
+    LogoSceneManager.scene.adapt_screen rescue nil
   end
   def self.on_f1
     his =  CToy.fps_history
