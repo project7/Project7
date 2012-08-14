@@ -310,11 +310,13 @@
       tBitmap.blt(*UI_SKILL_POS[i],self.get_skill_bitmap(i),trect)
     end
     tBitmap.font.size = 30
-    if SceneManager.scene.menu_calling
-      tBitmap.font.size = 22
-      tBitmap.draw_text(39,40,60,60,"设置",1) if $sel_body
-    else
-      tBitmap.draw_text(39,37,60,60,$sel_body.sp,1) if $sel_body
+    if $sel_body
+      if $sel_body.fake_skill
+        tBitmap.font.size = 22
+        tBitmap.draw_text(39,40,60,60,"设置",1)
+      else
+        tBitmap.draw_text(39,37,60,60,$sel_body.sp,1)
+      end
     end
     return tBitmap
   end

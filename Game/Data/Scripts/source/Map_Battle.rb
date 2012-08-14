@@ -462,6 +462,20 @@
       end
       return
     end
+    # B
+    if $game_system.menu_disabled
+      SceneManager.scene.menu_calling = false
+    else
+      if CInput.trigger?($vkey[:X]) && $sel_body == @cur_actor
+        SceneManager.scene.menu_calling =!SceneManager.scene.menu_calling
+        if SceneManager.scene.menu_calling
+          SceneManager.scene.menu_rem = nil
+          SceneManager.scene.change_skill
+        else
+          SceneManager.scene.call_ret_scene
+        end
+      end
+    end
     # C
     if CInput.down?($vkey[:C]) && @actor.movable?
       @actor.check_action_event
@@ -560,12 +574,26 @@
       @actor.cantmove = true
       @target_pos = nil
       @splink.tipsvar[1][0] = true
+      @start_pos = [$game_map.parallax_x,$game_map.parallax_y]
       @wayarea.dispose if @wayarea
       Mouse.set_cursor(Mouse::EmptyCursor)
-    elsif Mouse.press?(2) && @mouse_right_down
-      dis_x = (Mouse.pos[0]-@click_pos[0]).to_f/32
-      dis_y = (Mouse.pos[1]-@click_pos[1]).to_f/32
-      $game_map.set_display_pos($game_map.parallax_x+dis_x,$game_map.parallax_y+dis_y)
+    elsif Mouse.press?(2) && @mouse_right_down && @start_pos
+      dis_x = (Mouse.pos[0]-@click_pos[0]).to_f/128
+      dis_y = (Mouse.pos[1]-@click_pos[1]).to_f/128
+      next_x = $game_map.parallax_x+dis_x
+      next_y = $game_map.parallax_y+dis_y
+      if next_x-@start_pos[0]<0
+        next_x=@start_pos[0]-6 if next_x+6<@start_pos[0]
+      else
+        next_x=@start_pos[0]+6 if next_x-6>@start_pos[0]
+      end
+      if next_y-@start_pos[1]<0
+        next_y=@start_pos[1]-6 if next_y+6<@start_pos[1]
+      else
+        next_y=@start_pos[1]+6 if next_y-6>@start_pos[1]
+      end
+      #set_view_pos(next_x,next_y)
+      $game_map.set_display_pos(next_x,next_y)
       Mouse.set_pos(*@click_pos)
     elsif Mouse.up?(2) && @mouse_right_down
       mouse_fuck_up
@@ -581,6 +609,7 @@
     Mouse.set_pos(*@click_pos) if @click_pos
     set_view_pos(@cur_actor.x,@cur_actor.y)
     @click_pos = nil
+    @start_pos = nil
   end
   
   def update_ai

@@ -11,6 +11,7 @@ class Scene_Map < Scene_Base
 
   attr_accessor :spriteset
   attr_accessor :menu_calling
+  attr_accessor :menu_rem
   #--------------------------------------------------------------------------
   # ● 开始处理
   #--------------------------------------------------------------------------
@@ -174,11 +175,11 @@ class Scene_Map < Scene_Base
     check_gameover
     update_transfer_player unless scene_changing?
     update_encounter unless scene_changing?
-    update_call_menu unless scene_changing?
     #update_call_debug unless scene_changing?
     if $game_switches[1]
       $map_battle.update unless scene_changing?
     else
+      update_call_menu unless scene_changing?
       move_by_input
       update_mouse_event unless scene_changing?
     end

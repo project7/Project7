@@ -18,6 +18,13 @@ class Fucker < Actor
     @head = "Alexander"
     @animation = []
   end
+  
+  def set_show_ele
+    @str=[2,0]
+    @het=[4,0]
+    @tec=[2,0]
+    @agi=[2,0]
+  end
 
   def set_ele
     @maxhp = 250
@@ -38,7 +45,7 @@ class Fucker < Actor
     @hatred_base = 1
     @miss_rate = 5
   end
-  
+
   def set_extra
     @atk_buff = []
     @maxhp_add = 0
@@ -94,6 +101,13 @@ class BeFucker < Actor
   def set_ui
     @head = "Lynn"
     @animation = []
+  end
+  
+  def set_show_ele
+    @str=[2,0]
+    @het=[2,0]
+    @tec=[4,0]
+    @agi=[2,0]
   end
 
   def set_ele

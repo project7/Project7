@@ -122,7 +122,7 @@
   end
 
   def screen_x
-    $game_map.adjust_x(@x+@offset_x)  * 32
+    $game_map.adjust_x(@x+@offset_x) * 32
   end
 
   def screen_y

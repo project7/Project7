@@ -76,11 +76,16 @@
   attr_accessor :atk_buff                     # 法球效果
   attr_accessor :fake_skill                   # 技能壳
   attr_accessor :auto_skill                   # 自动技能
+  attr_accessor :str                          # 力量
+  attr_accessor :het                          # 体力
+  attr_accessor :tec                          # 智力
+  attr_accessor :agi                          # 敏捷
   
   def initialize(event_id=0,t_id=[0])
     @event_id = event_id
     @team = t_id
     set_ele
+    set_show_ele
     set_extra
     set_tec
     set_ui
@@ -129,6 +134,13 @@
     @item_cost_ap = 1
     @hatred_base = 0
     @miss_rate = 0
+  end
+  
+  def set_show_ele
+    @str=[0,0]
+    @het=[0,0]
+    @tec=[0,0]
+    @agi=[0,0]
   end
   
   def set_extra
