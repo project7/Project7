@@ -38,6 +38,7 @@
   MENU_SAV_LOG = "Graphics/System/login.png"
   MENU_SAV_SL = "Graphics/System/sl.png"
   RECT_SEL = Rect.new(0,0,26,26)
+  DAMAGE_EFFECT = [Color.new(255,0,0,255),20]
   FAILD_ATTACK_TEXT = 
   [ "Miss",
     "Trick",
@@ -59,7 +60,8 @@
     "怒气值不足",
     "生命值不足",
     "行动力不足",
-    "物品数量不足"
+    "物品数量不足",
+    "该单位太强大"
   ]
   COMMON_BATTLE_REQ = " $game_switches[2] = @partner_num==0;
                         $game_switches[3] = @enemy_num==0;
@@ -195,7 +197,13 @@
     if $sel_body
       a = Bitmap.new(193,105)
       a.font.color = Color.new(255,255,255,255)
-      a.draw_text(104,25,60,30,$sel_body.ap.to_s,1)
+      tfont = a.font.name
+      tsize = a.font.size
+      a.font.name = "钟齐孟宪敏硬笔简体"
+      a.font.size = 50
+      a.draw_text(82,8,100,60,$sel_body.ap.to_s,1)
+      a.font.name = tfont
+      a.font.size = tsize
       a.draw_text(96,70,100,30,$sel_body.name,1)
       return a
     end

@@ -581,32 +581,32 @@ class Spriteset_Map
       end
     end
     # 刷数据
-    @richtext.each_with_index do |i,j|
-      unless i.bitmap
-        @richtext[j] = nil
-        next
-      end
-      if i.dead
-        i.dispose
-        @richtext[j] = nil
+    @richtext.delete_if do |i|
+      if i.bitmap
+        if i.dead
+          i.dispose
+          true
+        else
+          i.update
+          false
+        end
       else
-        i.update
+        true
       end
     end
-    @richtext.compact!
-    @richvalue.each_key do |i|
-      unless @richvalue[i].bitmap
-        @richvalue[i] = nil
-        next
-      end
-      if @richvalue[i].dead
-        @richvalue[i].dispose
-        @richvalue[i] = nil
+    @richvalue.delete_if do |key|
+      if @richvalue[key].bitmap
+        if @richvalue[key].dead
+          @richvalue[key].dispose
+          true
+        else
+          @richvalue[key].update
+          false
+        end
       else
-        @richvalue[i].update
+        true
       end
     end
-    @richvalue.delete_if{|key| !@richvalue[key]}
   end
   #--------------------------------------------------------------------------
   # ● 更新飞艇影子

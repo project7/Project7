@@ -771,7 +771,7 @@
             @cur_actor.atk_buff.each do |buff|
               trate = buff[1].abs
               if $random_center.rand(100) < trate
-                sm = instance_eval(buff[0]+"("+"@cur_actor"+")")
+                sm = buff[0].new
                 i.add_buff(sm)
                 @splink.show_text("+"+sm.name,i.event,SP_ADD_COLOR) if buff[1]>0
               end
@@ -887,7 +887,6 @@
             end
             if para[0].spec_effect!=""
               @succ_count+=1
-              tempb<<[true,0]
               instance_eval(para[0].spec_effect)
             end
           else
@@ -1004,7 +1003,6 @@
             end
             if para[0].spec_effect!=""
               @succ_count+=1
-              tempb<<[true,0]
               instance_eval(para[0].spec_effect)
             end
           else

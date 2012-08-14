@@ -17,6 +17,7 @@ class Sprite_Character < Sprite_Base
   def initialize(viewport, character = nil)
     super(viewport)
     @character = character
+    @character.gra_res = self
     @balloon_duration = 0
     update
   end
