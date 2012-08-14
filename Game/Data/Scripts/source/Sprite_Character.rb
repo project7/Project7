@@ -17,7 +17,6 @@ class Sprite_Character < Sprite_Base
   def initialize(viewport, character = nil)
     super(viewport)
     @character = character
-    @character.gra_res = self
     @balloon_duration = 0
     update
   end
@@ -33,6 +32,10 @@ class Sprite_Character < Sprite_Base
   # ● 更新画面
   #--------------------------------------------------------------------------
   def update
+    if @character.gra_res
+      self.flash(*@character.gra_res)
+      @character.gra_res=nil
+    end
     super
     update_bitmap
     update_src_rect

@@ -262,7 +262,7 @@
     @hp = [[@maxhp,@hp].min,0].max
     @buff.each{|buff| instance_eval(buff.a_damage_effect)}
     self.die if self.will_dead?
-    self.event.gra_res.flash(*Fuc::DAMAGE_EFFECT) if value>0 && self.event_id>=0
+    self.event.gra_res=Fuc::DAMAGE_EFFECT if value>0 && self.event_id>=0
     return [true,value]
   end
   

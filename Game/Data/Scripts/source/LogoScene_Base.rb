@@ -21,7 +21,7 @@ class LogoScene_Base
     count = 0
     loop do
       update_fuck
-      break if CInput.trigger?($vkey[:Check])
+      break if CInput.trigger?($vkey[:Check]) || Mouse.down?(1)
       break if (count += 1) > 100
     end
     loop do |i|
