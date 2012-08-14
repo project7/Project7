@@ -303,6 +303,7 @@ class Particle
       for i in 0..max
         particle[i].dispose
       end
+      #@pImg.dispose
     end
     @dispose = true
   end
