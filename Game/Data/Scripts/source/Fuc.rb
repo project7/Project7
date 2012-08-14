@@ -197,7 +197,13 @@
     if $sel_body
       a = Bitmap.new(193,105)
       a.font.color = Color.new(255,255,255,255)
-      a.draw_text(104,25,60,30,$sel_body.ap.to_s,1)
+      tfont = a.font.name
+      tsize = a.font.size
+      a.font.name = "钟齐孟宪敏硬笔简体"
+      a.font.size = 50
+      a.draw_text(82,8,100,60,$sel_body.ap.to_s,1)
+      a.font.name = tfont
+      a.font.size = tsize
       a.draw_text(96,70,100,30,$sel_body.name,1)
       return a
     end

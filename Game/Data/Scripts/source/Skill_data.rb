@@ -111,8 +111,8 @@ class FuckWithOutMoney < Skill
                         else;
                           if target_body.is_a?(Fucker) && relate;
                             target_body.auto_skill=[\"$team_set.all?{|i| !i.event.moving?}\",[AutoBang.new,[para[1][0],para[1][1]]]];
-                          elsif i.is_a?(Fucker) && i.ap>=i.get_ap_for_atk;
-                            i.cost_ap_for(1) && relate;
+                          elsif i.is_a?(Fucker) && i.ap>=i.get_ap_for_atk && (!target_body||relate);
+                            i.cost_ap_for(1);
                             i.auto_skill=[\"$team_set.all?{|i| !i.event.moving?}\",[AutoBigBang.new,[para[1][0],para[1][1]]]];
                           else;
                             tskill = AutoT.new;

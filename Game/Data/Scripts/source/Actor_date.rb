@@ -15,28 +15,28 @@ class Fucker < Actor
   end
   
   def set_ui
-    @head = "MainActor"
+    @head = "Alexander"
     @animation = []
   end
 
   def set_ele
-    @maxhp = 600
+    @maxhp = 250
     @maxsp = 100
-    @maxap = 20
+    @maxap = 15
     @atk = 25
     @atk_area = [ [[0,0,1,3]] ,false]
     @atk_dis_min = 1
     @atk_dis_max = 1
-    @def = 10
-    @int = 20
-    @mdef = 2
+    @def = 8
+    @int = 16
+    @mdef = 3
     @hp_rec = 1
     @sp_rec = 0
     @per_step_cost_ap = 3
-    @atk_cost_ap = 6
-    @item_cost_ap = 4
+    @atk_cost_ap = 5
+    @item_cost_ap = 3
     @hatred_base = 1
-    @miss_rate = 25
+    @miss_rate = 5
   end
   
   def set_extra
@@ -53,8 +53,8 @@ class Fucker < Actor
     @per_step_cost_ap_add = 0
     @atk_cost_ap_add = 0
     @item_cost_ap_add = 0
-    @bingo_rate = 20
-    @bingo_damage = 400
+    @bingo_rate = 5
+    @bingo_damage = 300
     @damage_reduce_rate = 0
     @damage_reduce = 0
     @cost_reduce_rate = 0
@@ -68,7 +68,7 @@ class Fucker < Actor
     @ignore_magic = false
     @invisible = false
     @deinvisible = false
-    @ignore_dmg_rate = 10
+    @ignore_dmg_rate = 0
     @dmg_rebound = 0
     @dmg_rebound_rate = 0
   end
@@ -92,28 +92,28 @@ class BeFucker < Actor
   end
   
   def set_ui
-    @head = "MainActor"
+    @head = "Lynn"
     @animation = []
   end
 
   def set_ele
-    @maxhp = 600
+    @maxhp = 160
     @maxsp = 100
-    @maxap = 20
-    @atk = 15
-    @atk_area = [ [[0,0,1,3]] ,false]
+    @maxap = 12
+    @atk = 10
+    @atk_area = [ [[0]] ,false]
     @atk_dis_min = 1
-    @atk_dis_max = 1
-    @def = 10
-    @int = 20
-    @mdef = 2
+    @atk_dis_max = 6
+    @def = 2
+    @int = 25
+    @mdef = 13
     @hp_rec = 1
     @sp_rec = 0
-    @per_step_cost_ap = 3
-    @atk_cost_ap = 6
-    @item_cost_ap = 4
+    @per_step_cost_ap = 2
+    @atk_cost_ap = 1
+    @item_cost_ap = 2
     @hatred_base = 1
-    @miss_rate = 25
+    @miss_rate = 5
   end
   
   def set_extra
@@ -130,8 +130,8 @@ class BeFucker < Actor
     @per_step_cost_ap_add = 0
     @atk_cost_ap_add = 0
     @item_cost_ap_add = 0
-    @bingo_rate = 20
-    @bingo_damage = 400
+    @bingo_rate = 5
+    @bingo_damage = 300
     @damage_reduce_rate = 0
     @damage_reduce = 0
     @cost_reduce_rate = 0
@@ -157,7 +157,7 @@ class Shit < Actor
 
   def set_tec
     @id = 3
-    @name = "屎"
+    @name = "基佬"
     @skill = []
     @equip = {}
     @atk_pic = nil
@@ -169,23 +169,23 @@ class Shit < Actor
   end
   
   def set_ele
-    @maxhp = 600
+    @maxhp = 100
     @maxsp = 0
-    @maxap = 20
-    @atk = 25
+    @maxap = 12
+    @atk = 18
     @atk_area = [ [[0,0,1,2],[1,2]] ,true]
     @atk_dis_min = 3
     @atk_dis_max = 5
-    @def = 5
-    @int = 5
-    @mdef = 5
+    @def = 0
+    @int = 0
+    @mdef = 0
     @hp_rec = 1
     @sp_rec = 0
-    @per_step_cost_ap = 1
-    @atk_cost_ap = 8
+    @per_step_cost_ap = 3
+    @atk_cost_ap = 3
     @item_cost_ap = 1
-    @hatred_base = 1000
-    @miss_rate = 10
+    @hatred_base = 1
+    @miss_rate = 5
   end
   
   def set_ai
@@ -206,8 +206,8 @@ class Shit < Actor
     @per_step_cost_ap_add = 0
     @atk_cost_ap_add = 0
     @item_cost_ap_add = 0
-    @bingo_rate = 20
-    @bingo_damage = 300
+    @bingo_rate = 0
+    @bingo_damage = 0
     @damage_reduce_rate = 0
     @damage_reduce = 0
     @cost_reduce_rate = 0
@@ -223,7 +223,7 @@ class Shit < Actor
     @deinvisible = false
     @ignore_dmg_rate = 0
     @dmg_rebound = 0
-    @dmg_rebound_rate = 50
+    @dmg_rebound_rate = 15
   end
 
 end
@@ -244,7 +244,7 @@ class God < Actor
   end
   
   def set_ele
-    @maxhp = 800
+    @maxhp = 200
     @maxsp = 8
     @maxap = 20
     @atk = 15
@@ -259,7 +259,7 @@ class God < Actor
     @per_step_cost_ap = 3
     @atk_cost_ap = 6
     @item_cost_ap = 5
-    @hatred_base = 500
+    @hatred_base = 2
     @miss_rate = 10
   end
   
@@ -278,7 +278,7 @@ class God < Actor
     @atk_cost_ap_add = 0
     @item_cost_ap_add = 0
     @bingo_rate = 20
-    @bingo_damage = 200
+    @bingo_damage = 150
     @damage_reduce_rate = 0
     @damage_reduce = 0
     @cost_reduce_rate = 0
@@ -289,9 +289,9 @@ class God < Actor
     @sp_absorb = 0
     @invincible = false
     @ignore_physical = false
-    @ignore_magic = true
+    @ignore_magic = false
     @invisible = false
-    @deinvisible = true
+    @deinvisible = false
     @ignore_dmg_rate = 0
     @dmg_rebound = 0
     @dmg_rebound_rate = 0
@@ -323,14 +323,14 @@ class Yangff < Actor
     @maxhp = 10
     @maxsp = 100
     @maxap = 10
-    @atk = 10
+    @atk = 11
     @atk_area = [ [[0] ] ,true]
     @atk_dis_min = 1
     @atk_dis_max = 3
     @def = 5000
     @int = 5
     @mdef = 5000
-    @hp_rec = 3
+    @hp_rec = 2
     @sp_rec = 0
     @per_step_cost_ap = 1
     @atk_cost_ap = 3
@@ -396,7 +396,7 @@ class Orzfly < Actor
   end
   
   def set_ele
-    @maxhp = 8000000
+    @maxhp = 80000
     @maxsp = 100
     @maxap = 1
     @atk = 0
