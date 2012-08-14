@@ -410,7 +410,7 @@ class Orzfly < Actor
   end
   
   def set_ele
-    @maxhp = 80000
+    @maxhp = 300000
     @maxsp = 100
     @maxap = 1
     @atk = 0

@@ -103,7 +103,7 @@ class Spriteset_Map
     @tips[0].z = 1                                      #鼠标指针
     @tips[1].bitmap = Fuc.ui_item                       #物品栏
     @tips[1].x = -175
-    @tips[1].y = Graphics.height*77/100
+    @tips[1].y = Graphics.height-100
     @tips[1].z = 100
     @tips[2].bitmap = Fuc.ui_item_rect                  #物品栏选框
     @tips[2].y = @tips[1].y+12
@@ -167,7 +167,7 @@ class Spriteset_Map
     @viewport2.rect.height = Graphics.height
     @viewport3.rect.width = Graphics.width
     @viewport3.rect.height = Graphics.height
-    @tips[1].y = Graphics.height*77/100
+    @tips[1].y = Graphics.height-100
     @tips[2].y = @tips[1].y+12
     @tips[6].y = Graphics.height - @tips[6].bitmap.height-10
     @tips[6].x = Graphics.width/2-@tips[6].bitmap.width/2

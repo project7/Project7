@@ -725,7 +725,7 @@
   end
   
   def set_view_pos(x,y)
-    @target_pos = [x-9.5,y-7]
+    @target_pos = [x-Graphics.width/64-0.5,y-Graphics.height/64-0.5]
     @last_sc_pos = [$game_map.parallax_x+1,$game_map.parallax_y+1]
   end
   
