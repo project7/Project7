@@ -31,13 +31,18 @@
     @hp_damage = 0
     @sp_damage = 0
     @ap_damage = 0
-    @buff = [[Catch,-100]]
+    @buff = []
     @debuff = []
     @descr = "需要4点怒气以及4点行动力催动.\n选中一个友方单位或是能力低于自己的敌人.\n向指定的目标格抛出.\n若指定目标格为空地,则无事.\n若指定目标格为敌人或友军.\n行动力不足以攻击的一方受到伤害.\n伤害与被投掷者生命关.\n施法距离:1-6\n\n特殊效果:\n若投掷男主角.\n目标区域伤害为3格范围.\n若投掷目标向男主角.\n则有一定概率秒杀被投掷单位."
   end
   
   def set_extra
-    @spec_effect = ""
+    @spec_effect = "if !i.is_a?(Fucker) && (i.atk>=@cur_actor.atk || i.int>=@cur_actor.int);
+                      tempb << [false,21];
+                    else;
+                      tempb << [true,0];
+                      i.add_buff(Catch.new(@cur_actor));
+                    end"
     @sp_cost_rate = 0
     @hp_cost_rate = 0
     @ap_cost_rate = 0
@@ -118,7 +123,7 @@ class FuckWithOutMoney < Skill
                           i.dec_buff(6);
                         end;
                       end;
-                    end"
+                    end;"
     @sp_cost_rate = 0
     @hp_cost_rate = 0
     @ap_cost_rate = 0
@@ -168,7 +173,7 @@ class Relive < Skill
   end
   
   def set_extra
-    @spec_effect = "i.relive;i.hp=i.maxhp;i.ai=nil;i.team=@cur_actor.team"
+    @spec_effect = "i.relive;i.hp=i.maxhp;i.ai=nil;i.team=@cur_actor.team;tempb << [true,0]"
     @sp_cost_rate = 0
     @hp_cost_rate = 0
     @ap_cost_rate = 0

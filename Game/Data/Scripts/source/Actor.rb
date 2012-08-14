@@ -92,6 +92,7 @@
   end
   
   def start_play
+    @skill.each_index{|i| @skill[i]=@skill[i].new}
     cal_skill_rem
     cal_buff_rem
     cal_item_rem
@@ -249,6 +250,7 @@
     @hp = [[@maxhp,@hp].min,0].max
     @buff.each{|buff| instance_eval(buff.a_damage_effect)}
     self.die if self.will_dead?
+    self.event.gra_res.flash(*Fuc::DAMAGE_EFFECT) if self.event_id>=0
     return [true,value]
   end
   

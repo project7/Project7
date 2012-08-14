@@ -38,6 +38,7 @@
   MENU_SAV_LOG = "Graphics/System/login.png"
   MENU_SAV_SL = "Graphics/System/sl.png"
   RECT_SEL = Rect.new(0,0,26,26)
+  DAMAGE_EFFECT = [Color.new(255,0,0,255),20]
   FAILD_ATTACK_TEXT = 
   [ "Miss",
     "Trick",
@@ -59,7 +60,8 @@
     "怒气值不足",
     "生命值不足",
     "行动力不足",
-    "物品数量不足"
+    "物品数量不足",
+    "该单位太强大"
   ]
   COMMON_BATTLE_REQ = " $game_switches[2] = @partner_num==0;
                         $game_switches[3] = @enemy_num==0;
