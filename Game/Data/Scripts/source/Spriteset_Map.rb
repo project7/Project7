@@ -530,6 +530,7 @@ class Spriteset_Map
           if !@tipsvar[10][0] || @tipsvar[10][1]!=dx/22
             @tipsvar[10][0] = true
             @tipsvar[10][1] = dx/22
+            @tips[10].bitmap.dispose if @tips[10].bitmap
             @tips[10].bitmap = Fuc.get_buff_descr(dx/22)
             @tips[10].x = Graphics.width-@tips[10].bitmap.width-4
             @tips[10].y = @tips[8].y+@tips[8].bitmap.height
@@ -538,6 +539,7 @@ class Spriteset_Map
           if !@tipsvar[15][0] || @tipsvar[15][1]!=@tipsvar[2][1]
             @tipsvar[15][0] = true
             @tipsvar[15][1] = @tipsvar[2][1]
+            @tips[10].bitmap.dispose if @tips[10].bitmap
             @tips[10].bitmap = Fuc.get_item_descr(@tipsvar[2][1])
             @tips[10].x = 4
             @tips[10].y = @tips[1].y-@tips[10].bitmap.height
@@ -546,6 +548,7 @@ class Spriteset_Map
           if !@tipsvar[18][0] || @tipsvar[18][1]!=@tipsvar[17][1] || @tipsvar[16]!=$sel_body.skill_rem
             @tipsvar[18][0] = true
             @tipsvar[18][1] = @tipsvar[17][1]
+            @tips[10].bitmap.dispose if @tips[10].bitmap
             @tips[10].bitmap = Fuc.get_skill_descr(@tipsvar[17][1])
             @tips[10].x = Graphics.width-4-@tips[10].bitmap.width
             @tips[10].y = @tips[16].y-@tips[10].bitmap.height-4

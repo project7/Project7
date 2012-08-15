@@ -5,6 +5,7 @@ $sel_body = nil
 $menu_skill = [CallEleScene.new,CallGraScene.new,CallVoiScene.new,CallSaveScene.new,CallMesScene.new,CallRetScene.new]
 $random_center = Random.new(65535)
 Font.default_name = "方正隶变简体"
+$screen_lock = false
 
 =begin
   # constructs of virtual key codes

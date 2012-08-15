@@ -3,6 +3,7 @@
   DIR_LIST =          [[0,8,2],[4],[6]]# 方向表，方便写
   SP_OPA =            [255,100,150,200,100] # 透明度表
   UI_SKILL_POS =      [ [51,5],[92,27],[92,74],[51,97],[10,74],[10,27] ]
+  MENU_ELE_POS =      [ [21,238,94,22],[21,268,94,22],[21,298,94,22],[21,328,94,22] ]
   MENU_GRA_POS =      [ [157,51],[157,89],[157,127],[157,165] ]
   MENU_VOI_POS =      [ [134,35],[134,67],[134,99] ]
   MENU_SAV_POS =      [ [21,40,166,34],[21,40,83,34],[105,40,82,34],[21,113,83,34],[105,113,82,34] ]
@@ -28,7 +29,9 @@
   TIPS_TEXT = "Graphics/System/Tips_Text.png"
   BUFF_BACK = "Graphics/System/Buff_Back.png"
   SKILL_BACK = "Graphics/System/Skill_Back.png"
-  MENU_ELE = "Graphics/System/Skill_Back.png"
+  ELE_BACK = "Graphics/System/ele_back.png"
+  ELE_SHOW = "Graphics/System/ele_show.png"
+  ELE_SEL = "Graphics/System/ele_sel.png"
   MENU_GRA = "Graphics/System/graphic_scene.png"
   MENU_VOI = "Graphics/System/voice_scene.png"
   MENU_SAV = "Graphics/System/save_scene.png"
@@ -37,6 +40,7 @@
   MENU_SAV_SEL = ["Graphics/System/save_sel1.png","Graphics/System/save_sel2.png","Graphics/System/save_sel3.png"]
   MENU_SAV_LOG = "Graphics/System/login.png"
   MENU_SAV_SL = "Graphics/System/sl.png"
+  EMPTY_SKILL = "Graphics/Icon/empty_skill.png"
   RECT_SEL = Rect.new(0,0,26,26)
   DAMAGE_EFFECT = [Color.new(255,0,0,255),20]
   FAILD_ATTACK_TEXT = 
@@ -62,6 +66,12 @@
     "行动力不足",
     "物品数量不足",
     "该单位太强大"
+  ]
+  ELE_DESCR = 
+  [ ["力量","每点效果:\n攻击+10\n防御+5\n暴击伤害倍数+20%\n生命最大上限+15"],
+    ["体力","每点增加:\n生命最大上限+60\n防御+1\n行动力+2\n每次行动HP回复+1"],
+    ["智力","每点增加:\n法力+10\n法抗+5\n每次行动怒气回复+1\n基础仇恨-1"],
+    ["敏捷","每点增加:\n攻击+2\n防御+5\n闪避+2%\n暴击+2%\n行动力+1"]
   ]
   COMMON_BATTLE_REQ = " $game_switches[2] = @partner_num==0;
                         $game_switches[3] = @enemy_num==0;
@@ -323,8 +333,11 @@
   
   # 获取技能位图
   def self.get_skill_bitmap(index)
-    return Bitmap.new(38,38) if !$sel_body || !$sel_body.skill[index]
-    a = Bitmap.new("Graphics/Icon/"+$sel_body.skill[index].icon+".png")
+    if !$sel_body || !$sel_body.skill[index]
+      a = Bitmap.new(EMPTY_SKILL)
+    else
+      a = Bitmap.new("Graphics/Icon/"+$sel_body.skill[index].icon+".png")
+    end
     tBitmap = Bitmap.new(38,38)
     tBitmap.blt(18-a.width/2,18-a.height/2,a,Rect.new(0,0,a.width,a.height))
     return tBitmap
@@ -334,6 +347,72 @@
   def self.get_skill_descr(index)
     title = $sel_body.skill[index].name+"("+$sel_body.skill[index].hotkey.chr+")"
     text = $sel_body.skill[index].descr
+    textarr = text.split(/\n/)
+    tbitmap = Bitmap.new(10,10)
+    tbitmap.font.size = 16
+    maxw = 0
+    lineh = tbitmap.text_size("■").height
+    tbitmap.font.size = 20
+    titleh = tbitmap.text_size("■").height
+    tbitmap.font.size = 16
+    maxh = lineh*textarr.size+8+titleh
+    textarr.each{|i| tw = tbitmap.text_size(i).width;maxw=tw if tw>maxw}
+    maxw+=8
+    tbitmap.dispose
+    tbitmap = Bitmap.new(maxw,maxh)
+    tbitmap.font.size = 20
+    tbitmap.fill_rect(0,0,maxw,maxh,BUFF_DES_BACK)
+    rem = tbitmap.font.color.clone
+    tbitmap.font.color = DESCR_TITLE_COLOR
+    tbitmap.draw_text(2,2,maxw,titleh,title,0)
+    tbitmap.font.color = rem
+    tbitmap.font.size = 16
+    textarr.each_with_index{|i,j| tbitmap.draw_text(2,2+j*lineh+titleh,maxw,lineh,i,0)}
+    return tbitmap
+  end
+  
+  # 获取属性的界面背景
+  def self.get_ele_back_bitmap
+    twidth = $party.members.size*128+($party.members.size-1)*42
+    theight = 391
+    rbitmap = Bitmap.new(twidth,theight)
+    tbackbitmap = Bitmap.new(ELE_BACK)
+    tshowbitmap = Bitmap.new(ELE_SHOW)
+    trect = Rect.new(0,0,tbackbitmap.width,tbackbitmap.height)
+    $party.members.each_with_index do |i,j|
+      tmidbitmap = Bitmap.new("Graphics/Heads/"+i.head2+".png")
+      tx = j*160
+      ty = 0
+      rbitmap.blt(tx,ty,tbackbitmap,trect)
+      rbitmap.blt(tx,ty,tmidbitmap,trect)
+      rbitmap.blt(tx,ty,tshowbitmap,trect)
+    end
+    return rbitmap
+  end
+  
+  # 获取属性数值
+  def self.get_ele_value_bitmap(w,h)
+    rbitmap = Bitmap.new(w,h)
+    $party.members.each_with_index do |i,j|
+      tx = j*160
+      ty = 0
+      rbitmap.font.name = Font.default_name
+      rbitmap.draw_text(tx,ty,128,34,i.name,1)
+      rbitmap.font.name = "钟齐孟宪敏硬笔简体"
+      rbitmap.draw_text(tx+42,ty+228,55,40,i.str[0]+i.str[1],2)
+      rbitmap.draw_text(tx+42,ty+258,55,40,i.het[0]+i.het[1],2)
+      rbitmap.draw_text(tx+42,ty+288,55,40,i.tec[0]+i.tec[1],2)
+      rbitmap.draw_text(tx+42,ty+318,55,40,i.agi[0]+i.agi[1],2)
+      rbitmap.draw_text(tx+18,ty+346,55,40,i.ep,2)
+    end
+    return rbitmap
+  end
+  
+  # 获取属性描述
+  
+  def self.get_ele_descr(index)
+    title = ELE_DESCR[index][0]
+    text = ELE_DESCR[index][1]
     textarr = text.split(/\n/)
     tbitmap = Bitmap.new(10,10)
     tbitmap.font.size = 16

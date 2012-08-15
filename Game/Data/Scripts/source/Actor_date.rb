@@ -16,6 +16,7 @@ class Fucker < Actor
   
   def set_ui
     @head = "Alexander"
+    @head2 = "Alexander_ele"
     @animation = []
   end
   
@@ -100,6 +101,7 @@ class BeFucker < Actor
   
   def set_ui
     @head = "Lynn"
+    @head2 = "Lynn_ele"
     @animation = []
   end
   
