@@ -12,8 +12,8 @@ Particle
 Particle_Factory
 Field_Base
 Field_Template
-Field_Extend
 Field_Mist
+Field_Extend
 Game_Temp
 Game_System
 Game_Timer
@@ -125,7 +125,6 @@ Scene_WebLogin
 Scene_WebFile
 Scene_WebSave
 Scene_WebLoad
-Web
 WaterReflection
 Ruby.ex 1.0
 CMouse
