@@ -1420,14 +1420,6 @@ class Game_Interpreter
     $team_set = arr
   end
   
-  def show_global_mist
-    SceneManager.scene.create_mist rescue nil
-  end
-  
-  def hide_global_mist
-    SceneManager.scene.dispose_mist rescue nil
-  end
-  
   def show_mist
   end
   

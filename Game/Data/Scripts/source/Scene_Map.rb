@@ -42,17 +42,6 @@ class Scene_Map < Scene_Base
     @now_set = [[nil,nil],nil,nil,nil,nil]
     @menu_rem = nil
   end
-  def create_mist
-    if $MIST
-      $MIST.dispose rescue nil
-    end
-    $MIST= PTCF.new(1)
-    $MIST.set_all(PTCF::MistLight)
-  end
-  def dispose_mist
-    $MIST.dispose
-    $MIST = nil
-  end
   #--------------------------------------------------------------------------
   # ● 执行进入场景时的渐变
   #--------------------------------------------------------------------------
@@ -100,7 +89,6 @@ class Scene_Map < Scene_Base
   #--------------------------------------------------------------------------
   def update
     super
-    ($MIST.update rescue nil) if $MIST
     unless @menu_called_inedx > 0
       $game_map.update(true)
       $game_player.update
@@ -388,10 +376,6 @@ class Scene_Map < Scene_Base
   end
   
   def adapt_screen
-    if $MIST
-      dispose_mist
-      create_mist
-    end
     @menu_sprite_act.x = @menu_sprite_sin.x = Graphics.width/2-@menu_sprite_sin.bitmap.width/2
     @menu_sprite_act.y = @menu_sprite_sin.y = Graphics.height/2-@menu_sprite_sin.bitmap.height/2
   end

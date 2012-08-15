@@ -22,7 +22,7 @@ class Scene_Title < Scene_Base
   def update
     super
     @count += 1
-    $MIST.update rescue nil
+    @mist.update
     if @count > 150
       command_new_game
       return
@@ -33,25 +33,28 @@ class Scene_Title < Scene_Base
     end
   end
   def create_particle
-    if $MIST
-      $MIST.dispose rescue nil
+    if @mist
+      @mist.dispose rescue nil
     end
-    $MIST= PTCF.new(1)
-    $MIST.set_all(PTCF::MistLight)
+    @mist= PTCF.new(1)
+    @mist.set_all(PTCF::MistLight)
   end
   def dispose_particle
-    $MIST.dispose
-    $MIST = nil
+    @mist.dispose
+    @mist = nil
   end
   def adapt_screen
     dispose_particle
     create_particle
+    center_sprite(@sprite1)
+    center_sprite(@sprite2)
+    center_load_sprite
   end
   def terminate
     super
     SceneManager.snapshot_for_background
     dispose_background
-    #dispose_particle
+    dispose_particle
   end
   #--------------------------------------------------------------------------
   # ● 获取渐变速度
@@ -111,7 +114,7 @@ class Scene_Title < Scene_Base
       openness = -255 if openness < -255
       @viewport.tone.set(openness, openness, openness, 0)
       Graphics.update
-      $MIST.update
+      @mist.update
       break if openness == -255
     end
     $NEWGAME = true
