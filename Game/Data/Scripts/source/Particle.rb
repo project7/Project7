@@ -425,7 +425,7 @@ class Particle
     @py[i] = @start_y
     @particle[i].ox = @center_x
     @particle[i].oy = @center_y
-    @particle[i].opacity = rand(@opacity_max - @opacity_min) + @opacity_min
+    @particle[i].opacity = @opacity_max
     @particle[i].zoom_x =@zoom_ox
     @particle[i].zoom_y =@zoom_oy
     @particle[i].x = @px[i]

@@ -1433,4 +1433,12 @@ class Game_Interpreter
   
   def hide_mist
   end
+
+  def hide_ui
+    SceneManager.scene.spriteset.hide_ui
+  end
+  
+  def show_ui
+    SceneManager.scene.spriteset.show_ui
+  end
 end

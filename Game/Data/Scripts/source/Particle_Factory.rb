@@ -181,13 +181,13 @@ class PTCF
     when MistLight
       ptc.field=Field_MistLight.new(ptc)
       ptc.set(Particle::TYPE_RANDOM,false,\
-        0,0,0,40,\
-        0,400,0,0,\
+        0,0,0,20,\
+        0,200,0,0,\
         Cache.icon("Particle_basicblur.png"),\
-        0,0,0,true,false,false,0,0)
+        0,0,0,false,false,false,0,0)
       ptc.zoom = 1.6
-      ptc.opacity_max=50
-      ptc.opacity_min=0
+      ptc.opacity_max=60
+      ptc.opacity_min=50
       ptc.flash_rate=100
       ptc.color=Color.new(108,159,155)
     else

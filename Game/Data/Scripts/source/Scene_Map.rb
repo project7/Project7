@@ -18,11 +18,6 @@ class Scene_Map < Scene_Base
   #--------------------------------------------------------------------------
   def start
     super
-    if $NEWGAME
-      CToy.enable_fullscreen
-      CToy.enable_transition
-      $NEWGAME=nil
-    end
     SceneManager.clear
     $game_player.straighten
     $game_map.refresh
@@ -41,17 +36,6 @@ class Scene_Map < Scene_Base
     @menu_called_inedx = 0
     @now_set = [[nil,nil],nil,nil,nil,nil]
     @menu_rem = nil
-  end
-  def create_mist
-    if $MIST
-      $MIST.dispose rescue nil
-    end
-    $MIST= PTCF.new(1)
-    $MIST.set_all(PTCF::MistLight)
-  end
-  def dispose_mist
-    $MIST.dispose
-    $MIST = nil
   end
   #--------------------------------------------------------------------------
   # ● 执行进入场景时的渐变
@@ -100,7 +84,6 @@ class Scene_Map < Scene_Base
   #--------------------------------------------------------------------------
   def update
     super
-    ($MIST.update rescue nil) if $MIST
     unless @menu_called_inedx > 0
       $game_map.update(true)
       $game_player.update
@@ -386,10 +369,6 @@ class Scene_Map < Scene_Base
   end
   
   def adapt_screen
-    if $MIST
-      dispose_mist
-      create_mist
-    end
     @menu_sprite_act.x = @menu_sprite_sin.x = Graphics.width/2-@menu_sprite_sin.bitmap.width/2
     @menu_sprite_act.y = @menu_sprite_sin.y = Graphics.height/2-@menu_sprite_sin.bitmap.height/2
   end
@@ -429,7 +408,7 @@ class Scene_Map < Scene_Base
     if @menu_rem[0] != @now_set[0][0]
       @menu_rem[0] = @now_set[0][0].clone
       @menu_sprite_act.bitmap.dispose if @menu_sprite_act.bitmap
-      @menu_sprite_act.bitmap = get_ele_value_bitmap
+      @menu_sprite_act.bitmap = Fuc.get_ele_value_bitmap(@menu_sprite_sin.bitmap.width,@menu_sprite_sin.bitmap.height)
     end
     tpos = [Mouse.pos[0]-@menu_sprite_act.x,Mouse.pos[1]-@menu_sprite_act.y]
     body_index = tpos[0]/160
@@ -437,7 +416,7 @@ class Scene_Map < Scene_Base
     @now_set[0][1] = [tpos.einrect?(MENU_ELE_POS[0],body_index),tpos.einrect?(MENU_ELE_POS[1],body_index),tpos.einrect?(MENU_ELE_POS[2],body_index),tpos.einrect?(MENU_ELE_POS[3],body_index)]
     if @menu_rem[1]!=[@now_set[0][1],body_index]
       @menu_sprite_bak.bitmap.clear
-      can_show = false
+      @ele_index = nil
       4.times do |i|
         if @now_set[0][1][i]
           @menu_sprite_bak.bitmap.clear
@@ -446,12 +425,49 @@ class Scene_Map < Scene_Base
           h = tb.height
           @menu_sprite_bak.bitmap.blt(MENU_ELE_POS[i][0]+body_index*160,MENU_ELE_POS[i][1],tb,Rect.new(0,0,w,h))
           create_ele_tips(@menu_sprite_act.x+MENU_ELE_POS[i][0]+body_index*160,MENU_ELE_POS[i][1],i)
-          can_show = true
+          @ele_index = i
           break
         end
       end
-      @ele_tips_text.bitmap.dispose if @ele_tips_text && @ele_tips_text.bitmap unless can_show
+      @ele_tips_text.bitmap.dispose if @ele_tips_text && @ele_tips_text.bitmap unless @ele_index
       @menu_rem[1]=[@now_set[0][1].clone,body_index]
+    end
+    #p @ele_index
+    if Mouse.click?(1) && $party.members[body_index].ep>0
+      if body_index>=0 && @ele_index
+        case @ele_index
+        when 0
+          $party.members[body_index].str[1]+=1
+          $party.members[body_index].atk+=10
+          $party.members[body_index].def+=5
+          $party.members[body_index].bingo_damage = 100 if $party.members[body_index].bingo_damage<100
+          $party.members[body_index].bingo_damage+=20
+          $party.members[body_index].maxhp+=15
+          $party.members[body_index].hp+=15
+        when 1
+          $party.members[body_index].het[1]+=1
+          $party.members[body_index].maxhp+=60
+          $party.members[body_index].hp+=60
+          $party.members[body_index].def+=1
+          $party.members[body_index].ap+=2
+          $party.members[body_index].hp_rec+=1
+        when 2
+          $party.members[body_index].tec[1]+=1
+          $party.members[body_index].int+=10
+          $party.members[body_index].mdef+=5
+          $party.members[body_index].sp_rec+=1
+          $party.members[body_index].ap+=1
+          $party.members[body_index].hatred_base-=1
+        when 3
+          $party.members[body_index].agi[1]+=1
+          $party.members[body_index].atk+=2
+          $party.members[body_index].def+=5
+          $party.members[body_index].miss_rate+=2
+          $party.members[body_index].bingo_rate+=2
+          $party.members[body_index].ap+=1
+        end
+        $party.members[body_index].ep-=1
+      end
     end
   end
   
