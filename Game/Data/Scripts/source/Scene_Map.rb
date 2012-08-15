@@ -106,7 +106,7 @@ class Scene_Map < Scene_Base
       $game_player.update
       $game_timer.update
       @spriteset.update
-      update_ui
+      update_ui if $ui_show
       update_scene if scene_change_ok?
     else
       update_system_menu(@menu_called_inedx)
@@ -205,9 +205,9 @@ class Scene_Map < Scene_Base
     if $game_switches[1]
       $map_battle.update unless scene_changing?
     else
-      update_call_menu unless scene_changing?
+      update_call_menu if $ui_show && !scene_changing?
       move_by_input
-      update_mouse_event unless scene_changing?
+      update_mouse_event if !scene_changing?
     end
   end
   #--------------------------------------------------------------------------
@@ -226,44 +226,46 @@ class Scene_Map < Scene_Base
   # ● 更新非战斗时鼠标点击事件
   #--------------------------------------------------------------------------
   def update_mouse_event
-    tkey = CInput.item4
-    if tkey
-      obj = $sel_body.bag[tkey]
-      if obj
-        sick = obj[0].enough_to_use(obj[1],true,$sel_body.hp,9999)
-        if sick==true
-          $sel_body.event.animation_id = obj[0].user_animation
-          $sel_body.god_damage(obj[0].hp_cost,true)
-          instance_eval(obj[0].spec_effect)
-          $sel_body.lose_item(obj[0].id,obj[0].use_cost_num)
-          @spriteset.show_tips(obj[0].name)
-          return
-        else
-          @spriteset.show_tips(FAILD_ATTACK_TEXT[14+sick])
-        end
-      end
-    end
-    sks = $sel_body.skill
-    sks.each_with_index do |i,j|
-      next unless i.hotkey
-      if CInput.trigger?([i.hotkey])
-        obj = i
+    if $ui_show
+      tkey = CInput.item4
+      if tkey
+        obj = $sel_body.bag[tkey]
         if obj
-          sick = obj.enough_to_use(9999,$sel_body.hp,9999)
+          sick = obj[0].enough_to_use(obj[1],true,$sel_body.hp,9999)
           if sick==true
-            $sel_body.event.animation_id = obj.user_animation
-            $sel_body.god_damage(obj.hp_cost,true)
-            instance_eval(obj.spec_effect)
-            @spriteset.show_tips(obj.name)
+            $sel_body.event.animation_id = obj[0].user_animation
+            $sel_body.god_damage(obj[0].hp_cost,true)
+            instance_eval(obj[0].spec_effect)
+            $sel_body.lose_item(obj[0].id,obj[0].use_cost_num)
+            @spriteset.show_tips(obj[0].name)
             return
           else
             @spriteset.show_tips(FAILD_ATTACK_TEXT[14+sick])
           end
         end
       end
+      sks = $sel_body.skill
+      sks.each_with_index do |i,j|
+        next unless i.hotkey
+        if CInput.trigger?([i.hotkey])
+          obj = i
+          if obj
+            sick = obj.enough_to_use(9999,$sel_body.hp,9999)
+            if sick==true
+              $sel_body.event.animation_id = obj.user_animation
+              $sel_body.god_damage(obj.hp_cost,true)
+              instance_eval(obj.spec_effect)
+              @spriteset.show_tips(obj.name)
+              return
+            else
+              @spriteset.show_tips(FAILD_ATTACK_TEXT[14+sick])
+            end
+          end
+        end
+      end
     end
     if Mouse.click?(1)
-      if mouse_in_itemrect?
+      if mouse_in_itemrect? && $ui_show
         if item_mouse_index
           obj = $sel_body.bag[item_mouse_index]
           if obj
@@ -280,7 +282,7 @@ class Scene_Map < Scene_Base
             end
           end
         end
-      elsif mouse_in_skillrect?
+      elsif mouse_in_skillrect? && $ui_show
         if skill_mouse_index
           sks = $sel_body.skill
           obj = sks[skill_mouse_index]
@@ -470,6 +472,7 @@ class Scene_Map < Scene_Base
           $party.members[body_index].maxhp+=60
           $party.members[body_index].hp+=60
           $party.members[body_index].def+=1
+          $party.members[body_index].maxap+=2
           $party.members[body_index].ap+=2
           $party.members[body_index].hp_rec+=1
         when 2
@@ -477,6 +480,7 @@ class Scene_Map < Scene_Base
           $party.members[body_index].int+=10
           $party.members[body_index].mdef+=5
           $party.members[body_index].sp_rec+=1
+          $party.members[body_index].maxap+=1
           $party.members[body_index].ap+=1
           $party.members[body_index].hatred_base-=1
         when 3
@@ -485,6 +489,7 @@ class Scene_Map < Scene_Base
           $party.members[body_index].def+=5
           $party.members[body_index].miss_rate+=2
           $party.members[body_index].bingo_rate+=2
+          $party.members[body_index].maxap+=1
           $party.members[body_index].ap+=1
         end
         $party.members[body_index].ep-=1
