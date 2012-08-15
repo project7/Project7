@@ -52,9 +52,11 @@ class Scene_Title < Scene_Base
   end
   def terminate
     super
+    @viewport.dispose
     SceneManager.snapshot_for_background
     dispose_background
     dispose_particle
+    GC.start
   end
   #--------------------------------------------------------------------------
   # ● 获取渐变速度
@@ -72,7 +74,6 @@ class Scene_Title < Scene_Base
     @sprite2.bitmap = Cache.system("title_logo")
     center_sprite(@sprite1)
     center_sprite(@sprite2)
-    
     @sprite3 = Sprite.new(@viewport)
     @sprite3.bitmap = Cache.system("title_load")
     center_load_sprite
@@ -85,6 +86,8 @@ class Scene_Title < Scene_Base
     @sprite1.dispose
     @sprite2.bitmap.dispose
     @sprite2.dispose
+    @sprite3.bitmap.dispose
+    @sprite3.dispose
   end
   #--------------------------------------------------------------------------
   # ● 执行精灵居中
