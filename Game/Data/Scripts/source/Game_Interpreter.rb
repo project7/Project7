@@ -644,7 +644,7 @@ class Game_Interpreter
       when 4  # 除法
         $game_variables[variable_id] /= value
       when 5  # 取余
-        $game_variables[variable_id] %= value
+        $game_variables[variable_id] = $game_variables[variable_id]%value
       end
     rescue
       $game_variables[variable_id] = 0
@@ -1419,5 +1419,13 @@ class Game_Interpreter
   def set_team(arr)
     $team_set = arr
   end
+    
+  def hide_ui
+    SceneManager.scene.spriteset.hide_ui
+  end
   
+  def show_ui
+    SceneManager.scene.spriteset.show_ui
+  end
+
 end

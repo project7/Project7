@@ -44,6 +44,8 @@
   MENU_SAV_SL = "Graphics/System/sl.png"
   MENU_MES_SEL = "Graphics/System/mesg_sel.png"
   EMPTY_SKILL = "Graphics/Icon/empty_skill.png"
+  O_TURN = "Graphics/System/onalo_turn.png"
+  E_TURN = "Graphics/System/enemy_turn.png"
   RECT_SEL = Rect.new(0,0,26,26)
   DAMAGE_EFFECT = [Color.new(255,0,0,255),20]
   FAILD_ATTACK_TEXT = 
@@ -73,7 +75,7 @@
   ELE_DESCR = 
   [ ["力量","每点效果:\n攻击+10\n防御+5\n暴击伤害倍数+20%\n生命最大上限+15"],
     ["体力","每点增加:\n生命最大上限+60\n防御+1\n行动力+2\n每次行动HP回复+1"],
-    ["智力","每点增加:\n法力+10\n法抗+5\n每次行动怒气回复+1\n基础仇恨-1"],
+    ["智力","每点增加:\n法力+10\n法抗+5\n每次行动怒气回复+1\n基础仇恨-1\n行动力+1"],
     ["敏捷","每点增加:\n攻击+2\n防御+5\n闪避+2%\n暴击+2%\n行动力+1"]
   ]
   COMMON_BATTLE_REQ = " $game_switches[2] = @partner_num==0;

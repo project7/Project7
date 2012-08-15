@@ -27,7 +27,7 @@
   def var_init              #变量初始化
     @action_list = []       #行动列表  
     @cur_actor = nil        #当前角色
-    @order_rem = []         #指令记录，用于回放战斗
+    #@order_rem = []         #指令记录，用于回放战斗
     @movearea = nil         #地板砖
     @wayarea = nil          #到达目的地的路径
     @enablearea = nil       #允许攻击的范围
@@ -77,6 +77,7 @@
       @wayarea.dispose if @wayarea
       create_maparea
       set_view_pos(@cur_actor.x,@cur_actor.y)
+      @splink.show_turn_info(@cur_actor.ai.nil?)
     else
       @cur_actor.ap = 0
       next_actor
@@ -733,12 +734,12 @@
     revar = ctrl(id,para)
     if revar.is_a?(Array)
       @last_action_state = revar
-      @order_rem << [id,para]
+      #@order_rem << [id,para]
       per_steps_cal
       return revar
     elsif revar
       @last_action_state = true
-      @order_rem << [id,para]
+      #@order_rem << [id,para]
       per_steps_cal
       return true
     else

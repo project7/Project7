@@ -60,6 +60,16 @@ class Spriteset_Map
     @parallax = Plane.new(@viewport1)
     @parallax.z = -100
   end
+  
+  def hide_ui
+    $ui_show = false
+    @tips.each{|i| i.visible=false}
+  end
+  
+  def show_ui
+    $ui_show = true
+    @tips.each{|i| i.visible=true}
+  end
   #--------------------------------------------------------------------------
   # ● 生成战旗UI
   #--------------------------------------------------------------------------
@@ -80,9 +90,10 @@ class Spriteset_Map
     @fillup[3].z = 4
     @fillup[4].z = 3
     # UI
-    @tipsvar = [[0,0],[true,10],[false,0],nil,nil,nil,0,nil,nil,[],[false,-1],[],[],[],[],[false,-1],[],[false,0],[false,-1],false,-1]
+    @tipsvar = [[0,0],[true,10],[false,0],nil,nil,nil,0,nil,nil,[],[false,-1],[],[],[],[],[false,-1],[],[false,0],[false,-1],false,-1,0]
     @tips = 
     [ Sprite.new(@viewport2),
+      Sprite.new(@viewport3),
       Sprite.new(@viewport3),
       Sprite.new(@viewport3),
       Sprite.new(@viewport3),
@@ -153,9 +164,11 @@ class Spriteset_Map
     @tips[16].y = @tips[15].y
     @tips[16].x = @tips[15].x
     @tips[16].z = 101
+    @tips[17].bitmap = Bitmap.new(300,49)
     # 数据显示
     @richtext = []
     @richvalue = {}
+    $ui_show ? show_ui : hide_ui
   end
   #--------------------------------------------------------------------------
   # ● 自动适应屏幕
@@ -184,6 +197,8 @@ class Spriteset_Map
     @tips[15].x = Graphics.width-5-@tips[15].bitmap.width
     @tips[16].y = @tips[15].y
     @tips[16].x = @tips[15].x
+    @tips[17].x=Graphics.width/2-150
+    @tips[17].y=Graphics.height/2-24
   end
   #--------------------------------------------------------------------------
   # ● 增加数据显示
@@ -209,6 +224,17 @@ class Spriteset_Map
     @tips[7].bitmap.draw_text(0,0,@tips[7].bitmap.width,@tips[7].bitmap.height,text,1)
     @tips[6].opacity = @tips[7].opacity = 255
     @tipsvar[6] = 60
+  end
+  
+  def show_turn_info(tar = true)
+    @tips[17].bitmap.clear
+    tbitmap = tar ? Bitmap.new(Fuc::O_TURN) : Bitmap.new(Fuc::E_TURN)
+    @tips[17].bitmap.blt(0,0,tbitmap,Rect.new(0,0,300,49))
+    tbitmap.dispose
+    @tips[17].x=Graphics.width/2-150
+    @tips[17].y=Graphics.height/2-24
+    @tips[17].opacity = 255
+    @tipsvar[21] = 60
   end
   #--------------------------------------------------------------------------
   # ● 生成人物精灵
@@ -580,6 +606,13 @@ class Spriteset_Map
           @tipsvar[20]=$sel_body.sp
           @tips[16].bitmap.dispose if @tips[16].bitmap
           @tips[16].bitmap = Fuc.get_all_skill_bitmap
+        end
+      when 17
+        if @tipsvar[21] <= 0
+          @tipsvar[21] = 0
+          @tips[17].opacity >= 5 ? @tips[17].opacity-=5 : @tips[17].opacity = 0
+        else
+          @tipsvar[21] -= 1
         end
       end
     end
