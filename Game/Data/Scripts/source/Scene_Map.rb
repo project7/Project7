@@ -376,8 +376,8 @@ class Scene_Map < Scene_Base
   end
   
   def adapt_screen
-    @menu_sprite_act.x = @menu_sprite_sin.x = Graphics.width/2-@menu_sprite_sin.bitmap.width/2
-    @menu_sprite_act.y = @menu_sprite_sin.y = Graphics.height/2-@menu_sprite_sin.bitmap.height/2
+    @menu_sprite_act.x = @menu_sprite_sin.x = @menu_sprite_bak.x = Graphics.width/2-@menu_sprite_sin.bitmap.width/2
+    @menu_sprite_act.y = @menu_sprite_sin.y = @menu_sprite_bak.y = Graphics.height/2-@menu_sprite_sin.bitmap.height/2
   end
   
   def call_ret_scene

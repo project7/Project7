@@ -2,7 +2,7 @@
 $p1_actor = nil
 $p2_actor = nil
 $sel_body = nil
-$ui_show = false
+$ui_show = true#false
 $menu_skill = [CallEleScene.new,CallGraScene.new,CallVoiScene.new,CallSaveScene.new,CallMesScene.new,CallRetScene.new]
 $random_center = Random.new(65535)
 Font.default_name = "方正隶变简体"
