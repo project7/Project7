@@ -5,6 +5,7 @@ RPGAudio
 Vocab
 Sound
 Cache
+Bitmap
 DataManager
 SceneManager
 BattleManager

@@ -337,6 +337,25 @@ class Scene_Map < Scene_Base
   def call_mes_scene
     return if @menu_called_inedx == 5
     create_menu(MENU_MES)
+    ver = VersionManager.new_version
+    text = "本地：#{VersionManager.version}\n\n最新："
+    if ver && ver.size == 4
+      text += "#{ver[0]}\n日期：#{ver[3]}\n介绍：\n#{ver[1]}"
+    else
+      text += "检查版本失败。"
+    end
+    begin
+      fuckbitmap = Bitmap.new(MENU_MES_TEXT_POS[2], MENU_MES_TEXT_POS[3])
+      fuckbitmap.font.name = ["Microsoft Yahei", "simhei", "simsun"]
+      fuckbitmap.font.outline = false
+      fuckbitmap.font.size = 18
+      fuckbitmap.line_height = 18
+      fuckbitmap.draw_text_ex(0, 0, text)
+      @menu_sprite_sin.bitmap.blt(MENU_MES_TEXT_POS[0], MENU_MES_TEXT_POS[1], fuckbitmap, fuckbitmap.rect)
+      fuckbitmap.dispose
+    rescue
+      $!._debugger_
+    end
     @menu_called_inedx = 5
   end
   
@@ -380,6 +399,7 @@ class Scene_Map < Scene_Base
     when 4
       update_menu_sav
     when 5
+      update_menu_mes
     end
   end
   
@@ -578,6 +598,22 @@ class Scene_Map < Scene_Base
       end
     end
   end
+  
+  def update_menu_mes
+    tpos = [Mouse.pos[0]-@menu_sprite_act.x,Mouse.pos[1]-@menu_sprite_act.y]
+
+    fuck = tpos.inrect?(MENU_MES_POS)
+    if @menu_rem != fuck
+      @menu_rem  = fuck
+      @menu_sprite_act.bitmap.clear
+      @menu_sprite_act.bitmap.blt(MENU_MES_POS[0],MENU_MES_POS[1],Bitmap.new(MENU_MES_SEL),Rect.new(0,0,MENU_MES_POS[2],MENU_MES_POS[3])) if fuck
+    end
+    if Mouse.click?(1) && fuck
+      (msgbox VersionManager.new_version[2]) rescue nil
+    end
+
+  end
+  
   #--------------------------------------------------------------------------
   # ● 更新画面（消退用）
   #--------------------------------------------------------------------------

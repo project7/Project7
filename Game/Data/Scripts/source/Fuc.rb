@@ -7,6 +7,8 @@
   MENU_GRA_POS =      [ [157,51],[157,89],[157,127],[157,165] ]
   MENU_VOI_POS =      [ [134,35],[134,67],[134,99] ]
   MENU_SAV_POS =      [ [21,40,166,34],[21,40,83,34],[105,40,82,34],[21,113,83,34],[105,113,82,34] ]
+  MENU_MES_POS =      [142,326,120,33]
+  MENU_MES_TEXT_POS=  [17,52,370,262]
   MOV_AREA_C =        [Color.new(0,100,255,255),Color.new(0,150,255,255)]
   WAY_AREA_C =        [Color.new(0,180,100,255),Color.new(100,200,50,255)]
   EFFECT_AREA_C =     [Color.new(255,255,50,255),Color.new(200,200,0,200)]
@@ -40,6 +42,7 @@
   MENU_SAV_SEL = ["Graphics/System/save_sel1.png","Graphics/System/save_sel2.png","Graphics/System/save_sel3.png"]
   MENU_SAV_LOG = "Graphics/System/login.png"
   MENU_SAV_SL = "Graphics/System/sl.png"
+  MENU_MES_SEL = "Graphics/System/mesg_sel.png"
   EMPTY_SKILL = "Graphics/Icon/empty_skill.png"
   RECT_SEL = Rect.new(0,0,26,26)
   DAMAGE_EFFECT = [Color.new(255,0,0,255),20]
