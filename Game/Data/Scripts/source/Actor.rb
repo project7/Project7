@@ -11,6 +11,7 @@
   attr_accessor :bag                          # 背包
   attr_accessor :name                         # 名称
   attr_accessor :head                         # 头像
+  attr_accessor :head2                        # 头像2
   attr_accessor :atk_pic                      # 攻击行走图(缺省)
   attr_accessor :atk_cot                      # 攻击帧数(缺省)
   attr_accessor :item_pic                     # 使用物品行走图(缺省)
@@ -80,6 +81,7 @@
   attr_accessor :het                          # 体力
   attr_accessor :tec                          # 智力
   attr_accessor :agi                          # 敏捷
+  attr_accessor :ep                           # 能力点
   
   def initialize(event_id=0,t_id=[0])
     @event_id = event_id
@@ -179,6 +181,7 @@
   
   def set_ui
     @head = ""
+    @head2 = ""
     @animation = []
   end
   
@@ -204,6 +207,7 @@
     @ap = @maxap+@maxap_add
     @buff = []
     @hatred = @hatred_base
+    @ep = 0
     @dead = false
   end
   

@@ -12,6 +12,7 @@ class Scene_Map < Scene_Base
   attr_accessor :spriteset
   attr_accessor :menu_calling
   attr_accessor :menu_rem
+  attr_accessor :ele_tips
   #--------------------------------------------------------------------------
   # ● 开始处理
   #--------------------------------------------------------------------------
@@ -27,9 +28,13 @@ class Scene_Map < Scene_Base
     @menu_sprite_sin.z = 1000
     @menu_sprite_act = Sprite.new
     @menu_sprite_act.z = 1001
+    @menu_sprite_bak = Sprite.new
+    @menu_sprite_bak.z = 1002
+    @ele_tips_text = Sprite.new
+    @ele_tips_text.z = 1003
     @menu_calling = false
     @menu_called_inedx = 0
-    @now_set = [nil]*5
+    @now_set = [[nil,nil],nil,nil,nil,nil]
     @menu_rem = nil
   end
   #--------------------------------------------------------------------------
@@ -66,6 +71,10 @@ class Scene_Map < Scene_Base
     @menu_sprite_sin.dispose if @menu_sprite_sin
     @menu_sprite_act.bitmap.dispose if @menu_sprite_act.bitmap
     @menu_sprite_act.dispose if @menu_sprite_act
+    @menu_sprite_bak.bitmap.dispose if @menu_sprite_bak.bitmap
+    @menu_sprite_bak.dispose if @menu_sprite_bak
+    @ele_tips_text.bitmap.dispose if @ele_tips_text.bitmap
+    @ele_tips_text.dispose if @ele_tips_text
     SceneManager.snapshot_for_background
     dispose_spriteset
     perform_battle_transition if SceneManager.scene_is?(Scene_Battle)
@@ -290,7 +299,15 @@ class Scene_Map < Scene_Base
   
   def call_ele_scene
     return if @menu_called_inedx == 1
-    create_menu(MENU_ELE)
+    @menu_sprite_sin.bitmap.dispose if @menu_sprite_sin.bitmap
+    @menu_sprite_sin.bitmap = Fuc.get_ele_back_bitmap
+    @menu_sprite_act.bitmap.dispose if @menu_sprite_act.bitmap
+    @menu_sprite_act.bitmap = Fuc.get_ele_value_bitmap(@menu_sprite_sin.bitmap.width,@menu_sprite_sin.bitmap.height)
+    @menu_sprite_bak.bitmap.dispose if @menu_sprite_bak.bitmap
+    @menu_sprite_bak.bitmap = Bitmap.new(@menu_sprite_sin.bitmap.width,@menu_sprite_sin.bitmap.height)
+    @menu_sprite_act.x = @menu_sprite_sin.x = @menu_sprite_bak.x = Graphics.width/2-@menu_sprite_sin.bitmap.width/2
+    @menu_sprite_act.y = @menu_sprite_sin.y = @menu_sprite_bak.y = Graphics.height/2-@menu_sprite_sin.bitmap.height/2
+    @menu_rem = [$party.get_all_fake,[false,false,false,false]]
     @menu_called_inedx = 1
   end
   
@@ -348,12 +365,14 @@ class Scene_Map < Scene_Base
   # ● 更新菜单
   #--------------------------------------------------------------------------
   def update_system_menu(index)
+    @spriteset.tipsvar[1][0] = true
     @spriteset.update_ui_view
     update_ui
     update_mouse_event
     update_call_menu
     case @menu_called_inedx
     when 1
+      update_menu_ele
     when 2
       update_menu_gra
     when 3
@@ -362,6 +381,44 @@ class Scene_Map < Scene_Base
       update_menu_sav
     when 5
     end
+  end
+  
+  def update_menu_ele
+    @now_set[0][0] = $party.get_all_fake
+    if @menu_rem[0] != @now_set[0][0]
+      @menu_rem[0] = @now_set[0][0].clone
+      @menu_sprite_act.bitmap.dispose if @menu_sprite_act.bitmap
+      @menu_sprite_act.bitmap = get_ele_value_bitmap
+    end
+    tpos = [Mouse.pos[0]-@menu_sprite_act.x,Mouse.pos[1]-@menu_sprite_act.y]
+    body_index = tpos[0]/160
+    body_index = -1 if body_index > $party.members.size-1
+    @now_set[0][1] = [tpos.einrect?(MENU_ELE_POS[0],body_index),tpos.einrect?(MENU_ELE_POS[1],body_index),tpos.einrect?(MENU_ELE_POS[2],body_index),tpos.einrect?(MENU_ELE_POS[3],body_index)]
+    if @menu_rem[1]!=[@now_set[0][1],body_index]
+      @menu_sprite_bak.bitmap.clear
+      can_show = false
+      4.times do |i|
+        if @now_set[0][1][i]
+          @menu_sprite_bak.bitmap.clear
+          tb = Bitmap.new(ELE_SEL)
+          w = tb.width
+          h = tb.height
+          @menu_sprite_bak.bitmap.blt(MENU_ELE_POS[i][0]+body_index*160,MENU_ELE_POS[i][1],tb,Rect.new(0,0,w,h))
+          create_ele_tips(@menu_sprite_act.x+MENU_ELE_POS[i][0]+body_index*160,MENU_ELE_POS[i][1],i)
+          can_show = true
+          break
+        end
+      end
+      @ele_tips_text.bitmap.dispose if @ele_tips_text && @ele_tips_text.bitmap unless can_show
+      @menu_rem[1]=[@now_set[0][1].clone,body_index]
+    end
+  end
+  
+  def create_ele_tips(x,y,index)
+    @ele_tips_text.bitmap.dispose if @ele_tips_text.bitmap
+    @ele_tips_text.bitmap = Fuc.get_ele_descr(index)
+    @ele_tips_text.x = x+93
+    @ele_tips_text.y = y
   end
   
   def update_menu_gra
@@ -626,12 +683,20 @@ class Scene_Map < Scene_Base
       @menu_calling = false
     else
       if CInput.trigger?($vkey[:X]) || (!$map_battle && Mouse.down?(2))
-        @menu_calling =!@menu_calling
-        if @menu_calling
-          @menu_rem = nil
-          change_skill
+        if @menu_called_inedx != 0
+          @menu_sprite_sin.bitmap.dispose if @menu_sprite_sin.bitmap
+          @menu_sprite_act.bitmap.dispose if @menu_sprite_act.bitmap
+          @menu_sprite_bak.bitmap.dispose if @menu_sprite_bak.bitmap
+          @ele_tips_text.bitmap.dispose if @ele_tips_text.bitmap
+          @menu_called_inedx = 0
         else
-          call_ret_scene
+          @menu_calling =!@menu_calling
+          if @menu_calling
+            @menu_rem = nil
+            change_skill
+          else
+            call_ret_scene
+          end
         end
       end
     end

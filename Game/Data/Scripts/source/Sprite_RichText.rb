@@ -88,7 +88,7 @@
         self.y = @base_y+@offset_y
         @life+=1
       end
-    elsif !self.bitmap.disposed?
+    elsif self.bitmap
       self.bitmap.dispose
     end
   end

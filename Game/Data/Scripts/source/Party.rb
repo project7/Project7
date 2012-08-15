@@ -38,4 +38,16 @@
     end
   end
   
+  def get_all_fake
+    tarr = []
+    @members.each do |i|
+      tarr << i.str
+      tarr << i.het
+      tarr << i.tec
+      tarr << i.agi
+      tarr << i.ep
+    end
+    return tarr
+  end
+  
 end

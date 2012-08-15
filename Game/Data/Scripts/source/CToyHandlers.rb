@@ -1,6 +1,6 @@
 ﻿module CToy
   def self.on_fullscreen
-    return if SceneManager.scene.is_a?(Scene_WebLogin)
+    return if SceneManager.scene.is_a?(Scene_WebLogin) || $screen_lock
     $syseting[:screen_size]=!$syseting[:screen_size]
     $syseting[:screen_size] ? Graphics.resize_screen(800,608) : Graphics.resize_screen(640,480)
     SceneManager.scene.spriteset.adapt_screen rescue nil

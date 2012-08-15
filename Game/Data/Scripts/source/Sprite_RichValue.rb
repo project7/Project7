@@ -47,13 +47,13 @@
         @dead = @life>MAX_LIFE && self.opacity<=30
         @life+=1
       end
-    elsif !self.bitmap.disposed?
+    elsif !self.bitmap#.disposed?
       self.bitmap.dispose
     end
   end
   
   def refresh(rate,xy,color=Fuc::HP_VALUE_COLOR,wh=nil)
-    self.bitmap.dispose if self.bitmap && !self.bitmap.disposed?
+    self.bitmap.dispose if self.bitmap
     @rate = rate
     @opa_time = 60
     self.opacity = 255

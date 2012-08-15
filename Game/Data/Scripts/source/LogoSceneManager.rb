@@ -19,4 +19,4 @@ class << LogoSceneManager
   end
 end
 
-LogoSceneManager.run unless $SKIPLOGO
+#LogoSceneManager.run unless $SKIPLOGO
