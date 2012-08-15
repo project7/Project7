@@ -77,7 +77,7 @@
       @wayarea.dispose if @wayarea
       create_maparea
       set_view_pos(@cur_actor.x,@cur_actor.y)
-      @splink.show_turn_info(@cur_actor.ai.nil?)
+      @splink.show_turn_info(@cur_actor.team.include?(0))
     else
       @cur_actor.ap = 0
       next_actor
