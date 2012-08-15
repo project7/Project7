@@ -644,7 +644,7 @@ class Game_Interpreter
       when 4  # 除法
         $game_variables[variable_id] /= value
       when 5  # 取余
-        $game_variables[variable_id] %= value
+        $game_variables[variable_id] = $game_variables[variable_id] % value
       end
     rescue
       $game_variables[variable_id] = 0
@@ -1067,7 +1067,7 @@ class Game_Interpreter
   #--------------------------------------------------------------------------
   def command_284
     $game_map.change_parallax(@params[0], @params[1], @params[2],
-                              @params[3], @params[4])
+      @params[3], @params[4])
   end
   #--------------------------------------------------------------------------
   # ● 获取指定位置的信息
@@ -1420,4 +1420,11 @@ class Game_Interpreter
     $team_set = arr
   end
   
+  def show_mist
+    SceneManager.scene.create_mist rescue nil
+  end
+  
+  def hide_mist
+    SceneManager.scene.dispose_mist rescue nil
+  end
 end

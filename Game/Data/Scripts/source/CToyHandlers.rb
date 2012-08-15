@@ -1,4 +1,13 @@
 ﻿module CToy
+  def self.disable_transition
+    @fuckedtransition = true
+  end
+  def self.enable_transition
+    @fuckedtransition = false
+  end
+  def self.fucked_transition
+    @fuckedtransition
+  end
   def self.disable_fullscreen
     @fucked = true
   end
@@ -24,12 +33,14 @@ end
 class << Graphics
   alias transition_fuck transition
   def transition(*args)
+    return if CToy.fucked_transition
     transition_fuck(*args)
     CToy.enable_fullscreen
   end
   
   alias freeze_fuck freeze
   def freeze(*args)
+    return if CToy.fucked_transition
     CToy.disable_fullscreen
     freeze_fuck(*args)
   end
