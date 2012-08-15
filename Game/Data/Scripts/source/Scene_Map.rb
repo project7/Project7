@@ -446,13 +446,7 @@ class Scene_Map < Scene_Base
       if Mouse.click?(1) && iindex
         case iindex
         when 0
-          jiecao = Jiecao.new
-          jiecao.instance_variable_set :@browser, CBrower.new("http://lynngame.sinaapp.com/?action=ingameLogin", 0, 0, Graphics.width, Graphics.height, jiecao)
-          loop do
-            Graphics.update
-            break unless jiecao.instance_variable_get :@browser
-          end
-          RGSSX.ensure
+          Scene_WebLogin.new.main(true)
         when 1
           if DataManager.load_game(0)
             fadeout_all
