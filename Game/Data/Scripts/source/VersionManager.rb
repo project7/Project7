@@ -18,6 +18,7 @@ Connection: close
 
 END
     if req.is_a?(String) && req[/X-NineBu-Result:\s*200/i]
+      req = req.force_encoding("utf-8")
       title = req[/<h1>(.*?)<\/h1>/i] ? $1 : ""
       description = req[/<blockquote>((.|\n)*?)<\/blockquote>/i] ? $1 : ""
       url = req[/<a href="(.*?)">download<\/a>/i] ? $1 : ""
