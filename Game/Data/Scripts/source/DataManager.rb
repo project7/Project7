@@ -119,7 +119,7 @@ module DataManager
   # ● 判定存档文件是否存在
   #--------------------------------------------------------------------------
   def self.save_file_exists?
-    !Dir.glob('Save*.rvdata2').empty?
+    !Dir.glob('SaveData.orzfly').empty?
   end
   #--------------------------------------------------------------------------
   # ● 存档文件的最大数
@@ -132,7 +132,7 @@ module DataManager
   #     index : 文件索引
   #--------------------------------------------------------------------------
   def self.make_filename(index)
-    sprintf("SaveData.orzfly", index + 1)
+    return "SaveData.orzfly"
   end
   #--------------------------------------------------------------------------
   # ● 执行存档

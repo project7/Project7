@@ -9,6 +9,7 @@ class Scene_Title < Scene_Base
   def start
     @viewport = Viewport.new
     @viewport.tone.set(0, 0, 0, 0)
+    @has_been_saved = DataManager.save_file_exists?
     DataManager.setup_new_game
     super
     create_particle
@@ -26,7 +27,7 @@ class Scene_Title < Scene_Base
       command_new_game
       return
     end
-    if CInput.trigger?($vkey[:Check])
+    if @has_been_saved && CInput.trigger?($vkey[:Check])
       command_continue
       return
     end
@@ -74,7 +75,7 @@ class Scene_Title < Scene_Base
     center_sprite(@sprite1)
     center_sprite(@sprite2)
     @sprite3 = Sprite.new(@viewport)
-    @sprite3.bitmap = Cache.system("title_load")
+    @sprite3.bitmap = @has_been_saved ? Cache.system("title_load") : Bitmap.new(1,1)
     center_load_sprite
   end
   #--------------------------------------------------------------------------
