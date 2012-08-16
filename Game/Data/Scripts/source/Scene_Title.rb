@@ -111,6 +111,15 @@ class Scene_Title < Scene_Base
     Thread.new do
       $game_map.autoplay
     end
+    openness = 255
+    loop do |i|
+      openness -= 3
+      openness = 0 if openness < 0
+      @sprite3.opacity = openness
+      Graphics.update
+      @mist.update
+      break if openness == 0
+    end
     openness = 0
     loop do |i|
       openness -= 3
