@@ -44,6 +44,8 @@ class Scene_Title < Scene_Base
     @mist = nil
   end
   def adapt_screen
+    @viewport.rect.width = Graphics.width
+    @viewport.rect.height = Graphics.height
     dispose_particle
     create_particle
     center_sprite(@sprite1)
