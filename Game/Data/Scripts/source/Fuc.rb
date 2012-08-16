@@ -103,12 +103,15 @@
     astr = AStar.new($game_map,actor)
     astr.set_origin(actor.x, actor.y)
     astr.set_target(x, y)
+    rpath = astr.do_search
     if dis < 1
-      actor.auto_move_path = (astr.do_search)
+      path = rpath
+      actor.auto_move_path = path
     else
-      actor.auto_move_path = (astr.do_search)[0,dis]
+      path = rpath[0,dis]
+      actor.auto_move_path = rpath if dis>=rpath.size
     end
-    return actor.auto_move_path
+    return path
   end
   
   # 通过屏幕坐标获取游戏坐标

@@ -137,7 +137,11 @@ class Scene_Title < Scene_Base
   # ● 指令“继续游戏”
   #--------------------------------------------------------------------------
   def command_continue
-    SceneManager.call(Scene_Load)
+    DataManager.load_game(0)
+    fadeout_all
+    $game_system.on_after_load
+    SceneManager.goto(Scene_Map)
+    #SceneManager.call(Scene_Load)
   end
   #--------------------------------------------------------------------------
   # ● 指令“退出游戏”
