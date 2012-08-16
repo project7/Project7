@@ -88,6 +88,7 @@ Window_ChoiceList
 Window_NumberInput
 Window_KeyItem
 Window_Message
+Window_Message_Ex
 Window_ScrollText
 Window_MapName
 Window_BattleLog
