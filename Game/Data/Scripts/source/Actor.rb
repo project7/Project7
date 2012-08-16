@@ -82,6 +82,7 @@
   attr_accessor :tec                          # 智力
   attr_accessor :agi                          # 敏捷
   attr_accessor :ep                           # 能力点
+  attr_accessor :boss                         # 是否boss
   
   def initialize(event_id=0,t_id=[0])
     @event_id = event_id

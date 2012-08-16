@@ -729,3 +729,60 @@ class AutoBigBang < Skill
   end
   
 end
+
+class PlaceEachOther < Skill
+  
+  def set_ui
+    @icon = "ret"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 13
+    @name = "意念换位"
+    @init_skill = true
+    @use_req = "true"
+    @use_dis_min = 1
+    @use_dis_max = 6
+    @hotkey = 0x45
+    @hurt_enemy = true
+    @hurt_partner = true
+    @hurt_p_dead = true
+    @hurt_e_dead = true
+    @hurt_area = [ [[0]] ,true]
+    @hurt_maxnum = 0
+    @sp_cost = 0
+    @hp_cost = 0
+    @ap_cost = 0
+    @hp_damage = 0
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = []
+    @debuff = []
+    @descr = "消耗4点怒气以及4点行动力.\n与一格内的战斗单位交换位置.\n对BOSS怪物无效."
+  end
+  
+  def set_extra
+    @spec_effect = "if !i.boss;
+                      @cur_actor.event.x,@cur_actor.event.y,i.event.x,i.event.y=i.event.x,i.event.y,@cur_actor.event.x,@cur_actor.event.y;
+                      @cur_actor.event.real_x,@cur_actor.event.real_y,i.event.real_x,i.event.real_y=i.event.real_x,i.event.real_y,@cur_actor.event.real_x,@cur_actor.event.real_y;
+                      set_view_pos(@cur_actor.x,@cur_actor.y);
+                      tempb<<[true,0]
+                    else;
+                      tempb<<[false,21];
+                    end"
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @ignore_mag_det = false
+  end
+  
+end

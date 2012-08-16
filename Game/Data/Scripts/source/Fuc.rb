@@ -350,7 +350,8 @@
   
   # 获取技能说明
   def self.get_skill_descr(index)
-    title = $sel_body.skill[index].name+"("+$sel_body.skill[index].hotkey.chr+")"
+    title = $sel_body.skill[index].name
+    title=title+"("+$sel_body.skill[index].hotkey.chr+")" if $sel_body.skill[index].hotkey
     text = $sel_body.skill[index].descr
     textarr = text.split(/\n/)
     tbitmap = Bitmap.new(10,10)

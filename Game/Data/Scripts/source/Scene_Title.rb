@@ -9,7 +9,6 @@ class Scene_Title < Scene_Base
   def start
     @viewport = Viewport.new
     @viewport.tone.set(0, 0, 0, 0)
-    
     DataManager.setup_new_game
     super
     create_particle
