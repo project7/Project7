@@ -36,7 +36,7 @@ class Scene_Title < Scene_Base
     if @mist
       @mist.dispose rescue nil
     end
-    @mist= PTCF.new(1)
+    @mist= PTCF.new(1,@viewport)
     @mist.set_all(PTCF::MistLight)
   end
   def dispose_particle
