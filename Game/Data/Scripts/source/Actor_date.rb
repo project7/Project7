@@ -89,7 +89,7 @@ class BeFucker < Actor
   def set_tec
     @id = 2
     @name = "女主角"
-    @skill = [FuckEachOther,PlaceEachOther]
+    @skill = [FuckEachOther,PlaceEachOther,Baqiyemenbo,MagicBang,Refraction]
     @equip = {"武器"=>[0,nil],"盾牌"=>[1,nil],"挂件"=>[2,nil],"指环"=>[3,nil]}
     @atk_pic = "atk"
     @atk_cot = 4
@@ -128,7 +128,7 @@ class BeFucker < Actor
     @per_step_cost_ap = 2
     @atk_cost_ap = 1
     @item_cost_ap = 2
-    @hatred_base = 1
+    @hatred_base = 19999
     @miss_rate = 5
   end
   

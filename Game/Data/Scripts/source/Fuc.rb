@@ -19,7 +19,7 @@
   HP_ADD_COLOR =      Color.new(0,255,0,255)
   BINGO_COLOR =       Color.new(255,255,0,255)
   SP_COST_COLOR =     Color.new(100,100,100,255)
-  SP_ADD_COLOR =      Color.new(0,100,255,255)
+  SP_ADD_COLOR =      Color.new(255,255,255,255)
   AP_COST_COLOR =     Color.new(100,255,100,255)
   AP_ADD_COLOR =      Color.new(255,100,255,255)
   DAMGE_GREEN =       Color.new(102,0,255,255)
@@ -74,8 +74,8 @@
   ]
   ELE_DESCR = 
   [ ["力量","每点效果:\n攻击+10\n防御+5\n暴击伤害倍数+20%\n生命最大上限+15"],
-    ["体力","每点增加:\n生命最大上限+60\n防御+1\n行动力+2\n每次行动HP回复+1"],
-    ["智力","每点增加:\n法力+10\n法抗+5\n每次行动怒气回复+1\n基础仇恨-1\n行动力+1"],
+    ["体力","每点增加:\n生命最大上限+60\n防御+1\n行动力+2\n每两点增加1行动血量回复"],
+    ["智力","每点增加:\n法力+10\n法抗+5\n基础仇恨-1\n行动力+1\n每三点增加1行动怒气回复"],
     ["敏捷","每点增加:\n攻击+2\n防御+5\n闪避+2%\n暴击+2%\n行动力+1"]
   ]
   COMMON_BATTLE_REQ = " $game_switches[2] = @partner_num==0;
@@ -354,6 +354,7 @@
   # 获取技能说明
   def self.get_skill_descr(index)
     title = $sel_body.skill[index].name
+    title=title+"(被动)" if !$sel_body.skill[index].init_skill
     title=title+"("+$sel_body.skill[index].hotkey.chr+")" if $sel_body.skill[index].hotkey
     text = $sel_body.skill[index].descr
     textarr = text.split(/\n/)

@@ -50,14 +50,13 @@
   end
   
   def init_var
-    @lived_turn = $map_battle.turn
-    @lived_step = $map_battle.steps
+    @lived_turn = $map_battle ? $map_battle.turn : 0
+    @lived_step = $map_battle ? $map_battle.steps : 0
   end
   
   def refresh(user)
     @user = user
-    @lived_turn = $map_battle.turn
-    @lived_step = $map_battle.steps
+    init_var
   end
 
 end

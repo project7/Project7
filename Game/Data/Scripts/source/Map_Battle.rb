@@ -384,7 +384,7 @@
   end
   
   def ready_for_effect(obj)
-    if obj.use_dis_max == 0
+    if obj.use_dis_max == 0 && obj.hurt_area[1]
       @actor.auto_move_path=[]
       create_higher_effectarea(obj)
       create_higher_enablearea(obj)
@@ -414,7 +414,7 @@
   end
   
   def ready_for_skill(obj)
-    if obj.use_dis_max == 0
+    if obj.use_dis_max == 0 && obj.hurt_area[1]
       @actor.auto_move_path=[]
       create_higher_effectarea(obj)
       create_higher_enablearea(obj)
@@ -861,7 +861,7 @@
           tempama = para[0].hp_damage
           if tempama != 0
             color = tempama > 0 ? HP_COST_COLOR : HP_ADD_COLOR
-            dama = para[0].ignore_mag_det ? i.damage(tempama) : i.mag_damage(tempama)
+            dama = para[0].ignore_mag_det ? i.damage(tempama+@cur_actor.get_int) : i.mag_damage(tempama+@cur_actor.get_int)
             tempb << dama
             if dama[0]
               @succ_count+=1
@@ -874,7 +874,7 @@
           tempama = para[0].sp_damage
           if tempama != 0
             color = tempama > 0 ? SP_COST_COLOR : SP_ADD_COLOR
-            dama = para[0].ignore_mag_det ? i.damage(tempama) : i.mag_damage(tempama)
+            dama = para[0].ignore_mag_det ? i.damage(tempama+@cur_actor.get_int) : i.mag_damage(tempama+@cur_actor.get_int)
             tempb << dama
             if dama[0]
               @succ_count+=1
@@ -887,7 +887,7 @@
           tempama = para[0].ap_damage
           if tempama != 0
             color = tempama > 0 ? AP_COST_COLOR : AP_ADD_COLOR
-            dama = para[0].ignore_mag_det ? i.damage(tempama) : i.mag_damage(tempama)
+            dama = para[0].ignore_mag_det ? i.damage(tempama+@cur_actor.get_int) : i.mag_damage(tempama+@cur_actor.get_int)
             tempb << dama
             if dama[0]
               @succ_count+=1

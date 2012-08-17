@@ -50,4 +50,8 @@
     return tarr
   end
   
+  def change_leader
+    @members << @members.shift
+  end
+  
 end

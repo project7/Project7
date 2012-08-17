@@ -29,6 +29,7 @@
   attr_accessor :ap_damage                          #行动力伤害
   attr_accessor :buff                               #附加buff
   attr_accessor :debuff                             #抵抗buff
+  attr_accessor :uninit_buff                        #自动buff
   attr_accessor :descr                              #技能描述
   attr_accessor :spec_effect                        #特殊效果(eval)
   attr_accessor :sp_cost_rate                       #按百分比消耗sp
