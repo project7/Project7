@@ -100,7 +100,12 @@
   end
   
   def start_play
-    @skill.each_index{|i| @skill[i]=@skill[i].new}
+    @skill.each_index do |i|
+      @skill[i]=@skill[i].new
+      if !@skill[i].init_skill
+        @skill[i].uninit_buff.each{|b| self.add_buff(b.new(self))}
+      end
+    end
     cal_skill_rem
     cal_buff_rem
     cal_item_rem
@@ -318,6 +323,7 @@
   
   def learn_skill(skill)
     @skill << skill
+    skill.uninit_buff.each{|b| self.add_buff(b.new(self))} if !skill.init_skill
     @skill.uniq!{|i| i.id}
     cal_skill_rem
   end
@@ -339,7 +345,10 @@
   end
   
   def forget_skill(skill_id)
-    @skill.delete_if{|i| i.id==skill_id}
+    @skill.delete_if do |i|
+      i.uninit_buff.each{|b| @buff.delete_if{|q| q.is_a?(b)}} if !i.init_skill
+      i.id==skill_id
+    end
     cal_skill_rem
   end
   
@@ -468,6 +477,10 @@
   
   def get_atk
     return @atk+@atk_add
+  end
+  
+  def get_int
+    return @int+@int_add
   end
   
   def get_def

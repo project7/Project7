@@ -214,6 +214,9 @@ class Scene_Map < Scene_Base
   # ● 更新非战斗时鼠标点击事件
   #--------------------------------------------------------------------------
   def update_mouse_event
+    if CInput.trigger?($vkey[:Tab])
+      $party.change_leader
+    end
     if $ui_show
       tkey = CInput.item4
       if tkey
@@ -458,12 +461,12 @@ class Scene_Map < Scene_Base
           $party.members[body_index].def+=1
           $party.members[body_index].maxap+=2
           $party.members[body_index].ap+=2
-          $party.members[body_index].hp_rec+=1
+          $party.members[body_index].hp_rec+=1 if $party.members[body_index].het[1]%2==0
         when 2
           $party.members[body_index].tec[1]+=1
           $party.members[body_index].int+=10
           $party.members[body_index].mdef+=5
-          $party.members[body_index].sp_rec+=1
+          $party.members[body_index].sp_rec+=1 if $party.members[body_index].tec[1]%3==0
           $party.members[body_index].maxap+=1
           $party.members[body_index].ap+=1
           $party.members[body_index].hatred_base-=1

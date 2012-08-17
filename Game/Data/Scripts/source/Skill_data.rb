@@ -717,7 +717,7 @@ class AutoBigBang < Skill
                       @splink.show_text(a[1],i.event,HP_COST_COLOR,20);
                     elsif a[1]<=1;
                       @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
-                    end;"
+                    end"
     @sp_cost_rate = 0
     @hp_cost_rate = 0
     @ap_cost_rate = 0
@@ -763,7 +763,7 @@ class PlaceEachOther < Skill
     @ap_damage = 0
     @buff = []
     @debuff = []
-    @descr = "消耗4点怒气以及4点行动力.\n与一格内的战斗单位交换位置.\n对BOSS怪物无效."
+    @descr = "消耗4点怒气以及4点行动力.\n与一格内的战斗单位交换位置.\n对BOSS怪物无效.\n施法距离:1-6"
   end
   
   def set_extra
@@ -783,6 +783,198 @@ class PlaceEachOther < Skill
     @sp_damage_add = "skill.level*50"
     @ap_damage_add = "0"
     @ignore_mag_det = false
+  end
+  
+end
+
+class Baqiyemenbo < Skill
+  
+  def set_ui
+    @icon = "ret"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 14
+    @name = "意念穿透"
+    @init_skill = true
+    @use_req = "true"
+    @use_dis_min = 1
+    @use_dis_max = 1
+    @hotkey = 0x57
+    @hurt_enemy = true
+    @hurt_partner = false
+    @hurt_p_dead = false
+    @hurt_e_dead = false
+    @hurt_area = [ [[0,0],[-1,1,3,1],[-2,2,5,1]] ,false]
+    @hurt_maxnum = 0
+    @sp_cost = 0#16
+    @hp_cost = 0
+    @ap_cost = 0#10
+    @hp_damage = 0
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = []
+    @debuff = []
+    @descr = "消耗16点怒气以及10点行动力.\n对面向视野内3格所有单位造成巨大伤害.\n同时有25%造成眩晕效果.\n若被攻击单位已经是眩晕状态.\n则造成更大伤害.\n施法距离:1"
+  end
+  
+  def set_extra
+    @spec_effect = "if i.in_buff(7);
+                      a=i.mag_damage(150+@cur_actor.get_int);
+                      if a[0];
+                        @splink.show_text(a[1],i.event,HP_COST_COLOR,20);
+                      elsif a[1]<=1;
+                        @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
+                      end;
+                    else;
+                      a=i.mag_damage(80+@cur_actor.get_int);
+                      if a[0];
+                        @splink.show_text(a[1],i.event,HP_COST_COLOR,20);
+                      elsif a[1]<=1;
+                        @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
+                      end;
+                    end;
+                    if $random_center.rand(100)<25;
+                      sm = ShutDown.new(@cur_actor);
+                      i.add_buff(sm);
+                      @splink.show_text(\"+\"+sm.name,i.event,SP_ADD_COLOR);
+                    end"
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @ignore_mag_det = false
+  end
+  
+end
+
+class MagicBang < Skill
+  
+  attr_accessor :power_point
+  
+  def set_ui
+    @icon = "ret"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 15
+    @name = "意念爆发"
+    @init_skill = true
+    @use_req = "sp>=30&&ap>=15"
+    @use_dis_min = 0
+    @use_dis_max = 0
+    @hotkey = 0x42
+    @hurt_enemy = true
+    @hurt_partner = false
+    @hurt_p_dead = false
+    @hurt_e_dead = false
+    @hurt_area = [ [[6]] ,true]
+    @hurt_maxnum = 0
+    @sp_cost = 0
+    @hp_cost = 0
+    @ap_cost = 0
+    @hp_damage = 0
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = []
+    @debuff = []
+    @descr = "消耗所有点怒气以及行动力.\n至少拥有30点怒气以及15点行动力.\n将消耗的怒气与行动力结合.\n产生20%结合数量的能量粒子.\n疯狂地将能量粒子扩散开.\n每个能量粒子对周围所有敌人造成法力值25%的伤害.\n并有50%概率造成眩晕.\n作用范围:周身6格内,无需选取目标.\n\n副作用:\n3回合内使用者无法行动.\n此期间受到所有回复效果减半."
+  end
+  
+  def set_extra
+    @spec_effect = "if para[0].power_point==0;
+                      para[0].power_point=(@cur_actor.ap+@cur_actor.sp)/5;
+                      @cur_actor.add_buff(OverFuck.new(@cur_actor));
+                      @cur_actor.ap = 0;
+                      @cur_actor.sp = 0;
+                    end;
+                    i.event.set_direction(Fuc.mouse_dir_body(i.event,@cur_actor.event));
+                    i.event.move_backward if i.event.passable?(i.x,i.y,10-i.event.direction);
+                    a=i.mag_damage(para[0].power_point*@cur_actor.get_int/4);
+                    if a[0];
+                      @splink.show_text(a[1],i.event,HP_COST_COLOR,20);
+                    elsif a[1]<=1;
+                      @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
+                    end;
+                    if $random_center.rand(100)<50;
+                      sm = ShutDown.new(@cur_actor);
+                      i.add_buff(sm);
+                      @splink.show_text(\"+\"+sm.name,i.event,SP_ADD_COLOR);
+                    end"
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @power_point = 0
+    @ignore_mag_det = false
+  end
+  
+end
+
+class Refraction < Skill
+
+  def set_ui
+    @icon = "ret"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 16
+    @name = "奥术分散"
+    @init_skill = false
+    @uninit_buff = [RefractionBuff]
+    @use_req = "true"
+    @use_dis_min = 0
+    @use_dis_max = 0
+    @hotkey = nil
+    @hurt_enemy = true
+    @hurt_partner = true
+    @hurt_p_dead = false
+    @hurt_e_dead = false
+    @hurt_area = [ [[0]] ,true]
+    @hurt_maxnum = 0
+    @sp_cost = 0
+    @hp_cost = 0
+    @ap_cost = 0
+    @hp_damage = 0
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = []
+    @debuff = []
+    @descr = "自身强大的念力使敌人的进攻\n无法完全命中自己.\n每次自身受到任意伤害时.\n减少15%的伤害.\n并将这部分伤害转给周围的单位.\n不分敌我.\n并且受到伤害如果大于最大生命\n的一半,超过得部分将被阻止.\n无视魔法免疫.\n作用范围:周身4格"
+  end
+  
+  def set_extra
+    @spec_effect = ""
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    
+    @ignore_mag_det = true
   end
   
 end

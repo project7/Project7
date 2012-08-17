@@ -183,3 +183,99 @@ class Catch < Buff
   end
   
 end
+
+class ShutDown < Buff
+
+  def set_ele(user)
+    @id = 7
+    @user = user
+    @name = "眩晕"
+    @icon = "ctrled"
+    @animation = []
+    @keep_turn = 2
+    @keep_step = 0
+    @use_effect = ""
+    @per_turn_start_effect = "next_actor;return"
+    @per_step_effect = ""
+    @per_turn_end_effect = ""
+    @end_effect = ""
+    @atk_effect = ""
+    @b_damage_effect = ""
+    @a_damage_effect = ""
+  end
+  
+  def set_extra
+    @end_req = "@turn-buff.lived_turn>=buff.keep_turn"
+    @descr = "该单位无法行动."
+  end
+  
+end
+
+class OverFuck < Buff
+
+  def set_ele(user)
+    @id = 8
+    @user = user
+    @name = "竭心"
+    @icon = "ctrled"
+    @animation = []
+    @keep_turn = 3
+    @keep_step = 0
+    @use_effect = ""
+    @per_turn_start_effect = "next_actor;return"
+    @per_step_effect = ""
+    @per_turn_end_effect = ""
+    @end_effect = ""
+    @atk_effect = ""
+    @b_damage_effect = "value=value/2 if value<0"
+    @a_damage_effect = ""
+  end
+  
+  def set_extra
+    @end_req = "@turn-buff.lived_turn>=buff.keep_turn"
+    @descr = "该单位由于精力空虚而无法行动.\n并且受到的增益效果减半."
+  end
+  
+end
+
+class RefractionBuff < Buff
+
+  def set_ele(user)
+    @id = 9
+    @user = user
+    @name = "奥术分散"
+    @icon = "ctrled"
+    @animation = []
+    @keep_turn = 0
+    @keep_step = 0
+    @use_effect = ""
+    @per_turn_start_effect = ""
+    @per_step_effect = ""
+    @per_turn_end_effect = ""
+    @end_effect = ""
+    @atk_effect = ""
+    @b_damage_effect = "if value>0
+                          rdama = value*3/20;
+                          value-=rdama;
+                          value=@maxhp/2 if value>@maxhp/2;
+                          $team_set.each do |zik|;
+                            next if zik==self||zik.dead?;
+                            if (zik.x-self.x).abs+(zik.y-self.y).abs<=4;
+                              a=zik.damage(rdama);
+                              if a[0];
+                                SceneManager.scene.spriteset.show_text(a[1],zik.event,Fuc::HP_COST_COLOR,20);
+                              elsif a[1]<=1;
+                                SceneManager.scene.spriteset.show_text(Fuc::FAILD_ATTACK_TEXT[a[1]],zik.event);
+                              end;
+                            end;
+                          end;
+                        end"
+    @a_damage_effect = ""
+  end
+  
+  def set_extra
+    @end_req = "false"
+    @descr = "该单位无法被轻易击败."
+  end
+  
+end
