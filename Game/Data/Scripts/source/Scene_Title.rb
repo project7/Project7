@@ -110,6 +110,7 @@ class Scene_Title < Scene_Base
   # ● 指令“开始游戏”
   #--------------------------------------------------------------------------
   def command_new_game
+    CToy.disable_fullscreen
     Thread.new do
       $game_map.autoplay
     end
@@ -132,7 +133,6 @@ class Scene_Title < Scene_Base
       break if openness == -255
     end
     $NEWGAME = true
-    CToy.disable_fullscreen
     CToy.disable_transition
     SceneManager.goto(Scene_Map)
   end
