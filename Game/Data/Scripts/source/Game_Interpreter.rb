@@ -52,7 +52,7 @@ class Game_Interpreter
     @event_id = event_id
     @list = []
     list.each do |i|
-      if i.code == 203 && i.parameters[4]==2
+      if i.code == 203 && (i.parameters[4]==2 || i.parameters[4]==8)
         evid = i.parameters[0]==0 ? event_id : i.parameters[0]
         astr = AStar.new($game_map,$game_map.events[evid])
         astr.set_origin($game_map.events[evid].x,$game_map.events[evid].y)
@@ -61,7 +61,7 @@ class Game_Interpreter
         route = RPG::MoveRoute.new
         route.repeat = false
         route.skippable = true
-        route.wait = true
+        route.wait = i.parameters[4]==2
         route.list = []
         bigarr = []
         rpath.each do |k|
