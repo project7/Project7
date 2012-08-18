@@ -1063,6 +1063,14 @@
   end
   
   def end_battle
+    @turn = 99999
+    $party.members.each do |p|
+      p.buff.each do |buff|
+        if instance_eval(buff.end_req)
+          @cur_actor.dec_buff(buff.id)
+        end
+      end
+    end
     @battle_end_flag = true
     dispose_all
     $game_switches[1]=false

@@ -1030,3 +1030,54 @@ class Disturb < Skill
   end
   
 end
+
+class Baqiyemenbo < Skill
+  
+  def set_ui
+    @icon = "ret"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 18
+    @name = "重劈"
+    @init_skill = true
+    @use_req = "true"
+    @use_dis_min = 1
+    @use_dis_max = 1
+    @hotkey = 0x46
+    @hurt_enemy = true
+    @hurt_partner = false
+    @hurt_p_dead = false
+    @hurt_e_dead = false
+    @hurt_area = [ [[0,0,1,6]] ,false]
+    @hurt_maxnum = 0
+    @sp_cost = 4
+    @hp_cost = 0
+    @ap_cost = 6
+    @hp_damage = 60
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = [[ShutDown,25]]
+    @debuff = []
+    @descr = "消耗4点怒气以及6点行动力.\n对前方单位造成伤害.\n同时有25%造成眩晕效果.\n施法距离:1"
+  end
+  
+  def set_extra
+    @spec_effect = "i.event.set_direction(Fuc.mouse_dir_body(i.event,@cur_actor.event));
+                    i.event.move_backward if i.event.passable?(i.x,i.y,10-i.event.direction);"
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @ignore_mag_det = false
+  end
+  
+end
