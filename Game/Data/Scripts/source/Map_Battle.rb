@@ -463,6 +463,13 @@
       end
       return
     end
+    # S
+    if CInput.trigger?($vkey[:Stop])
+      $sel_body = @cur_actor
+      @actor.auto_move_path=[]
+      @wayarea.dispose if @wayarea
+      return
+    end
     # B
     if $game_system.menu_disabled
       SceneManager.scene.menu_calling = false
