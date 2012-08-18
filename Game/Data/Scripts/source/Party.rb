@@ -52,6 +52,7 @@
   
   def change_leader
     @members << @members.shift
+    $sel_body = @members[0].link(0)
   end
   
 end

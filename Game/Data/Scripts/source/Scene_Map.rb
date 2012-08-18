@@ -38,7 +38,7 @@ class Scene_Map < Scene_Base
     @ele_tips_text = Sprite.new
     @ele_tips_text.z = 1003
     @menu_calling = false
-    @menu_called_inedx = 0
+    @menu_called_index = 0
     @now_set = [[nil,nil],nil,nil,nil,nil]
     @menu_rem = nil
   end
@@ -89,7 +89,7 @@ class Scene_Map < Scene_Base
   #--------------------------------------------------------------------------
   def update
     super
-    unless @menu_called_inedx > 0
+    unless @menu_called_index > 0
       $game_map.update(true)
       $game_player.update
       $game_timer.update
@@ -97,7 +97,7 @@ class Scene_Map < Scene_Base
       update_ui if $ui_show
       update_scene if scene_change_ok?
     else
-      update_system_menu(@menu_called_inedx)
+      update_system_menu(@menu_called_index)
     end
   end
   #--------------------------------------------------------------------------
@@ -216,6 +216,10 @@ class Scene_Map < Scene_Base
   def update_mouse_event
     if CInput.trigger?($vkey[:Tab])
       $party.change_leader
+      if @menu_called_index == 1
+        @menu_sprite_sin.bitmap.dispose if @menu_sprite_sin.bitmap
+        @menu_sprite_sin.bitmap = Fuc.get_ele_back_bitmap
+      end
     end
     if $ui_show
       tkey = CInput.item4
@@ -290,7 +294,7 @@ class Scene_Map < Scene_Base
             end
           end
         end
-      elsif @menu_called_inedx==0  #鼠标点击寻路
+      elsif @menu_called_index==0  #鼠标点击寻路
         x_dis = $game_player.x-Fuc.getpos_by_screenpos(Mouse.pos)[0]
         y_dis = $game_player.y-Fuc.getpos_by_screenpos(Mouse.pos)[1]
         if x_dis.abs+y_dis.abs == 1 && $game_player.movable?
@@ -308,7 +312,7 @@ class Scene_Map < Scene_Base
   end
   
   def call_ele_scene
-    return if @menu_called_inedx == 1
+    return if @menu_called_index == 1
     @menu_sprite_sin.bitmap.dispose if @menu_sprite_sin.bitmap
     @menu_sprite_sin.bitmap = Fuc.get_ele_back_bitmap
     @menu_sprite_act.bitmap.dispose if @menu_sprite_act.bitmap
@@ -318,34 +322,34 @@ class Scene_Map < Scene_Base
     @menu_sprite_act.x = @menu_sprite_sin.x = @menu_sprite_bak.x = Graphics.width/2-@menu_sprite_sin.bitmap.width/2
     @menu_sprite_act.y = @menu_sprite_sin.y = @menu_sprite_bak.y = Graphics.height/2-@menu_sprite_sin.bitmap.height/2
     @menu_rem = [$party.get_all_fake,[false,false,false,false]]
-    @menu_called_inedx = 1
+    @menu_called_index = 1
   end
   
   def call_gra_scene
-    return if @menu_called_inedx == 2
+    return if @menu_called_index == 2
     create_menu(MENU_GRA)
-    @menu_called_inedx = 2
+    @menu_called_index = 2
   end
   
   def call_voi_scene
-    return if @menu_called_inedx == 3
+    return if @menu_called_index == 3
     create_menu(MENU_VOI)
-    @menu_called_inedx = 3
+    @menu_called_index = 3
   end
   
   def call_save_scene
-    return if @menu_called_inedx == 4
+    return if @menu_called_index == 4
     create_menu(MENU_SAV)
     if ($WebLogin_user rescue nil) == nil
       @menu_sprite_sin.bitmap.blt(MENU_SAV_POS[0][0],MENU_SAV_POS[0][1],Bitmap.new(MENU_SAV_LOG),Rect.new(0,0,166,34))
     else
       @menu_sprite_sin.bitmap.blt(MENU_SAV_POS[0][0],MENU_SAV_POS[0][1],Bitmap.new(MENU_SAV_SL),Rect.new(0,0,166,34))
     end
-    @menu_called_inedx = 4
+    @menu_called_index = 4
   end
   
   def call_mes_scene
-    return if @menu_called_inedx == 5
+    return if @menu_called_index == 5
     create_menu(MENU_MES)
     ver = VersionManager.new_version
     text = "本地：#{VersionManager.version}\n\n最新："
@@ -366,7 +370,7 @@ class Scene_Map < Scene_Base
     rescue
       $!._debugger_
     end
-    @menu_called_inedx = 5
+    @menu_called_index = 5
   end
   
   def create_menu(res)
@@ -388,7 +392,7 @@ class Scene_Map < Scene_Base
     @menu_sprite_act.bitmap.dispose if @menu_sprite_act.bitmap
     resc_skill
     @menu_calling = false
-    @menu_called_inedx = 0
+    @menu_called_index = 0
   end
   #--------------------------------------------------------------------------
   # ● 更新菜单
@@ -399,7 +403,7 @@ class Scene_Map < Scene_Base
     update_ui
     update_mouse_event
     update_call_menu
-    case @menu_called_inedx
+    case @menu_called_index
     when 1
       update_menu_ele
     when 2
@@ -763,12 +767,12 @@ class Scene_Map < Scene_Base
       @menu_calling = false
     else
       if CInput.trigger?($vkey[:X]) || (!$map_battle && Mouse.down?(2))
-        if @menu_called_inedx != 0
+        if @menu_called_index != 0
           @menu_sprite_sin.bitmap.dispose if @menu_sprite_sin.bitmap
           @menu_sprite_act.bitmap.dispose if @menu_sprite_act.bitmap
           @menu_sprite_bak.bitmap.dispose if @menu_sprite_bak.bitmap
           @ele_tips_text.bitmap.dispose if @ele_tips_text.bitmap
-          @menu_called_inedx = 0
+          @menu_called_index = 0
         else
           @menu_calling =!@menu_calling
           if @menu_calling

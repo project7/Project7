@@ -14,6 +14,7 @@
                   self.def_add+=new_buff.add_def"
     @per_turn_start_effect = ""
     @per_step_effect = ""
+    @per_act_effect = ""
     @per_turn_end_effect = ""
     @end_effect = "self.def_add-=buff.add_def"
     @atk_effect = ""
@@ -43,6 +44,7 @@ class Sick < Buff
     @per_turn_start_effect = "a=@cur_actor.mag_damage(@cur_actor.hp/5);
                               @splink.show_text(a[1].to_s,@cur_actor.event,DAMGE_GREEN) if a[0]"
     @per_step_effect = ""
+    @per_act_effect = ""
     @per_turn_end_effect = ""
     @end_effect = ""
     @atk_effect = ""
@@ -74,6 +76,7 @@ class Weak < Buff
     @per_turn_start_effect = ""
     @per_step_effect = "a=@cur_actor.mag_damage(@cur_actor.get_ap_for_step*10);
                             @splink.show_text(a[1].to_s,@cur_actor.event,AP_ADD_COLOR) if a[0]"
+    @per_act_effect = ""
     @per_turn_end_effect = ""
     @end_effect = "a=self.god_damage(-buff.temp_damage[1]);
                    SceneManager.scene.spriteset.show_text(a[1].abs.to_s,self.event,Fuc::AP_COST_COLOR) if a[0]"
@@ -105,6 +108,7 @@ class Ctrled < Buff
     @use_effect = ""
     @per_turn_start_effect = ""
     @per_step_effect = ""
+    @per_act_effect = ""
     @per_turn_end_effect = ""
     @end_effect = "self.die"
     @atk_effect = ""
@@ -137,6 +141,7 @@ class Deep_Damage < Buff
     @use_effect = ""
     @per_turn_start_effect = ""
     @per_step_effect = ""
+    @per_act_effect = ""
     @per_turn_end_effect = ""
     @end_effect = ""
     @atk_effect = ""
@@ -169,6 +174,7 @@ class Catch < Buff
                     new_buff.user.cal_skill_rem}"
     @per_turn_start_effect = ""
     @per_step_effect = ""
+    @per_act_effect = ""
     @per_turn_end_effect = ""
     @end_effect = "buff.user.resc_skill"
     @atk_effect = ""
@@ -197,6 +203,7 @@ class ShutDown < Buff
     @use_effect = ""
     @per_turn_start_effect = "next_actor;return"
     @per_step_effect = ""
+    @per_act_effect = ""
     @per_turn_end_effect = ""
     @end_effect = ""
     @atk_effect = ""
@@ -224,6 +231,7 @@ class OverFuck < Buff
     @use_effect = ""
     @per_turn_start_effect = "next_actor;return"
     @per_step_effect = ""
+    @per_act_effect = ""
     @per_turn_end_effect = ""
     @end_effect = ""
     @atk_effect = ""
@@ -251,6 +259,7 @@ class RefractionBuff < Buff
     @use_effect = ""
     @per_turn_start_effect = ""
     @per_step_effect = ""
+    @per_act_effect = ""
     @per_turn_end_effect = ""
     @end_effect = ""
     @atk_effect = ""
@@ -259,7 +268,7 @@ class RefractionBuff < Buff
                           value-=rdama;
                           value=@maxhp/2 if value>@maxhp/2;
                           $team_set.each do |zik|;
-                            next if zik==self||zik.dead?;
+                            next if zik==self||zik.dead? || (zik.team&@team).size>0;
                             if (zik.x-self.x).abs+(zik.y-self.y).abs<=4;
                               a=zik.damage(rdama);
                               if a[0];
@@ -276,6 +285,75 @@ class RefractionBuff < Buff
   def set_extra
     @end_req = "false"
     @descr = "该单位无法被轻易击败."
+  end
+  
+end
+
+class DisturbBuff < Buff
+
+  def set_ele(user)
+    @id = 10
+    @user = user
+    @name = "奥术扰乱领域"
+    @icon = "ctrled"
+    @animation = []
+    @keep_turn = 0
+    @keep_step = 0
+    @use_effect = ""
+    @per_turn_start_effect = "$team_set.each do |pl|;
+                                if !pl.dead? && (pl.team&@cur_actor.team).size==0 && !pl.ignore_magic;
+                                  pl.add_buff(BeDisturbBuff.new(@cur_actor));
+                                else;
+                                  pl.dec_buff(10);
+                                end;
+                              end"
+    @per_step_effect = ""
+    @per_act_effect = ""
+    @per_turn_end_effect = ""
+    @end_effect = ""
+    @atk_effect = ""
+    @b_damage_effect = ""
+    @a_damage_effect = ""
+  end
+  
+  def set_extra
+    @end_req = "false"
+    @descr = "周围的能量将会被扭曲.\n敌人无法正常行动."
+  end
+  
+end
+
+class BeDisturbBuff < Buff
+
+  def set_ele(user)
+    @id = 10
+    @user = user
+    @name = "能量混乱"
+    @icon = "ctrled"
+    @animation = []
+    @keep_turn = 0
+    @keep_step = 0
+    @use_effect = ""
+    @per_turn_start_effect = ""
+    @per_step_effect = ""
+    @per_act_effect = " if id!=4&&(@cur_actor.x-buff.user.x).abs+(@cur_actor.y-buff.user.y).abs<=buff.user.int/15;
+                          if $random_center.rand(100)<10;
+                            @cur_actor.cost_ap_for(3,@cur_actor.maxap/2);
+                            @last_action_state = false;
+                            per_steps_cal;
+                            return true;
+                          end;
+                        end"
+    @per_turn_end_effect = ""
+    @end_effect = ""
+    @atk_effect = ""
+    @b_damage_effect = ""
+    @a_damage_effect = ""
+  end
+  
+  def set_extra
+    @end_req = "false"
+    @descr = "该单位若是接近扰乱源.\n则无法正常行动."
   end
   
 end

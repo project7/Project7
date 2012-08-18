@@ -731,6 +731,9 @@
   end
   
   def action(id,para=nil)
+    @cur_actor.buff.each do |buff|
+      instance_eval(buff.per_act_effect)
+    end
     revar = ctrl(id,para)
     if revar.is_a?(Array)
       @last_action_state = revar

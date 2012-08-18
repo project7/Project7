@@ -89,7 +89,7 @@ class BeFucker < Actor
   def set_tec
     @id = 2
     @name = "女主角"
-    @skill = [FuckEachOther,PlaceEachOther,Baqiyemenbo,MagicBang,Refraction]
+    @skill = [FuckEachOther,PlaceEachOther,Baqiyemenbo,MagicBang,Refraction,Disturb]
     @equip = {"武器"=>[0,nil],"盾牌"=>[1,nil],"挂件"=>[2,nil],"指环"=>[3,nil]}
     @atk_pic = "atk"
     @atk_cot = 4

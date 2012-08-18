@@ -443,18 +443,18 @@
   end
   
   def x
-    if event_id == 0
+    if @event_id == 0
       return $game_player.x
     else
-      return $game_map.events[event_id].x
+      return $game_map.events[@event_id].x
     end
   end
   
   def y
-    if event_id == 0
+    if @event_id == 0
       return $game_player.y
     else
-      return $game_map.events[event_id].y
+      return $game_map.events[@event_id].y
     end
   end
   

@@ -978,3 +978,55 @@ class Refraction < Skill
   end
   
 end
+
+class Disturb < Skill
+
+  def set_ui
+    @icon = "ret"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 17
+    @name = "奥术扰乱"
+    @init_skill = false
+    @uninit_buff = [DisturbBuff]
+    @use_req = "true"
+    @use_dis_min = 0
+    @use_dis_max = 0
+    @hotkey = nil
+    @hurt_enemy = true
+    @hurt_partner = true
+    @hurt_p_dead = false
+    @hurt_e_dead = false
+    @hurt_area = [ [[0]] ,true]
+    @hurt_maxnum = 0
+    @sp_cost = 0
+    @hp_cost = 0
+    @ap_cost = 0
+    @hp_damage = 0
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = []
+    @debuff = []
+    @descr = "由于修炼的特殊性.\n周围所有正常元素全被扰乱.\n使敌人很难正常行动.\n范围内敌方行动有10%的概率无效化.\n作用生效时,该单位损失\n最大行动力一半的行动力.\n作用范围为每15点法力一格."
+  end
+  
+  def set_extra
+    @spec_effect = ""
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    
+    @ignore_mag_det = true
+  end
+  
+end

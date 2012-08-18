@@ -10,6 +10,7 @@
   attr_accessor :use_effect                       # 加持buff瞬间的效果
   attr_accessor :per_turn_start_effect            # 每回合开始的效果
   attr_accessor :per_step_effect                  # 每次操作的效果
+  attr_accessor :per_act_effect                   # 每次行动之前的效果
   attr_accessor :per_turn_end_effect              # 每回合结束的效果
   attr_accessor :end_effect                       # 加持结束时的效果
   attr_accessor :atk_effect                       # 攻击时的效果
@@ -37,6 +38,7 @@
     @use_effect = ""
     @per_turn_start_effect = ""
     @per_step_effect = ""
+    @per_act_effect = ""
     @per_turn_end_effect = ""
     @end_effect = ""
     @atk_effect = ""
