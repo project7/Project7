@@ -346,7 +346,7 @@
   
   def forget_skill(skill_id)
     @skill.delete_if do |i|
-      i.uninit_buff.each{|b| @buff.delete_if{|q| q.is_a?(b)}} if !i.init_skill
+      i.uninit_buff.each{|b| @buff.each{|q| self.dec_buff(q.id) if q.is_a?(b)}} if !i.init_skill
       i.id==skill_id
     end
     cal_skill_rem

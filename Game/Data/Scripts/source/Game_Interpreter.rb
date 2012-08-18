@@ -50,7 +50,33 @@ class Game_Interpreter
     clear
     @map_id = $game_map.map_id
     @event_id = event_id
-    @list = list
+    @list = []
+    list.each do |i|
+      if i.code == 203 && i.parameters[4]==2
+        evid = i.parameters[0]==0 ? event_id : i.parameters[0]
+        astr = AStar.new($game_map,$game_map.events[evid])
+        astr.set_origin($game_map.events[evid].x,$game_map.events[evid].y)
+        astr.set_target(i.parameters[2],i.parameters[3])
+        rpath = astr.do_search
+        route = RPG::MoveRoute.new
+        route.repeat = false
+        route.skippable = true
+        route.wait = true
+        route.list = []
+        bigarr = []
+        rpath.each do |k|
+          route.list << RPG::MoveCommand.new(k/2,[])
+          bigarr << RPG::EventCommand.new(505,i.indent,[RPG::MoveCommand.new(k/2,[])])
+        end
+        route.list << RPG::MoveCommand.new(0,[])
+        #bigarr = 
+        sick = RPG::EventCommand.new(205,i.indent,[evid,route])
+        @list << sick
+        @list += bigarr
+      else
+        @list << i
+      end
+    end
     create_fiber
   end
   #--------------------------------------------------------------------------
