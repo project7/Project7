@@ -13,20 +13,20 @@
 
     alias dn down?
     def down?(rkey)
-      return rkey.any?{|i| @down_keys.include?(i)}
+      return rkey.any?{|i| @down_keys.include?(i)} rescue false
     end
 
     alias pre press?
     def press?(rkey)
-      return rkey.any?{|i| @press_keys.include?(i)}
+      return rkey.any?{|i| @press_keys.include?(i)} rescue false
     end
    
     def repeat?(rkey)
-      return rkey.any?{|i| rrepeat?(i)}
+      return rkey.any?{|i| rrepeat?(i)} rescue false
     end
 
     def trigger?(rkey)
-      return rkey.any?{|i| rtrigger?(i)}
+      return rkey.any?{|i| rtrigger?(i)} rescue false
     end
 
     def rrepeat?(rkey)

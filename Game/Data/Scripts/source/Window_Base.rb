@@ -267,7 +267,7 @@ class Window_Base < Window
     when "\e"   # 控制符
       process_escape_character(obtain_escape_code(text), text, pos)
     else        # 普通文字
-      process_normal_character(c, pos)
+      process_normal_character(c, pos) rescue process_normal_character(c, text, pos)
     end
   end
   #--------------------------------------------------------------------------

@@ -1,3 +1,4 @@
+EvilRuby
 FModEx
 FMod
 Audio
@@ -54,6 +55,7 @@ Sprite_Picture
 Sprite_RichText
 Sprite_RichValue
 Sprite_Timer
+Sprite_BalloonText
 Spriteset_Weather
 Spriteset_Map
 Spriteset_Battle
@@ -89,6 +91,7 @@ Window_NumberInput
 Window_KeyItem
 Window_Message
 Window_Message_Ex
+Window_MessageMist
 Window_ScrollText
 Window_MapName
 Window_BattleLog

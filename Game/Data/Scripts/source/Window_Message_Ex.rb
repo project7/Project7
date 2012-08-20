@@ -1,4 +1,4 @@
-﻿
+﻿=begin
 class Window_Message_Ex < Window_Message
   #--------------------------------------------------------------------------
   # ● 初始化对象
@@ -26,14 +26,14 @@ class Window_Message_Ex < Window_Message
   # ● 生成背景位图
   #--------------------------------------------------------------------------
   def create_back_bitmap
-    @back_bitmap = Bitmap.new("Graphics//Characters//MUIB.png")
+    @back_bitmap = Cache.system("MUIB")
   end
   #--------------------------------------------------------------------------
   # ● 创建立绘
   #--------------------------------------------------------------------------
   def create_figure
     @figure = Sprite.new
-    @figure.bitmap = Bitmap.new("Graphics//Characters//未命名-16.png")
+    @figure.bitmap = Cache.system("未命名-16")
     @figure.z = z + 3
   end
   #--------------------------------------------------------------------------
@@ -139,11 +139,11 @@ class Window_Message_Ex < Window_Message
   def transform_style(style)
     case style
     when 0
-      @back_bitmap = Bitmap.new("Graphics//Characters//MUIB.png")
+      @back_bitmap = Cache.system("MUIB")
     when 1
-      @back_bitmap = Bitmap.new("Graphics//Characters//MUIM.png")
+      @back_bitmap = Cache.system("MUIM")
     when 2
-      @back_bitmap = Bitmap.new("Graphics//Characters//MUIS.png")
+      @back_bitmap = Cache.system("MUIS")
     end
     @style = style
   end
@@ -218,3 +218,4 @@ class Window_Message_Ex < Window_Message
     transform_style(0)
   end
 end
+=end

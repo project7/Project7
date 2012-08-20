@@ -17,6 +17,7 @@ class Sprite_Character < Sprite_Base
   def initialize(viewport, character = nil)
     super(viewport)
     @character = character
+    @text_balloon_duration = 0
     @balloon_duration = 0
     update
   end
@@ -25,6 +26,7 @@ class Sprite_Character < Sprite_Base
   #--------------------------------------------------------------------------
   def dispose
     end_animation
+    end_text_balloon
     end_balloon
     super
   end
@@ -42,6 +44,7 @@ class Sprite_Character < Sprite_Base
     update_position
     update_other
     update_balloon
+    update_text_balloon
     setup_new_effect
   end
   #--------------------------------------------------------------------------
@@ -149,6 +152,10 @@ class Sprite_Character < Sprite_Base
       @balloon_id = @character.balloon_id
       start_balloon
     end
+    if !@text_balloon_sprite && !@character.text_balloon_text.empty?
+      @text_balloon_text = @character.text_balloon_text
+      start_text_balloon
+    end
   end
   #--------------------------------------------------------------------------
   # ● 结束动画
@@ -220,5 +227,60 @@ class Sprite_Character < Sprite_Base
   #--------------------------------------------------------------------------
   def balloon_frame_index
     return 7 - [(@balloon_duration - balloon_wait) / balloon_speed, 0].max
+  end
+  
+  def text_balloon_duration
+    100 + text_balloon_fade_duration * 2
+  end
+  
+  def text_balloon_fade_duration
+    10
+  end
+  
+  #--------------------------------------------------------------------------
+  # ● 开始显示心情图标
+  #--------------------------------------------------------------------------
+  def start_text_balloon
+    dispose_text_balloon
+    @text_balloon_duration = text_balloon_duration
+    @text_balloon_sprite = Sprite_BalloonText.new(@text_balloon_text)
+    update_text_balloon
+  end
+  #--------------------------------------------------------------------------
+  # ● 释放心情图标
+  #--------------------------------------------------------------------------
+  def dispose_text_balloon
+    if @text_balloon_sprite
+      @text_balloon_sprite.dispose
+      @text_balloon_sprite = nil
+    end
+  end
+  #--------------------------------------------------------------------------
+  # ● 更新心情图标
+  #--------------------------------------------------------------------------
+  def update_text_balloon
+    if @text_balloon_duration > 0
+      if @text_balloon_duration > text_balloon_duration - text_balloon_fade_duration
+        @text_balloon_sprite.opacity = 255 - (@text_balloon_duration - text_balloon_duration + text_balloon_fade_duration) * 255 / text_balloon_fade_duration
+      elsif @text_balloon_duration < text_balloon_fade_duration
+        @text_balloon_sprite.opacity = 255 - (text_balloon_fade_duration - @text_balloon_duration) * 255 / text_balloon_fade_duration
+      end
+      @text_balloon_duration -= 1
+      if @text_balloon_duration > 0
+        @text_balloon_sprite.update
+        @text_balloon_sprite.x = x - 16
+        @text_balloon_sprite.y = y - height - @text_balloon_sprite.height - 7
+        @text_balloon_sprite.z = z + 100
+      else
+        end_text_balloon
+      end
+    end
+  end
+  #--------------------------------------------------------------------------
+  # ● 结束心情图标的显示
+  #--------------------------------------------------------------------------
+  def end_text_balloon
+    dispose_text_balloon
+    @character.text_balloon_text = ""
   end
 end

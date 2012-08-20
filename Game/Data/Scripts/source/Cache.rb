@@ -91,12 +91,17 @@ module Cache
   #--------------------------------------------------------------------------
   def self.load_bitmap(folder_name, filename, hue = 0)
     @cache ||= {}
-    if filename.empty?
+    begin
+      if filename.empty?
+        empty_bitmap
+      elsif hue == 0
+        normal_bitmap(folder_name + filename)
+      else
+        hue_changed_bitmap(folder_name + filename, hue)
+      end
+    rescue
+      msgbox "找不到文件 #{folder_name}/#{filename}，将使用空白图片代替。"
       empty_bitmap
-    elsif hue == 0
-      normal_bitmap(folder_name + filename)
-    else
-      hue_changed_bitmap(folder_name + filename, hue)
     end
   end
   #--------------------------------------------------------------------------

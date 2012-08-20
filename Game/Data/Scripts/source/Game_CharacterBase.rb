@@ -31,6 +31,7 @@ class Game_CharacterBase
   attr_reader   :bush_depth               # 草木深度
   attr_accessor :animation_id             # 动画 ID
   attr_accessor :balloon_id               # 心情图标 ID
+  attr_accessor :text_balloon_text    
   attr_accessor :transparent              # 透明状态
   attr_accessor :auto_move_path           # 非强制移动路径
   attr_accessor :cantmove                 # 不能移动
@@ -78,6 +79,8 @@ class Game_CharacterBase
     @gra_height = 0
     @gra_res = nil
     @state_id = 0
+    
+    @text_balloon_text = ""
   end
   #--------------------------------------------------------------------------
   # ● 画面中央的 X 坐标

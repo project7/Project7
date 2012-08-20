@@ -1,5 +1,4 @@
-﻿=begin
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Window_Message
 #------------------------------------------------------------------------------
@@ -396,4 +395,3 @@ class Window_Message < Window_Base
     Fiber.yield while @item_window.active
   end
 end
-=end
