@@ -535,10 +535,23 @@
   def die
     @dead = true
     @hp = 0
+    @opacity = self.event.opacity
+    @through = self.event.through
     self.event.opacity = 100
     self.event.through = true
     $map_battle.next_actor if $map_battle && $map_battle.cur_actor == self && (!@auto_skill||$map_battle.real_actor==self)
     $map_battle.cal_fighter_num if $map_battle
+  end
+  
+  def recover_all
+    @hp = @maxhp
+  end
+  
+  def bat_re
+    self.event.opacity = @opacity if @opacity
+    self.event.through = @through if @through
+    @dead = false
+    @hp = 1
   end
   
   def relive

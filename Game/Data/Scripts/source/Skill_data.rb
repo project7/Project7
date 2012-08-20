@@ -733,7 +733,7 @@ end
 class PlaceEachOther < Skill
   
   def set_ui
-    @icon = "ret"
+    @icon = "f03"
     @user_animation = 0
     @target_partner_animation = 0
     @target_enemy_animation = 0
@@ -790,7 +790,7 @@ end
 class Baqiyemenbo < Skill
   
   def set_ui
-    @icon = "ret"
+    @icon = "f02"
     @user_animation = 0
     @target_partner_animation = 0
     @target_enemy_animation = 0
@@ -861,7 +861,7 @@ class MagicBang < Skill
   attr_accessor :power_point
   
   def set_ui
-    @icon = "ret"
+    @icon = "f00"
     @user_animation = 0
     @target_partner_animation = 0
     @target_enemy_animation = 0
@@ -930,7 +930,7 @@ end
 class Refraction < Skill
 
   def set_ui
-    @icon = "ret"
+    @icon = "f01"
     @user_animation = 0
     @target_partner_animation = 0
     @target_enemy_animation = 0
@@ -982,7 +982,7 @@ end
 class Disturb < Skill
 
   def set_ui
-    @icon = "ret"
+    @icon = "f04"
     @user_animation = 0
     @target_partner_animation = 0
     @target_enemy_animation = 0
@@ -1031,10 +1031,10 @@ class Disturb < Skill
   
 end
 
-class Baqiyemenbo < Skill
+class AttackDown < Skill
   
   def set_ui
-    @icon = "ret"
+    @icon = "m03"
     @user_animation = 0
     @target_partner_animation = 0
     @target_enemy_animation = 0

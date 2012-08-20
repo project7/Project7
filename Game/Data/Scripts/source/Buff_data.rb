@@ -201,7 +201,7 @@ class ShutDown < Buff
     @keep_turn = 2
     @keep_step = 0
     @use_effect = ""
-    @per_turn_start_effect = "next_actor;return"
+    @per_turn_start_effect = "next_actor;ned_t=true"
     @per_step_effect = ""
     @per_act_effect = ""
     @per_turn_end_effect = ""
@@ -254,8 +254,8 @@ class RefractionBuff < Buff
     @name = "奥术分散"
     @icon = "ctrled"
     @animation = []
-    @keep_turn = 0
-    @keep_step = 0
+    @keep_turn = -1
+    @keep_step = -1
     @use_effect = ""
     @per_turn_start_effect = ""
     @per_step_effect = ""
@@ -283,6 +283,7 @@ class RefractionBuff < Buff
   end
   
   def set_extra
+    @battle_end_not_clear = true
     @end_req = "false"
     @descr = "该单位无法被轻易击败."
   end
@@ -297,8 +298,8 @@ class DisturbBuff < Buff
     @name = "奥术扰乱领域"
     @icon = "ctrled"
     @animation = []
-    @keep_turn = 0
-    @keep_step = 0
+    @keep_turn = -1
+    @keep_step = -1
     @use_effect = ""
     @per_turn_start_effect = "$team_set.each do |pl|;
                                 if !pl.dead? && (pl.team&@cur_actor.team).size==0 && !pl.ignore_magic;
@@ -317,6 +318,7 @@ class DisturbBuff < Buff
   end
   
   def set_extra
+    @battle_end_not_clear = true
     @end_req = "false"
     @descr = "周围的能量将会被扭曲.\n敌人无法正常行动."
   end
@@ -331,8 +333,8 @@ class BeDisturbBuff < Buff
     @name = "能量混乱"
     @icon = "ctrled"
     @animation = []
-    @keep_turn = 0
-    @keep_step = 0
+    @keep_turn = -1
+    @keep_step = -1
     @use_effect = ""
     @per_turn_start_effect = ""
     @per_step_effect = ""

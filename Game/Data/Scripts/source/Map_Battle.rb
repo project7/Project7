@@ -61,7 +61,7 @@
     end
     isdead = @cur_actor.dead?
     cal_fighter_num
-    turn_begin_cal
+    return if turn_begin_cal
     @actor = @cur_actor.event
     unless isdead
       $sel_body = @cur_actor unless @cur_actor.ai
@@ -101,26 +101,31 @@
   end
   
   def turn_begin_cal
-    actor = @cur_actor
-    actor.buff.each do |buff|
+    ned_t=false
+    fuck_arr = []
+    @cur_actor.buff.each do |buff|
       if instance_eval(buff.end_req)
-        @cur_actor.dec_buff(buff.id)
+        fuck_arr << buff.id
       else
         instance_eval(buff.per_turn_start_effect)
       end
     end
+    fuck_arr.each{|sick| @cur_actor.dec_buff(sick)}
+    return ned_t
   end
   
   def per_steps_cal
     @steps+=1
     actor = @cur_actor
+    fuck_arr = []
     actor.buff.each do |buff|
       if instance_eval(buff.end_req)
-        @cur_actor.dec_buff(buff.id)
+        fuck_arr << buff.id
       else
         instance_eval(buff.per_step_effect)
       end
     end
+    fuck_arr.each{|sick| @cur_actor.dec_buff(sick)}
   end
   
   def turn_end_cal
@@ -1070,18 +1075,22 @@
   end
   
   def end_battle
-    @turn = 99999
     $party.members.each do |p|
+      need_ntr = []
       p.buff.each do |buff|
-        if instance_eval(buff.end_req)
-          @cur_actor.dec_buff(buff.id)
+        unless buff.battle_end_not_clear
+          need_ntr << buff.id
         end
       end
+      need_ntr.each{|sick_id| p.dec_buff(sick_id)}
     end
+    $team_set.each{|ss| ss.bat_re}
     @battle_end_flag = true
     dispose_all
     $game_switches[1]=false
     $map_battle = nil
+    $game_player.followers.visible = true
+    $game_player.refresh
     $game_temp.reserve_common_event(1)
   end
   
