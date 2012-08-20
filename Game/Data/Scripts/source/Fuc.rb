@@ -329,7 +329,7 @@
     end
     tBitmap.font.size = 30
     if $sel_body
-      if $sel_body.fake_skill
+      if $sel_body.fake_skill && $sel_body.fake_skill[0].id == 4
         tBitmap.font.size = 22
         tBitmap.draw_text(39,40,60,60,"设置",1)
       else

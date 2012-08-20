@@ -1438,11 +1438,14 @@ class Game_Interpreter
   end
   
   def Duel!(end_req=nil)
+    $game_player.followers.visible = false
+    $game_player.refresh
     $game_switches[1]=true
     $map_battle = end_req ? Map_Battle.new(end_req) : Map_Battle.new
   end
   
   def set_team(arr)
+    $party.resort
     $team_set = arr
   end
   

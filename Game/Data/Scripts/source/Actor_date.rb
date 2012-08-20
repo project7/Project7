@@ -4,7 +4,7 @@ class Fucker < Actor
   def set_tec
     @id = 1
     @name = "男主角"
-    @skill = [Baqiyemenbo,Relive]
+    @skill = [AttackDown,Relive]
     @equip = {"武器"=>[0,nil],"盾牌"=>[1,nil],"挂件"=>[2,nil],"指环"=>[3,nil]}
     @atk_pic = "atk"
     @atk_cot = 4
@@ -15,7 +15,7 @@ class Fucker < Actor
   end
   
   def set_ui
-    @head = "Alexander"
+    @head = "Alexander_B"
     @head2 = "Alexander_ele"
     @animation = []
   end
@@ -100,7 +100,7 @@ class BeFucker < Actor
   end
   
   def set_ui
-    @head = "Lynn"
+    @head = "Lynn_B"
     @head2 = "Lynn_ele"
     @animation = []
   end
@@ -173,7 +173,7 @@ class Shit < Actor
 
   def set_tec
     @id = 3
-    @name = "基佬"
+    @name = "魔狼"
     @skill = []
     @equip = {}
     @atk_pic = nil
@@ -187,18 +187,18 @@ class Shit < Actor
   def set_ele
     @maxhp = 100
     @maxsp = 0
-    @maxap = 12
+    @maxap = 30
     @atk = 18
-    @atk_area = [ [[0,0,1,2],[1,2]] ,true]
-    @atk_dis_min = 3
-    @atk_dis_max = 5
+    @atk_area = [ [[0]] ,true]
+    @atk_dis_min = 1
+    @atk_dis_max = 1
     @def = 0
     @int = 0
     @mdef = 0
     @hp_rec = 1
     @sp_rec = 0
     @per_step_cost_ap = 3
-    @atk_cost_ap = 3
+    @atk_cost_ap = 10
     @item_cost_ap = 1
     @hatred_base = 1
     @miss_rate = 5

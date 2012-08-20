@@ -20,6 +20,7 @@
   attr_accessor :descr                            # buff说明
   attr_accessor :lived_turn                       # buff已经存在的回合数
   attr_accessor :lived_step                       # buff已经存在的操作数
+  attr_accessor :battle_end_not_clear             # 战后不清除
 
   def initialize(user=nil)
     set_ele(user)

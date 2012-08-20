@@ -55,4 +55,8 @@
     $sel_body = @members[0].link(0)
   end
   
+  def resort
+    @members = @members.sort_by{|i| i.id}
+  end
+  
 end
