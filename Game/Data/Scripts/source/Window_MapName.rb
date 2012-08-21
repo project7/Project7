@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Window_MapName
 #------------------------------------------------------------------------------
@@ -10,7 +10,7 @@ class Window_MapName < Window_Base
   # ● 初始化对象
   #--------------------------------------------------------------------------
   def initialize
-    super(0, 0, window_width, fitting_height(1))
+    super(Graphics.width/2-window_width/2, 0, window_width, fitting_height(1))
     self.opacity = 0
     self.contents_opacity = 0
     @show_count = 0

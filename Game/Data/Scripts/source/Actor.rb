@@ -549,7 +549,7 @@
   
   def bat_re
     self.event.opacity = @opacity if @opacity
-    self.event.through = @through if @through
+    self.event.through = @through unless @through.nil?
     @dead = false
     @hp = 1
   end
