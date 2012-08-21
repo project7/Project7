@@ -46,4 +46,18 @@ class << Graphics
     CToy.disable_fullscreen
     freeze_fuck(*args)
   end
+  
+  alias update_fuck update
+  def update(*args)
+    if CInput.press?($vkey[:Test])
+      @a ||= 0
+      @a += 1
+      if @a == 10
+        @a = 0
+        update_fuck(*args)
+      end
+    else
+      update_fuck(*args)
+    end
+  end
 end
