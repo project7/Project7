@@ -1,4 +1,5 @@
-﻿class FuckEachOther < Skill
+﻿#
+class FuckEachOther < Skill
   
   def set_ui
     @icon = "bo"

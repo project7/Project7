@@ -1,4 +1,5 @@
-﻿class Wait_buff < Buff
+﻿#
+class Wait_buff < Buff
   
   attr_accessor :add_def
 

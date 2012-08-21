@@ -1,4 +1,4 @@
-﻿#MainActor
+﻿#MainActor#
 class Fucker < Actor
 
   def set_tec
