@@ -153,7 +153,7 @@ class BeFucker < Actor
     @cost_reduce_rate = 0
     @cost_reduce = 0
     @hp_absorb_rate = 0
-    @hp_absorb = 14
+    @hp_absorb = 0
     @sp_absorb_rate = 0
     @sp_absorb = 0
     @invincible = false

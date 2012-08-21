@@ -304,7 +304,7 @@ class DisturbBuff < Buff
     @per_turn_start_effect = "$team_set.each do |pl|;
                                 if !pl.dead? && (pl.team&@cur_actor.team).size==0 && !pl.ignore_magic;
                                   pl.add_buff(BeDisturbBuff.new(@cur_actor));
-                                else;
+                                elsif pl!=buff.user;
                                   pl.dec_buff(10);
                                 end;
                               end"
