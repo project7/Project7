@@ -54,14 +54,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NekoKun.exe" size="1408000">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NekoKun.exe" size="1434624">
       <assemblyIdentity name="NekoKun" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>R0tStLRePTnIXMB/IF5+ZEcXGns=</dsig:DigestValue>
+        <dsig:DigestValue>E14Zrwl/klxrIUIjQd13xURDN90=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
