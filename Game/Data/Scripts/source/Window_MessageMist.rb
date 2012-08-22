@@ -46,6 +46,7 @@ class Window_Message < Window_Base
     @show_fast = false          # 快进的标志
     @line_show_fast = false     # 行单位快进的标志
     @pause_skip = false         # “不等待输入”的标志
+    @name = nil
   end
   #--------------------------------------------------------------------------
   # ● 获取显示行数
@@ -69,6 +70,7 @@ class Window_Message < Window_Base
     super
     update_all_windows
     update_back_sprite
+    update_figure if @figure
     update_fiber
   end
   #--------------------------------------------------------------------------
@@ -187,6 +189,39 @@ class Window_Message < Window_Base
     $game_message.visible = false
     @fiber = nil
   end
+  
+  #--------------------------------------------------------------------------
+  # ● 创建立绘
+  #--------------------------------------------------------------------------
+  def create_figure
+    @figure = Sprite.new
+    @figure.bitmap = Cache.head(@name_file)
+    @figure.z = z - 1 
+    @figure.x = Graphics.width - @figure.bitmap.width
+    @figure.y = Graphics.height - @figure.bitmap.height
+    puts "created"
+  end
+  def translate_head
+    @name_file = {
+      "亚历山大" => "Alexander",
+      "琳" => "Lynn"
+    }[@name]
+  end
+  #--------------------------------------------------------------------------
+  # ● 更新立绘
+  #--------------------------------------------------------------------------
+  def update_figure
+    @figure.visible = true#(@background == 0)
+    @figure.opacity = openness
+    @figure.update
+  end
+  #--------------------------------------------------------------------------
+  # ● 弃置立绘
+  #--------------------------------------------------------------------------
+  def dispose_figure
+    @figure.dispose
+    @figure = nil
+  end
   #--------------------------------------------------------------------------
   # ● 更新窗口背景
   #--------------------------------------------------------------------------
@@ -208,6 +243,11 @@ class Window_Message < Window_Base
   def process_all_text
     open_and_wait
     text = convert_escape_characters($game_message.all_text)
+    @name = nil
+    text.gsub!(/^(.*?)：\n?/s) {
+      @name = $1
+      nil
+    }
     pos = {}
     new_page(text, pos)
     process_character(text.slice!(0, 1), text, pos) until text.empty?
@@ -284,6 +324,11 @@ class Window_Message < Window_Base
   #--------------------------------------------------------------------------
   def new_page(text, pos)
     contents.clear
+    dispose_figure if @figure
+    if @name
+      translate_head
+      create_figure
+    end
     draw_face($game_message.face_name || "", $game_message.face_index || 0, 0, 0)
     reset_font_settings
     pos[:x] = new_line_x
@@ -292,6 +337,21 @@ class Window_Message < Window_Base
     pos[:height] = calc_line_height(text)
     clear_flags
   end
+  def process_character(c, text, pos)
+    case c
+    when "\r"   # 回车
+      return
+    when "\n"   # 换行
+      process_new_line(text, pos)
+    when "\f"   # 翻页
+      process_new_page(text, pos)
+    when "\e"   # 控制符
+      process_escape_character(obtain_escape_code(text), text, pos)
+    else        # 普通文字
+      process_normal_character(c, text, pos)
+    end
+  end
+
   #--------------------------------------------------------------------------
   # ● 获取换行位置
   #--------------------------------------------------------------------------
@@ -301,8 +361,15 @@ class Window_Message < Window_Base
   #--------------------------------------------------------------------------
   # ● 普通文字的处理
   #--------------------------------------------------------------------------
-  def process_normal_character(c, pos)
-    super
+  def process_normal_character(c, text, pos)
+    text_width = text_size(c).width
+    if contents_width - pos[:x] > text_width
+      draw_text(pos[:x], pos[:y], text_width * 2, pos[:height], c)
+      pos[:x] += text_width
+    else 
+      process_new_line(text,pos)
+      process_normal_character(c,text,pos)
+    end
     wait_for_one_character
   end
   #--------------------------------------------------------------------------

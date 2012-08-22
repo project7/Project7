@@ -51,6 +51,12 @@ module Cache
     load_bitmap("Graphics/Faces/", filename)
   end
   #--------------------------------------------------------------------------
+  # ● 获取角色肖像图
+  #--------------------------------------------------------------------------
+  def self.head(filename)
+    load_bitmap("Graphics/Heads/", filename)
+  end
+  #--------------------------------------------------------------------------
   # ● 获取远景图
   #--------------------------------------------------------------------------
   def self.parallax(filename)
@@ -100,7 +106,8 @@ module Cache
         hue_changed_bitmap(folder_name + filename, hue)
       end
     rescue
-      msgbox "找不到文件 #{folder_name}/#{filename}，将使用空白图片代替。"
+      msgbox a="找不到文件 #{folder_name}/#{filename}，将使用空白图片代替。"
+      puts a
       empty_bitmap
     end
   end
