@@ -191,14 +191,14 @@ class Window_Message < Window_Base
   # ● 更新窗口背景
   #--------------------------------------------------------------------------
   def update_background
-    @background = $game_message.background
+    @background = $game_message.background || 0
     self.opacity = @background == 0 ? 255 : 0
   end
   #--------------------------------------------------------------------------
   # ● 更新窗口的位置
   #--------------------------------------------------------------------------
   def update_placement
-    @position = $game_message.position
+    @position = $game_message.position || 0
     self.y = @position * (Graphics.height - height) / 2
     @gold_window.y = y > 0 ? 0 : Graphics.height - @gold_window.height
   end
@@ -284,7 +284,7 @@ class Window_Message < Window_Base
   #--------------------------------------------------------------------------
   def new_page(text, pos)
     contents.clear
-    draw_face($game_message.face_name, $game_message.face_index, 0, 0)
+    draw_face($game_message.face_name || "", $game_message.face_index || 0, 0, 0)
     reset_font_settings
     pos[:x] = new_line_x
     pos[:y] = 0
@@ -296,7 +296,7 @@ class Window_Message < Window_Base
   # ● 获取换行位置
   #--------------------------------------------------------------------------
   def new_line_x
-    $game_message.face_name.empty? ? 0 : 112
+    ($game_message.face_name || "").empty? ? 0 : 112
   end
   #--------------------------------------------------------------------------
   # ● 普通文字的处理
