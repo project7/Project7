@@ -17,6 +17,7 @@ class Window_Message < Window_Base
     create_back_bitmap
     create_back_sprite
     clear_instance_variables
+    @figure = Sprite.new
   end
   #--------------------------------------------------------------------------
   # ● 获取窗口的宽度
@@ -62,6 +63,8 @@ class Window_Message < Window_Base
     dispose_all_windows
     dispose_back_bitmap
     dispose_back_sprite
+    @figure.dispose
+    @figure = nil
   end
   #--------------------------------------------------------------------------
   # ● 更新画面
@@ -139,6 +142,7 @@ class Window_Message < Window_Base
     @choice_window.dispose
     @number_window.dispose
     @item_window.dispose
+    @figure.dispose
   end
   #--------------------------------------------------------------------------
   # ● 释放背景位图
@@ -177,11 +181,13 @@ class Window_Message < Window_Base
     $game_message.visible = true
     update_background
     update_placement
+    update_figure
     loop do
       process_all_text if $game_message.has_text?
       process_input
       $game_message.clear
       @gold_window.close
+      dispose_figure
       Fiber.yield
       break unless text_continue?
     end
@@ -194,7 +200,6 @@ class Window_Message < Window_Base
   # ● 创建立绘
   #--------------------------------------------------------------------------
   def create_figure
-    @figure = Sprite.new
     @figure.bitmap = Cache.head(@name_file)
     @figure.z = z - 1 
     @figure.x = Graphics.width - @figure.bitmap.width
@@ -206,12 +211,12 @@ class Window_Message < Window_Base
       "亚历山大" => "Alexander",
       "琳" => "Lynn"
     }[@name]
+    puts @name_file
   end
   #--------------------------------------------------------------------------
   # ● 更新立绘
   #--------------------------------------------------------------------------
   def update_figure
-    @figure.visible = true#(@background == 0)
     @figure.opacity = openness
     @figure.update
   end
@@ -219,8 +224,7 @@ class Window_Message < Window_Base
   # ● 弃置立绘
   #--------------------------------------------------------------------------
   def dispose_figure
-    @figure.dispose
-    @figure = nil
+    @figure.bitmap = nil
   end
   #--------------------------------------------------------------------------
   # ● 更新窗口背景
@@ -324,10 +328,9 @@ class Window_Message < Window_Base
   #--------------------------------------------------------------------------
   def new_page(text, pos)
     contents.clear
-    dispose_figure if @figure
     if @name
       translate_head
-      create_figure
+      create_figure if @name_file
     end
     draw_face($game_message.face_name || "", $game_message.face_index || 0, 0, 0)
     reset_font_settings
