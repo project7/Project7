@@ -214,7 +214,7 @@ class Scene_Map < Scene_Base
   # ● 更新非战斗时鼠标点击事件
   #--------------------------------------------------------------------------
   def update_mouse_event
-    if CInput.trigger?($vkey[:Tab])
+    if !$map_battle && CInput.trigger?($vkey[:Tab])
       $party.change_leader
       if @menu_called_index == 1
         @menu_sprite_sin.bitmap.dispose if @menu_sprite_sin.bitmap
@@ -784,6 +784,16 @@ class Scene_Map < Scene_Base
         end
       end
     end
+  end
+  
+  def exit_menu
+    @menu_sprite_sin.bitmap.dispose if @menu_sprite_sin.bitmap
+    @menu_sprite_act.bitmap.dispose if @menu_sprite_act.bitmap
+    @menu_sprite_bak.bitmap.dispose if @menu_sprite_bak.bitmap
+    @ele_tips_text.bitmap.dispose if @ele_tips_text.bitmap
+    @menu_called_index = 0
+    @menu_calling =false
+    call_ret_scene
   end
   
   def change_skill
