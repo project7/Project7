@@ -479,7 +479,7 @@
     if $game_system.menu_disabled
       SceneManager.scene.menu_calling = false
     else
-      if CInput.trigger?($vkey[:X]) && $sel_body == @cur_actor
+      if CInput.trigger?($vkey[:X]) && $sel_body == @cur_actor && (!$sel_body.fake_skill || ($sel_body.fake_skill && $sel_body.fake_skill[0]!=4))
         SceneManager.scene.menu_calling =!SceneManager.scene.menu_calling
         if SceneManager.scene.menu_calling
           SceneManager.scene.menu_rem = nil
@@ -801,7 +801,7 @@
         temp.each do |i|
           tempama = @cur_actor.get_atk
           tempama = tempama*@cur_actor.bingo_damage/100 if bingo_size > 20
-          @cur_actor.buff.each{|i| instance_eval(i.atk_effect)}
+          @cur_actor.buff.each{|cute| instance_eval(cute.atk_effect)}
           dama = i.phy_damage(tempama)
           tempb << dama
           if dama[0]
@@ -876,6 +876,19 @@
         tempb = []
         @succ_count = 0
         temp.each do |i|
+          if (i.team&@cur_actor.team).size>0
+            if i.dead?
+              i.event.animation_id = para[0].target_p_dead_animation
+            else
+              i.event.animation_id = para[0].target_partner_animation
+            end
+          else
+            if i.dead?
+              i.event.animation_id = para[0].target_e_dead_animation
+            else
+              i.event.animation_id = para[0].target_enemy_animation
+            end
+          end
           tempama = para[0].hp_damage
           if tempama != 0
             color = tempama > 0 ? HP_COST_COLOR : HP_ADD_COLOR
@@ -883,7 +896,7 @@
             tempb << dama
             if dama[0]
               @succ_count+=1
-              @splink.show_text(dama[1].to_s,i.event,color)
+              @splink.show_text(dama[1].abs.to_s,i.event,color)
             elsif dama[1]<=1
               @succ_count+=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
@@ -896,7 +909,7 @@
             tempb << dama
             if dama[0]
               @succ_count+=1
-              @splink.show_text(dama[1].to_s,i.event,color)
+              @splink.show_text(dama[1].abs.to_s,i.event,color)
             elsif dama[1]<=1
               @succ_count+=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
@@ -909,7 +922,7 @@
             tempb << dama
             if dama[0]
               @succ_count+=1
-              @splink.show_text(dama[1].to_s,i.event,color)
+              @splink.show_text(dama[1].abs.to_s,i.event,color)
             elsif dama[1]<=1
               @succ_count+=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
@@ -993,6 +1006,19 @@
         tempb = []
         @succ_count = 0
         temp.each do |i|
+          if (i.team&@cur_actor.team).size>0
+            if i.dead?
+              i.event.animation_id = para[0].target_p_dead_animation
+            else
+              i.event.animation_id = para[0].target_partner_animation
+            end
+          else
+            if i.dead?
+              i.event.animation_id = para[0].target_e_dead_animation
+            else
+              i.event.animation_id = para[0].target_enemy_animation
+            end
+          end
           tempama = para[0].hp_damage
           if tempama != 0
             color = tempama > 0 ? HP_COST_COLOR : HP_ADD_COLOR
@@ -1000,7 +1026,7 @@
             tempb << dama
             if dama[0]
               @succ_count+=1
-              @splink.show_text(dama[1].to_s,i.event,color)
+              @splink.show_text(dama[1].abs.to_s,i.event,color)
             elsif dama[1]<=1
               @succ_count+=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
@@ -1013,7 +1039,7 @@
             tempb << dama
             if dama[0]
               @succ_count+=1
-              @splink.show_text(dama[1].to_s,i.event,color)
+              @splink.show_text(dama[1].abs.to_s,i.event,color)
             elsif dama[1]<=1
               @succ_count+=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)
@@ -1026,7 +1052,7 @@
             tempb << dama
             if dama[0]
               @succ_count+=1
-              @splink.show_text(dama[1].to_s,i.event,color)
+              @splink.show_text(dama[1].abs.to_s,i.event,color)
             elsif dama[1]<=1
               @succ_count+=1
               @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event)

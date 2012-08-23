@@ -408,6 +408,9 @@
   def add_buff(new_buff)
     @buff.each do |buff| 
       if buff.id==new_buff.id
+        if buff.user != new_buff.user
+          instance_eval(buff.end_effect)
+        end
         buff.refresh(new_buff.user)
         return
       end

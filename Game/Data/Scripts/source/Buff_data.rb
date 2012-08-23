@@ -60,7 +60,7 @@ class Sick < Buff
 
 end
 
-class Weak < Buff
+class Tear < Buff
   
   attr_accessor :temp_damage
 
@@ -273,7 +273,7 @@ class RefractionBuff < Buff
                             if (zik.x-self.x).abs+(zik.y-self.y).abs<=4;
                               a=zik.damage(rdama);
                               if a[0];
-                                SceneManager.scene.spriteset.show_text(a[1],zik.event,Fuc::HP_COST_COLOR,20);
+                                SceneManager.scene.spriteset.show_text(a[1].abs,zik.event,Fuc::HP_COST_COLOR,20) if a[1]>0;
                               elsif a[1]<=1;
                                 SceneManager.scene.spriteset.show_text(Fuc::FAILD_ATTACK_TEXT[a[1]],zik.event);
                               end;
@@ -339,7 +339,7 @@ class BeDisturbBuff < Buff
     @use_effect = ""
     @per_turn_start_effect = ""
     @per_step_effect = ""
-    @per_act_effect = " if id!=4&&(@cur_actor.x-buff.user.x).abs+(@cur_actor.y-buff.user.y).abs<=buff.user.int/15;
+    @per_act_effect = " if !@cur_actor.ignore_magic&&id!=4&&(@cur_actor.x-buff.user.x).abs+(@cur_actor.y-buff.user.y).abs<=buff.user.int/15;
                           if $random_center.rand(100)<10;
                             @cur_actor.cost_ap_for(3,@cur_actor.maxap/2);
                             @last_action_state = false;
@@ -357,6 +357,106 @@ class BeDisturbBuff < Buff
   def set_extra
     @end_req = "false"
     @descr = "该单位若是接近扰乱源.\n则无法正常行动."
+  end
+  
+end
+
+class SoulSwordBuff < Buff
+
+  def set_ele(user)
+    @id = 11
+    @user = user
+    @name = "灵魂连接"
+    @icon = "ctrled"
+    @animation = []
+    @keep_turn = 0
+    @keep_step = 0
+    @use_effect = "new_buff.user.add_buff(SoulOwnerBuff.new(self))"
+    @per_turn_start_effect = ""
+    @per_step_effect = ""
+    @per_act_effect = ""
+    @per_turn_end_effect = ""
+    @end_effect = ""
+    @atk_effect = ""
+    @b_damage_effect = ""
+    @a_damage_effect = ""
+  end
+  
+  def set_extra
+    @end_req = "false"
+    @descr = "该单位生死全由他人主宰."
+  end
+  
+end
+
+class SoulOwnerBuff < Buff
+
+  def set_ele(user)
+    @id = 12
+    @user = user
+    @name = "灵魂连接"
+    @icon = "ctrled"
+    @animation = []
+    @keep_turn = 2
+    @keep_step = 0
+    @use_effect = ""
+    @per_turn_start_effect = ""
+    @per_step_effect = ""
+    @per_act_effect = ""
+    @per_turn_end_effect = ""
+    @end_effect = "buff.user.dec_buff(11)"
+    @atk_effect = ""
+    @b_damage_effect = ""
+    @a_damage_effect = "if (buff.user.team&@team).size>0;
+                          a = buff.user.god_damage(-value.abs);
+                          SceneManager.scene.spriteset.show_text(a[1],buff.user.event,Fuc::HP_ADD_COLOR,20) if a[0];
+                        else;
+                          a = buff.user.god_damage(value.abs);
+                          SceneManager.scene.spriteset.show_text(a[1].abs,buff.user.event,Fuc::HP_COST_COLOR,20) if a[0];
+                        end"
+  end
+  
+  def set_extra
+    @end_req = "@turn-buff.lived_turn>=buff.keep_turn"
+    @descr = "该单位主宰着他人的生死."
+  end
+  
+end
+
+class BreakSelfBuff < Buff
+
+  def set_ele(user)
+    @id = 13
+    @user = user
+    @name = "挣脱"
+    @icon = ""
+    @animation = []
+    @keep_turn = 0
+    @keep_step = 0
+    @use_effect = " if new_buff.user==self;p caller;
+                      kick_buff = @buff.select{|smbuf| smbuf!=new_buff&&!smbuf.battle_end_not_clear}.map{|ss| ss.id};
+                      kick_rate = [60-kick_buff.size*10,20].max;
+                      if $random_center.rand(1) < kick_rate;
+                        kick_buff.each{|fbuff| self.dec_buff(fbuff)};
+                        SceneManager.scene.spriteset.show_text(\"成功!\",self.event,Fuc::SP_ADD_COLOR,20);
+                      else;
+                        SceneManager.scene.spriteset.show_text(\"失败!\",self.event,Fuc::SP_ADD_COLOR,20);
+                      end;
+                    end;
+                    new_buff.user.dec_buff(13)"
+    @per_turn_start_effect = ""
+    @per_step_effect = ""
+    @per_act_effect = ""
+    @per_turn_end_effect = ""
+    @end_effect = ""
+    @atk_effect = ""
+    @b_damage_effect = ""
+    @a_damage_effect = ""
+  end
+  
+  def set_extra
+    @end_req = "true"
+    @descr = "该单位正在挣扎."
   end
   
 end

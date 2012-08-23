@@ -1082,3 +1082,224 @@ class AttackDown < Skill
   end
   
 end
+
+class Blinkill < Skill
+  
+  def set_ui
+    @icon = "m01"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 19
+    @name = "绞杀"
+    @init_skill = true
+    @use_req = "true"
+    @use_dis_min = 1
+    @use_dis_max = 5
+    @hotkey = 0x57
+    @hurt_enemy = false
+    @hurt_partner = false
+    @hurt_p_dead = false
+    @hurt_e_dead = false
+    @hurt_nothing = true
+    @hurt_cant_move = true
+    @hurt_area = [ [[-1,-1,3,3]] ,true]
+    @hurt_maxnum = 0
+    @sp_cost = 10
+    @hp_cost = 0
+    @ap_cost = 6
+    @hp_damage = 0
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = []
+    @debuff = []
+    @descr = "消耗10点怒气和6点行动力.\n瞬间移动到指定位置.\n对途径所有周围敌方单位进行一次攻击.\n伤害等同于普通攻击.\n继承一切攻击效果.\n无视魔法免疫.\n施法距离:1-5\n\n特殊效果:\n若指定女主角为目标.\n两人交换位置.\n对敌方的攻击100%造成暴击."
+  end
+  
+  def set_extra
+    @spec_effect = "starget = $team_set.find{|eq| eq.is_a?(BeFucker)&&eq.x==para[1][0]&&eq.y==para[1][1]};
+                    return [[false,13]] if (!$game_map.check_passage(*para[1],0xF)||$game_map.events_xy_nt(*para[1]).size>0)&&!starget;
+                    @cur_actor.event.set_direction(Fuc.mouse_dir_body(@cur_actor,para[1]));
+                    dy=para[1][1]-@actor.y;
+                    dx=para[1][0]-@actor.x;
+                    maxcont = [dy.abs,dx.abs].max;
+                    npa = $syseting[:show_maparea];$syseting[:show_maparea]=false;
+                    trectarr = []
+                    [*1..maxcont].each do |fuckcont|;
+                      tarx = dx/fuckcont;
+                      tary = dy/fuckcont;
+                      trectarr << [tarx-1,tary-1,3,3];
+                    end;
+                    $syseting[:show_maparea]=npa;
+                    trectreal = Effect_Area.new([@actor.x,@actor.y],trectarr,false);
+                    $team_set.each do |player|;
+                      next if player.dead? || (player.team&@cur_actor.team).size>0 || !trectreal.include?(player.x,player.y);
+                      if starget || $random_center.rand(100) < @cur_actor.bingo_rate;
+                        Sound.bingo;
+                        bingo_color = BINGO_COLOR;
+                        bingo_size = 30;
+                      else;
+                        bingo_color = HP_COST_COLOR;
+                        bingo_size = 20;
+                      end;
+                      tempama = @cur_actor.get_atk;
+                      tempama = tempama*@cur_actor.bingo_damage/100 if bingo_size > 20;
+                      @cur_actor.buff.each{|cute| instance_eval(cute.atk_effect)};
+                      dama = player.phy_damage(tempama);
+                      if dama[0];
+                        if @cur_actor.hp_absorb_rate != 0 || @cur_actor.hp_absorb != 0;
+                          a = @cur_actor.absorb_hp(dama[1]);
+                          b = @cur_actor.absorb_hp_by_rate(player.hp);
+                          c = -a[1]-b[1];
+                          @splink.show_text(c.to_s,@cur_actor.event,HP_ADD_COLOR);
+                        end;
+                        if player.dmg_rebound !=0 || player.dmg_rebound_rate != 0;
+                          a = @cur_actor.rebound_damage(dama[1],player.dmg_rebound_rate,player.dmg_rebound);
+                          @splink.show_text(a[1].to_s,@cur_actor.event,HP_COST_COLOR) if a[0];
+                        end;
+                        @splink.show_text(dama[1].to_s,player.event,bingo_color,bingo_size);
+                        @cur_actor.atk_buff.each do |buff|;
+                          trate = buff[1].abs;
+                          if $random_center.rand(100) < trate;
+                            sm = buff[0].new;
+                            player.add_buff(sm);
+                            @splink.show_text("+"+sm.name,player.event,SP_ADD_COLOR) if buff[1]>0;
+                          end;
+                        end;
+                        player.god_sp_damage(-2,true);
+                      elsif dama[1]<=1;
+                        @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],player.event);
+                      end;
+                      @splink.show_value(player.hp*100/player.maxhp,player.event);
+                    end;
+                    if starget;
+                      @cur_actor.event.x,starget.event.x = starget.event.x,@cur_actor.event.x;
+                      @cur_actor.event.y,starget.event.y = starget.event.y,@cur_actor.event.y;
+                      @cur_actor.event.real_x,starget.event.real_x = starget.event.real_x,@cur_actor.event.real_x;
+                      @cur_actor.event.real_y,starget.event.real_y = starget.event.real_y,@cur_actor.event.real_y;
+                    else;
+                      @cur_actor.event.x=@cur_actor.event.real_x=para[1][0];
+                      @cur_actor.event.y=@cur_actor.event.real_y=para[1][1];
+                    end
+                    set_view_pos(@cur_actor.x,@cur_actor.y);
+                    @actor.animation_id = para[0].user_animation
+                    @cur_actor.cost_ap_for(3,para[0].ap_cost)
+                    @cur_actor.god_sp_damage(para[0].sp_cost,true)
+                    @cur_actor.god_damage(para[0].hp_cost,true)
+                    return [[true,0]];"
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @ignore_mag_det = true
+  end
+  
+end
+
+class SoulSword < Skill
+  
+  def set_ui
+    @icon = "m02"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 20
+    @name = "灵魂之刃"
+    @init_skill = true
+    @use_req = "true"
+    @use_dis_min = 1
+    @use_dis_max = 1
+    @hotkey = 0x45
+    @hurt_enemy = true
+    @hurt_partner = true
+    @hurt_p_dead = false
+    @hurt_e_dead = false
+    @hurt_area = [ [[0]] ,false]
+    @hurt_maxnum = 0
+    @sp_cost = 10
+    @hp_cost = 0
+    @ap_cost = 10
+    @hp_damage = 1
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = [[SoulSwordBuff,100]]
+    @debuff = []
+    @descr = "消耗10点怒气以及10点行动力.\n将剑附上灵魂的力量刺入敌人体内.\n将使用者和被施法者连接起来.\n效果时间内.\n角色所受伤害以及回复全部转为伤害给与被施法者.\n并且只能对一个敌人生效.\n持续:2回合.\n施法距离:1\n\n特殊效果:\n若目标为友方单位.\n将所受伤害以及回复全部转为回复给与该单位."
+  end
+  
+  def set_extra
+    @spec_effect = ""
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @ignore_mag_det = false
+  end
+  
+end
+
+class BreakSelf < Skill
+  
+  def set_ui
+    @icon = "m05"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 21
+    @name = "挣脱"
+    @init_skill = true
+    @use_req = "true"
+    @use_dis_min = 0
+    @use_dis_max = 0
+    @hotkey = 0x42
+    @hurt_enemy = false
+    @hurt_partner = true
+    @hurt_p_dead = false
+    @hurt_e_dead = false
+    @hurt_area = [ [[0]] ,true]
+    @hurt_maxnum = 0
+    @sp_cost = 0
+    @hp_cost = 60
+    @ap_cost = 0
+    @hp_damage = 0
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = [[BreakSelfBuff,-100]]
+    @debuff = []
+    @descr = "消耗60点生命.\n一定概率净化自身所有状态.\n概率至高为60%.\n每多一个可清除状态概率减少10%.\n概率至少20%.\n无需选择目标,直接生效."
+  end
+  
+  def set_extra
+    @spec_effect = ""
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @ignore_mag_det = false
+  end
+  
+end

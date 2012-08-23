@@ -4,7 +4,7 @@ class Fucker < Actor
   def set_tec
     @id = 1
     @name = "男主角"
-    @skill = [AttackDown,Relive]
+    @skill = [AttackDown,Blinkill,SoulSword,BreakSelf]
     @equip = {"武器"=>[0,nil],"盾牌"=>[1,nil],"挂件"=>[2,nil],"指环"=>[3,nil]}
     @atk_pic = "atk"
     @atk_cot = 4
@@ -43,7 +43,7 @@ class Fucker < Actor
     @per_step_cost_ap = 3
     @atk_cost_ap = 5
     @item_cost_ap = 3
-    @hatred_base = 1
+    @hatred_base = 3
     @miss_rate = 5
   end
 
@@ -128,7 +128,7 @@ class BeFucker < Actor
     @per_step_cost_ap = 2
     @atk_cost_ap = 1
     @item_cost_ap = 2
-    @hatred_base = 19999
+    @hatred_base = 2
     @miss_rate = 5
   end
   
@@ -173,7 +173,7 @@ class Shit < Actor
 
   def set_tec
     @id = 3
-    @name = "魔狼"
+    @name = "狼"
     @skill = []
     @equip = {}
     @atk_pic = nil
@@ -209,7 +209,7 @@ class Shit < Actor
   end
 
   def set_extra
-    @atk_buff = []
+    @atk_buff = [[Tear,100]]
     @maxhp_add = 0
     @maxsp_add = 0
     @maxap_add = 0
