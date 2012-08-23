@@ -1055,12 +1055,12 @@ class AttackDown < Skill
     @hurt_partner = false
     @hurt_p_dead = false
     @hurt_e_dead = false
-    @hurt_area = [ [[0,0,1,6]] ,false]
+    @hurt_area = [ [[0,0,1,4]] ,false]
     @hurt_maxnum = 0
     @sp_cost = 4
     @hp_cost = 0
     @ap_cost = 6
-    @hp_damage = 60
+    @hp_damage = 40
     @sp_damage = 0
     @ap_damage = 0
     @buff = [[ShutDown,25]]
