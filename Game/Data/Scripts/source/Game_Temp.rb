@@ -1,4 +1,4 @@
-#encoding:utf-8
+﻿#encoding:utf-8
 #==============================================================================
 # ■ Game_Temp
 #------------------------------------------------------------------------------
@@ -41,5 +41,45 @@ class Game_Temp
   #--------------------------------------------------------------------------
   def reserved_common_event
     $data_common_events[@common_event_id]
+  end
+  
+  DEFAULT_FIGURE_MAP = {
+    "亚历山大" => "Alexander",
+    "琳" => "Lynn",
+    "学者" => "Ch15"
+  }
+  
+  DEFAULT_FIGUREPOS_MAP = {
+      "亚历山大" => 1,
+      "琳" => 1,
+      "学者" => 1,
+  }
+  
+  def figure_map name
+    (@figure_map ? @figure_map[name] : nil) ||
+    DEFAULT_FIGURE_MAP[name]
+  end
+
+  def figurepos_map name
+    (@figurepos_map ? @figurepos_map[name] : nil) ||
+    DEFAULT_FIGUREPOS_MAP[name]
+  end
+  
+  def set_figure name, f
+    @figure_map ||={}
+    @figure_map[name] = f
+  end
+  
+  def set_figurepos name, pos
+    @figurepos_map ||={}
+    @figurepos_map[name] = pos
+  end
+  
+  def clean_figure
+    @figure_map = nil
+  end
+  
+  def clean_figurepos
+    @figurepos_map = nil
   end
 end

@@ -18,6 +18,15 @@ class Window_Message < Window_Base
     create_back_sprite
     clear_instance_variables
     @figure = Sprite.new
+    
+    @figure_nameback = Sprite.new
+    @figure_nameback.bitmap = Cache.system("MUINameBack")
+    @figure_nameback.z = z - 2
+    @figure_nameback.visible = false
+    
+    @figure_name = Sprite.new
+    @figure_name.z = z - 1
+    @figure_name.visible = false
   end
   #--------------------------------------------------------------------------
   # ● 获取窗口的宽度
@@ -64,7 +73,8 @@ class Window_Message < Window_Base
     dispose_back_bitmap
     dispose_back_sprite
     @figure.dispose
-    @figure = nil
+    @figure_nameback.dispose
+    @figure_name.dispose
   end
   #--------------------------------------------------------------------------
   # ● 更新画面
@@ -105,6 +115,8 @@ class Window_Message < Window_Base
   # ● 生成背景位图
   #--------------------------------------------------------------------------
   def create_back_bitmap
+    @back_bitmap = Cache.system("MUIBack")
+    return
     @back_bitmap = Bitmap.new(width, height)
     rect1 = Rect.new(0, 0, width, 12)
     rect2 = Rect.new(0, 12, width, height - 24)
@@ -169,7 +181,7 @@ class Window_Message < Window_Base
   # ● 更新背景精灵
   #--------------------------------------------------------------------------
   def update_back_sprite
-    @back_sprite.visible = (@background == 1)
+    @back_sprite.visible = (@background == 0)
     @back_sprite.y = y
     @back_sprite.opacity = openness
     @back_sprite.update
@@ -187,10 +199,11 @@ class Window_Message < Window_Base
       process_input
       $game_message.clear
       @gold_window.close
-      dispose_figure
       Fiber.yield
       break unless text_continue?
     end
+    dispose_figure
+    dispose_name
     close_and_wait
     $game_message.visible = false
     @fiber = nil
@@ -201,17 +214,44 @@ class Window_Message < Window_Base
   #--------------------------------------------------------------------------
   def create_figure
     @figure.bitmap = Cache.head(@name_file)
-    @figure.z = z - 1 
-    @figure.x = Graphics.width - @figure.bitmap.width
+    @figure.z = z - 1
+    @figure.mirror = @figure_position == 0
+    if @figure_position == 1
+      @figure.x = Graphics.width - @figure.bitmap.width
+    else
+      @figure.x = 0
+    end
     @figure.y = Graphics.height - @figure.bitmap.height
-    puts "created"
+  end
+  def create_name
+    @figure_nameback.visible = true
+    if @name_file
+      @figure_nameback.y = @figure.y
+      if @figure_position == 1
+        @figure_nameback.x = @figure.x - @figure_nameback.width / 2
+      else
+        @figure_nameback.x = @figure.width
+      end
+    else
+      @figure_nameback.x = @figure_nameback.y = 0
+    end
+    
+    @figure_name.visible = true
+    @figure_name.bitmap = Bitmap.new 50, 200
+    y = 0
+    @name_text.chars.each do |i|
+      h = @figure_name.bitmap.text_size(i).height
+      @figure_name.bitmap.draw_text(0,y,50, h, i, 1)
+      y += h
+    end
+    @figure_name.ox = @figure_name.bitmap.width / 2
+    @figure_name.oy = y / 2
+    @figure_name.x = @figure_nameback.x + @figure_nameback.width / 2
+    @figure_name.y = @figure_nameback.y + @figure_nameback.height / 2
   end
   def translate_head
-    @name_file = {
-      "亚历山大" => "Alexander",
-      "琳" => "Lynn"
-    }[@name]
-    puts @name_file
+    @name_file = $game_temp.figure_map(@name)
+    @figure_position = $game_temp.figurepos_map(@name) || 0
   end
   #--------------------------------------------------------------------------
   # ● 更新立绘
@@ -219,6 +259,12 @@ class Window_Message < Window_Base
   def update_figure
     @figure.opacity = openness
     @figure.update
+    
+    @figure_name.opacity = openness
+    @figure_name.update
+    
+    @figure_nameback.opacity = openness
+    @figure_nameback.update
   end
   #--------------------------------------------------------------------------
   # ● 弃置立绘
@@ -226,12 +272,16 @@ class Window_Message < Window_Base
   def dispose_figure
     @figure.bitmap = nil
   end
+  def dispose_name
+    @figure_nameback.visible = false
+    @figure_name.visible = false
+  end
   #--------------------------------------------------------------------------
   # ● 更新窗口背景
   #--------------------------------------------------------------------------
   def update_background
     @background = $game_message.background || 0
-    self.opacity = @background == 0 ? 255 : 0
+    self.opacity = @background == 0 ? 0 : 255
   end
   #--------------------------------------------------------------------------
   # ● 更新窗口的位置
@@ -248,8 +298,10 @@ class Window_Message < Window_Base
     open_and_wait
     text = convert_escape_characters($game_message.all_text)
     @name = nil
-    text.gsub!(/^(.*?)：\n?/s) {
+    @name_text = nil
+    text.gsub!(/^(.*?)(？?)：\n?/s) {
       @name = $1
+      @name_text = $2 == "？" ? nil : @name
       nil
     }
     pos = {}
@@ -330,7 +382,16 @@ class Window_Message < Window_Base
     contents.clear
     if @name
       translate_head
-      create_figure if @name_file
+      if @name_file
+        create_figure
+      else
+        dispose_figure
+      end
+    end
+    if @name_text
+      create_name
+    else
+      dispose_name
     end
     draw_face($game_message.face_name || "", $game_message.face_index || 0, 0, 0)
     reset_font_settings
