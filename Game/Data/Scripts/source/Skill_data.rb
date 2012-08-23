@@ -34,7 +34,7 @@ class FuckEachOther < Skill
     @ap_damage = 0
     @buff = []
     @debuff = []
-    @descr = "需要4点怒气以及4点行动力催动.\n选中一个友方单位或是智力低于自己的敌人.\n向指定的目标格抛出.\n若指定目标格为空地,则无事.\n若指定目标格为敌人或友军.\n行动力不足以攻击的一方受到伤害.\n伤害与被投掷者生命关.\n施法距离:1-6\n\n特殊效果:\n若投掷男主角.\n目标区域伤害为3格范围.\n若投掷目标向男主角.\n则有一定概率秒杀被投掷单位."
+    @descr = "需要4点怒气以及4点行动力催动.\n选中一个友方单位或是智力低于自己的敌人.\n向指定的目标格抛出.\n若指定目标格为空地,则无事.\n若指定目标格为敌人或友军.\n行动力不足以攻击的一方受到伤害.\n伤害与被投掷者生命有关.\n施法距离:1-6\n\n特殊效果:\n若投掷男主角.\n目标区域伤害为3格范围.\n若投掷目标向男主角.\n则有一定概率秒杀被投掷单位."
   end
   
   def set_extra
@@ -565,7 +565,7 @@ class AutoBang < Skill
   def set_extra
     @spec_effect = "if @cur_actor.ap>=@cur_actor.get_ap_for_atk;
                       i.event.move_backward if i.event.passable?(i.x,i.y,10-i.event.direction);
-                      if $random_center.rand(100)<20;
+                      if $random_center.rand(100)<[@cur_actor.get_atk-i.get_atk,50].min;
                         i.die;
                         @splink.show_text(\"Bingo!\",i.event,BINGO_COLOR,30);
                       else;
@@ -648,7 +648,7 @@ class AutoT < Skill
                       @splink.show_text(FAILD_ATTACK_TEXT[a[1]],i.event);
                     end;
                     if i!=@cur_actor;
-                      @cur_actor.event.set_direction(10-i.event.direction);
+                      @cur_actor.event.set_direction(Fuc.mouse_dir_body(@cur_actor.event,i.event));
                       @cur_actor.event.move_backward if @cur_actor.event.passable?(@cur_actor.x,@cur_actor.y,10-i.event.direction);
                       a=@cur_actor.phy_damage(@cur_actor.hp/20);
                       if a[0];
@@ -962,7 +962,7 @@ class Refraction < Skill
     @ap_damage = 0
     @buff = []
     @debuff = []
-    @descr = "自身强大的念力使敌人的进攻\n无法完全命中自己.\n每次自身受到任意伤害时.\n减少15%的伤害.\n并将这部分伤害转给周围的单位.\n不分敌我.\n并且受到伤害如果大于最大生命\n的一半,超过得部分将被阻止.\n无视魔法免疫.\n作用范围:周身4格"
+    @descr = "自身强大的念力使敌人的进攻\n无法完全命中自己.\n每次自身受到任意伤害时.\n减少15%的伤害.\n并将这部分伤害转给周围的敌方单位.\n并且受到伤害如果大于最大生命\n的一半,超过得部分将被阻止.\n无视魔法免疫.\n作用范围:周身4格"
   end
   
   def set_extra
@@ -1055,12 +1055,12 @@ class AttackDown < Skill
     @hurt_partner = false
     @hurt_p_dead = false
     @hurt_e_dead = false
-    @hurt_area = [ [[0,0,1,6]] ,false]
+    @hurt_area = [ [[0,0,1,4]] ,false]
     @hurt_maxnum = 0
     @sp_cost = 4
     @hp_cost = 0
     @ap_cost = 6
-    @hp_damage = 60
+    @hp_damage = 40
     @sp_damage = 0
     @ap_damage = 0
     @buff = [[ShutDown,25]]

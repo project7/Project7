@@ -227,10 +227,10 @@ class OverFuck < Buff
     @name = "竭心"
     @icon = "ctrled"
     @animation = []
-    @keep_turn = 3
+    @keep_turn = 4
     @keep_step = 0
     @use_effect = ""
-    @per_turn_start_effect = "next_actor;return"
+    @per_turn_start_effect = "next_actor;ned_t=true"
     @per_step_effect = ""
     @per_act_effect = ""
     @per_turn_end_effect = ""
