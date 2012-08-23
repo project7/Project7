@@ -495,6 +495,9 @@
     end
     # TAB
     if CInput.trigger?($vkey[:Tab])
+      if @cur_actor.fake_skill && @cur_actor.fake_skill[0].id == 4
+        SceneManager.scene.exit_menu
+      end
       mouse_fuck_up
       @actor.auto_move_path=[]
       action(4)
