@@ -43,7 +43,7 @@ class Fucker < Actor
     @per_step_cost_ap = 3
     @atk_cost_ap = 5
     @item_cost_ap = 3
-    @hatred_base = 3
+    @hatred_base = 1
     @miss_rate = 5
   end
 
@@ -147,7 +147,7 @@ class BeFucker < Actor
     @atk_cost_ap_add = 0
     @item_cost_ap_add = 0
     @bingo_rate = 5
-    @bingo_damage = 300
+    @bingo_damage = 100
     @damage_reduce_rate = 0
     @damage_reduce = 0
     @cost_reduce_rate = 0
@@ -209,7 +209,7 @@ class Shit < Actor
   end
 
   def set_extra
-    @atk_buff = [[Tear,100]]
+    @atk_buff = []
     @maxhp_add = 0
     @maxsp_add = 0
     @maxap_add = 0
