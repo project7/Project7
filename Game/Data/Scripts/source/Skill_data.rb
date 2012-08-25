@@ -756,9 +756,9 @@ class PlaceEachOther < Skill
     @hurt_e_dead = true
     @hurt_area = [ [[0]] ,true]
     @hurt_maxnum = 0
-    @sp_cost = 0
+    @sp_cost = 4
     @hp_cost = 0
-    @ap_cost = 0
+    @ap_cost = 4
     @hp_damage = 0
     @sp_damage = 0
     @ap_damage = 0
@@ -813,9 +813,9 @@ class Baqiyemenbo < Skill
     @hurt_e_dead = false
     @hurt_area = [ [[0,0],[-1,1,3,1],[-2,2,5,1]] ,false]
     @hurt_maxnum = 0
-    @sp_cost = 0#16
+    @sp_cost = 16
     @hp_cost = 0
-    @ap_cost = 0#10
+    @ap_cost = 10
     @hp_damage = 0
     @sp_damage = 0
     @ap_damage = 0
@@ -1387,7 +1387,7 @@ class Kingdom < Skill
     @ap_damage = 0
     @buff = []
     @debuff = []
-    @descr = "有%25的概率无效任何伤害.\n当受到致命伤害时.\n阻止一次死亡.\n并在三回合内阻止一切致命伤害.\n此效果一场战斗最多出现一次."
+    @descr = "有%25的概率无效任何伤害.\n\n特殊效果:\n当受到致命伤害时免疫此伤害.\n接下来三回合内阻止一切致命伤害.\n此效果一场战斗最多出现一次."
   end
   
   def set_extra

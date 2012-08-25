@@ -185,7 +185,7 @@ class Shit < Actor
   end
   
   def set_ele
-    @maxhp = 1000
+    @maxhp = 100
     @maxsp = 0
     @maxap = 30
     @atk = 18

@@ -1144,7 +1144,6 @@
     dispose_all
     $game_switches[1]=false
     $map_battle = nil
-    $game_player.followers.visible = true
     $game_player.refresh
     $game_temp.reserve_common_event(1)
   end

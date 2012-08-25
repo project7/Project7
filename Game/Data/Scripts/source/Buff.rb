@@ -57,8 +57,8 @@
     @lived_step = $map_battle ? $map_battle.steps : 0
   end
   
-  def refresh(user=nil)
-    @user = user
+  def refresh(user=false)
+    @user = user if user!=false
     init_var
   end
 
