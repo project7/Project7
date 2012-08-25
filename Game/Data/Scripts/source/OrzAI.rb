@@ -10,7 +10,7 @@
   def get_action
     get_target
     return [4,0] unless @target
-    if !$map_battle.last_action_state || ($map_battle.last_action_state.is_a?(Array) && !$map_battle.last_action_state[0] && $map_battle.last_action_state[1]>1)
+    if !$map_battle.last_action_state
       @wait_count= 60
       $map_battle.last_action_state = true
       return [4,0] 

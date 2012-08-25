@@ -166,18 +166,40 @@
   def update_spec
     $team_set.each do |i|
       if i.auto_skill
-        if instance_eval(i.auto_skill[0])
-          @real_actor=@cur_actor
-          @cur_actor=i
-          create_higher_effectarea(i.auto_skill[1][0])
-          create_higher_enablearea(i.auto_skill[1][0])
-          @effectarea.x = @cur_actor.x
-          @effectarea.y = @cur_actor.y
-          ctrl(2,i.auto_skill[1])
-          i.kc_auto_skill
-          @cur_actor=@real_actor
-          @real_actor=nil
-          end_target_select
+        if i.auto_skill[1][1].is_a?(Array)
+          if instance_eval(i.auto_skill[0])
+            @real_actor=@cur_actor
+            @cur_actor=i
+            create_higher_effectarea(i.auto_skill[1][0])
+            create_higher_enablearea(i.auto_skill[1][0])
+            @effectarea.x = @cur_actor.x
+            @effectarea.y = @cur_actor.y
+            rpara = i.auto_skill[1]
+            reval = i.auto_skill[2] ? i.auto_skill[2] : ""
+            i.kc_auto_skill
+            action(2,rpara)
+            instance_eval(reval) unless @last_action_state
+            @cur_actor=@real_actor
+            @real_actor=nil
+            end_target_select
+          end
+        else
+          if instance_eval(i.auto_skill[0])
+            rpara = i.auto_skill[1]
+            reval = i.auto_skill[2] ? i.auto_skill[2] : ""
+            i.kc_auto_skill
+            @real_actor=@cur_actor
+            @cur_actor=i
+            create_effectarea(rpara)
+            create_enablearea
+            @effectarea.x = @cur_actor.x
+            @effectarea.y = @cur_actor.y
+            action(1,rpara)
+            instance_eval(reval) unless @last_action_state
+            @cur_actor=@real_actor
+            @real_actor=nil
+            end_target_select
+          end
         end
       end
     end
@@ -449,17 +471,17 @@
   end
   
   def update_action
-    return if $game_map.interpreter.running?
+    return if !@actor.movable? || $game_map.interpreter.running?
     # 四方向按键
     tinp = CInput.dir4
-    if @actor.movable? && tinp > 0
+    if tinp > 0
       action(0,tinp)
       @actor.auto_move_path=[]
       @wayarea.dispose if @wayarea
       return
     end
     # A
-    if CInput.trigger?($vkey[:Attack]) && @actor.movable? && @cur_actor.atk_area
+    if CInput.trigger?($vkey[:Attack]) && @cur_actor.atk_area
       $sel_body = @cur_actor
       if @cur_actor.ap>=@cur_actor.get_ap_for_atk
         ready_for_attack
@@ -490,7 +512,7 @@
       end
     end
     # C
-    if CInput.down?($vkey[:C]) && @actor.movable?
+    if CInput.down?($vkey[:C])
       @actor.check_action_event
     end
     # TAB
@@ -534,7 +556,7 @@
       end
     end
     # 鼠标
-    if Mouse.down?(1) && @actor.movable?
+    if Mouse.down?(1)
       if SceneManager.scene.mouse_in_itemrect?
         obj = $sel_body.bag[@splink.tipsvar[2][1]]
         if obj && $sel_body == @cur_actor && @splink.tipsvar[2][0]
@@ -751,7 +773,7 @@
     end
     revar = ctrl(id,para)
     if revar.is_a?(Array)
-      @last_action_state = revar
+      @last_action_state = !(revar.all?{|i| i[0]==false&&i[1]>1} && revar.size>0)
       #@order_rem << [id,para]
       per_steps_cal
       return revar
@@ -1106,11 +1128,15 @@
   def end_battle
     $party.members.each do |p|
       need_ntr = []
-      p.buff.each do |buff|
-        unless buff.battle_end_not_clear
+      need_ref = []
+      p.buff.each_with_index do |buff,ind|
+        if buff.battle_end_not_clear
+          need_ref << ind
+        else
           need_ntr << buff.id
         end
       end
+      need_ref.each{|iind| p.buff[iind].refresh}
       need_ntr.each{|sick_id| p.dec_buff(sick_id)}
     end
     $team_set.each{|ss| ss.bat_re}

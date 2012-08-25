@@ -4,7 +4,7 @@ class Fucker < Actor
   def set_tec
     @id = 1
     @name = "男主角"
-    @skill = [AttackDown,Blinkill,SoulSword,BreakSelf]
+    @skill = [AttackDown,Blinkill,SoulSword,BreakSelf,MultAttack,Kingdom]
     @equip = {"武器"=>[0,nil],"盾牌"=>[1,nil],"挂件"=>[2,nil],"指环"=>[3,nil]}
     @atk_pic = "atk"
     @atk_cot = 4
@@ -185,7 +185,7 @@ class Shit < Actor
   end
   
   def set_ele
-    @maxhp = 100
+    @maxhp = 1000
     @maxsp = 0
     @maxap = 30
     @atk = 18

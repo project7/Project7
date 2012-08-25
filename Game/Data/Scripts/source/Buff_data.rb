@@ -433,7 +433,7 @@ class BreakSelfBuff < Buff
     @animation = []
     @keep_turn = 0
     @keep_step = 0
-    @use_effect = " if new_buff.user==self;p caller;
+    @use_effect = " if new_buff.user==self;
                       kick_buff = @buff.select{|smbuf| smbuf!=new_buff&&!smbuf.battle_end_not_clear}.map{|ss| ss.id};
                       kick_rate = [60-kick_buff.size*10,20].max;
                       if $random_center.rand(1) < kick_rate;
@@ -457,6 +457,82 @@ class BreakSelfBuff < Buff
   def set_extra
     @end_req = "true"
     @descr = "该单位正在挣扎."
+  end
+  
+end
+
+class MultAttackBuff < Buff
+
+  def set_ele(user)
+    @id = 14
+    @user = user
+    @name = "连斩"
+    @icon = "ctrled"
+    @animation = []
+    @keep_turn = -1
+    @keep_step = -1
+    @use_effect = ""
+    @per_turn_start_effect = ""
+    @per_step_effect = ""
+    @per_act_effect = ""
+    @per_turn_end_effect = ""
+    @end_effect = ""
+    @atk_effect = " if i==temp[-1] && $random_center.rand(100)<75;
+                      @cur_actor.cost_ap_for(3,-@cur_actor.get_ap_for_atk);
+                      @cur_actor.auto_skill=[\"if !@mtk;@cur_actor.event.cantmove=true;@mtk=0;end;if @mtk>30;@mtk=nil;true;else;@mtk+=1;false;end\",para,\"@cur_actor.event.cantmove=false;@cur_actor.cost_ap_for(1)\"];
+                    else;
+                      @cur_actor.event.cantmove=false;
+                    end"
+    @b_damage_effect = ""
+    @a_damage_effect = ""
+  end
+  
+  def set_extra
+    @battle_end_not_clear = true
+    @end_req = "false"
+    @descr = "该单位在攻击后有概率继续攻击."
+  end
+  
+end
+
+class KingdomBuff < Buff
+  
+  attr_accessor :can_eff
+  attr_accessor :kturn
+
+  def set_ele(user)
+    @id = 15
+    @user = user
+    @name = "存在"
+    @icon = "ctrled"
+    @animation = []
+    @keep_turn = -1
+    @keep_step = -1
+    @use_effect = "self.ignore_dmg_rate += 25"
+    @per_turn_start_effect = ""
+    @per_step_effect = ""
+    @per_act_effect = ""
+    @per_turn_end_effect = "buff.kturn-=1 if !buff.can_eff && buff.kturn>0"
+    @end_effect = "self.ignore_dmg_rate -= 25"
+    @atk_effect = ""
+    @b_damage_effect = ""
+    @a_damage_effect = "if @hp<=0 && buff.kturn>0;
+                          @hp=[1,@hp].max;
+                          buff.can_eff=false;
+                        end"
+  end
+  
+  def set_extra
+    @can_eff = true
+    @kturn = 4
+    @battle_end_not_clear = true
+    @end_req = "false"
+    @descr = "该单位有概率闪避任何伤害.\n并且刚韧不屈."
+  end
+  
+  def refresh
+    @can_eff = true
+    @kturn = 4
   end
   
 end

@@ -974,7 +974,6 @@ class Refraction < Skill
     @hp_damage_add = "skill.level*100"
     @sp_damage_add = "skill.level*50"
     @ap_damage_add = "0"
-    
     @ignore_mag_det = true
   end
   
@@ -1026,7 +1025,6 @@ class Disturb < Skill
     @hp_damage_add = "skill.level*100"
     @sp_damage_add = "skill.level*50"
     @ap_damage_add = "0"
-    
     @ignore_mag_det = true
   end
   
@@ -1300,6 +1298,108 @@ class BreakSelf < Skill
     @sp_damage_add = "skill.level*50"
     @ap_damage_add = "0"
     @ignore_mag_det = false
+  end
+  
+end
+
+class MultAttack < Skill
+
+  def set_ui
+    @icon = "m06"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 22
+    @name = "连斩"
+    @init_skill = false
+    @uninit_buff = [MultAttackBuff]
+    @use_req = "false"
+    @use_dis_min = 0
+    @use_dis_max = 0
+    @hotkey = nil
+    @hurt_enemy = true
+    @hurt_partner = true
+    @hurt_p_dead = false
+    @hurt_e_dead = false
+    @hurt_area = [ [[0]] ,true]
+    @hurt_maxnum = 0
+    @sp_cost = 0
+    @hp_cost = 0
+    @ap_cost = 0
+    @hp_damage = 0
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = []
+    @debuff = []
+    @descr = "每次攻击有75%在攻击完毕之后继续发动一次攻击.\n并且能继续触发连斩."
+  end
+  
+  def set_extra
+    @spec_effect = ""
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @ignore_mag_det = true
+  end
+  
+end
+
+class Kingdom < Skill
+
+  def set_ui
+    @icon = "relive"
+    @user_animation = 0
+    @target_partner_animation = 0
+    @target_enemy_animation = 0
+    @target_p_dead_animation = 0
+    @target_e_dead_animation = 0
+  end
+
+  def set_ele
+    @id = 23
+    @name = "存在"
+    @init_skill = false
+    @uninit_buff = [KingdomBuff]
+    @use_req = "false"
+    @use_dis_min = 0
+    @use_dis_max = 0
+    @hotkey = nil
+    @hurt_enemy = true
+    @hurt_partner = true
+    @hurt_p_dead = false
+    @hurt_e_dead = false
+    @hurt_area = [ [[0]] ,true]
+    @hurt_maxnum = 0
+    @sp_cost = 0
+    @hp_cost = 0
+    @ap_cost = 0
+    @hp_damage = 0
+    @sp_damage = 0
+    @ap_damage = 0
+    @buff = []
+    @debuff = []
+    @descr = "有%25的概率无效任何伤害.\n当受到致命伤害时.\n阻止一次死亡.\n并在三回合内阻止一切致命伤害.\n此效果一场战斗最多出现一次."
+  end
+  
+  def set_extra
+    @spec_effect = ""
+    @sp_cost_rate = 0
+    @hp_cost_rate = 0
+    @ap_cost_rate = 0
+    @level = 0
+    @hp_damage_add = "skill.level*100"
+    @sp_damage_add = "skill.level*50"
+    @ap_damage_add = "0"
+    @ignore_mag_det = true
   end
   
 end

@@ -244,7 +244,7 @@
     tbitmap = Bitmap.new([22*actor.buff.size,22].max,20)
     trect = Rect.new(0,0,21,20)
     actor.buff.each_with_index do |i,j|
-      tbitmap.blt(j*22,0,Bitmap.new("Graphics/Icon/"+i.icon+".png"),trect)
+      tbitmap.blt(j*22,0,Bitmap.new("Graphics/Icon/"+i.icon+".png"),trect) if i.icon!=""
     end
     return tbitmap
   end
