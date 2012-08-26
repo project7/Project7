@@ -768,9 +768,11 @@
   end
   
   def action(id,para=nil)
+    ned_t=nil
     @cur_actor.buff.each do |buff|
       instance_eval(buff.per_act_effect)
     end
+    return ned_t if ned_t != nil
     revar = ctrl(id,para)
     if revar.is_a?(Array)
       @last_action_state = !(revar.all?{|i| i[0]==false&&i[1]>1} && revar.size>0)

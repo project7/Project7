@@ -1135,8 +1135,8 @@ class Blinkill < Skill
                     end;
                     $syseting[:show_maparea]=npa;
                     trectreal = Effect_Area.new([@actor.x,@actor.y],trectarr,false);
-                    $team_set.each do |player|;
-                      next if player.dead? || (player.team&@cur_actor.team).size>0 || !trectreal.include?(player.x,player.y);
+                    $team_set.each do |i|;
+                      next if i.dead? || (i.team&@cur_actor.team).size>0 || !trectreal.include?(i.x,i.y);
                       if starget || $random_center.rand(100) < @cur_actor.bingo_rate;
                         Sound.bingo;
                         bingo_color = BINGO_COLOR;
@@ -1147,33 +1147,33 @@ class Blinkill < Skill
                       end;
                       tempama = @cur_actor.get_atk;
                       tempama = tempama*@cur_actor.bingo_damage/100 if bingo_size > 20;
-                      @cur_actor.buff.each{|cute| instance_eval(cute.atk_effect)};
-                      dama = player.phy_damage(tempama);
+                      @cur_actor.buff.each{|cute| instance_eval(cute.atk_effect) rescue nil};
+                      dama = i.phy_damage(tempama);
                       if dama[0];
                         if @cur_actor.hp_absorb_rate != 0 || @cur_actor.hp_absorb != 0;
                           a = @cur_actor.absorb_hp(dama[1]);
-                          b = @cur_actor.absorb_hp_by_rate(player.hp);
+                          b = @cur_actor.absorb_hp_by_rate(i.hp);
                           c = -a[1]-b[1];
                           @splink.show_text(c.to_s,@cur_actor.event,HP_ADD_COLOR);
                         end;
-                        if player.dmg_rebound !=0 || player.dmg_rebound_rate != 0;
-                          a = @cur_actor.rebound_damage(dama[1],player.dmg_rebound_rate,player.dmg_rebound);
+                        if i.dmg_rebound !=0 || i.dmg_rebound_rate != 0;
+                          a = @cur_actor.rebound_damage(dama[1],i.dmg_rebound_rate,i.dmg_rebound);
                           @splink.show_text(a[1].to_s,@cur_actor.event,HP_COST_COLOR) if a[0];
                         end;
-                        @splink.show_text(dama[1].to_s,player.event,bingo_color,bingo_size);
+                        @splink.show_text(dama[1].to_s,i.event,bingo_color,bingo_size);
                         @cur_actor.atk_buff.each do |buff|;
                           trate = buff[1].abs;
                           if $random_center.rand(100) < trate;
                             sm = buff[0].new;
-                            player.add_buff(sm);
-                            @splink.show_text("+"+sm.name,player.event,SP_ADD_COLOR) if buff[1]>0;
+                            i.add_buff(sm);
+                            @splink.show_text("+"+sm.name,i.event,SP_ADD_COLOR) if buff[1]>0;
                           end;
                         end;
-                        player.god_sp_damage(-2,true);
+                        i.god_sp_damage(-2,true);
                       elsif dama[1]<=1;
-                        @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],player.event);
+                        @splink.show_text(FAILD_ATTACK_TEXT[dama[1]],i.event);
                       end;
-                      @splink.show_value(player.hp*100/player.maxhp,player.event);
+                      @splink.show_value(i.hp*100/i.maxhp,i.event);
                     end;
                     if starget;
                       @cur_actor.event.x,starget.event.x = starget.event.x,@cur_actor.event.x;
@@ -1336,7 +1336,7 @@ class MultAttack < Skill
     @ap_damage = 0
     @buff = []
     @debuff = []
-    @descr = "每次攻击有75%在攻击完毕之后继续发动一次攻击.\n并且能继续触发连斩."
+    @descr = "每次攻击有40%在攻击完毕之后继续发动一次攻击.\n并且能继续触发连斩.\n此效果不能被普通攻击以外触发."
   end
   
   def set_extra

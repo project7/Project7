@@ -344,7 +344,7 @@ class BeDisturbBuff < Buff
                             @cur_actor.cost_ap_for(3,@cur_actor.maxap/2);
                             @last_action_state = false;
                             per_steps_cal;
-                            return true;
+                            ned_t=true;
                           end;
                         end"
     @per_turn_end_effect = ""
@@ -477,7 +477,7 @@ class MultAttackBuff < Buff
     @per_act_effect = ""
     @per_turn_end_effect = ""
     @end_effect = ""
-    @atk_effect = " if i==temp[-1] && $random_center.rand(100)<75;
+    @atk_effect = " if i==temp[-1] && $random_center.rand(100)<40 && !para[1].is_a?(Array);
                       @cur_actor.cost_ap_for(3,-@cur_actor.get_ap_for_atk);
                       @cur_actor.auto_skill=[\"if !@mtk;@cur_actor.event.cantmove=true;@mtk=0;end;if @mtk>30;@mtk=nil;true;else;@mtk+=1;false;end\",para,\"@cur_actor.event.cantmove=false;@cur_actor.cost_ap_for(1)\"];
                     else;
@@ -509,10 +509,10 @@ class KingdomBuff < Buff
     @keep_turn = -1
     @keep_step = -1
     @use_effect = "self.ignore_dmg_rate += 25"
-    @per_turn_start_effect = ""
+    @per_turn_start_effect = "buff.kturn-=1 if !buff.can_eff && buff.kturn>0"
     @per_step_effect = ""
     @per_act_effect = ""
-    @per_turn_end_effect = "buff.kturn-=1 if !buff.can_eff && buff.kturn>0"
+    @per_turn_end_effect = ""
     @end_effect = "self.ignore_dmg_rate -= 25"
     @atk_effect = ""
     @b_damage_effect = ""
@@ -524,7 +524,7 @@ class KingdomBuff < Buff
   
   def set_extra
     @can_eff = true
-    @kturn = 4
+    @kturn = 3
     @battle_end_not_clear = true
     @end_req = "false"
     @descr = "该单位有概率闪避任何伤害.\n并且刚韧不屈."
@@ -532,7 +532,7 @@ class KingdomBuff < Buff
   
   def refresh
     @can_eff = true
-    @kturn = 4
+    @kturn = 3
   end
   
 end
