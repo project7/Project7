@@ -195,6 +195,10 @@
     @ai = nil
   end
   
+  def atk_anima
+    return 48
+  end
+  
   def set_item
     @bag = []
     @bag_rem = []

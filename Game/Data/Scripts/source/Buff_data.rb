@@ -271,6 +271,7 @@ class RefractionBuff < Buff
                           $team_set.each do |zik|;
                             next if zik==self||zik.dead? || (zik.team&@team).size>0;
                             if (zik.x-self.x).abs+(zik.y-self.y).abs<=4;
+                              zik.event.animation_id = 7;
                               a=zik.damage(rdama);
                               if a[0];
                                 SceneManager.scene.spriteset.show_text(a[1].abs,zik.event,Fuc::HP_COST_COLOR,20) if a[1]>0;
@@ -341,6 +342,7 @@ class BeDisturbBuff < Buff
     @per_step_effect = ""
     @per_act_effect = " if !@cur_actor.ignore_magic&&id!=4&&(@cur_actor.x-buff.user.x).abs+(@cur_actor.y-buff.user.y).abs<=buff.user.int/15;
                           if $random_center.rand(100)<10;
+                            self.event.animation_id = 12;
                             @cur_actor.cost_ap_for(3,@cur_actor.maxap/2);
                             @last_action_state = false;
                             per_steps_cal;
@@ -409,9 +411,11 @@ class SoulOwnerBuff < Buff
     @b_damage_effect = ""
     @a_damage_effect = "if (buff.user.team&@team).size>0;
                           a = buff.user.god_damage(-value.abs);
+                          buff.user.event.animation_id = 39;
                           SceneManager.scene.spriteset.show_text(a[1],buff.user.event,Fuc::HP_ADD_COLOR,20) if a[0];
                         else;
                           a = buff.user.god_damage(value.abs);
+                          buff.user.event.animation_id = 12;
                           SceneManager.scene.spriteset.show_text(a[1].abs,buff.user.event,Fuc::HP_COST_COLOR,20) if a[0];
                         end"
   end
@@ -517,6 +521,7 @@ class KingdomBuff < Buff
     @atk_effect = ""
     @b_damage_effect = ""
     @a_damage_effect = "if @hp<=0 && buff.kturn>0;
+                          self.event.animation_id = 32;p 1;
                           @hp=[1,@hp].max;
                           buff.can_eff=false;
                         end"

@@ -204,6 +204,43 @@ class Sprite_Character < Sprite_Base
     end
   end
   #--------------------------------------------------------------------------
+  # ● 设置动画的精灵
+  #     frame : 帧数据（RPG::Animation::Frame）
+  #--------------------------------------------------------------------------
+  def animation_set_sprites(frame)
+    cell_data = frame.cell_data
+    @ani_sprites.each_with_index do |sprite, i|
+      next unless sprite
+      pattern = cell_data[i, 0]
+      if !pattern || pattern < 0
+        sprite.visible = false
+        next
+      end
+      sprite.bitmap = pattern < 100 ? @ani_bitmap1 : @ani_bitmap2
+      sprite.visible = true
+      sprite.src_rect.set(pattern % 5 * 192,
+        pattern % 100 / 5 * 192, 192, 192)
+      if @ani_mirror
+        sprite.x = x - ox + width / 2 - cell_data[i, 1]
+        sprite.y = y - oy + height / 2 + cell_data[i, 2]
+        sprite.angle = (360 - cell_data[i, 4])
+        sprite.mirror = (cell_data[i, 5] == 0)
+      else
+        sprite.x = x - ox + width / 2 + cell_data[i, 1]
+        sprite.y = y - oy + height / 2 + cell_data[i, 2]
+        sprite.angle = cell_data[i, 4]
+        sprite.mirror = (cell_data[i, 5] == 1)
+      end
+      sprite.z = self.z + 300 + i
+      sprite.ox = 96
+      sprite.oy = 96
+      sprite.zoom_x = cell_data[i, 3] / 100.0
+      sprite.zoom_y = cell_data[i, 3] / 100.0
+      sprite.opacity = cell_data[i, 6] * self.opacity / 255.0
+      sprite.blend_type = cell_data[i, 7]
+    end
+  end
+  #--------------------------------------------------------------------------
   # ● 结束心情图标的显示
   #--------------------------------------------------------------------------
   def end_balloon
