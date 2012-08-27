@@ -81,6 +81,10 @@ class Fucker < Actor
     @dmg_rebound_rate = 0
   end
   
+  def atk_anima
+    return $random_center.rand(3)+20
+  end
+  
 end
 
 #MainActor2
@@ -166,6 +170,10 @@ class BeFucker < Actor
     @dmg_rebound_rate = 0
   end
   
+  def atk_anima
+    return 49
+  end
+  
 end
 
 #测试
@@ -240,6 +248,10 @@ class Shit < Actor
     @ignore_dmg_rate = 0
     @dmg_rebound = 0
     @dmg_rebound_rate = 15
+  end
+  
+  def atk_anima
+    return 44
   end
 
 end

@@ -829,6 +829,7 @@
           dama = i.phy_damage(tempama)
           tempb << dama
           if dama[0]
+            i.event.animation_id = @cur_actor.atk_anima
             if @cur_actor.hp_absorb_rate != 0 || @cur_actor.hp_absorb != 0
               a = @cur_actor.absorb_hp(dama[1])
               b = @cur_actor.absorb_hp_by_rate(i.hp)

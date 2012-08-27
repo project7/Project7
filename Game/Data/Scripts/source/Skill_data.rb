@@ -42,6 +42,7 @@ class FuckEachOther < Skill
                       tempb << [false,21];
                     else;
                       tempb << [true,0];
+                      i.event.animation_id = 4;
                       i.add_buff(Catch.new(@cur_actor));
                     end"
     @sp_cost_rate = 0
@@ -525,9 +526,9 @@ class AutoBang < Skill
   
   def set_ui
     @icon = "ret"
-    @user_animation = 0
+    @user_animation = 27
     @target_partner_animation = 0
-    @target_enemy_animation = 0
+    @target_enemy_animation = 48
     @target_p_dead_animation = 0
     @target_e_dead_animation = 0
   end
@@ -602,9 +603,9 @@ class AutoT < Skill
   
   def set_ui
     @icon = "ret"
-    @user_animation = 0
-    @target_partner_animation = 0
-    @target_enemy_animation = 0
+    @user_animation = 48
+    @target_partner_animation = 48
+    @target_enemy_animation = 48
     @target_p_dead_animation = 0
     @target_e_dead_animation = 0
   end
@@ -673,9 +674,9 @@ class AutoBigBang < Skill
   
   def set_ui
     @icon = "ret"
-    @user_animation = 0
+    @user_animation = 33
     @target_partner_animation = 0
-    @target_enemy_animation = 0
+    @target_enemy_animation = 48
     @target_p_dead_animation = 0
     @target_e_dead_animation = 0
   end
@@ -735,11 +736,11 @@ class PlaceEachOther < Skill
   
   def set_ui
     @icon = "f03"
-    @user_animation = 0
-    @target_partner_animation = 0
-    @target_enemy_animation = 0
-    @target_p_dead_animation = 0
-    @target_e_dead_animation = 0
+    @user_animation = 3
+    @target_partner_animation = 3
+    @target_enemy_animation = 3
+    @target_p_dead_animation = 3
+    @target_e_dead_animation = 3
   end
 
   def set_ele
@@ -792,9 +793,9 @@ class Baqiyemenbo < Skill
   
   def set_ui
     @icon = "f02"
-    @user_animation = 0
+    @user_animation = 10
     @target_partner_animation = 0
-    @target_enemy_animation = 0
+    @target_enemy_animation = 11
     @target_p_dead_animation = 0
     @target_e_dead_animation = 0
   end
@@ -863,9 +864,9 @@ class MagicBang < Skill
   
   def set_ui
     @icon = "f00"
-    @user_animation = 0
+    @user_animation = 8
     @target_partner_animation = 0
-    @target_enemy_animation = 0
+    @target_enemy_animation = 9
     @target_p_dead_animation = 0
     @target_e_dead_animation = 0
   end
@@ -1034,9 +1035,9 @@ class AttackDown < Skill
   
   def set_ui
     @icon = "m03"
-    @user_animation = 0
+    @user_animation = 28
     @target_partner_animation = 0
-    @target_enemy_animation = 0
+    @target_enemy_animation = 29
     @target_p_dead_animation = 0
     @target_e_dead_animation = 0
   end
@@ -1085,7 +1086,7 @@ class Blinkill < Skill
   
   def set_ui
     @icon = "m01"
-    @user_animation = 0
+    @user_animation = 30
     @target_partner_animation = 0
     @target_enemy_animation = 0
     @target_p_dead_animation = 0
@@ -1145,6 +1146,7 @@ class Blinkill < Skill
                         bingo_color = HP_COST_COLOR;
                         bingo_size = 20;
                       end;
+                      i.event.animation_id = 31;
                       tempama = @cur_actor.get_atk;
                       tempama = tempama*@cur_actor.bingo_damage/100 if bingo_size > 20;
                       @cur_actor.buff.each{|cute| instance_eval(cute.atk_effect) rescue nil};
@@ -1208,7 +1210,7 @@ class SoulSword < Skill
     @icon = "m02"
     @user_animation = 0
     @target_partner_animation = 0
-    @target_enemy_animation = 0
+    @target_enemy_animation = 49
     @target_p_dead_animation = 0
     @target_e_dead_animation = 0
   end
@@ -1256,7 +1258,7 @@ class BreakSelf < Skill
   
   def set_ui
     @icon = "m05"
-    @user_animation = 0
+    @user_animation = 34
     @target_partner_animation = 0
     @target_enemy_animation = 0
     @target_p_dead_animation = 0
