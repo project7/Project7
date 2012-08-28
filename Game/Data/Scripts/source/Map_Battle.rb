@@ -1142,7 +1142,7 @@
       need_ref.each{|iind| p.buff[iind].refresh}
       need_ntr.each{|sick_id| p.dec_buff(sick_id)}
     end
-    $team_set.each{|ss| ss.bat_re}
+    $team_set.each{|ss| ss.bat_re;ss.event.cantmove=false}
     @battle_end_flag = true
     dispose_all
     $game_switches[1]=false
